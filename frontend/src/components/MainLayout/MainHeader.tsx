@@ -19,23 +19,20 @@ export const MainHeader: React.FC<Props> = ({ onLogout }) => {
 
   return (
     <Layout.Header
-      className={styles.siteLayoutBackground}
       style={{
         padding: 0,
         borderBottom: '1px solid #F0F0F0',
+        background: '#1E6541',
       }}
     >
       <Row>
-        <Col>
-          <Logo />
-        </Col>
-        <Col style={{ marginRight: 20 }}>
-          <Dropdown overlay={menu}>
-            <Button type="link" onClick={e => e.preventDefault()}>
-              <CaretDownOutlined />
-            </Button>
-          </Dropdown>
-        </Col>
+        {/* <Col style={{ marginRight: 20 }}>
+            <Dropdown overlay={menu}>
+              <Button type="link" onClick={e => e.preventDefault()}>
+                <CaretDownOutlined />
+              </Button>
+            </Dropdown>
+          </Col> */}
       </Row>
     </Layout.Header>
   );

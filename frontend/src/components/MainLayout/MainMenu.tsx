@@ -1,9 +1,11 @@
-import { Menu } from 'antd';
+import { Col, Layout, Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { intersection } from 'lodash';
 import { menuItems, MenuItem } from '../../configs/menus';
 import { useAuth } from '../../utils/auth';
+import { Logo } from './Logo';
+import styles from './MainLayout.module.scss';
 
 export const MainMenu = () => {
   const navigate = useNavigate();
@@ -40,13 +42,30 @@ export const MainMenu = () => {
   const ks = pathname.slice(1).split('/');
 
   return (
-    <Menu
-      theme="light"
-      mode="horizontal"
-      selectedKeys={ks.slice(-1)}
-      defaultOpenKeys={ks.length > 1 ? ks.slice(0, 1) : []}
-      items={items}
-      inlineIndent={6}
-    />
+    <>
+      <Layout.Header
+        className={styles.siteLayoutBackground}
+        style={{
+          padding: 0,
+          borderBottom: '1px solid #F0F0F0',
+        }}
+      >
+        <Col>
+          <Logo />
+        </Col>
+      </Layout.Header>
+      <Menu
+        theme="light"
+        mode="inline"
+        selectedKeys={ks.slice(-1)}
+        defaultOpenKeys={ks.length > 1 ? ks.slice(0, 1) : []}
+        items={items}
+        inlineIndent={6}
+        style={{
+          height: '100%',
+          borderRight: 0,
+        }}
+      />
+    </>
   );
 };

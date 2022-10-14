@@ -7,9 +7,10 @@ import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
 
-const { Content } = Layout;
+const { Content, Sider } = Layout;
 
 export const MainLayout: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const { authenticated, login, logout } = useId24();
   const [userRequestedLogout, setUserRequestedLogout] = useState(false);
 
@@ -32,17 +33,21 @@ export const MainLayout: React.FC = () => {
         className="site-layout"
         style={{ height: '100vh', overflow: 'auto' }}
       >
-        <MainHeader
-          onLogout={() => {
-            setUserRequestedLogout(true);
-            logout().then(() => login(window.location.href, false));
-          }}
-        />
-        <MainMenu />
-        <MainPageHeader />
-        <Content style={{ margin: 16 }}>
-          <Outlet />
-        </Content>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <MainMenu />
+        </Sider>
+        <Layout>
+          <MainHeader
+            onLogout={() => {
+              setUserRequestedLogout(true);
+              logout().then(() => login(window.location.href, false));
+            }}
+          />
+          {/* <MainPageHeader /> */}
+          <Content style={{ margin: 16 }}>
+            <Outlet />
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   );
