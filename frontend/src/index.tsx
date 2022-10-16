@@ -63,16 +63,14 @@ const app = async () => {
       reloadPage,
     };
     root.render(
-      <React.StrictMode>
-        <Id24InstanceProvider
-          instance={id24Instance}
-          authenticationHelper={authenticationHelper}
-        >
-          <ConfigProvider locale={thTH}>
-            <App />
-          </ConfigProvider>
-        </Id24InstanceProvider>
-      </React.StrictMode>,
+      <Id24InstanceProvider
+        instance={id24Instance}
+        authenticationHelper={authenticationHelper}
+      >
+        <ConfigProvider locale={thTH}>
+          <App />
+        </ConfigProvider>
+      </Id24InstanceProvider>,
     );
     reportWebVitals();
   } catch (e) {

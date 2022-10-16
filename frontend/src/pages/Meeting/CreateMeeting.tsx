@@ -3,6 +3,7 @@ import {
   Card,
   Col,
   Collapse,
+  DatePicker,
   Form,
   Input,
   Modal,
@@ -10,6 +11,7 @@ import {
   Row,
   Space,
   Table,
+  TimePicker,
   Typography,
 } from 'antd';
 import {
@@ -23,6 +25,7 @@ import { reportStore } from '../../stores/report-store';
 import { MenuItem, menuItems } from '../../configs/menus';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { DatamanagementService } from '../../stores/meeting-store';
 const { TextArea } = Input;
 
 type Props = {
@@ -42,12 +45,25 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const [day, setDay] = useState<string>('');
   const [starttime, setStarttime] = useState<string>('');
   const [endtime, setEndtime] = useState<string>('');
+  const [detail, setDetail] = useState<string>('');
+
+  useEffect(() => {
+    getListmeeting();
+  }, []);
+
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getListmeeting()
+      .then(data => {
+        // console.log(data);
+      });
+  };
 
   const columns = [
     {
       key: '1',
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'uuid',
 
       render: (row: any) => {
         return <>{row}</>;
@@ -56,7 +72,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     {
       key: '2',
       title: 'ชื่อ - นามสกุลผู้เข้าร่วมประชุม',
-      dataIndex: 'name',
+      dataIndex: 'username',
     },
     {
       key: '3',
@@ -94,10 +110,10 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const handleAdd = () => {
     // const randomNumber = parseInt(Math.random() * 1000);
     const newStudent = {
-      id: uuidv4(),
-      name: '',
+      username: '',
       email: '',
       phone: '',
+      uuid: uuidv4(),
     };
     setDataSource((pre: any) => {
       return [...pre, newStudent];
@@ -110,7 +126,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
       okType: 'danger',
       onOk: () => {
         setDataSource((pre: any) => {
-          return pre.filter((student: any) => student.id !== record.id);
+          return pre.filter((student: any) => student.uuid !== record.uuid);
         });
       },
     });
@@ -129,26 +145,47 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     Modal.confirm({
       title: 'Confirm Create this meeting',
       icon: <ExclamationCircleOutlined />,
-      content: `Link... http://localhost:3000/report/meeting/meeting-create/${id}`,
+      content: `Link... ${window.origin}/${id}`,
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        console.log(
-          dataSource,
-          title,
-          room,
-          floor,
-          building,
-          meetingplace,
-          day,
-          starttime,
-          endtime,
-        );
+        await DatamanagementService()
+          .createmeeting(
+            detail,
+            title,
+            room,
+            floor,
+            building,
+            meetingplace,
+            day,
+            starttime,
+            endtime,
+            id,
+          )
+          .then(data => {
+            console.log(data);
+          });
+        await DatamanagementService()
+          .saveuserattendees(dataSource, id)
+          .then(data => {
+            console.log(data);
+          });
       },
       onCancel: () => {},
     });
   };
 
+  const onChangeDate = (e: any) => {
+    setDay(e._d);
+  };
+  const onChangeStartTime = (e: any) => {
+    const newDate = e._d;
+    setStarttime(`${newDate.getHours()}:${newDate.getMinutes()}`);
+  };
+  const onChangeEndTime = (e: any) => {
+    const newDate = e._d;
+    setEndtime(`${newDate.getHours()}:${newDate.getMinutes()}`);
+  };
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row gutter={[2, 12]}>
@@ -156,10 +193,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
               เรื่อง
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setTitle(e.target.value)}
-              />
+              <Input onChange={(e: any) => setTitle(e.target.value)} />
             </Col>
           </Row>
         </Col>
@@ -167,24 +201,15 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               ห้องประชุม
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setRoom(e.target.value)}
-              />
+              <Input onChange={(e: any) => setRoom(e.target.value)} />
             </Col>
             <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               ชั้น
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setFloor(e.target.value)}
-              />
+              <Input onChange={(e: any) => setFloor(e.target.value)} />
             </Col>
             <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               อาคาร
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setBuilding(e.target.value)}
-              />
+              <Input onChange={(e: any) => setBuilding(e.target.value)} />
             </Col>
           </Row>
         </Col>
@@ -192,10 +217,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
               สถานที่ประชุม
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setMeetingplace(e.target.value)}
-              />
+              <Input onChange={(e: any) => setMeetingplace(e.target.value)} />
             </Col>
           </Row>
         </Col>
@@ -203,24 +225,24 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               วันที่
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setDay(e.target.value)}
-              />
+              <DatePicker onChange={onChangeDate} style={{ width: '100%' }} />
+              {/* <Input onChange={(e: any) => setDay(e.target.value)} /> */}
             </Col>
             <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               เวลาเริ่ม
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setStarttime(e.target.value)}
+              <TimePicker
+                onChange={onChangeStartTime}
+                style={{ width: '100%' }}
               />
+              {/* <Input onChange={(e: any) => setStarttime(e.target.value)} /> */}
             </Col>
             <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
               เวลาสิ้นสุด
-              <Input
-                placeholder="Basic usage"
-                onChange={(e: any) => setEndtime(e.target.value)}
+              <TimePicker
+                onChange={onChangeEndTime}
+                style={{ width: '100%' }}
               />
+              {/* <Input onChange={(e: any) => setEndtime(e.target.value)} /> */}
             </Col>
           </Row>
         </Col>
@@ -248,7 +270,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
                 dataSource={dataSource}
                 columns={columns}
                 pagination={false}
-                rowKey={'id'}
+                rowKey={'uuid'}
               />
             </Col>
           </Row>
@@ -257,7 +279,10 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
               รายละเอียดการประชุม
-              <TextArea rows={4} />
+              <TextArea
+                rows={4}
+                onChange={(e: any) => setDetail(e.target.value)}
+              />
             </Col>
           </Row>
         </Col>
@@ -283,7 +308,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
         onOk={() => {
           setDataSource((pre: any) => {
             return pre.map((student: any) => {
-              if (student.id === editingStudent.id) {
+              if (student.uuid === editingStudent.uuid) {
                 return editingStudent;
               } else {
                 return student;
@@ -297,10 +322,10 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             ชื่อ - นามสกุลผู้เข้าร่วมประชุม
             <Input
-              value={editingStudent?.name}
+              value={editingStudent?.username}
               onChange={e => {
                 setEditingStudent((pre: any) => {
-                  return { ...pre, name: e.target.value };
+                  return { ...pre, username: e.target.value };
                 });
               }}
             />

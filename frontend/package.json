@@ -2,7 +2,7 @@
   "name": "ddebt-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ddebtuat.gsb/report",
+  "homepage": "https://ddebtuat.gsb/meeting",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -26,6 +26,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-jwt": "^1.1.6",
+    "react-qr-code": "^2.0.8",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "recharts": "^2.1.13",

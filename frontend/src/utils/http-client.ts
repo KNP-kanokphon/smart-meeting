@@ -8,7 +8,7 @@ message.config({
 });
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL || ''}/api`,
+  baseURL: `${process.env.REACT_APP_API_BASE_URL || ''}`,
 });
 
 // Add message dialog here only for development purpose we can disable when ENV = prod later

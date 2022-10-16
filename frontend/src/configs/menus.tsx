@@ -6,6 +6,7 @@ import { Role } from '../utils/auth';
 import { Outlet } from 'react-router-dom';
 import { ListLayout } from '../pages/Meeting/ListMeeting';
 import { CreateMeeting } from '../pages/Meeting/CreateMeeting';
+import { EventLayout } from '../pages/Meeting/EventDetail';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
