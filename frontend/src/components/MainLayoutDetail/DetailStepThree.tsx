@@ -8,6 +8,7 @@ import QRCode from 'qrcode.react';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { saveAs } from 'file-saver';
 
 const { Content, Sider, Header, Footer } = Layout;
 
@@ -44,6 +45,12 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  };
+
+  const getFiles = async () => {
+    const data = await DatamanagementService().getFiles(id);
+    const blob = new Blob([data], { type: 'application/pdf' });
+    saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
   };
   return (
     <Layout className="layout">
@@ -95,6 +102,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                   <Col span={2}></Col>
                 </Row>
                 <br></br>
+
                 <Row>
                   <Col span={2}></Col>
                   <Col span={20} style={{ fontSize: '18px' }}>
@@ -106,6 +114,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={24}>
                     <QRCode
+                      id="qr-gen"
                       size={128}
                       value={`${window.location.host}/profileDetail/${id}/${userid}`}
                     />
@@ -114,12 +123,25 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={8}></Col>
                   <Col span={8}>
-                    <Button onClick={downloadQRCode}>
-                      save <VerticalAlignBottomOutlined />
+                    <Button type="link" onClick={downloadQRCode}>
+                      Dowload QR-Code
+                      <VerticalAlignBottomOutlined />
                     </Button>
                   </Col>
                   <Col span={8}></Col>
                 </Row>
+                <br></br>
+                <Row>
+                  <Col span={2}></Col>
+                  <Col span={20} style={{ fontSize: '80%' }}>
+                    เอกสารภาพประกอบการประชุม
+                    <Button type="link" onClick={getFiles}>
+                      Dowload
+                    </Button>
+                  </Col>
+                  <Col span={2}></Col>
+                </Row>
+                <br></br>
               </Card>
             </Col>
             <Col span={7}></Col>

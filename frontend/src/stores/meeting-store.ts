@@ -44,17 +44,29 @@ export const DatamanagementService = () => ({
   saveuserattendees: async (userAll: [], idmeeting: string) => {
     const newData: any = [];
     userAll.map(
-      (x: { username: string; email: string; phone: string; uuid: string }) => {
+      (x: {
+        username: string;
+        phone: string;
+        email: string;
+        model: string;
+        position: string;
+        uuid: string;
+        idmeeting: string;
+        checkin: boolean;
+      }) => {
         newData.push({
           username: x.username,
           email: x.email,
           phone: x.phone,
+          model: x.model,
+          position: x.position,
           uuid: x.uuid,
           idmeeting: idmeeting,
           checkin: false,
         });
       },
     );
+
     const result = await httpClient.post(`/userattendees/`, newData);
     return result.data;
   },
@@ -91,13 +103,25 @@ export const DatamanagementService = () => ({
 
     return result.data;
   },
-  import: async (file: any) => {
-    const result = await httpClient.post(`/meeting/import`, file, {
+  import: async (file: any, id: string) => {
+    const result = await httpClient.post(`/meeting/import/${id}`, file, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-
+    return result.data;
+  },
+  getuserInroom: async (roomid: string) => {
+    const result = await httpClient.get(`/userattendees/${roomid}`);
+    return result.data;
+  },
+  getFiles: async (roomid: any) => {
+    const result = await httpClient.get(`/meeting/filepdf/${roomid}`, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      responseType: 'arraybuffer',
+    });
     return result.data;
   },
 });

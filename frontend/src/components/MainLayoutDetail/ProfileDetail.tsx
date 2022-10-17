@@ -26,12 +26,11 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
   const { roomid } = useParams<{ roomid: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<ProfileInterface>();
-  console.log(roomid);
-  console.log(userid);
 
   useEffect(() => {
     getDataProfile();
   }, []);
+
   const getDataProfile = async () => {
     const resultProfile = await DatamanagementService().getProfileByid(
       roomid,
@@ -39,7 +38,6 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
     );
     setUserprofile(resultProfile[0]);
   };
-  const navigate = useNavigate();
 
   const onCheckin = async () => {
     const status = true;

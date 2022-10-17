@@ -11,6 +11,7 @@ import {
   Modal,
   Popconfirm,
   Row,
+  Select,
   Space,
   Table,
   TimePicker,
@@ -42,6 +43,7 @@ type Props = {
   extra?: React.ReactNode;
 };
 
+const { Option } = Select;
 export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
@@ -73,7 +75,6 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
       key: '1',
       title: 'ID',
       dataIndex: 'uuid',
-
       render: (row: any) => {
         return <>{row}</>;
       },
@@ -95,6 +96,16 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     },
     {
       key: '5',
+      title: 'รุ่น',
+      dataIndex: 'model',
+    },
+    {
+      key: '6',
+      title: 'ตำแหน่งสมาคม',
+      dataIndex: 'position',
+    },
+    {
+      key: '7',
       title: 'Actions',
       render: (record: any) => {
         return (
@@ -120,8 +131,10 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     // const randomNumber = parseInt(Math.random() * 1000);
     const newStudent = {
       username: '',
-      email: '',
       phone: '',
+      email: '',
+      model: '',
+      position: '',
       uuid: uuidv4(),
     };
     setDataSource((pre: any) => {
@@ -150,17 +163,45 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   };
 
   const approveCreate = () => {
-    // const formData = new FormData();
-    // formData.append('file', fileList[0]);
+    if (!title) {
+      message.error('โปรดกรอก ขื่อ- เรื่อง');
+      return;
+    } else if (!room) {
+      message.error('โปรดกรอก ห้องประชุม');
+      return;
+    } else if (!floor) {
+      message.error('โปรดกรอก ชั้น');
+      return;
+    } else if (!building) {
+      message.error('โปรดเลือก อาคาร');
+      return;
+    } else if (!meetingplace) {
+      message.error('โปรดกรอก สถานที่ประชุม');
+      return;
+    } else if (!day) {
+      message.error('โปรดกรอก วันที่');
+      return;
+    } else if (!starttime) {
+      message.error('โปรดกรอก เวลาเริ่ม');
+      return;
+    } else if (!endtime) {
+      message.error('โปรดกรอก เวลาสิ้นสุด');
+      return;
+    } else if (!detail) {
+      message.error('โปรดกรอก รายละเอียดการประชุม');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', fileList[0]);
     const id = uuidv4();
     Modal.confirm({
       title: 'Confirm Create this meeting',
       icon: <ExclamationCircleOutlined />,
-      content: `Link... ${window.origin}/${id}`,
+      // content: `Link... ${window.origin}/${id}`,
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        // await DatamanagementService().import(formData);
+        await DatamanagementService().import(formData, id);
         await DatamanagementService()
           .createmeeting(
             detail,
@@ -216,19 +257,19 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     });
     setEndtime(newTime);
   };
-  // const props = {
-  //   onRemove: (file: any) => {
-  //     const index = fileList.indexOf(file);
-  //     const newFileList = fileList.slice();
-  //     newFileList.splice(index, 1);
-  //     setFileList(newFileList);
-  //   },
-  //   beforeUpload: (file: any) => {
-  //     setFileList([...fileList, file]);
-  //     return false;
-  //   },
-  //   fileList,
-  // };
+  const props = {
+    onRemove: (file: any) => {
+      const index = fileList.indexOf(file);
+      const newFileList = fileList.slice();
+      newFileList.splice(index, 1);
+      setFileList(newFileList);
+    },
+    beforeUpload: (file: any) => {
+      setFileList([...fileList, file]);
+      return false;
+    },
+    fileList,
+  };
   const onChangeDring = (e: CheckboxChangeEvent) => {
     setSnack(e.target.checked);
   };
@@ -303,7 +344,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
                   marginBottom: 16,
                 }}
               >
-                Add a row
+                เพิ่มผู้เข้ารวม
               </Button>
             </Col>
           </Row>
@@ -332,7 +373,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             </Col>
           </Row>
         </Col>
-        {/* <Col span={24}>
+        <Col span={24}>
           <Row>
             <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
               เอกสารภาพประกอบการประชุม
@@ -341,11 +382,16 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           <Row>
             <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
               <Upload {...props}>
-                <Button icon={<UploadOutlined />}>Select File</Button>
+                <Button
+                  disabled={fileList.length === 1}
+                  icon={<UploadOutlined />}
+                >
+                  Select File
+                </Button>
               </Upload>
             </Col>
           </Row>
-        </Col> */}
+        </Col>
         <br></br>
 
         <Col span={24}>
@@ -402,15 +448,6 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             />
             เบอร์โทรศัพท์
             <Input
-              value={editingStudent?.email}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, email: e.target.value };
-                });
-              }}
-            />
-            อีเมล
-            <Input
               value={editingStudent?.phone}
               onChange={e => {
                 setEditingStudent((pre: any) => {
@@ -418,6 +455,63 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
                 });
               }}
             />
+            อีเมล
+            <Input
+              value={editingStudent?.email}
+              onChange={e => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, email: e.target.value };
+                });
+              }}
+            />
+            รุ่น
+            <Select
+              value={editingStudent?.model}
+              style={{ width: '100%' }}
+              onChange={e => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, model: e };
+                });
+              }}
+            >
+              <Option value="1">1</Option>
+              <Option value="2">2</Option>
+              <Option value="3">3</Option>
+              <Option value="4">4</Option>
+              <Option value="5">5</Option>
+            </Select>
+            {/* <Input
+              value={editingStudent?.model}
+              onChange={e => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, model: e.target.value };
+                });
+              }}
+            /> */}
+            ตำแหน่งสมาคม ตำแหน่งสมาคม*
+            <Select
+              value={editingStudent?.position}
+              style={{ width: '100%' }}
+              onChange={e => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, position: e };
+                });
+              }}
+            >
+              <Option value="กรรมการบริหาร">กรรมการบริหาร</Option>
+              <Option value="เลขาธิการสมาคม">เลขาธิการสมาคม</Option>
+              <Option value="รองสมาคม">รองสมาคม</Option>
+              <Option value="กรรมการสมาคม">กรรมการสมาคม</Option>
+              <Option value="สมาชิกสมาคม">สมาชิกสมาคม</Option>
+            </Select>
+            {/* <Input
+              value={editingStudent?.position}
+              onChange={e => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, position: e.target.value };
+                });
+              }}
+            /> */}
           </Row>
         </Col>
       </Modal>
