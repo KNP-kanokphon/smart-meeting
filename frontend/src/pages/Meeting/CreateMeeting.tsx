@@ -162,29 +162,47 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             endtime,
             id,
           )
-          .then(data => {
-            console.log(data);
-          });
+          .then(data => {});
         await DatamanagementService()
           .saveuserattendees(dataSource, id)
-          .then(data => {
-            console.log(data);
-          });
+          .then(data => {});
       },
       onCancel: () => {},
     });
   };
 
   const onChangeDate = (e: any) => {
-    setDay(e._d);
+    console.log(e);
+    const date = e._d;
+    var year = date.toLocaleString('default', { year: 'numeric' });
+    var month = date.toLocaleString('default', { month: '2-digit' });
+    var day = date.toLocaleString('default', { day: '2-digit' });
+
+    // Generate yyyy-mm-dd date string
+    var formattedDate = day + '-' + month + '-' + year;
+    console.log(formattedDate);
+    setDay(formattedDate);
+    // setDay(e._d);
   };
   const onChangeStartTime = (e: any) => {
-    const newDate = e._d;
-    setStarttime(`${newDate.getHours()}:${newDate.getMinutes()}`);
+    const time = e._d;
+    const newTime = time.toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+    setStarttime(newTime);
   };
   const onChangeEndTime = (e: any) => {
-    const newDate = e._d;
-    setEndtime(`${newDate.getHours()}:${newDate.getMinutes()}`);
+    const time = e._d;
+    const newTime = time.toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+    setEndtime(newTime);
   };
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>

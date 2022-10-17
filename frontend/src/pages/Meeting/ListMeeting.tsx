@@ -43,76 +43,32 @@ export const ListLayout: React.FC<Props> = ({ children, extra }) => {
   useEffect(() => {
     getListmeeting();
   }, []);
-  const [dataTable, setDatatable] = useState<DataType[]>([
-    {
-      id: 0,
-      title: '',
-      room: '',
-      floor: '',
-      building: '',
-      meetingplace: '',
-      day: new Date(),
-      starttime: '',
-      endtime: '',
-      uuid: '',
-      detail: '',
-    },
-  ]);
+  const [dataTable, setDatatable] = useState();
 
   const getListmeeting = async () => {
-    await DatamanagementService()
-      .getListmeeting()
-      .then(data => {
-        setDatatable(data);
-        console.log(data);
-      });
+    const data = await DatamanagementService().getListmeeting();
+    setDatatable(data);
   };
+
   const columns = [
     {
-      title: 'title',
+      title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: (text: any) => <a>{text}</a>,
+      ellipsis: true,
+      width: 150,
     },
     {
-      title: 'room',
-      dataIndex: 'room',
-      key: 'room',
+      title: 'Detail',
+      dataIndex: 'detail',
+      key: 'detail',
+      ellipsis: true,
     },
     {
-      title: 'floor',
-      dataIndex: 'floor',
-      key: 'floor',
-    },
-    {
-      title: 'building',
-      dataIndex: 'building',
-      key: 'building',
-    },
-    {
-      title: 'meetingplace',
-      dataIndex: 'meetingplace',
-      key: 'meetingplace',
-    },
-    {
-      title: 'day',
-      dataIndex: 'day',
-      key: 'day',
-    },
-    {
-      title: 'starttime',
-      dataIndex: 'starttime',
-      key: 'starttime',
-    },
-    {
-      title: 'endtime',
-      dataIndex: 'endtime',
-      key: 'endtime',
-    },
-    {
-      title: 'link',
+      title: 'Link',
       dataIndex: 'uuid',
       key: 'uuid',
+      ellipsis: true,
       render: (text: any) => {
         return <Tag> {`${window.origin}/detail/${text}`}</Tag>;
       },

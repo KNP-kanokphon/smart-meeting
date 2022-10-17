@@ -17,6 +17,7 @@ import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const { Content, Sider, Header, Footer } = Layout;
 const { Option } = Select;
@@ -195,6 +196,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       onClick={onSave}
                     >
                       Submit
+                      <ArrowRightOutlined />
                     </Button>
                   </Col>
                   <Col span={6}></Col>

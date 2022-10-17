@@ -4,9 +4,10 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
 import styles from './MainLayout.module.scss';
-import QRCode from 'react-qr-code';
+import QRCode from 'qrcode.react';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 
 const { Content, Sider, Header, Footer } = Layout;
 
@@ -18,8 +19,6 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
-  // console.log(id);
-  // console.log(id);
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -33,6 +32,18 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   const navigate = useNavigate();
   const onChange = () => {
     navigate(`${baseURL}/steptwo/${id}`);
+  };
+  const downloadQRCode = () => {
+    const canvas: any = document.getElementById('qr-gen');
+    const pngUrl = canvas
+      .toDataURL('image/png')
+      .replace('image/png', 'image/octet-stream');
+    let downloadLink = document.createElement('a');
+    downloadLink.href = pngUrl;
+    downloadLink.download = `qrcode.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   };
   return (
     <Layout className="layout">
@@ -91,15 +102,27 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                   <Col span={2}></Col>
                 </Row>
                 <br></br>
-                <Card>
-                  <Row>
-                    <Col span={24}>
-                      <QRCode
-                        value={`${window.location.host}/profileDetail/${id}/${userid}`}
-                      />
-                    </Col>
-                  </Row>
-                </Card>
+                <Row>
+                  <Col span={24}>
+                    <QRCode
+                      id="qr-gen"
+                      size={200}
+                      level={'H'}
+                      // includeMargin={true}
+                      value={`${window.location.host}/profileDetail/${id}/${userid}`}
+                    />
+                  </Col>
+                </Row>
+                <br></br>
+                <Row>
+                  <Col span={8}></Col>
+                  <Col span={8}>
+                    <Button onClick={downloadQRCode}>
+                      save <VerticalAlignBottomOutlined />
+                    </Button>
+                  </Col>
+                  <Col span={8}></Col>
+                </Row>
               </Card>
             </Col>
             <Col span={8}></Col>

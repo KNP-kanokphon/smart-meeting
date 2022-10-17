@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { httpClient } from '../utils/http-client';
+
 // import { makeAutoObservable } from 'mobx';
 // import { getListmeeting, MeetingList } from './meeting-data.service';
 
@@ -7,7 +9,7 @@ import axios from 'axios';
 // }
 export const DatamanagementService = () => ({
   getListmeeting: async () => {
-    const result = await axios.get(`/meeting/`);
+    const result = await httpClient.get(`/meeting/`);
     return result.data;
   },
   createmeeting: async (
@@ -34,7 +36,7 @@ export const DatamanagementService = () => ({
       endtime: endtime,
       uuid: uuid,
     };
-    const result = await axios.post(`/meeting/`, data);
+    const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
   saveuserattendees: async (userAll: [], idmeeting: string) => {
@@ -51,7 +53,7 @@ export const DatamanagementService = () => ({
         });
       },
     );
-    const result = await axios.post(`/userattendees/`, newData);
+    const result = await httpClient.post(`/userattendees/`, newData);
     return result.data;
   },
   saveuserattendeesByuser: async (userDetail: {
@@ -64,18 +66,16 @@ export const DatamanagementService = () => ({
     idmeeting: string;
     checkin: boolean;
   }) => {
-    const result = await axios.post(`/userattendees/byuser`, userDetail);
+    const result = await httpClient.post(`/userattendees/byuser`, userDetail);
     return result.data;
   },
   getProfileByid: async (roomid: any, userid: any) => {
-    const result = await axios.get(`/userattendees/${roomid}/${userid}`);
-    console.log(result);
+    const result = await httpClient.get(`/userattendees/${roomid}/${userid}`);
 
     return result.data;
   },
   getMeetingByid: async (roomid: any) => {
-    const result = await axios.get(`/meeting/${roomid}`);
-    console.log(result);
+    const result = await httpClient.get(`/meeting/${roomid}`);
 
     return result.data;
   },
@@ -85,8 +85,7 @@ export const DatamanagementService = () => ({
       userid: userid,
       status: status,
     };
-    const result = await axios.put(`/userattendees/`, data);
-    console.log(result);
+    const result = await httpClient.put(`/userattendees/`, data);
 
     return result.data;
   },

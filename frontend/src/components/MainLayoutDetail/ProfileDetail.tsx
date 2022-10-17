@@ -37,7 +37,6 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
       roomid,
       userid,
     );
-
     setUserprofile(resultProfile[0]);
   };
   const navigate = useNavigate();
