@@ -1,11 +1,13 @@
 import {
   Button,
   Card,
+  Checkbox,
   Col,
   Collapse,
   DatePicker,
   Form,
   Input,
+  message,
   Modal,
   Popconfirm,
   Row,
@@ -13,6 +15,8 @@ import {
   Table,
   TimePicker,
   Typography,
+  Upload,
+  UploadProps,
 } from 'antd';
 import {
   EditOutlined,
@@ -20,12 +24,17 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
-import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import {
+  MinusSquareOutlined,
+  PlusSquareOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { reportStore } from '../../stores/report-store';
 import { MenuItem, menuItems } from '../../configs/menus';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../stores/meeting-store';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 const { TextArea } = Input;
 
 type Props = {
@@ -46,6 +55,8 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const [starttime, setStarttime] = useState<string>('');
   const [endtime, setEndtime] = useState<string>('');
   const [detail, setDetail] = useState<string>('');
+  const [snack, setSnack] = useState<boolean>(false);
+  const [fileList, setFileList] = useState<any>([]);
 
   useEffect(() => {
     getListmeeting();
@@ -54,9 +65,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const getListmeeting = async () => {
     await DatamanagementService()
       .getListmeeting()
-      .then(data => {
-        // console.log(data);
-      });
+      .then(data => {});
   };
 
   const columns = [
@@ -141,6 +150,8 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   };
 
   const approveCreate = () => {
+    // const formData = new FormData();
+    // formData.append('file', fileList[0]);
     const id = uuidv4();
     Modal.confirm({
       title: 'Confirm Create this meeting',
@@ -149,6 +160,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
+        // await DatamanagementService().import(formData);
         await DatamanagementService()
           .createmeeting(
             detail,
@@ -161,18 +173,19 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             starttime,
             endtime,
             id,
+            snack,
           )
           .then(data => {});
         await DatamanagementService()
           .saveuserattendees(dataSource, id)
           .then(data => {});
+        window.location.href = 'meeting-list';
       },
       onCancel: () => {},
     });
   };
 
   const onChangeDate = (e: any) => {
-    console.log(e);
     const date = e._d;
     var year = date.toLocaleString('default', { year: 'numeric' });
     var month = date.toLocaleString('default', { month: '2-digit' });
@@ -180,7 +193,6 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
 
     // Generate yyyy-mm-dd date string
     var formattedDate = day + '-' + month + '-' + year;
-    console.log(formattedDate);
     setDay(formattedDate);
     // setDay(e._d);
   };
@@ -203,6 +215,22 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
       hour12: true,
     });
     setEndtime(newTime);
+  };
+  // const props = {
+  //   onRemove: (file: any) => {
+  //     const index = fileList.indexOf(file);
+  //     const newFileList = fileList.slice();
+  //     newFileList.splice(index, 1);
+  //     setFileList(newFileList);
+  //   },
+  //   beforeUpload: (file: any) => {
+  //     setFileList([...fileList, file]);
+  //     return false;
+  //   },
+  //   fileList,
+  // };
+  const onChangeDring = (e: CheckboxChangeEvent) => {
+    setSnack(e.target.checked);
   };
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>
@@ -301,6 +329,31 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
                 rows={4}
                 onChange={(e: any) => setDetail(e.target.value)}
               />
+            </Col>
+          </Row>
+        </Col>
+        {/* <Col span={24}>
+          <Row>
+            <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
+              เอกสารภาพประกอบการประชุม
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />}>Select File</Button>
+              </Upload>
+            </Col>
+          </Row>
+        </Col> */}
+        <br></br>
+
+        <Col span={24}>
+          <Row>
+            <Col xs={{ span: 20, offset: 2 }} lg={{ span: 22, offset: 2 }}>
+              <Checkbox onChange={onChangeDring}>
+                จัดเตรียมอาหารว่าง และเครื่องดื่ม
+              </Checkbox>
             </Col>
           </Row>
         </Col>

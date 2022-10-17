@@ -23,6 +23,7 @@ export const DatamanagementService = () => ({
     starttime: string,
     endtime: string,
     uuid: string,
+    snack: boolean,
   ) => {
     const data = {
       detail: detail,
@@ -35,6 +36,7 @@ export const DatamanagementService = () => ({
       starttime: starttime,
       endtime: endtime,
       uuid: uuid,
+      snack: snack,
     };
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
@@ -86,6 +88,15 @@ export const DatamanagementService = () => ({
       status: status,
     };
     const result = await httpClient.put(`/userattendees/`, data);
+
+    return result.data;
+  },
+  import: async (file: any) => {
+    const result = await httpClient.post(`/meeting/import`, file, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
     return result.data;
   },

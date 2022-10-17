@@ -63,12 +63,13 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
           backgroundColor: '#F4FAF7',
           paddingTop: '30px',
           paddingBottom: '30px',
+          height: '85vh',
         }}
       >
         <div className="site-card-wrapper">
           <Row gutter={16}>
-            <Col span={8}></Col>
-            <Col span={8}>
+            <Col span={7}></Col>
+            <Col xs={24} sm={24} md={10} lg={10}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
                   <Col span={24}>
@@ -79,7 +80,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={2}></Col>
                   <Col span={20}>
-                    <b style={{ fontSize: '20px', color: 'red' }}>
+                    <b style={{ fontSize: '100%', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
@@ -88,7 +89,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <br></br>
                 <Row>
                   <Col span={2}></Col>
-                  <Col span={20} style={{ fontSize: '12px' }}>
+                  <Col span={20} style={{ fontSize: '80%' }}>
                     กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ก่อนเข้าห้องประชุม
                   </Col>
                   <Col span={2}></Col>
@@ -105,15 +106,11 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={24}>
                     <QRCode
-                      id="qr-gen"
-                      size={200}
-                      level={'H'}
-                      // includeMargin={true}
+                      size={128}
                       value={`${window.location.host}/profileDetail/${id}/${userid}`}
                     />
                   </Col>
                 </Row>
-                <br></br>
                 <Row>
                   <Col span={8}></Col>
                   <Col span={8}>
@@ -125,10 +122,11 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 </Row>
               </Card>
             </Col>
-            <Col span={8}></Col>
+            <Col span={7}></Col>
           </Row>
         </div>
       </Content>
+
       <Footer style={{ textAlign: 'center', backgroundColor: '#F4FAF7' }}>
         ©2022 O S D Company Limited
       </Footer>

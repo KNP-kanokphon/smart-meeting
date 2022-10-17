@@ -104,12 +104,13 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
           backgroundColor: '#F4FAF7',
           paddingTop: '30px',
           paddingBottom: '30px',
+          height: '85vh',
         }}
       >
         <div className="site-card-wrapper">
           <Row gutter={16}>
-            <Col span={8}></Col>
-            <Col span={8}>
+            <Col span={7}></Col>
+            <Col xs={24} sm={24} md={10} lg={10}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
                   <Col span={24}>
@@ -120,8 +121,8 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={2}></Col>
                   <Col span={20}>
-                    <b style={{ fontSize: '20px' }}>Welcome to </b>
-                    <b style={{ fontSize: '20px', color: 'red' }}>
+                    <b style={{ fontSize: '100%' }}>Welcome to </b>
+                    <b style={{ fontSize: '100%', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
@@ -135,21 +136,21 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 <br></br>
                 <br></br>
                 <Row style={{ textAlign: 'left' }}>
-                  <Col span={21} offset={1}>
+                  <Col span={22} offset={1}>
                     ขื่อ- นามสกุล*
                     <Input onChange={e => setUsername(e.target.value)} />
                   </Col>
                 </Row>
                 <br></br>
                 <Row style={{ textAlign: 'left' }}>
-                  <Col span={21} offset={1}>
+                  <Col span={22} offset={1}>
                     เบอรโทรศัพท์*
                     <Input onChange={e => setPhone(e.target.value)} />
                   </Col>
                 </Row>
                 <br></br>
                 <Row style={{ textAlign: 'left' }}>
-                  <Col span={21} offset={1}>
+                  <Col span={22} offset={1}>
                     อีเมล*
                     <Input onChange={e => setEmail(e.target.value)} />
                   </Col>
@@ -169,7 +170,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       <Option value="5">5</Option>
                     </Select>
                   </Col>
-                  <Col span={10} offset={1}>
+                  <Col span={11} offset={1}>
                     ตำแหน่งสมาคม*
                     <Select
                       style={{ width: '100%' }}
@@ -185,25 +186,24 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={6}></Col>
-                  <Col span={12}>
+                  {/* <Col span={6}></Col> */}
+                  <Col span={24}>
                     <Button
                       style={{
-                        width: '100%',
+                        width: 'auto',
                         backgroundColor: '#1E6541',
                         color: '#ffffff',
                       }}
                       onClick={onSave}
                     >
                       Submit
-                      <ArrowRightOutlined />
                     </Button>
                   </Col>
-                  <Col span={6}></Col>
+                  {/* <Col span={6}></Col> */}
                 </Row>
               </Card>
             </Col>
-            <Col span={8}></Col>
+            <Col span={7}></Col>
           </Row>
         </div>
       </Content>
