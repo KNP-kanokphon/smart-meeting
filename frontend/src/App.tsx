@@ -8,6 +8,7 @@ import { Id24Provider } from './drivers/id24/Id24Provider';
 import { DetailStepTwo } from './components/MainLayoutDetail/DetailStepTwo';
 import { DetailStepThree } from './components/MainLayoutDetail/DetailStepThree';
 import { MainLayoutProfileDetail } from './components/MainLayoutDetail/ProfileDetail';
+import { Login } from './pages/Login/Login';
 
 const routeMapper = (x: MenuItem): React.ReactNode => (
   <Route
@@ -86,6 +87,11 @@ const App = () => {
             </Routes>
           </AuthProvider>
         </Id24Provider>
+      </BrowserRouter>
+      <BrowserRouter basename={'/'}>
+        <Routes>
+          <Route path="/" element={<Login baseURL={'/'} />}></Route>
+        </Routes>
       </BrowserRouter>
     </>
   );
