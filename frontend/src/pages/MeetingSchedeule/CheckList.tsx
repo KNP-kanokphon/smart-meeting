@@ -7,16 +7,16 @@ import {
   // Skeleton,
   Button,
   // Avatar,
-  Input,
+  // Input,
   Col,
   Popover,
-  DatePicker,
+  // DatePicker,
   Space,
-  Select,
+  // Select,
   Table,
   Tag,
   Badge,
-  Divider,
+  // Divider,
 } from 'antd';
 import { Icon } from '@iconify/react';
 // import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
@@ -30,11 +30,22 @@ export const CheckList: React.FC = (): React.ReactElement => {
     <>
       <Row style={{ width: 'auto', textAlign: 'left' }}>
         <Col span={24} style={{ marginBottom: '10px' }}>
-          <a style={{ border: 'none', width: 'auto' }}>Edit</a>
+          <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
+            Edit
+          </Button>
         </Col>
 
         <Col span={24}>
-          <a style={{ border: 'none', color: 'red', width: 'auto' }}>Delete</a>
+          <Button
+            style={{
+              border: 'none',
+              color: 'red',
+              width: '100%',
+              textAlign: 'left',
+            }}
+          >
+            Delete
+          </Button>
         </Col>
       </Row>
     </>
@@ -94,19 +105,19 @@ export const CheckList: React.FC = (): React.ReactElement => {
       title: 'คำนำหน้า',
       dataIndex: 'title',
       key: 'title',
-      width: '5%',
+      width: '10%',
     },
     {
       title: 'ชื่อ',
       dataIndex: 'name',
       key: 'name',
-      width: '10%',
+      width: '20%',
     },
     {
       title: 'นามสกุล',
       dataIndex: 'lastname',
       key: 'lastname',
-      width: '10%',
+      width: '20%',
     },
     {
       title: 'ตำแหน่ง',
@@ -214,12 +225,13 @@ export const CheckList: React.FC = (): React.ReactElement => {
       key: 'key',
       fixed: 'right',
       width: '5%',
+      align: 'center',
       render: (text: any) => {
         return (
           <>
             <Popover content={contentAction} trigger="click">
               <Button
-                style={{ border: 'none' }}
+                // style={{ border: 'none' }}
                 icon={<Icon icon="cil:hamburger-menu" />}
               />
             </Popover>
