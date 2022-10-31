@@ -43,7 +43,6 @@ export const MainLayout: React.FC = () => {
               logout().then(() => login(window.location.href, false));
             }}
           />
-          {/* <MainPageHeader /> */}
           <Content style={{ margin: 16 }}>
             <Outlet />
           </Content>

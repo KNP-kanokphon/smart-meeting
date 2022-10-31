@@ -14,10 +14,10 @@ import { useEffect, useState } from 'react';
 import { ExportOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { reportStore } from '../../stores/report-store';
-import { MenuItem, menuItems } from '../../configs/menus';
+import { reportStore } from '../../../stores/report-store';
+import { MenuItem, menuItems } from '../../../configs/menus';
 import Table, { ColumnsType } from 'antd/lib/table';
-import { DatamanagementService } from '../../stores/meeting-store';
+import { DatamanagementService } from '../../../stores/meeting-store';
 import QRCode from 'qrcode.react';
 
 const { Panel } = Collapse;
@@ -53,7 +53,7 @@ interface DetailinmodelType {
   checkin: boolean;
 }
 
-export const ListLayout: React.FC<Props> = ({ children, extra }) => {
+export const ListMeeting: React.FC<Props> = ({ children, extra }) => {
   useEffect(() => {
     getListmeeting();
   }, []);
@@ -69,6 +69,7 @@ export const ListLayout: React.FC<Props> = ({ children, extra }) => {
     setDatatable(data);
   };
   const onclickDetail = async (text: any) => {
+    navigate(`detail:${text}`);
     const data = await DatamanagementService().getuserInroom(text);
     setDataDetailinmodel(data);
     setShowDetail(true);

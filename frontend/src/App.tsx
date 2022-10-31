@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from 'react-router-dom';
 
 import { MainLayout } from './components/MainLayout';
 import { MainLayoutDetail } from './components/MainLayoutDetail';
@@ -10,26 +16,26 @@ import { DetailStepThree } from './components/MainLayoutDetail/DetailStepThree';
 import { MainLayoutProfileDetail } from './components/MainLayoutDetail/ProfileDetail';
 import { Login } from './pages/Login/Login';
 
-const routeMapper = (x: MenuItem): React.ReactNode => (
-  <Route
-    key={x.key}
-    path={x.path}
-    element={
-      x.roles ? (
-        <RequireAuth allowedRoles={x.roles}>{x.component}</RequireAuth>
-      ) : (
-        x.component
-      )
-    }
-  >
-    {x.children?.length && (
-      <>
-        <Route index element={<Navigate to={x.children[0].path} replace />} />
-        {x.children.map(routeMapper)}
-      </>
-    )}
-  </Route>
-);
+// const routeMapper = (x: MenuItem): React.ReactNode => (
+//   <Route
+//     key={x.key}
+//     path={x.path}
+//     element={
+//       x.roles ? (
+//         <RequireAuth allowedRoles={x.roles}>{x.component}</RequireAuth>
+//       ) : (
+//         x.component
+//       )
+//     }
+//   >
+//     {x.children?.length && (
+//       <>
+//         <Route index element={<Navigate to={x.children[0].path} replace />} />
+//         {x.children.map(routeMapper)}
+//       </>
+//     )}
+//   </Route>
+// );
 
 const App = () => {
   const id24Config = {
@@ -75,13 +81,28 @@ const App = () => {
       <BrowserRouter basename={'/meeting'}>
         <Id24Provider config={id24Config}>
           <AuthProvider>
-            <Routes>
+            {/* <Routes>
               <Route path="/" element={<MainLayout />}>
                 <Route
                   index
                   element={<Navigate to={menuItems[0].path} replace />}
                 />
-                {menuItems.map(routeMapper)}
+                {menuItems.map(x => (
+                  <Route key={x.key} path={x.path} element={<Outlet />}>
+                    {x.component}
+                  </Route>
+                ))}
+              </Route>
+              <Route path="*" element={<Navigate to={defaultPath} replace />} />
+            </Routes> */}
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Navigate to="meeting" replace />} />
+                {menuItems.map(x => (
+                  <Route key={x.key} path={x.path} element={<Outlet />}>
+                    {x.component}
+                  </Route>
+                ))}
               </Route>
               <Route path="*" element={<Navigate to={defaultPath} replace />} />
             </Routes>

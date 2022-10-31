@@ -3,9 +3,12 @@ import { pipe, replace, toLower } from 'lodash/fp';
 import { ReportLayout } from '../components/ReportLayout';
 
 import { Role } from '../utils/auth';
-import { Outlet } from 'react-router-dom';
-import { ListLayout } from '../pages/Meeting/ListMeeting';
-import { CreateMeeting } from '../pages/Meeting/CreateMeeting';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import { ListMeeting } from '../pages/Meeting/listmeeting/ListMeeting';
+import { CreateMeeting } from '../pages/Meeting/createmeeting/CreateMeeting';
+import { DetailMeeting } from '../pages/Meeting/listmeeting/DetailMeeting';
+import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
+import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
@@ -18,20 +21,25 @@ type MenuConfig = {
 const menuConfigs: MenuConfig[] = [
   {
     icon: <DiffOutlined />,
-    label: 'Meeting',
-    component: <ReportLayout />,
-    children: [
-      {
-        label: 'Create Meeting',
-        path: 'meeting-create',
-        component: <CreateMeeting />,
-      },
-      {
-        label: 'List Meeting',
-        path: 'meeting-list',
-        component: <ListLayout />,
-      },
-    ],
+    label: 'meeting',
+    path: 'meeting',
+    component: (
+      <>
+        <Route index element={<CreateMeeting />} />
+        <Route path="agendas" element={<CreateStepagendasIndex />} />
+      </>
+    ),
+  },
+  {
+    icon: <DiffOutlined />,
+    label: 'List Meeting',
+    path: 'meeting-list',
+    component: (
+      <>
+        <Route index element={<ListMeeting />} />
+        <Route path="detail:id" element={<DetailMeeting />} />
+      </>
+    ),
   },
 ];
 
