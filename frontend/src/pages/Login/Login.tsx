@@ -32,7 +32,7 @@ export const Login: React.FC<Props> = ({ baseURL }): React.ReactElement => {
         );
       } else {
         return (
-          message.warning('username or password not true , try again'),
+          message.warning('username or password is wrong , try again'),
           console.log('username or password not true')
         );
       }
@@ -57,52 +57,53 @@ export const Login: React.FC<Props> = ({ baseURL }): React.ReactElement => {
                 width: 'auto',
                 height: 'auto',
                 borderRadius: '25px 25px 25px 25px',
-                paddingLeft: '20px',
-                paddingRight: '20px',
                 border: 'none',
                 marginTop: '90px',
-                boxShadow: '2px  5px  10px  5px  black',
+                boxShadow: 'rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px',
               }}
             >
               <Image
                 preview={false}
                 src={Logo}
-                style={{ width: '35%', height: '10%', marginBottom: '30px' }}
+                style={{ width: '35%', height: '10%', marginBottom: '20px' }}
               />
-              <Form name="login" layout="vertical" autoComplete="off">
-                <Form.Item label="Username" name="username">
-                  <Input
-                    placeholder="Username"
-                    style={{ width: '100%' }}
-                    size={'large'}
-                    ref={getCheckUsername}
-                    onChange={(event: any) => setUsername(event.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Password" name="password">
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    style={{ width: '100%' }}
-                    size={'large'}
-                    ref={getCheckPassword}
-                    onChange={(event: any) => setPassword(event.target.value)}
-                  />
-                </Form.Item>
-              </Form>
+              <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+                <Form name="login" layout="vertical" autoComplete="off">
+                  <Form.Item label="Username" name="username">
+                    <Input
+                      placeholder="Username"
+                      style={{ width: '100%', borderRadius: '10px' }}
+                      size={'middle'}
+                      ref={getCheckUsername}
+                      onChange={(event: any) => setUsername(event.target.value)}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Password" name="password">
+                    <Input
+                      placeholder="Password"
+                      type="password"
+                      style={{ width: '100%', borderRadius: '10px' }}
+                      size={'middle'}
+                      ref={getCheckPassword}
+                      onChange={(event: any) => setPassword(event.target.value)}
+                    />
+                  </Form.Item>
+                </Form>
 
-              <Button
-                style={{
-                  background: '#1E6541',
-                  border: 'none',
-                  width: '100%',
-                }}
-                size={'large'}
-                type="primary"
-                onClick={onFinish}
-              >
-                เข้าสู่ระบบ
-              </Button>
+                <Button
+                  style={{
+                    background: '#1E6541',
+                    border: 'none',
+                    width: '100%',
+                    borderRadius: '10px',
+                  }}
+                  size={'middle'}
+                  type="primary"
+                  onClick={onFinish}
+                >
+                  เข้าสู่ระบบ
+                </Button>
+              </div>
             </Card>
             <div>
               <div
