@@ -3,38 +3,40 @@ import {
   Card,
   Checkbox,
   Col,
-  Collapse,
+  // Collapse,
   DatePicker,
-  Form,
+  Divider,
+  // Form,
   Input,
-  message,
-  Modal,
-  Popconfirm,
+  // message,
+  // Modal,
+  // Popconfirm,
   Row,
   Select,
-  Space,
+  // Space,
   Steps,
-  Table,
+  // Table,
   TimePicker,
-  Typography,
+  // Typography,
   Upload,
-  UploadProps,
+  // UploadProps,
 } from 'antd';
-import {
-  EditOutlined,
-  ExclamationCircleOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import './css/style.css';
+// import {
+//   EditOutlined,
+//   ExclamationCircleOutlined,
+//   DeleteOutlined,
+// } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  MinusSquareOutlined,
-  PlusSquareOutlined,
+  // MinusSquareOutlined,
+  // PlusSquareOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
-import { reportStore } from '../../../stores/report-store';
-import { MenuItem, menuItems } from '../../../configs/menus';
+// import { reportStore } from '../../../stores/report-store';
+// import { MenuItem, menuItems } from '../../../configs/menus';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { TableBoard } from './TableBoard';
@@ -48,7 +50,7 @@ type Props = {
 
 const { Step } = Steps;
 
-const { Option } = Select;
+// const { Option } = Select;
 export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
@@ -189,55 +191,55 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row>
-        <Steps size="small" current={1}>
-          <Step title="Finished" />
+        {/* <div className="custom-steps" style={{ width: '100%' }}> */}
+        <Steps size="small" current={0}>
           <Step title="In Progress" />
           <Step title="Waiting" />
+          <Step title="Waiting" />
         </Steps>
+        {/* </div> */}
       </Row>
-      <br></br>
-      <Row gutter={[2, 12]}>
-        <Col span={24}>
-          <Row>
+      <Row gutter={16}>
+        <Col span={24} style={{ marginTop: '20px', marginBottom: '10px' }}>
+          <Row gutter={16}>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               เรื่อง
               <Input onChange={(e: any) => setTitle(e.target.value)} />
             </Col>
           </Row>
         </Col>
-        <Col span={24}>
-          <Row>
-            <Col xs={{ span: 7 }} lg={{ span: 7 }}>
+        <Col span={24} style={{ marginBottom: '10px' }}>
+          <Row gutter={16}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               ห้องประชุม
               <Input onChange={(e: any) => setRoom(e.target.value)} />
             </Col>
-            <Col xs={{ span: 7, offset: 1 }} lg={{ span: 7, offset: 1 }}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               ชั้น
               <Input onChange={(e: any) => setFloor(e.target.value)} />
             </Col>
-            <Col xs={{ span: 7, offset: 1 }} lg={{ span: 7, offset: 1 }}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               อาคาร
               <Input onChange={(e: any) => setBuilding(e.target.value)} />
             </Col>
           </Row>
         </Col>
-        <br></br>
-        <Col span={24}>
-          <Row>
+        <Col span={24} style={{ marginBottom: '10px' }}>
+          <Row gutter={16}>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               สถานที่ประชุม
               <Input onChange={(e: any) => setMeetingplace(e.target.value)} />
             </Col>
           </Row>
         </Col>
-        <Col span={24}>
-          <Row>
-            <Col xs={{ span: 7 }} lg={{ span: 7 }}>
+        <Col span={24} style={{ marginBottom: '10px' }}>
+          <Row gutter={16}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               วันที่
               <DatePicker onChange={onChangeDate} style={{ width: '100%' }} />
               {/* <Input onChange={(e: any) => setDay(e.target.value)} /> */}
             </Col>
-            <Col xs={{ span: 7, offset: 1 }} lg={{ span: 7, offset: 1 }}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               เวลาเริ่ม
               <TimePicker
                 onChange={onChangeStartTime}
@@ -245,7 +247,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
               />
               {/* <Input onChange={(e: any) => setStarttime(e.target.value)} /> */}
             </Col>
-            <Col xs={{ span: 7, offset: 1 }} lg={{ span: 7, offset: 1 }}>
+            <Col xs={{ span: 8 }} lg={{ span: 8 }}>
               เวลาสิ้นสุด
               <TimePicker
                 onChange={onChangeEndTime}
@@ -255,18 +257,20 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             </Col>
           </Row>
         </Col>
-        <Col span={24}>
+        <Col span={24} style={{ marginBottom: '10px' }}>
           <Row>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               รายละเอียดการประชุม
               <TextArea
                 rows={4}
                 onChange={(e: any) => setDetail(e.target.value)}
+                showCount
+                maxLength={1000}
               />
             </Col>
           </Row>
         </Col>
-        <Col span={24}>
+        <Col span={24} style={{ marginBottom: '10px' }}>
           <Row>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               เอกสารภาพประกอบการประชุม
@@ -279,17 +283,16 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
                   disabled={fileList.length === 1}
                   icon={<UploadOutlined />}
                 >
-                  Select File
+                  Click To Upload
                 </Button>
               </Upload>
             </Col>
           </Row>
         </Col>
-        <br></br>
+        <Divider />
         <TableBoard />
-        <br></br>
+        <Divider />
         <TableAttendee />
-        <br></br>
 
         <Col span={24}>
           <Row>
@@ -302,13 +305,18 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
         </Col>
         <Col span={24}>
           <Row>
-            <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}></Col>
-            <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
-              <Button type="primary" onClick={() => nextPage()}>
+            <Col
+              xs={{ span: 24 }}
+              lg={{ span: 24 }}
+              style={{ textAlign: 'center' }}
+            >
+              <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                onClick={() => nextPage()}
+              >
                 Next
               </Button>
             </Col>
-            <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}></Col>
           </Row>
         </Col>
       </Row>

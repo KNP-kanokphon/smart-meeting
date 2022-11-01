@@ -19,15 +19,17 @@ import {
   Table,
   Tabs,
 } from 'antd';
-import { useLocation } from 'react-router-dom';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import '../css/style.css';
+// import { useLocation } from 'react-router-dom';
+// import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { DatamanagementService } from '../../../../stores/meeting-store';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+// import { DatamanagementService } from '../../../../stores/meeting-store';
+// import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CreateStepOne } from './CreateStepOne';
 const { TextArea } = Input;
 const { Step } = Steps;
+
 
 type Props = {
   children?: React.ReactNode;
@@ -36,7 +38,7 @@ type Props = {
 
 export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
   const defaultPanes = new Array(4).fill(null).map((_, index) => {
-    const id = String(index + 1);
+    const id: any = String(index + 1);
     return {
       label: `ระเบียบวาระที่ ${id}`,
       children: <CreateStepOne Pagestep={id} />,
@@ -93,11 +95,13 @@ export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row>
-        <Steps size="small" current={1}>
-          <Step title="Finished" />
-          <Step title="In Progress" />
-          <Step title="Waiting" />
-        </Steps>
+        {/* <div className="custom-steps" style={{ width: '100%' }}> */}
+          <Steps size="small" current={1}>
+            <Step title="Finished" />
+            <Step title="In Progress" />
+            <Step title="Waiting" />
+          </Steps>
+        {/* </div> */}
       </Row>
       <br></br>
       <Row style={{ paddingBottom: 20 }}>

@@ -1,5 +1,5 @@
 import { Button, Col, Input, Modal, Row, Select, Table } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 type Props = {
@@ -51,39 +51,51 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
       key: '1',
       title: 'ชื่อ - นามสกุลผู้เข้าร่วมประชุม',
       dataIndex: 'username',
+      width: '30%',
     },
     {
       key: '2',
-      title: 'ตำแหน่งสมาคม',
+      title: 'ตำแหน่ง',
       dataIndex: 'position',
+      width: '15%',
     },
     {
       key: '3',
       title: 'หลักสูตร',
       dataIndex: 'course',
+      width: '15%',
     },
     {
       key: '4',
       title: 'เบอร์โทรศัพท์',
       dataIndex: 'phone',
+      width: '15%',
     },
     {
       key: '7',
       title: 'Actions',
+      width: '5%',
+
       render: (record: any) => {
         return (
           <>
-            <EditOutlined
-              onClick={() => {
-                onEditStudent(record);
-              }}
-            />
-            <DeleteOutlined
-              onClick={() => {
-                onDeleteStudent(record);
-              }}
-              style={{ color: 'red', marginLeft: 12 }}
-            />
+            <Row gutter={16}>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <EditOutlined
+                  onClick={() => {
+                    onEditStudent(record);
+                  }}
+                />
+              </Col>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                <DeleteOutlined
+                  onClick={() => {
+                    onDeleteStudent(record);
+                  }}
+                  style={{ color: 'red' }}
+                />
+              </Col>
+            </Row>
           </>
         );
       },
@@ -101,8 +113,11 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
               type="primary"
               style={{
                 marginBottom: 16,
+                color: 'white',
+                background: '#1E6541',
               }}
             >
+              <PlusOutlined />
               เพิ่มผู้เข้ารวม
             </Button>
           </Col>

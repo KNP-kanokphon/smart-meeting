@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Upload } from 'antd';
+import { Button, Col, Form, Input, Row, Space, Upload } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   InfoCircleOutlined,
@@ -155,18 +155,17 @@ export const CreateStepOne: React.FC<Props> = ({
           <Button type="primary">Submit</Button>
         </Form.Item> */}
         </Form>
-      </Row>
-
-      <Row>
-        <Col span={8}></Col>
-        <Col span={8} style={{ textAlign: 'center' }}>
-          <Button onClick={onclickBack}>Back</Button>
-          {'  '}
-          <Button type="primary" onClick={onclickNext}>
-            Next
-          </Button>
+        <Col span={24} style={{ textAlign: 'center' }}>
+          <Space>
+            <Button onClick={onclickBack}>Back</Button>
+            <Button
+              style={{ color: 'white', background: '#1E6541' }}
+              onClick={onclickNext}
+            >
+              Next
+            </Button>
+          </Space>
         </Col>
-        <Col span={8}></Col>
       </Row>
     </>
   );
