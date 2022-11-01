@@ -9,6 +9,7 @@ import { CreateMeeting } from '../pages/Meeting/createmeeting/CreateMeeting';
 import { DetailMeeting } from '../pages/Meeting/listmeeting/DetailMeeting';
 import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
 import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
+import { CreateStepFood } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepFood';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
@@ -27,6 +28,7 @@ const menuConfigs: MenuConfig[] = [
       <>
         <Route index element={<CreateMeeting />} />
         <Route path="agendas" element={<CreateStepagendasIndex />} />
+        <Route path="agendas/agendasfood" element={<CreateStepFood />} />
       </>
     ),
   },

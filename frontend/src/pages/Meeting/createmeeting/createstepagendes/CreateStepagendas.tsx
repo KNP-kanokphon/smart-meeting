@@ -25,6 +25,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { CreateStepOne } from './CreateStepOne';
 const { TextArea } = Input;
 const { Step } = Steps;
 
@@ -34,29 +35,36 @@ type Props = {
 };
 
 export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
-  const defaultPanes = new Array(2).fill(null).map((_, index) => {
+  const defaultPanes = new Array(4).fill(null).map((_, index) => {
     const id = String(index + 1);
     return {
-      label: `Tab ${id}`,
-      children: `Content of Tab Pane ${index + 1}`,
+      label: `ระเบียบวาระที่ ${id}`,
+      children: <CreateStepOne Pagestep={id} />,
       key: id,
+      closable: false,
     };
   });
 
   const [activeKey, setActiveKey] = useState(defaultPanes[0].key);
   const [items, setItems] = useState(defaultPanes);
-  const newTabIndex = useRef(0);
+  const [newTabIndex, setNewTabIndex] = useState(5);
 
   const onChange = (key: string) => {
     setActiveKey(key);
   };
 
   const add = () => {
-    const newActiveKey = `newTab${newTabIndex.current++}`;
+    const newActiveKey = `ระเบียบวาระที่ ${newTabIndex}`;
     setItems([
       ...items,
-      { label: 'New Tab', children: 'New Tab Pane', key: newActiveKey },
+      {
+        label: `ระเบียบวาระที่ ${newTabIndex}`,
+        children: <CreateStepOne Pagestep={String(newTabIndex)} />,
+        key: newActiveKey,
+        closable: true,
+      },
     ]);
+    setNewTabIndex(newTabIndex + 1);
     setActiveKey(newActiveKey);
   };
 
@@ -70,6 +78,7 @@ export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
         ];
       setActiveKey(key);
     }
+    setNewTabIndex(newTabIndex - 1);
     setItems(newPanes);
   };
 
@@ -91,17 +100,22 @@ export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
         </Steps>
       </Row>
       <br></br>
-      <Row gutter={[2, 12]}>
-        <Tabs
-          hideAdd
-          tabPosition={'left'}
-          onChange={onChange}
-          activeKey={activeKey}
-          type="editable-card"
-          onEdit={onEdit}
-          items={items}
-        />
+      <Row style={{ paddingBottom: 20 }}>
+        <Button type="dashed" onClick={add}>
+          เพิ่มระเบียบวาระ
+        </Button>
       </Row>
+      {/* <Row gutter={[2, 12]}> */}
+      <Tabs
+        hideAdd
+        tabPosition="left"
+        onChange={onChange}
+        activeKey={activeKey}
+        type="editable-card"
+        onEdit={onEdit}
+        items={items}
+      />
+      {/* </Row> */}
     </Card>
   );
 };
