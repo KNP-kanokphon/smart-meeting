@@ -19,7 +19,7 @@ import type { RcFile, UploadFile } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
 // import { Icon } from '@iconify/react';
 
-export const MeetingCalendar: React.FC = (): React.ReactElement => {
+export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
   const { TextArea } = Input;
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
@@ -103,7 +103,10 @@ export const MeetingCalendar: React.FC = (): React.ReactElement => {
                   <Form.Item style={{ textAlign: 'center' }}>
                     <Space>
                       <Button style={{ color: '#1E6541' }}>Back</Button>
-                      <Button htmlType='submit' style={{ color: 'white', background: '#1E6541' }}>
+                      <Button
+                        htmlType="submit"
+                        style={{ color: 'white', background: '#1E6541' }}
+                      >
                         Save
                       </Button>
                     </Space>

@@ -1,4 +1,9 @@
-import { LineChartOutlined, DiffOutlined } from '@ant-design/icons';
+import {
+  LineChartOutlined,
+  DiffOutlined,
+  CalendarOutlined,
+  TeamOutlined,
+} from '@ant-design/icons';
 import { pipe, replace, toLower } from 'lodash/fp';
 import { ReportLayout } from '../components/ReportLayout';
 
@@ -10,6 +15,11 @@ import { DetailMeeting } from '../pages/Meeting/listmeeting/DetailMeeting';
 import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
 import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
 import { CreateStepFood } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepFood';
+import { MeetingScheduleRoute } from '../pages/MeetingSchedeule/MeetingScheduleRoute';
+import { CheckList } from '../pages/MeetingSchedeule/CheckList';
+import { EsignateLastmeeting } from '../pages/MeetingSchedeule/EsignateLastmeeting';
+import { MeetingSumMinutes } from '../pages/MeetingSchedeule/MeetingSumMinutes';
+import { MemberShipRoute } from '../pages/Membership/MemberShipRoute';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
@@ -40,6 +50,30 @@ const menuConfigs: MenuConfig[] = [
       <>
         <Route index element={<ListMeeting />} />
         <Route path="detail:id" element={<DetailMeeting />} />
+      </>
+    ),
+  },
+  {
+    icon: <CalendarOutlined />,
+    label: 'Meeting Schedule',
+    path: 'meeting-schedule',
+    component: (
+      <>
+        <Route index element={<MeetingScheduleRoute />} />
+        <Route path="detail/view" element={<CheckList />} />
+        <Route path="detail/signate" element={<EsignateLastmeeting />} />
+        <Route path="detail/minutes" element={<MeetingSumMinutes />} />
+      </>
+    ),
+  },
+
+  {
+    icon: <TeamOutlined />,
+    label: 'Membership',
+    path: 'membership',
+    component: (
+      <>
+        <Route index element={<MemberShipRoute />} />
       </>
     ),
   },

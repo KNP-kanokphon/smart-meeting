@@ -19,10 +19,13 @@ import {
   // Divider,
 } from 'antd';
 import { Icon } from '@iconify/react';
+import { useLocation } from 'react-router-dom';
 // import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
 
 export const CheckList: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
+  const { state } = useLocation();
+  console.log(state);
 
   const [datasource, setDatasource] = useState<any>([]);
 

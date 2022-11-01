@@ -29,7 +29,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 
-export const LinkApproveE_Signature: React.FC = (): React.ReactElement => {
+export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { confirm } = Modal;
 
@@ -349,7 +349,7 @@ export const LinkApproveE_Signature: React.FC = (): React.ReactElement => {
             width={400}
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           />
-          <Divider/>
+          <Divider />
           <Typography>ลายเซ็นอนุมัติ</Typography>
         </div>
       </Modal>
