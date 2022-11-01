@@ -24,6 +24,7 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
   DeleteOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import {
@@ -96,23 +97,27 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
     // },
     {
       key: '1',
-      title: 'ชื่อ - นามสกุลคณะกรรมการสมาคม',
+      title: 'รายนามคณะกรรมการบริหารสมาคม',
       dataIndex: 'username',
+      width: '30%',
     },
     {
       key: '2',
-      title: 'ตำแหน่งสมาคม',
+      title: 'ตำแหน่ง',
       dataIndex: 'position',
+      width: '15%',
     },
     {
       key: '3',
       title: 'หลักสูตร',
       dataIndex: 'course',
+      width: '15%',
     },
     {
       key: '4',
       title: 'เบอร์โทรศัพท์',
       dataIndex: 'phone',
+      width: '15%',
     },
     // {
     //   key: '4',
@@ -128,20 +133,28 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
     {
       key: '7',
       title: 'Actions',
+      width: '5%',
+
       render: (record: any) => {
         return (
           <>
-            <EditOutlined
-              onClick={() => {
-                onEditStudent(record);
-              }}
-            />
-            <DeleteOutlined
-              onClick={() => {
-                onDeleteStudent(record);
-              }}
-              style={{ color: 'red', marginLeft: 12 }}
-            />
+            <Row gutter={16}>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <EditOutlined
+                  onClick={() => {
+                    onEditStudent(record);
+                  }}
+                />
+              </Col>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                <DeleteOutlined
+                  onClick={() => {
+                    onDeleteStudent(record);
+                  }}
+                  style={{ color: 'red', marginLeft: 12 }}
+                />
+              </Col>
+            </Row>
           </>
         );
       },
@@ -156,11 +169,13 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
           <Col span={2}>
             <Button
               onClick={handleAdd}
-              type="primary"
               style={{
                 marginBottom: 16,
+                color: 'white',
+                background: '#1E6541',
               }}
             >
+              <PlusOutlined />
               เพิ่มผู้เข้ารวม
             </Button>
           </Col>

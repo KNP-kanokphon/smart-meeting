@@ -1,5 +1,18 @@
-import { Button, Col, Form, Input, Row, Upload, Steps, Card } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Upload,
+  Steps,
+  Card,
+  Select,
+  Space,
+  Typography,
+} from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import '../css/style.css'
 import {
   InfoCircleOutlined,
   MinusCircleOutlined,
@@ -21,6 +34,7 @@ type Props = {
 };
 
 export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
+  const { Option } = Select;
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [requiredMark, setRequiredMarkType] =
@@ -56,14 +70,12 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
     <>
       <Card title="Create Meeting" style={{ width: '100%' }}>
         <Row>
-          <Steps size="small" current={1}>
+          <Steps size="small" current={2}>
+            <Step title="Finished" />
             <Step title="Finished" />
             <Step title="In Progress" />
-            <Step title="Waiting" />
           </Steps>
         </Row>
-        <br></br>
-        <Row></Row>
         <Form
           style={{ width: '100%' }}
           form={form}
@@ -72,12 +84,21 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
           onValuesChange={onRequiredTypeChange}
           requiredMark={requiredMark}
         >
-          <Row>
-            <Col span={2}>ประเภท</Col>
-            <Col offset={1} span={17}>
-              ชื่อรายการอาหารและเครื่องดื่ม
+          <Row gutter={16}>
+            <Col span={24}>
+              <Typography
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '18px',
+                  marginBottom: '20px',
+                  marginTop: '20px',
+                }}
+              >
+                รายการอาหารและเครื่องดื่ม
+              </Typography>
             </Col>
-            <Col offset={1} span={3}></Col>
+            <Col span={2}>ประเภท</Col>
+            <Col span={22}>ชื่อรายการอาหารและเครื่องดื่ม</Col>
           </Row>
           <Form.List
             name="users"
@@ -87,7 +108,7 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
               <>
                 {fields.map(({ key, name, ...restField }) => {
                   return (
-                    <Row key={key}>
+                    <Row key={key} gutter={16}>
                       <Col span={2}>
                         <Form.Item
                           {...restField}
@@ -96,10 +117,20 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
                             { required: true, message: 'Missing first name' },
                           ]}
                         >
-                          <Input placeholder="Last Name" />
+                          <Select placeholder={'Please Select'} allowClear>
+                            <Option key={'1'} value={'food'}>
+                              อาหาร
+                            </Option>
+                            <Option key={'2'} value={'snack'}>
+                              ของว่าง
+                            </Option>
+                            <Option key={'3'} value={'drink'}>
+                              เครื่องดื่ม
+                            </Option>
+                          </Select>
                         </Form.Item>
                       </Col>
-                      <Col offset={1} span={17}>
+                      <Col span={21}>
                         <Form.Item
                           {...restField}
                           name={[name, 'last']}
@@ -107,11 +138,11 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
                             { required: true, message: 'Missing last name' },
                           ]}
                         >
-                          <Input placeholder="Last Name" />
+                          <Input placeholder="Text" />
                         </Form.Item>
                       </Col>
 
-                      <Col offset={1} span={3}>
+                      <Col span={1}>
                         <DeleteOutlined onClick={() => remove(name)} />
                       </Col>
                     </Row>
@@ -130,7 +161,7 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
               </>
             )}
           </Form.List>
-          <Row>
+          {/* <Row>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               <Upload {...props}>
                 <Button
@@ -141,21 +172,24 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
                 </Button>
               </Upload>
             </Col>
-          </Row>
+          </Row> */}
           {/* <Form.Item>
           <Button type="primary">Submit</Button>
         </Form.Item> */}
         </Form>
-        <Row>
-          <Col span={8}></Col>
-          <Col span={8} style={{ textAlign: 'center' }}>
-            <Button onClick={onclickBlack}>Back</Button>
-            {'  '}
-            <Button type="primary" onClick={onclickSubmit}>
-              Next
-            </Button>
+        <Row gutter={16}>
+          <Col span={24} style={{ textAlign: 'center' }}>
+            <Space>
+              <Button onClick={onclickBlack}>Back</Button>
+
+              <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                onClick={onclickSubmit}
+              >
+                Submit
+              </Button>
+            </Space>
           </Col>
-          <Col span={8}></Col>
         </Row>
       </Card>
     </>
