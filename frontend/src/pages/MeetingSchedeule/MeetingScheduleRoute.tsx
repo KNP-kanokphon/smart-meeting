@@ -21,30 +21,29 @@ import { TableToday } from './table/Tabletoday';
 
 export const MeetingScheduleRoute: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
-  const contentToday = (
-    <>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-            Edit
-          </Button>
-        </Col>
-        <Col span={24}>
-          <Button
-            style={{
-              border: 'none',
-              color: 'red',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            Delete
-          </Button>
-        </Col>
-      </Row>
-    </>
-  );
-
+  // const contentToday = (
+  //   <>
+  //     <Row gutter={16}>
+  //       <Col span={24}>
+  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
+  //           Edit
+  //         </Button>
+  //       </Col>
+  //       <Col span={24}>
+  //         <Button
+  //           style={{
+  //             border: 'none',
+  //             color: 'red',
+  //             width: '100%',
+  //             textAlign: 'left',
+  //           }}
+  //         >
+  //           Delete
+  //         </Button>
+  //       </Col>
+  //     </Row>
+  //   </>
+  // );
   return (
     <Row
       gutter={[

@@ -52,18 +52,25 @@ export const TableLast: React.FC = (): React.ReactElement => {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      width: '50%',
+      width: '70%',
       ellipsis: true,
       render: (data: string, dataAll: any) => {
         return (
           <>
             <Row>
-              <b>{data}</b>
+              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                {data}
+              </Typography>
             </Row>
             <Row>
-              {dataAll.date}
-              {'  '}
-              {dataAll.time}
+              <Space>
+                <Typography style={{ color: 'grey' }}>
+                  {dataAll.date}
+                </Typography>
+                <Typography style={{ color: 'grey' }}>
+                  {dataAll.time}
+                </Typography>
+              </Space>
             </Row>
           </>
         );
@@ -73,13 +80,19 @@ export const TableLast: React.FC = (): React.ReactElement => {
       title: 'Room',
       dataIndex: 'room',
       key: 'room',
-      width: '20%',
+      width: '10%',
       ellipsis: true,
       render: (data: any) => {
         return (
           <>
-            <Row>ห้องประชุม</Row>
-            <Row>{data}</Row>
+            <Row>
+              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                ห้องประชุม
+              </Typography>
+            </Row>
+            <Row>
+              <Typography style={{ color: 'grey' }}>{data}</Typography>
+            </Row>
           </>
         );
       },
@@ -93,8 +106,14 @@ export const TableLast: React.FC = (): React.ReactElement => {
       render: (data: any) => {
         return (
           <>
-            <Row>ผู้ตกลงเข้าร่วม</Row>
-            <Row>{data}</Row>
+            <Row>
+              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                ผู้ตกลงเข้าร่วม
+              </Typography>
+            </Row>
+            <Row>
+              <Typography style={{ color: 'grey' }}>{data}</Typography>
+            </Row>
           </>
         );
       },
@@ -120,7 +139,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
                 />
               }
             >
-              <a>
+              <a style={{ color: '#1E6541' }}>
                 More <DownOutlined />
               </a>
             </Dropdown>
@@ -152,39 +171,39 @@ export const TableLast: React.FC = (): React.ReactElement => {
     },
   ];
 
-  const contentLastMeet = (
-    <>
-      <Row>
-        <Col span={24}>
-          <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-            View
-          </Button>
-        </Col>
-        <Col span={24}>
-          <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-            E-Signature
-          </Button>
-        </Col>
-        <Col span={24}>
-          <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-            Minutes
-          </Button>
-        </Col>
-        <Col span={24}>
-          <Button
-            style={{
-              border: 'none',
-              color: 'red',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            Delete
-          </Button>
-        </Col>
-      </Row>
-    </>
-  );
+  // const contentLastMeet = (
+  //   <>
+  //     <Row>
+  //       <Col span={24}>
+  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
+  //           View
+  //         </Button>
+  //       </Col>
+  //       <Col span={24}>
+  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
+  //           E-Signature
+  //         </Button>
+  //       </Col>
+  //       <Col span={24}>
+  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
+  //           Minutes
+  //         </Button>
+  //       </Col>
+  //       <Col span={24}>
+  //         <Button
+  //           style={{
+  //             border: 'none',
+  //             color: 'red',
+  //             width: '100%',
+  //             textAlign: 'left',
+  //           }}
+  //         >
+  //           Delete
+  //         </Button>
+  //       </Col>
+  //     </Row>
+  //   </>
+  // );
 
   const onSearch = (value: string) => console.log(value);
   const filterSearch = (
@@ -216,7 +235,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
         <Typography
           style={{
             textAlign: 'left',
-            fontSize: '30px',
+            fontSize: '18px',
             fontWeight: 'bold',
             color: 'grey',
           }}
