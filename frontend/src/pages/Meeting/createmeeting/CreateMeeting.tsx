@@ -191,13 +191,13 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
   return (
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row>
-        {/* <div className="custom-steps" style={{ width: '100%' }}> */}
-        <Steps size="small" current={0}>
+        <div className="custom-steps" style={{ width: '100%' }}>
+        <Steps size="small" current={0}  >
           <Step title="In Progress" />
           <Step title="Waiting" />
           <Step title="Waiting" />
         </Steps>
-        {/* </div> */}
+        </div>
       </Row>
       <Row gutter={16}>
         <Col span={24} style={{ marginTop: '20px', marginBottom: '10px' }}>

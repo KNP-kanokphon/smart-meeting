@@ -53,23 +53,31 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         </Title>
       </Card>
       <Card style={{ width: '100%' }}>
-        <Row>
+        <Row gutter={16}>
           <Col span={12}>
-            คณะสมาคม:{' '}
-            <Select
-              style={{ width: '70%', border: 'none' }}
-              placeholder="ประเภทสมาชิค"
-              allowClear
-            >
-              <Option key={'1'}>
-                คณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
-              </Option>
-              <Option key={'2'}>คณะกรรมการสมาคมแห่งสถาบันพระปกเกล้า</Option>
-              <Option key={'3'}>คณะที่ปรึกษาสมาคม</Option>
-              <Option key={'4'}>สมาชิกทั่วไป</Option>
-            </Select>
+            <Row gutter={16}>
+              <Col span={3}>
+                <Typography style={{ fontWeight: 'bold', textAlign: 'right' }}>
+                  คณะสมาคม:
+                </Typography>
+              </Col>
+              <Col span={21}>
+                <Select
+                  style={{ width: '100%', border: 'none', textAlign: 'left' }}
+                  placeholder="ประเภทสมาชิค"
+                  allowClear
+                >
+                  <Option key={'1'}>
+                    คณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
+                  </Option>
+                  <Option key={'2'}>คณะกรรมการสมาคมแห่งสถาบันพระปกเกล้า</Option>
+                  <Option key={'3'}>คณะที่ปรึกษาสมาคม</Option>
+                  <Option key={'4'}>สมาชิกทั่วไป</Option>
+                </Select>
+              </Col>
+            </Row>
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Upload {...props}>
               <Button
                 disabled={fileList.length === 1}
@@ -79,8 +87,10 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
               </Button>
             </Upload>
           </Col>
-          <Col span={8} style={{ textAlign: 'right' }}>
-            <Button type="primary">Confirm Upload</Button>
+          <Col span={4} style={{ textAlign: 'right' }}>
+            <Button style={{ color: 'white ', backgroundColor: '#1E6541' }}>
+              Confirm Upload
+            </Button>
           </Col>
         </Row>
       </Card>
