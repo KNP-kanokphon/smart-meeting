@@ -1,11 +1,13 @@
 import { Image } from 'antd';
-import logo from '../../assets/images/KPIS-LOGO.png';
+import logo from '../../assets/images/KPIS Logo.png';
 
 export const Logo: React.FC = () => (
-  <Image
-    src={logo}
-    width={150}
-    style={{ paddingLeft: '1rem' }}
-    preview={false}
-  />
+  <div style={{ textAlign: 'center' }}>
+    <Image
+      src={logo}
+      width={100}
+      // style={{ paddingLeft: '1rem', textAlign:"center" }}
+      preview={false}
+    />
+  </div>
 );
