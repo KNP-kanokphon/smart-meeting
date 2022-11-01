@@ -19,6 +19,7 @@ import {
   //   Divider,
   Modal,
   Image,
+  Divider,
   //   notification,
 } from 'antd';
 import { Icon } from '@iconify/react';
@@ -348,7 +349,8 @@ export const LinkApproveE_Signature: React.FC = (): React.ReactElement => {
             width={400}
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           />
-          <p>ลายเซ็นอนุมัติ</p>
+          <Divider/>
+          <Typography>ลายเซ็นอนุมัติ</Typography>
         </div>
       </Modal>
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}>

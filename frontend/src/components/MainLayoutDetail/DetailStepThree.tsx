@@ -95,11 +95,9 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20} style={{ fontSize: '80%' }}>
+                  <Col span={24} style={{ fontSize: '80%' }}>
                     กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ก่อนเข้าห้องประชุม
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
                 <br></br>
 
@@ -121,25 +119,29 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={8}></Col>
-                  <Col span={8}>
-                    <Button type="link" onClick={downloadQRCode}>
+                  <Col span={24}>
+                    <Button
+                      type="link"
+                      onClick={downloadQRCode}
+                      style={{
+                        textAlign: 'center',
+                        marginBottom: '10px',
+                        marginTop: '10px',
+                      }}
+                    >
                       Dowload QR-Code
                       <VerticalAlignBottomOutlined />
                     </Button>
                   </Col>
-                  <Col span={8}></Col>
                 </Row>
-                <br></br>
+
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20} style={{ fontSize: '80%' }}>
+                  <Col span={24} style={{ fontSize: '80%' }}>
                     เอกสารภาพประกอบการประชุม
                     <Button type="link" onClick={getFiles}>
                       Dowload
                     </Button>
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
                 <br></br>
               </Card>
