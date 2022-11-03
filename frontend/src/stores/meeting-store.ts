@@ -124,4 +124,14 @@ export const DatamanagementService = () => ({
     });
     return result.data;
   },
+  upLoadfilecsv: async (data: any) => {
+    const result = await httpClient.post(`/userattendees/uploaduser`, {
+      data: data,
+    });
+    return result.data;
+  },
+  getUser: async () => {
+    const result = await httpClient.post(`/userattendees/userAll`);
+    return result.data;
+  },
 });

@@ -8,25 +8,22 @@ import {
   Divider,
   // Form,
   Input,
-  // message,
-  // Modal,
+  message,
+  Modal,
   // Popconfirm,
   Row,
   Select,
   // Space,
   Steps,
-  // Table,
   TimePicker,
-  // Typography,
   Upload,
-  // UploadProps,
 } from 'antd';
 import './css/style.css';
-// import {
-//   EditOutlined,
-//   ExclamationCircleOutlined,
-//   DeleteOutlined,
-// } from '@ant-design/icons';
+import {
+  //   EditOutlined,
+  ExclamationCircleOutlined,
+  //   DeleteOutlined,
+} from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   // MinusSquareOutlined,
@@ -36,7 +33,7 @@ import {
 // import { reportStore } from '../../../stores/report-store';
 // import { MenuItem, menuItems } from '../../../configs/menus';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { TableBoard } from './TableBoard';
@@ -78,68 +75,68 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     navigate(`agendas`);
   };
 
-  // const approveCreate = () => {
-  //   if (!title) {
-  //     message.error('โปรดกรอก ขื่อ- เรื่อง');
-  //     return;
-  //   } else if (!room) {
-  //     message.error('โปรดกรอก ห้องประชุม');
-  //     return;
-  //   } else if (!floor) {
-  //     message.error('โปรดกรอก ชั้น');
-  //     return;
-  //   } else if (!building) {
-  //     message.error('โปรดเลือก อาคาร');
-  //     return;
-  //   } else if (!meetingplace) {
-  //     message.error('โปรดกรอก สถานที่ประชุม');
-  //     return;
-  //   } else if (!day) {
-  //     message.error('โปรดกรอก วันที่');
-  //     return;
-  //   } else if (!starttime) {
-  //     message.error('โปรดกรอก เวลาเริ่ม');
-  //     return;
-  //   } else if (!endtime) {
-  //     message.error('โปรดกรอก เวลาสิ้นสุด');
-  //     return;
-  //   } else if (!detail) {
-  //     message.error('โปรดกรอก รายละเอียดการประชุม');
-  //     return;
-  //   }
-  //   const formData = new FormData();
-  //   formData.append('file', fileList[0]);
-  //   const id = uuidv4();
-  //   Modal.confirm({
-  //     title: 'Confirm Create this meeting',
-  //     icon: <ExclamationCircleOutlined />,
-  //     // content: `Link... ${window.origin}/${id}`,
-  //     okText: 'ยืนยัน',
-  //     cancelText: 'ยกเลิก',
-  //     onOk: async () => {
-  //       // await DatamanagementService().import(formData, id);
-  //       // await DatamanagementService()
-  //       //   .createmeeting(
-  //       //     detail,
-  //       //     title,
-  //       //     room,
-  //       //     floor,
-  //       //     building,
-  //       //     meetingplace,
-  //       //     day,
-  //       //     starttime,
-  //       //     endtime,
-  //       //     id,
-  //       //     snack,
-  //       //   )
-  //       //   .then(data => {});
-  //       // await DatamanagementService()
-  //       //   .saveuserattendees(dataSourceBoard, id)
-  //       //   .then(data => {});
-  //     },
-  //     onCancel: () => {},
-  //   });
-  // };
+  const approveCreate = () => {
+    if (!title) {
+      message.error('โปรดกรอก ขื่อ- เรื่อง');
+      return;
+    } else if (!room) {
+      message.error('โปรดกรอก ห้องประชุม');
+      return;
+    } else if (!floor) {
+      message.error('โปรดกรอก ชั้น');
+      return;
+    } else if (!building) {
+      message.error('โปรดเลือก อาคาร');
+      return;
+    } else if (!meetingplace) {
+      message.error('โปรดกรอก สถานที่ประชุม');
+      return;
+    } else if (!day) {
+      message.error('โปรดกรอก วันที่');
+      return;
+    } else if (!starttime) {
+      message.error('โปรดกรอก เวลาเริ่ม');
+      return;
+    } else if (!endtime) {
+      message.error('โปรดกรอก เวลาสิ้นสุด');
+      return;
+    } else if (!detail) {
+      message.error('โปรดกรอก รายละเอียดการประชุม');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', fileList[0]);
+    const id = uuidv4();
+    Modal.confirm({
+      title: 'Confirm Create this meeting',
+      icon: <ExclamationCircleOutlined />,
+      // content: `Link... ${window.origin}/${id}`,
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      onOk: async () => {
+        // await DatamanagementService().import(formData, id);
+        // await DatamanagementService()
+        //   .createmeeting(
+        //     detail,
+        //     title,
+        //     room,
+        //     floor,
+        //     building,
+        //     meetingplace,
+        //     day,
+        //     starttime,
+        //     endtime,
+        //     id,
+        //     snack,
+        //   )
+        //   .then(data => {});
+        // await DatamanagementService()
+        //   .saveuserattendees(dataSourceBoard, id)
+        //   .then(data => {});
+      },
+      onCancel: () => {},
+    });
+  };
 
   const onChangeDate = (e: any) => {
     const date = e._d;
@@ -280,7 +277,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               <Upload {...props}>
                 <Button
-                  disabled={fileList.length === 1}
+                  // disabled={fileList.length === 1}
                   icon={<UploadOutlined />}
                 >
                   Click To Upload
@@ -293,16 +290,6 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
         <TableBoard />
         <Divider />
         <TableAttendee />
-
-        <Col span={24}>
-          <Row>
-            <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-              <Checkbox onChange={onChangeDring}>
-                จัดเตรียมอาหารว่าง และเครื่องดื่ม
-              </Checkbox>
-            </Col>
-          </Row>
-        </Col>
         <Col span={24}>
           <Row>
             <Col

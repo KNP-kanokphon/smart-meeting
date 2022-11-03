@@ -75,7 +75,7 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
       width: '5%',
     },
     {
-      title: 'รายนามคณะกรรมการบริหารสมาคม',
+      title: 'รายชื่อคณะกรรมการบริหารสมาคม',
       dataIndex: 'name',
       width: '30%',
     },

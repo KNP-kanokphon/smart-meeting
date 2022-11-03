@@ -2,6 +2,7 @@ import { Button, Col, Input, Modal, Row, Select, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { DatamanagementService } from '../../../stores/meeting-store';
 type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
@@ -12,14 +13,13 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
   const [dataSourceAttendee, setDataSourceAttendee] = useState<any>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
+  const [username, setUsername] = useState<any>([]);
 
   const handleAdd = () => {
     // const randomNumber = parseInt(Math.random() * 1000);
     const newStudent = {
       username: '',
-      position: '',
-      course: '',
-      phone: '',
+      uuidprofile: '',
       uuid: uuidv4(),
     };
     setDataSourceAttendee((pre: any) => {
@@ -38,7 +38,14 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
       },
     });
   };
-  const onEditStudent = (record: any) => {
+  const onEditStudent = async (record: any) => {
+    const resual = await DatamanagementService().getUser();
+    const newresult = resual.filter((e: any) => {
+      if (e.type !== '1') {
+        return e;
+      }
+    });
+    setUsername(newresult);
     setIsEditing(true);
     setEditingStudent({ ...record });
   };
@@ -51,30 +58,12 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
       key: '1',
       title: 'ชื่อ - นามสกุลผู้เข้าร่วมประชุม',
       dataIndex: 'username',
-      width: '30%',
-    },
-    {
-      key: '2',
-      title: 'ตำแหน่ง',
-      dataIndex: 'position',
-      width: '15%',
-    },
-    {
-      key: '3',
-      title: 'หลักสูตร',
-      dataIndex: 'course',
-      width: '15%',
-    },
-    {
-      key: '4',
-      title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phone',
-      width: '15%',
+      width: '80%',
     },
     {
       key: '7',
       title: 'Actions',
-      width: '5%',
+      width: '20%',
 
       render: (record: any) => {
         return (
@@ -155,7 +144,28 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
         }}
       >
         <Col span={24}>
-          <Row>
+          ชื่อ - นามสกุลผู้เข้าร่วมประชุม
+          <Select
+            value={editingStudent?.username}
+            style={{ width: '100%' }}
+            onChange={(e: any, dataAll: any) => {
+              setEditingStudent((pre: any) => {
+                return { ...pre, uuidprofile: dataAll.value };
+              });
+              setEditingStudent((pre: any) => {
+                return { ...pre, username: dataAll.children };
+              });
+            }}
+          >
+            {username.map((e: any, i: number) => {
+              return (
+                <Option key={i} value={e.uuid}>
+                  {e.username}
+                </Option>
+              );
+            })}
+          </Select>
+          {/* <Row>
             ชื่อ - นามสกุลผู้เข้าร่วมประชุม
             <Input
               value={editingStudent?.username}
@@ -206,7 +216,7 @@ export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
                 });
               }}
             />
-          </Row>
+          </Row> */}
         </Col>
       </Modal>
     </>

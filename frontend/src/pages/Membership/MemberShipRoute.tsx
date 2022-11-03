@@ -18,6 +18,9 @@ import {
 } from 'antd';
 import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
 import { TableMemberShip } from './components/TableMemberShip';
+import { DatamanagementService } from '../../stores/meeting-store';
+import readXlsxFile from 'read-excel-file';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -26,6 +29,64 @@ const { Title } = Typography;
 
 export const MemberShipRoute: React.FC = (): React.ReactElement => {
   const [fileList, setFileList] = useState<any>([]);
+  const [uploading, setUploading] = useState(false);
+  const [typeImport, setTypeimport] = useState<string>('');
+
+  const handleUpload = async () => {
+    setUploading(true);
+    var formData = new FormData();
+    formData.append('file', fileList[0]);
+    const newData: any = [];
+    readXlsxFile(fileList[0]).then(async (rows: any) => {
+      console.log(rows);
+      if (typeImport === '1') {
+        rows.forEach((e: any, i: number) => {
+          if (i > 2) {
+            newData.push({
+              uuid: uuidv4(),
+              username: e[1],
+              phone: e[4],
+              type: typeImport,
+            });
+          }
+        });
+      } else if (typeImport === '2') {
+        rows.forEach((e: any, i: number) => {
+          if (i > 2) {
+            newData.push({
+              uuid: uuidv4(),
+              username: e[1],
+              phone: e[3],
+              type: typeImport,
+            });
+          }
+        });
+      } else if (typeImport === '3') {
+        rows.forEach((e: any, i: number) => {
+          if (i > 2) {
+            newData.push({
+              uuid: uuidv4(),
+              username: e[1],
+              phone: e[5],
+              type: typeImport,
+            });
+          }
+        });
+      }
+
+      const resual = await DatamanagementService()
+        .upLoadfilecsv(newData)
+        .then(e => {
+          console.log(e);
+        });
+    });
+  };
+
+  const onChangType = async (e: any) => {
+    setTypeimport(e);
+    console.log(e);
+  };
+
   const props = {
     onRemove: (file: any) => {
       const index = fileList.indexOf(file);
@@ -59,13 +120,16 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             <Select
               style={{ width: '70%', border: 'none' }}
               placeholder="ประเภทสมาชิค"
+              onChange={onChangType}
               allowClear
             >
               <Option key={'1'}>
-                คณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
+                รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
               </Option>
-              <Option key={'2'}>คณะกรรมการสมาคมแห่งสถาบันพระปกเกล้า</Option>
-              <Option key={'3'}>คณะที่ปรึกษาสมาคม</Option>
+              <Option key={'2'}>
+                รายชื่อคณะกรรมการกลางสมาคมแห่งสถาบันพระปกเกล้า
+              </Option>
+              <Option key={'3'}>รายชื่อคณะที่ปรึกษาสมาคม</Option>
               <Option key={'4'}>สมาชิกทั่วไป</Option>
             </Select>
           </Col>
@@ -80,7 +144,9 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             </Upload>
           </Col>
           <Col span={8} style={{ textAlign: 'right' }}>
-            <Button type="primary">Confirm Upload</Button>
+            <Button type="primary" onClick={handleUpload}>
+              Confirm Upload
+            </Button>
           </Col>
         </Row>
       </Card>

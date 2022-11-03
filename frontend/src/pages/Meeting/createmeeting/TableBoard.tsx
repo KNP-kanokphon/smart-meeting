@@ -52,14 +52,13 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
   const [dataSourceBoard, setDataSourceBoard] = useState<any>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
+  const [username, setUsername] = useState<any>([]);
 
   const handleAdd = () => {
     // const randomNumber = parseInt(Math.random() * 1000);
     const newStudent = {
       username: '',
-      position: '',
-      course: '',
-      phone: '',
+      uuidprofile: '',
       uuid: uuidv4(),
     };
     setDataSourceBoard((pre: any) => {
@@ -78,7 +77,15 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
       },
     });
   };
-  const onEditStudent = (record: any) => {
+  const onEditStudent = async (record: any) => {
+    const resual = await DatamanagementService().getUser();
+    const newresult = resual.filter((e: any) => {
+      if (e.type === '1') {
+        return e;
+      }
+    });
+    setUsername(newresult);
+
     setIsEditing(true);
     setEditingStudent({ ...record });
   };
@@ -97,43 +104,15 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
     // },
     {
       key: '1',
-      title: 'รายนามคณะกรรมการบริหารสมาคม',
+      title: 'รายชื่อคณะกรรมการบริหารสมาคม',
       dataIndex: 'username',
-      width: '30%',
+      width: '80%',
     },
-    {
-      key: '2',
-      title: 'ตำแหน่ง',
-      dataIndex: 'position',
-      width: '15%',
-    },
-    {
-      key: '3',
-      title: 'หลักสูตร',
-      dataIndex: 'course',
-      width: '15%',
-    },
-    {
-      key: '4',
-      title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phone',
-      width: '15%',
-    },
-    // {
-    //   key: '4',
-    //   title: 'อีเมล',
-    //   dataIndex: 'email',
-    // },
-    // {
-    //   key: '5',
-    //   title: 'รุ่น',
-    //   dataIndex: 'model',
-    // },
 
     {
       key: '7',
       title: 'Actions',
-      width: '5%',
+      width: '20%',
 
       render: (record: any) => {
         return (
@@ -214,16 +193,36 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
       >
         <Col span={24}>
           <Row>
-            ชื่อ - นามสกุลคณะกรรมการสมาคม
-            <Input
+            รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
+            <Select
+              value={editingStudent?.username}
+              style={{ width: '100%' }}
+              onChange={(e: any, dataAll: any) => {
+                setEditingStudent((pre: any) => {
+                  return { ...pre, uuidprofile: dataAll.value };
+                });
+                setEditingStudent((pre: any) => {
+                  return { ...pre, username: dataAll.children };
+                });
+              }}
+            >
+              {username.map((e: any, i: number) => {
+                return (
+                  <Option key={i} value={e.uuid}>
+                    {e.username}
+                  </Option>
+                );
+              })}
+            </Select>
+            {/* <Input
               value={editingStudent?.username}
               onChange={e => {
                 setEditingStudent((pre: any) => {
                   return { ...pre, username: e.target.value };
                 });
               }}
-            />
-            ตำแหน่งสมาคม
+            /> */}
+            {/* ตำแหน่งสมาคม
             <Select
               value={editingStudent?.position}
               style={{ width: '100%' }}
@@ -263,7 +262,7 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
                   return { ...pre, phone: e.target.value };
                 });
               }}
-            />
+            /> */}
           </Row>
         </Col>
       </Modal>
