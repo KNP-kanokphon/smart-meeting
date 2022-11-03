@@ -215,27 +215,6 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
                   />
                 </Col>
               </Row>
-              {/* <Row gutter={14}>
-                <Col
-                  xs={{ span: 12 }}
-                  lg={{ span: 12 }}
-                  style={{ textAlign: 'right' }}
-                >
-                  <Button onClick={handleCancel}>Back</Button>
-                </Col>
-                <Col
-                  xs={{ span: 12 }}
-                  lg={{ span: 12 }}
-                  style={{ textAlign: 'left' }}
-                >
-                  <Button
-                    style={{ background: 'green', color: 'white' }}
-                    onClick={onFinish}
-                  >
-                    Submit
-                  </Button>
-                </Col>
-              </Row> */}
             </Col>
           </Row>
         </Card>
@@ -261,6 +240,8 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
           style={{ width: '500px', height: '500px' }}
           onOk={handleOk}
           onCancel={handleCancel}
+          closable={false}
+          // header={false}
           footer={false}
         >
           <div style={{ textAlign: 'center' }}>

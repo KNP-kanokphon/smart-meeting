@@ -12,7 +12,8 @@ import {
   Space,
 } from 'antd';
 import type { TabsProps } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { UploadOutlined, LeftCircleOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
 
@@ -20,6 +21,8 @@ import React, { useState } from 'react';
 // import { Icon } from '@iconify/react';
 
 export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
+  const navigate = useNavigate();
+
   const { TextArea } = Input;
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
@@ -59,9 +62,28 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
       <Row gutter={16}>
         <Card style={{ width: '100%', marginBottom: '30px' }}>
           <Row gutter={16}>
-            <Col span={24} style={{ marginBottom: '10px', textAlign: 'left' }}>
+            <Col>
+              <Button
+                style={{
+                  border: 'none',
+                  width: 'auto',
+                }}
+                onClick={() => navigate(-1)}
+              >
+                <LeftCircleOutlined
+                  style={{
+                    color: '#1E6541',
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </Button>
+            </Col>
+            <Col style={{ marginBottom: '10px', textAlign: 'left' }}>
               {/* <Icon/> */}
-              <Typography style={{ fontSize: '30px', fontWeight: 'bold' }}>
+              <Typography
+                style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}
+              >
                 Meeting Schedule
               </Typography>
             </Col>
@@ -102,7 +124,12 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                   </Form.Item>
                   <Form.Item style={{ textAlign: 'center' }}>
                     <Space>
-                      <Button style={{ color: '#1E6541' }}>Back</Button>
+                      <Button
+                        style={{ color: '#1E6541' }}
+                        onClick={() => navigate(-1)}
+                      >
+                        Back
+                      </Button>
                       <Button
                         htmlType="submit"
                         style={{ color: 'white', background: '#1E6541' }}

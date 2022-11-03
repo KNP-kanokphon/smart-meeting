@@ -20,12 +20,18 @@ import {
 } from 'antd';
 import { Icon } from '@iconify/react';
 import { useLocation } from 'react-router-dom';
-// import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import {
+  EditFilled,
+  EllipsisOutlined,
+  LeftCircleOutlined,
+} from '@ant-design/icons';
 
 export const CheckList: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { state } = useLocation();
-  console.log(state);
+  const navigate = useNavigate();
+  // console.log(state);
 
   const [datasource, setDatasource] = useState<any>([]);
 
@@ -101,50 +107,50 @@ export const CheckList: React.FC = (): React.ReactElement => {
       title: 'ลำดับ',
       dataIndex: 'key',
       key: 'key',
-      width: '5%',
+      width: '6%',
       fixed: 'left',
     },
     {
       title: 'คำนำหน้า',
       dataIndex: 'title',
       key: 'title',
-      width: '10%',
+      width: '8%',
     },
     {
       title: 'ชื่อ',
       dataIndex: 'name',
       key: 'name',
-      width: '20%',
+      width: '16%',
     },
     {
       title: 'นามสกุล',
       dataIndex: 'lastname',
       key: 'lastname',
-      width: '20%',
+      width: '15%',
     },
     {
       title: 'ตำแหน่ง',
       dataIndex: 'position',
       key: 'position',
-      width: '10%',
+      width: '25%',
     },
     {
       title: 'หลักสูตร',
       dataIndex: 'course',
       key: 'course',
-      width: '10%',
+      width: '15%',
     },
     {
       title: 'เบอร์โทรศัพท์',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      width: '10%',
+      width: '15%',
     },
     {
       title: 'อีเมล',
       dataIndex: 'email',
       key: 'email',
-      width: '15%',
+      width: '20%',
 
       render: (text: any) => {
         return text ? text : '-';
@@ -244,44 +250,78 @@ export const CheckList: React.FC = (): React.ReactElement => {
     },
   ];
   return (
-    <Row
-      gutter={[
-        { xs: 8, sm: 16 },
-        { xs: 8, sm: 16 },
-      ]}
-    >
-      <Card style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}>
-        <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
-          CHECK IN LISTS
-        </Title>
-        <Typography>
-          ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่ 5/2565
-        </Typography>
-      </Card>
-      <div style={{ width: '100%', marginLeft: '40px', marginRight: '40px' }}>
+    <>
+      <Row
+        gutter={[
+          { xs: 8, sm: 16 },
+          { xs: 8, sm: 16 },
+        ]}
+      >
         <Card
-          style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}
-          title={
-            <Typography
-              style={{
-                textAlign: 'left',
-                fontSize: '30px',
-                fontWeight: 'bold',
-                color: 'grey',
-              }}
-            >
-              Check-in Lists
-            </Typography>
-          }
-          // extra={}
+          style={{ width: '100%', textAlign: 'left', marginBottom: '20px' }}
         >
-          <Table
-            columns={columns}
-            dataSource={data}
-            scroll={{ x: 'calc(1000px + 50%)' }}
-          />
+          <Row gutter={16}>
+            <Col>
+              <Button
+                style={{
+                  border: 'none',
+                  width: 'auto',
+                }}
+                onClick={() => navigate(-1)}
+              >
+                <LeftCircleOutlined
+                  style={{
+                    color: '#1E6541',
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </Button>
+            </Col>
+            <Col>
+              <Title
+                style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                }}
+              >
+                CHECK IN LISTS
+              </Title>
+            </Col>
+          </Row>
+
+          <Typography>
+            ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่
+            5/2565
+          </Typography>
         </Card>
-      </div>
-    </Row>
+
+        <div style={{ width: '100%', marginLeft: '10px', marginRight: '10px' }}>
+          <Card
+            style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
+            title={
+              <Typography
+                style={{
+                  textAlign: 'left',
+                  // fontSize: '30px',
+                  // fontWeight: 'bold',
+                  color: 'grey',
+                }}
+              >
+                Check-in Lists
+              </Typography>
+            }
+            // extra={}
+          >
+            <Table
+              columns={columns}
+              dataSource={data}
+              scroll={{ x: 'calc(1200px + 50%)' }}
+            />
+          </Card>
+        </div>
+      </Row>
+    </>
   );
 };

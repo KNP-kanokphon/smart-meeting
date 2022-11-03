@@ -3,35 +3,26 @@ import {
   Card,
   Row,
   Typography,
-  // List,
-  // Skeleton,
   Button,
-  // Avatar,
-  //   Input,
   Col,
-  //   Popover,
-  //   DatePicker,
   Space,
-  //   Select,
   Table,
   Tag,
-  //   Badge,
-  //   Divider,
   Modal,
   Image,
   Divider,
-  //   notification,
 } from 'antd';
 import { Icon } from '@iconify/react';
 import {
-  //   EditFilled,
-  //   EllipsisOutlined,
   ExclamationCircleOutlined,
+  LeftCircleOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { confirm } = Modal;
+  const navigate = useNavigate();
 
   const [datasource, setDatasource] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,10 +62,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       position: 'นายกสมาคม',
       course: 'ปปร.17,ปศส.10',
       phoneNumber: '081-831-2876',
-      //   email: '',
-      //   food: 1,
-      //   register: 1,
-      //   meet: 2,
+
       status: 1,
     },
     {
@@ -85,10 +73,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       position: 'นายกสมาคม',
       course: 'ปปร.17,ปศส.10',
       phoneNumber: '081-831-2876',
-      //   email: '',
-      //   food: 1,
-      //   register: 1,
-      //   meet: 2,
+
       status: 1,
     },
     {
@@ -99,10 +84,6 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       position: 'นายกสมาคม',
       course: 'ปปร.17,ปศส.10',
       phoneNumber: '081-831-2876',
-      //   email: '',
-      //   food: 1,
-      //   register: 1,
-      //   meet: 2,
       status: 2,
     },
   ];
@@ -151,88 +132,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       key: 'phoneNumber',
       width: '10%',
     },
-    // {
-    //   title: 'อีเมล',
-    //   dataIndex: 'email',
-    //   key: 'email',
-    //   width: '15%',
 
-    //   render: (text: any) => {
-    //     return text ? text : '-';
-    //   },
-    // },
-    // {
-    //   title: 'สถานะอาหารว่าง',
-    //   dataIndex: 'food',
-    //   key: 'food',
-    //   width: '10%',
-
-    //   render: (text: any) => {
-    //     if (text) {
-    //       return text === 1 ? (
-    //         <Tag color="lime">
-    //           <Space>
-    //             <Icon icon="emojione:white-heavy-check-mark" />
-    //             {'รับ'}
-    //           </Space>
-    //         </Tag>
-    //       ) : (
-    //         <Tag color="orange">
-    //           <Space>
-    //             <Icon icon="emojione-v1:cross-mark" />
-    //             {'ไม่รับ'}
-    //           </Space>
-    //         </Tag>
-    //       );
-    //     }
-    //   },
-    // },
-    // {
-    //   title: 'สถานะการลงทะเบียน',
-    //   dataIndex: 'register',
-    //   key: 'register',
-    //   width: '10%',
-
-    //   render: (text: any) => {
-    //     if (text) {
-    //       return text === 1 ? (
-    //         <Space>
-    //           <Badge color={'green'} text={'เข้าร่วม'} />
-    //         </Space>
-    //       ) : (
-    //         <Space>
-    //           <Badge color={'orange'} text={'ไม่เข้าร่วม'} />
-    //         </Space>
-    //       );
-    //     }
-    //   },
-    // },
-    // {
-    //   title: 'สถานะเข้าร่วมประชุม',
-    //   dataIndex: 'meet',
-    //   key: 'meet',
-    //   width: '10%',
-
-    //   render: (text: any) => {
-    //     if (text) {
-    //       return text === 1 ? (
-    //         <Tag color="lime">
-    //           <Space>
-    //             {/* <Icon icon="emojione:white-heavy-check-mark" /> */}
-    //             {'เช็คอิน'}
-    //           </Space>
-    //         </Tag>
-    //       ) : (
-    //         <Tag>
-    //           <Space>
-    //             {/* <Icon icon="emojione-v1:cross-mark" /> */}
-    //             {'ไม่ได้เช็คอิน'}
-    //           </Space>
-    //         </Tag>
-    //       );
-    //     }
-    //   },
-    // },
     {
       title: 'สถานะ',
       dataIndex: 'status',
@@ -354,22 +254,47 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
         </div>
       </Modal>
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}>
-        <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
-          CHECK IN LISTS
-        </Title>
+        <Row>
+          <Col>
+            <Button
+              style={{
+                border: 'none',
+                width: 'auto',
+              }}
+              onClick={() => navigate(-1)}
+            >
+              <LeftCircleOutlined
+                style={{
+                  color: '#1E6541',
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Button>
+          </Col>
+          <Col>
+            {' '}
+            <Title
+              style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}
+            >
+              CHECK IN LISTS
+            </Title>
+          </Col>
+        </Row>
+
         <Typography>
           ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่ 5/2565
         </Typography>
       </Card>
-      <div style={{ width: '100%', marginLeft: '40px', marginRight: '40px' }}>
+      <div style={{ width: '100%', marginLeft: '10px', marginRight: '10px' }}>
         <Card
           style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}
           title={
             <Typography
               style={{
                 textAlign: 'left',
-                fontSize: '30px',
-                fontWeight: 'bold',
+                // fontSize: '30px',
+                // fontWeight: 'bold',
                 color: 'grey',
               }}
             >
@@ -385,7 +310,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
           />
           <div style={{ textAlign: 'center' }}>
             <Space>
-              <Button>{'Back'}</Button>
+              <Button onClick={() => navigate(-1)}>{'Back'}</Button>
               <Button style={{ color: 'white', background: '#1E6541' }}>
                 {'Save'}
               </Button>

@@ -43,17 +43,17 @@ export const MainMenu = () => {
 
   return (
     <>
-      <Layout.Header
+      {/* <Layout.Header
         className={styles.siteLayoutBackground}
         style={{
           padding: 0,
           borderBottom: '1px solid #F0F0F0',
         }}
-      >
-        <Col>
-          <Logo />
-        </Col>
-      </Layout.Header>
+      > */}
+        <div style={{backgroundColor:"white" ,paddingTop:"10px" ,paddingBottom:"10px"}}>
+        <Logo />
+        </div>
+      {/* </Layout.Header> */}
       <Menu
         theme="light"
         mode="inline"

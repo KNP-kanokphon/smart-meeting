@@ -114,7 +114,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         </Title>
       </Card>
       <Card style={{ width: '100%' }}>
-        <Row>
+        <Row gutter={16}>
           <Col span={12}>
             คณะสมาคม:{' '}
             <Select
@@ -133,7 +133,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
               <Option key={'4'}>สมาชิกทั่วไป</Option>
             </Select>
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Upload {...props}>
               <Button
                 disabled={fileList.length === 1}
