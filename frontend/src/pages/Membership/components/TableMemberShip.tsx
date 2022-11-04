@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Typography, Button, Col, Table, Select, Input } from 'antd';
+import type { TableRowSelection } from 'antd/es/table/interface';
 import { useNavigate } from 'react-router-dom';
 import { AlignRightOutlined, MoreOutlined } from '@ant-design/icons';
 
@@ -9,6 +10,24 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
   const [dataResult, setDataResult] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // interface DataType {
+  //   key: React.Key;
+  //   id: number;
+  //   title: string;
+  //   firstname: string;
+  //   lastname: string;
+  //   phone: string;
+  // }
+  const start = () => {
+    setLoading(true);
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setLoading(false);
+    }, 1000);
+  };
 
   const onSearch = (value: string) => console.log(value);
 
@@ -16,16 +35,13 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     async function dataTable() {
       let dataconvert: any = [];
       await dataSourceToday.map((e: any) => {
-        index:;
         dataconvert.push({
-          no: e.key,
+          key: e.key,
           id: e.id,
           name: e.title + ' ' + e.firstname + ' ' + e.lastname,
           phone: e.phone,
         });
       });
-      console.log(dataconvert);
-
       await setDataResult(dataconvert);
     }
     dataTable();
@@ -33,7 +49,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
 
   let dataSourceToday: any = [
     {
-      key: '1',
+      key: 1,
       id: '12',
       title: 'นาย',
       firstname: 'กนกพล',
@@ -41,11 +57,11 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
       phone: '0901585061',
     },
     {
-      key: '2',
+      key: 2,
       id: '13',
       title: 'นาย',
       firstname: 'กนกพล',
-      lastname: 'นะค๊าาาาา',
+      lastname: 'เทส',
       phone: '0901585061',
     },
   ];
@@ -54,23 +70,19 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     {
       title: 'ลำดับที่',
       dataIndex: 'no',
-      // width: '2%',
       fixed: 'left',
     },
     {
       title: 'ชื่อ - นามสกุล',
       dataIndex: 'name',
-      // width: '10%'
     },
     {
       title: 'หลักสูตร  ',
       dataIndex: '',
-      // width: '5%'
     },
     {
       title: 'เบอร์โทรศัพท์',
       dataIndex: 'phone',
-      //  width: '5%'
     },
     {
       title: (
@@ -104,6 +116,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     onChange: onSelectChange,
   };
 
+  const hasSelected = selectedRowKeys.length > 0;
   return (
     <Card
       style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}
@@ -133,6 +146,18 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
         </Row>
       }
     >
+      {/* Test */}
+      {/* <Button
+        type="primary"
+        onClick={start}
+        disabled={!hasSelected}
+        loading={loading}
+      >
+        Reload
+      </Button>
+      <span style={{ marginLeft: 8 }}>
+        {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+      </span> */}
       <Table
         size="large"
         rowSelection={rowSelection}
