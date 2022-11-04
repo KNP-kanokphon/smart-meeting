@@ -3,6 +3,7 @@ import {
   DiffOutlined,
   CalendarOutlined,
   TeamOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { pipe, replace, toLower } from 'lodash/fp';
 import { ReportLayout } from '../components/ReportLayout';
@@ -12,7 +13,7 @@ import { Outlet, Route, Routes } from 'react-router-dom';
 import { ListMeeting } from '../pages/Meeting/listmeeting/ListMeeting';
 // import { CreateMeeting } from '../pages/Meeting/createmeeting/CreateMeeting';
 import { DetailMeeting } from '../pages/Meeting/listmeeting/DetailMeeting';
-import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
+// import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
 import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
 import { CreateStepFood } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepFood';
 import { MeetingScheduleRoute } from '../pages/MeetingSchedeule/MeetingScheduleRoute';
@@ -20,6 +21,8 @@ import { CheckList } from '../pages/MeetingSchedeule/CheckList';
 import { EsignateLastmeeting } from '../pages/MeetingSchedeule/EsignateLastmeeting';
 import { MeetingSumMinutes } from '../pages/MeetingSchedeule/MeetingSumMinutes';
 import { MemberShipRoute } from '../pages/Membership/MemberShipRoute';
+// import { SignConfirm } from '../pages/signconfirm/SignConfirm';
+import { SettingPermission } from '../pages/settingpermission/SettingPermission';
 import { CreateMeeting } from '../pages/MeetingCreate/MeetingCreate';
 type MenuConfig = {
   icon?: JSX.Element;
@@ -75,6 +78,16 @@ const menuConfigs: MenuConfig[] = [
     component: (
       <>
         <Route index element={<MemberShipRoute />} />
+      </>
+    ),
+  },
+  {
+    icon: <SettingOutlined />,
+    label: 'Setting Permission',
+    path: 'settingpermission',
+    component: (
+      <>
+        <Route index element={<SettingPermission />} />{' '}
       </>
     ),
   },
