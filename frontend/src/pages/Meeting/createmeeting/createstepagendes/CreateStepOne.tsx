@@ -53,24 +53,37 @@ export const CreateStepOne: React.FC<Props> = ({
   const onclickBack = () => {
     navigate(`agendas`);
   };
+  const [test, settest] = useState<any>([]);
   const onclickNext = () => {
+    form.validateFields().then(values => {
+      settest([...test, values]);
+      console.log(test);
+    });
+
     navigate(`agendasfood`);
+  };
+  const onFinish = (values: any) => {
+    console.log('Received values of form:', values);
   };
   return (
     <>
       <Row>
         <Form
+          name="dynamic_form_nest_item"
+          onFinish={onFinish}
+          autoComplete="off"
           style={{ width: '100%' }}
           form={form}
-          layout="vertical"
-          initialValues={{ requiredMarkValue: requiredMark }}
-          onValuesChange={onRequiredTypeChange}
-          requiredMark={requiredMark}
+          // layout="vertical"
+          // initialValues={{ requiredMarkValue: requiredMark }}
+          // onValuesChange={onRequiredTypeChange}
+          // requiredMark={requiredMark}
         >
           <Form.Item
             label={`ระเบียบวาระที่ ${Pagestep}`}
             required
             tooltip="This is a required field"
+            name="agendas"
           >
             <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
           </Form.Item>
@@ -80,6 +93,7 @@ export const CreateStepOne: React.FC<Props> = ({
               title: 'Tooltip with customize icon',
               icon: <InfoCircleOutlined />,
             }}
+            name="detail"
           >
             <TextArea />
           </Form.Item>
@@ -89,7 +103,7 @@ export const CreateStepOne: React.FC<Props> = ({
             <Col offset={1} span={3}></Col>
           </Row>
           <Form.List
-            name="users"
+            name="detailagendes"
             initialValue={[{ key: 0, name: 0, isListField: true, fieldKey: 0 }]}
           >
             {(fields, { add, remove }) => (
@@ -98,25 +112,17 @@ export const CreateStepOne: React.FC<Props> = ({
                   return (
                     <Row key={key}>
                       <Col span={2}>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'first']}
-                          rules={[
-                            { required: true, message: 'Missing first name' },
-                          ]}
-                        >
-                          {`${Pagestep}.${name + 1}`}
-                        </Form.Item>
+                        <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
                       </Col>
                       <Col span={18}>
                         <Form.Item
                           {...restField}
-                          name={[name, 'last']}
+                          name={[name, 'detail']}
                           rules={[
-                            { required: true, message: 'Missing last name' },
+                            { required: true, message: 'Missing detail' },
                           ]}
                         >
-                          <Input placeholder="Last Name" />
+                          <Input placeholder="detail" />
                         </Form.Item>
                       </Col>
 
@@ -152,8 +158,10 @@ export const CreateStepOne: React.FC<Props> = ({
             </Col>
           </Row>
           {/* <Form.Item>
-          <Button type="primary">Submit</Button>
-        </Form.Item> */}
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item> */}
         </Form>
         <Col span={24} style={{ textAlign: 'center' }}>
           <Space>

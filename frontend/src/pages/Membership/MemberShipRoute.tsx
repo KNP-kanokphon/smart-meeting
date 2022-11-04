@@ -83,8 +83,11 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
   };
 
   const onChangType = async (e: any) => {
-    setTypeimport(e);
-    console.log(e);
+    if (e === undefined) {
+      setTypeimport('');
+    } else {
+      setTypeimport(e);
+    }
   };
 
   const props = {
@@ -115,7 +118,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       </Card>
       <Card style={{ width: '100%' }}>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={10}>
             คณะสมาคม:{' '}
             <Select
               style={{ width: '70%', border: 'none' }}
@@ -133,18 +136,22 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
               <Option key={'4'}>สมาชิกทั่วไป</Option>
             </Select>
           </Col>
-          <Col span={8}>
+          <Col span={6}>
             <Upload {...props}>
               <Button
-                disabled={fileList.length === 1}
+                disabled={fileList.length === 1 || typeImport === ''}
                 icon={<UploadOutlined />}
               >
                 Select File
               </Button>
             </Upload>
           </Col>
-          <Col span={8} style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={handleUpload}>
+          <Col span={6} style={{ textAlign: 'right' }}>
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              disabled={typeImport === ''}
+            >
               Confirm Upload
             </Button>
           </Col>

@@ -30,7 +30,6 @@ import { CreateStepOne } from './CreateStepOne';
 const { TextArea } = Input;
 const { Step } = Steps;
 
-
 type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
@@ -96,11 +95,11 @@ export const CreateStepagendas: React.FC<Props> = ({ children, extra }) => {
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row>
         {/* <div className="custom-steps" style={{ width: '100%' }}> */}
-          <Steps size="small" current={1}>
-            <Step title="Finished" />
-            <Step title="In Progress" />
-            <Step title="Waiting" />
-          </Steps>
+        <Steps size="small" current={1}>
+          <Step title="Finished" />
+          <Step title="In Progress" />
+          <Step title="Waiting" />
+        </Steps>
         {/* </div> */}
       </Row>
       <br></br>

@@ -75,68 +75,68 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     navigate(`agendas`);
   };
 
-  const approveCreate = () => {
-    if (!title) {
-      message.error('โปรดกรอก ขื่อ- เรื่อง');
-      return;
-    } else if (!room) {
-      message.error('โปรดกรอก ห้องประชุม');
-      return;
-    } else if (!floor) {
-      message.error('โปรดกรอก ชั้น');
-      return;
-    } else if (!building) {
-      message.error('โปรดเลือก อาคาร');
-      return;
-    } else if (!meetingplace) {
-      message.error('โปรดกรอก สถานที่ประชุม');
-      return;
-    } else if (!day) {
-      message.error('โปรดกรอก วันที่');
-      return;
-    } else if (!starttime) {
-      message.error('โปรดกรอก เวลาเริ่ม');
-      return;
-    } else if (!endtime) {
-      message.error('โปรดกรอก เวลาสิ้นสุด');
-      return;
-    } else if (!detail) {
-      message.error('โปรดกรอก รายละเอียดการประชุม');
-      return;
-    }
-    const formData = new FormData();
-    formData.append('file', fileList[0]);
-    const id = uuidv4();
-    Modal.confirm({
-      title: 'Confirm Create this meeting',
-      icon: <ExclamationCircleOutlined />,
-      // content: `Link... ${window.origin}/${id}`,
-      okText: 'ยืนยัน',
-      cancelText: 'ยกเลิก',
-      onOk: async () => {
-        // await DatamanagementService().import(formData, id);
-        // await DatamanagementService()
-        //   .createmeeting(
-        //     detail,
-        //     title,
-        //     room,
-        //     floor,
-        //     building,
-        //     meetingplace,
-        //     day,
-        //     starttime,
-        //     endtime,
-        //     id,
-        //     snack,
-        //   )
-        //   .then(data => {});
-        // await DatamanagementService()
-        //   .saveuserattendees(dataSourceBoard, id)
-        //   .then(data => {});
-      },
-      onCancel: () => {},
-    });
-  };
+  // const approveCreate = () => {
+  //   if (!title) {
+  //     message.error('โปรดกรอก ขื่อ- เรื่อง');
+  //     return;
+  //   } else if (!room) {
+  //     message.error('โปรดกรอก ห้องประชุม');
+  //     return;
+  //   } else if (!floor) {
+  //     message.error('โปรดกรอก ชั้น');
+  //     return;
+  //   } else if (!building) {
+  //     message.error('โปรดเลือก อาคาร');
+  //     return;
+  //   } else if (!meetingplace) {
+  //     message.error('โปรดกรอก สถานที่ประชุม');
+  //     return;
+  //   } else if (!day) {
+  //     message.error('โปรดกรอก วันที่');
+  //     return;
+  //   } else if (!starttime) {
+  //     message.error('โปรดกรอก เวลาเริ่ม');
+  //     return;
+  //   } else if (!endtime) {
+  //     message.error('โปรดกรอก เวลาสิ้นสุด');
+  //     return;
+  //   } else if (!detail) {
+  //     message.error('โปรดกรอก รายละเอียดการประชุม');
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append('file', fileList[0]);
+  //   const id = uuidv4();
+  //   Modal.confirm({
+  //     title: 'Confirm Create this meeting',
+  //     icon: <ExclamationCircleOutlined />,
+  //     // content: `Link... ${window.origin}/${id}`,
+  //     okText: 'ยืนยัน',
+  //     cancelText: 'ยกเลิก',
+  //     onOk: async () => {
+  //       // await DatamanagementService().import(formData, id);
+  //       // await DatamanagementService()
+  //       //   .createmeeting(
+  //       //     detail,
+  //       //     title,
+  //       //     room,
+  //       //     floor,
+  //       //     building,
+  //       //     meetingplace,
+  //       //     day,
+  //       //     starttime,
+  //       //     endtime,
+  //       //     id,
+  //       //     snack,
+  //       //   )
+  //       //   .then(data => {});
+  //       // await DatamanagementService()
+  //       //   .saveuserattendees(dataSourceBoard, id)
+  //       //   .then(data => {});
+  //     },
+  //     onCancel: () => {},
+  //   });
+  // };
 
   const onChangeDate = (e: any) => {
     const date = e._d;
@@ -189,11 +189,11 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
     <Card title="Create Meeting" style={{ width: '100%' }}>
       <Row>
         <div className="custom-steps" style={{ width: '100%' }}>
-        <Steps size="small" current={0}  >
-          <Step title="In Progress" />
-          <Step title="Waiting" />
-          <Step title="Waiting" />
-        </Steps>
+          <Steps size="small" current={0}>
+            <Step title="In Progress" />
+            <Step title="Waiting" />
+            <Step title="Waiting" />
+          </Steps>
         </div>
       </Row>
       <Row gutter={16}>
@@ -297,6 +297,7 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
               lg={{ span: 24 }}
               style={{ textAlign: 'center' }}
             >
+              <br></br>
               <Button
                 style={{ color: 'white', background: '#1E6541' }}
                 onClick={() => nextPage()}
