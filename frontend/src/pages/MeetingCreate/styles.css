@@ -1,0 +1,19 @@
+.custom-steps .ant-steps-item-title:after {
+  background-color: #1e6541 !important;
+}
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+  background-color: #1e6541;
+  border-color: #1e6541;
+}
+
+.none {
+  display: none;
+  opacity: 0;
+  animation: fade-out 1s 1;
+}
+.block {
+  display: block;
+  opacity: 1;
+  animation: fade-in 0.5s 1;
+}

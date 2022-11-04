@@ -10,7 +10,7 @@ import { ReportLayout } from '../components/ReportLayout';
 import { Role } from '../utils/auth';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { ListMeeting } from '../pages/Meeting/listmeeting/ListMeeting';
-import { CreateMeeting } from '../pages/Meeting/createmeeting/CreateMeeting';
+// import { CreateMeeting } from '../pages/Meeting/createmeeting/CreateMeeting';
 import { DetailMeeting } from '../pages/Meeting/listmeeting/DetailMeeting';
 import { CreateStepagendas } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepagendas';
 import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
@@ -20,6 +20,7 @@ import { CheckList } from '../pages/MeetingSchedeule/CheckList';
 import { EsignateLastmeeting } from '../pages/MeetingSchedeule/EsignateLastmeeting';
 import { MeetingSumMinutes } from '../pages/MeetingSchedeule/MeetingSumMinutes';
 import { MemberShipRoute } from '../pages/Membership/MemberShipRoute';
+import { CreateMeeting } from '../pages/MeetingCreate/MeetingCreate';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
