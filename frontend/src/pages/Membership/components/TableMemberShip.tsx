@@ -7,10 +7,31 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const { Option } = Select;
   const { Search } = Input;
   const navigate = useNavigate();
+  const [dataResult, setDataResult] = useState<any>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const onSearch = (value: string) => console.log(value);
 
-  const dataSourceToday = [
+  useEffect(() => {
+    async function dataTable() {
+      let dataconvert: any = [];
+      await dataSourceToday.map((e: any) => {
+        index:;
+        dataconvert.push({
+          no: e.key,
+          id: e.id,
+          name: e.title + ' ' + e.firstname + ' ' + e.lastname,
+          phone: e.phone,
+        });
+      });
+      console.log(dataconvert);
+
+      await setDataResult(dataconvert);
+    }
+    dataTable();
+  }, []);
+
+  let dataSourceToday: any = [
     {
       key: '1',
       id: '12',
@@ -30,22 +51,27 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   ];
 
   const columnsToday: any = [
-    { title: 'ลำดับที่', dataIndex: 'key', width: '5%', fixed: 'left' },
-    // { title: 'คำนำหน้า', dataIndex: 'title', width: '7%' },
-    { title: 'ชื่อ - นามสกุล', dataIndex: 'firstname', width: '10%' },
-    { title: 'หลักสูตร  ', dataIndex: 'lastname', width: '10%' },
-    { title: 'เบอร์โทรศัพท์', dataIndex: 'phone', width: '7%' },
-    // { title: 'บ้านเลขที่', dataIndex: 'homenumber', width: '7%' },
-    // { title: 'อาคาร / หมู่บ้าน', dataIndex: 'village', width: '15%' },
-    // { title: 'ชั้น', dataIndex: 'floor', width: '6%' },
-    // { title: 'ซอย', dataIndex: 'alley', width: '10%' },
-    // { title: 'หมู่ที่', dataIndex: 'group', width: '5%' },
-    // { title: 'ถนน', dataIndex: 'road', width: '10%' },
-    // {
-    //   title: 'ตำบล / แขวง',
-    //   dataIndex: 'district',
-    //   width: '10%',
-    // },
+    {
+      title: 'ลำดับที่',
+      dataIndex: 'no',
+      // width: '2%',
+      fixed: 'left',
+    },
+    {
+      title: 'ชื่อ - นามสกุล',
+      dataIndex: 'name',
+      // width: '10%'
+    },
+    {
+      title: 'หลักสูตร  ',
+      dataIndex: '',
+      // width: '5%'
+    },
+    {
+      title: 'เบอร์โทรศัพท์',
+      dataIndex: 'phone',
+      //  width: '5%'
+    },
     {
       title: (
         <>
@@ -53,7 +79,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
         </>
       ),
       dataIndex: 'id',
-      width: '5%',
+      // width: '2%',
       fixed: 'right',
       align: 'center',
       render: (text: any, row: any) => {
@@ -68,6 +94,16 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     },
   ];
 
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   return (
     <Card
       style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}
@@ -77,9 +113,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             <Typography
               style={{
                 textAlign: 'left',
-                // fontSize: '30px',
                 fontWeight: 'bold',
-                // color: 'grey',
               }}
             >
               รายชื่อคณะกรรมการกลางสมาคมแห่งสถาบันพระปกเกล้า
@@ -101,9 +135,10 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     >
       <Table
         size="large"
-        dataSource={dataSourceToday}
+        rowSelection={rowSelection}
+        dataSource={dataResult}
         columns={columnsToday}
-        scroll={{ x: 'calc(1000px + 50%)' }}
+        // scroll={{ x: 'calc(600px + 50%)' }}
       />
     </Card>
   );
