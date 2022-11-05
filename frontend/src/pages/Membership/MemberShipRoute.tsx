@@ -119,24 +119,39 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       <Card style={{ width: '100%' }}>
         <Row gutter={16}>
           <Col span={10}>
-            คณะสมาคม:{' '}
-            <Select
-              style={{ width: '70%', border: 'none' }}
-              placeholder="ประเภทสมาชิค"
-              onChange={onChangType}
-              allowClear
-            >
-              <Option key={'1'}>
-                รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
-              </Option>
-              <Option key={'2'}>
-                รายชื่อคณะกรรมการกลางสมาคมแห่งสถาบันพระปกเกล้า
-              </Option>
-              <Option key={'3'}>รายชื่อคณะที่ปรึกษาสมาคม</Option>
-              <Option key={'4'}>สมาชิกทั่วไป</Option>
-            </Select>
+            <Row gutter={16}>
+              <Col
+                span={4}
+                style={{
+                  justifyContent: 'center',
+                  display: 'flex',
+                  textAlign: 'center',
+                  marginTop: '3px',
+                }}
+              >
+                <Typography>คณะสมาคม :</Typography>
+              </Col>
+              <Col span={16}>
+                <Select
+                  bordered={false}
+                  style={{ width: '100%' }}
+                  placeholder="ประเภทสมาชิค"
+                  onChange={onChangType}
+                  allowClear
+                >
+                  <Option key={'1'}>
+                    รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
+                  </Option>
+                  <Option key={'2'}>
+                    รายชื่อคณะกรรมการกลางสมาคมแห่งสถาบันพระปกเกล้า
+                  </Option>
+                  <Option key={'3'}>รายชื่อคณะที่ปรึกษาสมาคม</Option>
+                  <Option key={'4'}>สมาชิกทั่วไป</Option>
+                </Select>
+              </Col>
+            </Row>
           </Col>
-          <Col span={6}>
+          <Col span={8}>
             <Upload {...props}>
               <Button
                 disabled={fileList.length === 1 || typeImport === ''}
