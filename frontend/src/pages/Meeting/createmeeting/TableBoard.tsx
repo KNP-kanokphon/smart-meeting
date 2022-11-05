@@ -113,7 +113,6 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
       key: '7',
       title: 'Actions',
       width: '20%',
-
       render: (record: any) => {
         return (
           <>

@@ -9,10 +9,10 @@ import {
   Modal,
   Space,
 } from 'antd';
-import SignaturePad from 'react-signature-canvas';
 import { EditOutlined } from '@ant-design/icons';
 import React, { useState, useRef } from 'react';
 import Logo from '../../assets/images/KPIS Logo.png';
+import SignaturePad from 'react-signature-pad-wrapper';
 
 export const SignConfirm: React.FC = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
@@ -245,14 +245,7 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
           footer={false}
         >
           <div style={{ textAlign: 'center' }}>
-            <SignaturePad
-              ref={sigCanvas}
-              penColor="black"
-              canvasProps={{
-                width: 'auto',
-                // height: '400px',
-              }}
-            />
+            <SignaturePad ref={sigCanvas} />
           </div>
           <Row gutter={14}>
             <Col
