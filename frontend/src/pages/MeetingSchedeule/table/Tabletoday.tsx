@@ -13,33 +13,43 @@ import {
 } from 'antd';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import { DatamanagementService } from '../../../stores/meeting-store';
 // import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
 
 export const TableToday: React.FC = (): React.ReactElement => {
+  const [dataIntable, setDataIntable] = useState([]);
   const navigate = useNavigate();
-  const dataSourceToday = [
-    {
-      key: '1',
-      id: '12',
-      title:
-        'ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่ 5/2565',
-      room: 'ห้อง 5 กันยา',
-      participant: '26',
-      date: '2022-10-11',
-      time: '18:00 - 20:00 น.',
-    },
-    {
-      key: '2',
-      id: '13',
-      title:
-        'ขอเชิญประชุมวิชาการสถาบันพระปกเกล้า ครั้งที่ 23/2565 “ประชาธิปไตยในภูมิทัศน์ใหม่ ” ',
-      room: 'ห้อง 5 กันยา',
-      participant: '',
-      date: '2022-10-11',
-      time: '18:00 - 20:00 น.',
-    },
-  ];
+  useEffect(() => {
+    getListmeeting();
+  }, []);
 
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getListmeeting()
+      .then(data => {
+        const dataNew = data.filter((e: any) => {
+          const dateParts = e.day.split('-');
+          const dd = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+          const dn = new Date();
+          const dateCreate = [
+            dd.getDate(),
+            dd.getMonth() + 1,
+            dd.getFullYear(),
+          ];
+
+          const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
+          if (
+            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
+            `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
+          ) {
+            return e;
+          } else {
+            return;
+          }
+        });
+        setDataIntable(dataNew);
+      });
+  };
   const columnsToday = [
     {
       title: 'Title',
@@ -57,11 +67,9 @@ export const TableToday: React.FC = (): React.ReactElement => {
             </Row>
             <Row>
               <Space>
+                <Typography style={{ color: 'grey' }}>{dataAll.day}</Typography>
                 <Typography style={{ color: 'grey' }}>
-                  {dataAll.date}
-                </Typography>
-                <Typography style={{ color: 'grey' }}>
-                  {dataAll.time}
+                  {dataAll.starttime}-{dataAll.endtime}
                 </Typography>
               </Space>
             </Row>
@@ -92,11 +100,11 @@ export const TableToday: React.FC = (): React.ReactElement => {
     },
     {
       title: 'Participant',
-      dataIndex: 'participant',
-      key: 'participant',
+      dataIndex: 'uuid',
+      key: 'uuid',
       width: '10%',
       ellipsis: true,
-      render: (data: any) => {
+      render: (data: any, dataAll: any) => {
         return (
           <>
             <Row>
@@ -150,7 +158,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
       }
     >
       <Table
-        dataSource={dataSourceToday}
+        dataSource={dataIntable}
         columns={columnsToday}
         showHeader={false}
       />

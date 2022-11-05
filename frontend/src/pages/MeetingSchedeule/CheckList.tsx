@@ -26,12 +26,32 @@ import {
   EllipsisOutlined,
   LeftCircleOutlined,
 } from '@ant-design/icons';
+import { DatamanagementService } from '../../stores/meeting-store';
 
 export const CheckList: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { state } = useLocation();
+  const [dataIntable, setDataIntable] = useState<any>([]);
+  const [dataUser, setDataUser] = useState<any>([]);
   const navigate = useNavigate();
-  // console.log(state);
+
+  useEffect(() => {
+    getListmeeting();
+  }, []);
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getMeetingByid(state)
+      .then(data => {
+        setDataIntable(data);
+      });
+    await DatamanagementService()
+      .getuserInroom(String(state))
+      .then(data => {
+        console.log(data);
+
+        setDataUser(data);
+      });
+  };
 
   const [datasource, setDatasource] = useState<any>([]);
 
@@ -107,27 +127,27 @@ export const CheckList: React.FC = (): React.ReactElement => {
       title: 'ลำดับ',
       dataIndex: 'key',
       key: 'key',
-      width: '6%',
+      width: '10%',
       fixed: 'left',
     },
     {
       title: 'คำนำหน้า',
-      dataIndex: 'title',
-      key: 'title',
-      width: '8%',
+      dataIndex: 'username',
+      key: 'username',
+      width: '30%',
     },
-    {
-      title: 'ชื่อ',
-      dataIndex: 'name',
-      key: 'name',
-      width: '16%',
-    },
-    {
-      title: 'นามสกุล',
-      dataIndex: 'lastname',
-      key: 'lastname',
-      width: '15%',
-    },
+    // {
+    //   title: 'ชื่อ',
+    //   dataIndex: 'name',
+    //   key: 'name',
+    //   width: '16%',
+    // },
+    // {
+    //   title: 'นามสกุล',
+    //   dataIndex: 'lastname',
+    //   key: 'lastname',
+    //   width: '15%',
+    // },
     {
       title: 'ตำแหน่ง',
       dataIndex: 'position',
@@ -142,8 +162,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
     },
     {
       title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
+      dataIndex: 'phone',
+      key: 'phone',
       width: '15%',
     },
     {
@@ -291,10 +311,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
             </Col>
           </Row>
 
-          <Typography>
-            ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่
-            5/2565
-          </Typography>
+          <Typography>{dataIntable[0]?.title}</Typography>
         </Card>
 
         <div style={{ width: '100%', marginLeft: '10px', marginRight: '10px' }}>
@@ -316,7 +333,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
           >
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={dataUser}
+              rowKey={'uuid'}
               scroll={{ x: 'calc(1200px + 50%)' }}
             />
           </Card>

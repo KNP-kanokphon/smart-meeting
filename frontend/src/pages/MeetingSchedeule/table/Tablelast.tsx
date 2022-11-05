@@ -20,6 +20,7 @@ import { Icon } from '@iconify/react';
 import { EllipsisOutlined, DownOutlined } from '@ant-design/icons';
 import { idText } from 'typescript';
 import { useNavigate } from 'react-router-dom';
+import { DatamanagementService } from '../../../stores/meeting-store';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -27,6 +28,7 @@ const { RangePicker } = DatePicker;
 
 export const TableLast: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
+  const [dataIntable, setDataIntable] = useState([]);
   const [openToday, setOpenToday] = useState(false);
   const [openLastmeet, setOpenLastmeet] = useState(false);
 
@@ -36,14 +38,46 @@ export const TableLast: React.FC = (): React.ReactElement => {
   const handleOpenChangeLastmeet = (newOpen: boolean) => {
     setOpenLastmeet(newOpen);
   };
+  useEffect(() => {
+    getListmeeting();
+  }, []);
 
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getListmeeting()
+      .then(data => {
+        const dataNew = data.filter((e: any) => {
+          const dateParts = e.day.split('-');
+          const dd = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+          const dn = new Date();
+          const dateCreate = [
+            dd.getDate(),
+            dd.getMonth() + 1,
+            dd.getFullYear(),
+          ];
+
+          const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
+          if (
+            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
+            `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
+          ) {
+            return;
+          } else {
+            return e;
+          }
+        });
+        setDataIntable(dataNew);
+      });
+  };
   const onclickViwe = (e: any) => {
+    console.log(e.item.props.title);
+
     if (e.key === 'view') {
-      navigate(`detail/view`);
-    } else if (e.key === 'signate') {
-      navigate(`detail/signate`);
+      navigate(`detail/view`, { state: e.item.props.title });
+    } else if ((e.key === 'signate', { state: e.item.props.title })) {
+      navigate(`detail/signate`, { state: e.item.props.title });
     } else if (e.key === 'minutes') {
-      navigate(`detail/minutes`);
+      navigate(`detail/minutes`, { state: e.item.props.title });
     }
   };
 
@@ -64,11 +98,9 @@ export const TableLast: React.FC = (): React.ReactElement => {
             </Row>
             <Row>
               <Space>
+                <Typography style={{ color: 'grey' }}>{dataAll.day}</Typography>
                 <Typography style={{ color: 'grey' }}>
-                  {dataAll.date}
-                </Typography>
-                <Typography style={{ color: 'grey' }}>
-                  {dataAll.time}
+                  {dataAll.starttime}-{dataAll.endtime}
                 </Typography>
               </Space>
             </Row>
@@ -99,11 +131,11 @@ export const TableLast: React.FC = (): React.ReactElement => {
     },
     {
       title: 'Participant',
-      dataIndex: 'participant',
-      key: 'participant',
+      dataIndex: 'uuid',
+      key: 'uuid',
       width: '10%',
       ellipsis: true,
-      render: (data: any) => {
+      render: (data: any, dataAll: any) => {
         return (
           <>
             <Row>
@@ -132,9 +164,9 @@ export const TableLast: React.FC = (): React.ReactElement => {
                 <Menu
                   onClick={onclickViwe}
                   items={[
-                    { key: 'view', label: 'View' },
-                    { key: 'signate', label: 'E-Signate' },
-                    { key: 'minutes', label: 'Minutes' },
+                    { key: `view`, label: 'View', title: dataAll.uuid },
+                    { key: 'signate', label: 'E-Signate', title: dataAll.uuid },
+                    { key: 'minutes', label: 'Minutes', title: dataAll.uuid },
                   ]}
                 />
               }
@@ -148,62 +180,6 @@ export const TableLast: React.FC = (): React.ReactElement => {
       },
     },
   ];
-  const dataSourceLast = [
-    {
-      key: '1',
-      id: '12',
-      title:
-        'ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่ 5/2565',
-      room: 'ห้อง 5 กันยา',
-      participant: '26',
-      date: '2022-10-11',
-      time: '18:00 - 20:00 น.',
-    },
-    {
-      key: '2',
-      id: '12',
-      title:
-        'ขอเชิญประชุมวิชาการสถาบันพระปกเกล้า ครั้งที่ 23/2565 “ประชาธิปไตยในภูมิทัศน์ใหม่ ” ',
-      room: 'ห้อง 5 กันยา',
-      participant: '',
-      date: '2022-10-11',
-      time: '18:00 - 20:00 น.',
-    },
-  ];
-
-  // const contentLastMeet = (
-  //   <>
-  //     <Row>
-  //       <Col span={24}>
-  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-  //           View
-  //         </Button>
-  //       </Col>
-  //       <Col span={24}>
-  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-  //           E-Signature
-  //         </Button>
-  //       </Col>
-  //       <Col span={24}>
-  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-  //           Minutes
-  //         </Button>
-  //       </Col>
-  //       <Col span={24}>
-  //         <Button
-  //           style={{
-  //             border: 'none',
-  //             color: 'red',
-  //             width: '100%',
-  //             textAlign: 'left',
-  //           }}
-  //         >
-  //           Delete
-  //         </Button>
-  //       </Col>
-  //     </Row>
-  //   </>
-  // );
 
   const onSearch = (value: string) => console.log(value);
   const filterSearch = (
@@ -246,7 +222,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
       extra={filterSearch}
     >
       <Table
-        dataSource={dataSourceLast}
+        dataSource={dataIntable}
         columns={columnsLast as any}
         showHeader={false}
       />

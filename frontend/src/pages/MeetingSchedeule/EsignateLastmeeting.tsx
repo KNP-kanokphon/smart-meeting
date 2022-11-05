@@ -17,12 +17,34 @@ import {
   ExclamationCircleOutlined,
   LeftCircleOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { DatamanagementService } from '../../stores/meeting-store';
 
 export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { confirm } = Modal;
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const [dataIntable, setDataIntable] = useState<any>([]);
+  const [dataUser, setDataUser] = useState<any>([]);
+
+  useEffect(() => {
+    getListmeeting();
+  }, []);
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getMeetingByid(state)
+      .then(data => {
+        setDataIntable(data);
+      });
+    await DatamanagementService()
+      .getuserInroom(String(state))
+      .then(data => {
+        console.log(data);
+
+        setDataUser(data);
+      });
+  };
 
   const [datasource, setDatasource] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -305,7 +327,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
         >
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={dataUser}
             scroll={{ x: 'calc(1000px + 50%)' }}
           />
           <div style={{ textAlign: 'center' }}>
