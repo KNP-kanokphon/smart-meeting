@@ -5,7 +5,7 @@ import {
   DeleteOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -28,43 +28,47 @@ export const DetailList: React.FC<Props> = ({
   onChangeSetItemFiled,
 }) => {
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] =
-    useState<RequiredMark>('optional');
-  const [fileList, setFileList] = useState<any>([]);
-
-  const onRequiredTypeChange = ({
-    requiredMarkValue,
-  }: {
-    requiredMarkValue: RequiredMark;
-  }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+  const [fileList, setFileList] = useState<any[]>([]);
   const props = {
-    onRemove: (file: any) => {
+    onRemove: async (file: any) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
-    beforeUpload: (file: any) => {
+    beforeUpload: async (file: any) => {
       setFileList([...fileList, file]);
       return false;
     },
     fileList,
   };
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form:', values);
+  useEffect(() => {
+    onFinish();
+  }, [fileList]);
+
+  const onFinish = async () => {
+    const formData = new FormData();
+    fileList.map((e: any) => {
+      formData.append('file', e);
+    });
+    await form.validateFields().then(async values => {
+      onChangeSetItemFiled({ values, files: formData });
+      // console.log(values);
+    });
+    // console.log('Received values of form:', values);
   };
+
   return (
     <>
       <Row>
         <Form
           name="dynamic_form_nest_item"
-          onFinish={onFinish}
+          // onFinish={onFinish}
           autoComplete="off"
           style={{ width: '100%' }}
           form={form}
+          // onChange={onFinish}
           // layout="vertical"
           // initialValues={{ requiredMarkValue: requiredMark }}
           // onValuesChange={onRequiredTypeChange}
@@ -78,9 +82,9 @@ export const DetailList: React.FC<Props> = ({
           >
             <Input
               placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-              onChange={e =>
-                onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-              }
+              // onChange={e =>
+              //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
+              // }
             />
           </Form.Item>
           <Form.Item
@@ -92,9 +96,9 @@ export const DetailList: React.FC<Props> = ({
             name="detail"
           >
             <TextArea
-              onChange={e =>
-                onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
-              }
+            // onChange={e =>
+            //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
+            // }
             />
           </Form.Item>
           <Row>
@@ -102,10 +106,7 @@ export const DetailList: React.FC<Props> = ({
             <Col span={18}>รายละเอียด</Col>
             <Col offset={1} span={3}></Col>
           </Row>
-          <Form.List
-            name="detailAgendes"
-            initialValue={[{ key: 0, name: 0, isListField: true, fieldKey: 0 }]}
-          >
+          <Form.List name="detailAgendes" initialValue={[{}]}>
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => {
@@ -118,9 +119,9 @@ export const DetailList: React.FC<Props> = ({
                         <Form.Item
                           {...restField}
                           name={[name, 'detail']}
-                          rules={[
-                            { required: true, message: 'Missing detail' },
-                          ]}
+                          // rules={[
+                          //   { required: true, message: 'Missing detail' },
+                          // ]}
                         >
                           <Input />
                         </Form.Item>
@@ -149,7 +150,7 @@ export const DetailList: React.FC<Props> = ({
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               <Upload {...props}>
                 <Button
-                  disabled={fileList.length === 1}
+                  // disabled={fileList.length === 1}
                   icon={<UploadOutlined />}
                 >
                   Select File
@@ -157,6 +158,13 @@ export const DetailList: React.FC<Props> = ({
               </Upload>
             </Col>
           </Row>
+          <br></br>
+          <Button
+            onClick={onFinish}
+            style={{ color: 'white', background: '#1E6541' }}
+          >
+            บันทึก ระเบียบวาระที่ {Pagestep}
+          </Button>
         </Form>
       </Row>
     </>

@@ -34,34 +34,28 @@ export const FoodPage: React.FC<Props> = ({
   const { Option } = Select;
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [requiredMark, setRequiredMarkType] =
-    useState<RequiredMark>('optional');
-  const [fileList, setFileList] = useState<any>([]);
-  const onRequiredTypeChange = ({
-    requiredMarkValue,
-  }: {
-    requiredMarkValue: RequiredMark;
-  }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
-  const props = {
-    onRemove: (file: any) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
-    },
-    beforeUpload: (file: any) => {
-      setFileList([...fileList, file]);
-      return false;
-    },
-    fileList,
-  };
+  // const [requiredMark, setRequiredMarkType] =
+  //   useState<RequiredMark>('optional');
+  // const [fileList, setFileList] = useState<any>([]);
+  // const onRequiredTypeChange = ({
+  //   requiredMarkValue,
+  // }: {
+  //   requiredMarkValue: RequiredMark;
+  // }) => {
+  //   setRequiredMarkType(requiredMarkValue);
+  // };
   const onclickBlack = () => {
     navigate(`/meeting/agendas`);
   };
   const onclickSubmit = () => {
     console.log('1');
+  };
+  const onFinish = (values: any) => {
+    form.validateFields().then(values => {
+      console.log(values);
+      setDataField(values);
+    });
+    // console.log('Received values of form:', values);
   };
   return (
     <>
@@ -69,10 +63,11 @@ export const FoodPage: React.FC<Props> = ({
         <Form
           style={{ width: '100%' }}
           form={form}
-          layout="vertical"
-          initialValues={{ requiredMarkValue: requiredMark }}
-          onValuesChange={onRequiredTypeChange}
-          requiredMark={requiredMark}
+          onChange={onFinish}
+          // layout="vertical"
+          // initialValues={{ requiredMarkValue: requiredMark }}
+          // onValuesChange={onRequiredTypeChange}
+          // requiredMark={requiredMark}
         >
           <Row gutter={16}>
             <Col span={24}>
@@ -87,11 +82,11 @@ export const FoodPage: React.FC<Props> = ({
                 รายการอาหารและเครื่องดื่ม
               </Typography>
             </Col>
-            <Col span={2}>ประเภท</Col>
-            <Col span={22}>ชื่อรายการอาหารและเครื่องดื่ม</Col>
+            <Col span={4}>ประเภท</Col>
+            <Col span={18}>ชื่อรายการอาหารและเครื่องดื่ม</Col>
           </Row>
           <Form.List
-            name="users"
+            name="fooddetail"
             initialValue={[{ key: 0, name: 0, isListField: true, fieldKey: 0 }]}
           >
             {(fields, { add, remove }) => (
@@ -99,13 +94,13 @@ export const FoodPage: React.FC<Props> = ({
                 {fields.map(({ key, name, ...restField }) => {
                   return (
                     <Row key={key} gutter={16}>
-                      <Col span={2}>
+                      <Col span={4}>
                         <Form.Item
                           {...restField}
-                          name={[name, 'first']}
-                          rules={[
-                            { required: true, message: 'Missing first name' },
-                          ]}
+                          name={[name, 'typefood']}
+                          // rules={[
+                          //   { required: true, message: 'Missing first name' },
+                          // ]}
                         >
                           <Select placeholder={'Please Select'} allowClear>
                             <Option key={'1'} value={'food'}>
@@ -120,13 +115,13 @@ export const FoodPage: React.FC<Props> = ({
                           </Select>
                         </Form.Item>
                       </Col>
-                      <Col span={21}>
+                      <Col span={18}>
                         <Form.Item
                           {...restField}
-                          name={[name, 'last']}
-                          rules={[
-                            { required: true, message: 'Missing last name' },
-                          ]}
+                          name={[name, 'namefood']}
+                          // rules={[
+                          //   { required: true, message: 'Missing last name' },
+                          // ]}
                         >
                           <Input placeholder="Text" />
                         </Form.Item>

@@ -1,9 +1,12 @@
-import { Button, Card, Col, Row, Steps } from 'antd';
-import { useState } from 'react';
+import { Button, Card, Col, Row, Steps, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 import { AgendaPage } from './agendaPage';
 import { DetailPage } from './detailsPage';
 import { FoodPage } from './foodPage';
 import './styles.css';
+import { DatamanagementService } from '../../stores/meeting-store';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Step } = Steps;
 
@@ -18,22 +21,71 @@ export const CreateMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
-    setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
+    setDataDetail(dataField);
+
+    // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
   };
 
   const setDataFoodField = (dataField: any) => {
-    setDataDetail((pre: any) => ({ ...pre, ...dataField }));
-  };
-
-  const setDataAgendaield = (dataField: any) => {
     setDataFood((pre: any) => ({ ...pre, ...dataField }));
   };
 
-  const submitForm = () => {
-    console.log(dataAgenda);
-    console.log(dataDetail);
-    console.log(dataFood);
+  const setDataAgendaield = (dataField: any) => {
+    setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
   };
+
+  const submitForm = () => {
+    const id = uuidv4();
+    Modal.confirm({
+      title: 'Confirm Create this meeting',
+      icon: <ExclamationCircleOutlined />,
+      // content: `Link... ${window.origin}/${id}`,
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      onOk: async () => {
+        if (dataAgenda.fileOverview !== undefined) {
+          const formData = new FormData();
+          dataAgenda.fileOverview.map((e: any) => {
+            formData.append('file', e);
+          });
+          // save fileStep1
+          await DatamanagementService().import(formData, id);
+        }
+        await DatamanagementService()
+          .createmeeting(
+            dataAgenda.detailMeeting,
+            dataAgenda.title,
+            dataAgenda.room,
+            dataAgenda.floor,
+            dataAgenda.building,
+            dataAgenda.meetingplace,
+            dataAgenda.date,
+            dataAgenda.timeStart,
+            dataAgenda.timeEnd,
+            id,
+            dataFood.fooddetail,
+          )
+          .then(data => {});
+        await DatamanagementService()
+          .saveusermeetingall(dataAgenda.userBoard, dataAgenda.userAttendee, id)
+          .then(data => {});
+        dataDetail.map((e: any, i: string) => {
+          DatamanagementService().saveagenda(e.values, id, i);
+        });
+        dataDetail.map((e: any, i: string) => {
+          DatamanagementService().savefileagendas(e.files, id, i);
+        });
+      },
+      onCancel: () => {},
+    });
+    // console.log(dataAgenda);
+    console.log(dataDetail);
+    // console.log(dataFood);
+  };
+
+  // useEffect(() => {
+  //   console.log('useEffect ran. ', dataAgenda);
+  // }, [dataAgenda]);
 
   const steps = [
     {
@@ -49,7 +101,6 @@ export const CreateMeeting: React.FC = () => {
       content: <FoodPage setDataField={setDataFoodField} />,
     },
   ];
-
   return (
     <>
       <>
@@ -100,6 +151,7 @@ export const CreateMeeting: React.FC = () => {
             </Col>
           ))}
         </Row>
+        <br></br>
         <Row justify="center">
           {currentStep > 0 && (
             <Button
@@ -121,6 +173,7 @@ export const CreateMeeting: React.FC = () => {
             <Button
               style={{ color: 'white', background: '#1E6541' }}
               htmlType="submit"
+              onClick={submitForm}
             >
               Submit
             </Button>

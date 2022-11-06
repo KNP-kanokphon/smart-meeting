@@ -13,12 +13,14 @@ import TextArea from 'antd/lib/input/TextArea';
 import { props } from 'lodash/fp';
 import { TableBoard } from '../Meeting/createmeeting/TableBoard';
 import { TableAttendee } from '../Meeting/createmeeting/TableAttendee';
+import { useEffect, useState } from 'react';
 
 interface IProp {
   setDataField: (dataField: any) => void;
 }
 
 export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
+  const [fileList, setFileList] = useState<any>([]);
   const onChangeDate = (date: any) => {
     console.log(date);
   };
@@ -27,6 +29,27 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
   };
   const onChangeEndTime = (time: any) => {
     console.log(time);
+  };
+  const onChangeSetItemFiled = async (filedList: any) => {
+    setDataField({ userBoard: filedList });
+  };
+  const onChangeSetItemFiledAtt = async (filedList: any) => {
+    setDataField({ userAttendee: filedList });
+  };
+  const props = {
+    onRemove: (file: any) => {
+      const index = fileList.indexOf(file);
+      const newFileList = fileList.slice();
+      newFileList.splice(index, 1);
+      setFileList(newFileList);
+      setDataField({ fileOverview: newFileList });
+    },
+    beforeUpload: (file: any) => {
+      setFileList([...fileList, file]);
+      setDataField({ fileOverview: [...fileList, file] });
+      return false;
+    },
+    fileList,
   };
   return (
     <>
@@ -129,11 +152,20 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
         <Row>
           <Col xs={{ span: 24 }} lg={{ span: 24 }}>
             <Upload {...props}>
-              <Button icon={<UploadOutlined />}>Click To Upload</Button>
+              <Button
+                // disabled={fileList.length === 1}
+                icon={<UploadOutlined />}
+              >
+                Click To Upload
+              </Button>
             </Upload>
           </Col>
         </Row>
       </Col>
+      <Divider />
+      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} />
+      <Divider />
+      <TableAttendee onChangeSetItemFiledAtt={onChangeSetItemFiledAtt} />
     </>
   );
 };

@@ -29,7 +29,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
       .then(data => {
         const dataNew = data.filter((e: any) => {
           const dateParts = e.day.split('-');
-          const dd = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+          const dd = new Date(e.day);
           const dn = new Date();
           const dateCreate = [
             dd.getDate(),
@@ -38,6 +38,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
           ];
 
           const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
+          console.log(new Date(e.day));
           if (
             `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
             `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
@@ -121,8 +122,8 @@ export const TableToday: React.FC = (): React.ReactElement => {
     },
     {
       title: 'Checklist',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'uuid',
+      key: 'uuid',
       width: '10%',
       render: (data: string) => {
         return (

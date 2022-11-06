@@ -39,13 +39,19 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       });
     await DatamanagementService()
       .getuserInroom(String(state))
-      .then(data => {
-        console.log(data);
-
-        setDataUser(data);
+      .then(async data => {
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            id: i + 1,
+            uuidprofile: e.uuidprofile,
+            uuidroom: e.uuid,
+            username: e.username,
+            statuscheckin: e.checkin,
+          };
+        });
+        setDataUser(newData);
       });
   };
-
   const [datasource, setDatasource] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -75,66 +81,19 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
     </>
   );
 
-  const data: any = [
-    {
-      key: 1,
-      title: 'นาย',
-      name: 'ทวี',
-      lastname: 'สอดส่อง',
-      position: 'นายกสมาคม',
-      course: 'ปปร.17,ปศส.10',
-      phoneNumber: '081-831-2876',
-
-      status: 1,
-    },
-    {
-      key: 2,
-      title: 'นาย',
-      name: 'ทวี',
-      lastname: 'สอดส่อง',
-      position: 'นายกสมาคม',
-      course: 'ปปร.17,ปศส.10',
-      phoneNumber: '081-831-2876',
-
-      status: 1,
-    },
-    {
-      key: 3,
-      title: 'นาย',
-      name: 'ทวี',
-      lastname: 'สอดส่อง',
-      position: 'นายกสมาคม',
-      course: 'ปปร.17,ปศส.10',
-      phoneNumber: '081-831-2876',
-      status: 2,
-    },
-  ];
-
   const columns: any = [
     {
       title: 'ลำดับ',
-      dataIndex: 'key',
-      key: 'key',
+      dataIndex: 'id',
+      key: 'id',
       width: '5%',
       fixed: 'left',
     },
     {
-      title: 'คำนำหน้า',
-      dataIndex: 'title',
-      key: 'title',
-      width: '5%',
-    },
-    {
-      title: 'ชื่อ',
-      dataIndex: 'name',
-      key: 'name',
-      width: '10%',
-    },
-    {
-      title: 'นามสกุล',
-      dataIndex: 'lastname',
-      key: 'lastname',
-      width: '10%',
+      title: 'ชื่อ-นามสกุล',
+      dataIndex: 'username',
+      key: 'username',
+      width: '20%',
     },
     {
       title: 'ตำแหน่ง',
@@ -150,41 +109,38 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
     },
     {
       title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
+      dataIndex: 'phone',
+      key: 'phone',
       width: '10%',
     },
 
     {
       title: 'สถานะ',
-      dataIndex: 'status',
-      key: 'meet',
+      dataIndex: 'statuscheckin',
+      key: 'statuscheckin',
       width: '10%',
-
       render: (text: any) => {
-        if (text) {
-          return text === 1 ? (
-            <Tag color="lime">
-              <Space>
-                <Icon icon="emojione:white-heavy-check-mark" />
-                {'อนุมัติแล้ว'}
-              </Space>
-            </Tag>
-          ) : (
-            <Tag>
-              <Space>
-                <Icon icon="carbon:time" />
-                {'รอการอนุมัติ'}
-              </Space>
-            </Tag>
-          );
-        }
+        return text === true ? (
+          <Tag color="lime">
+            <Space>
+              <Icon icon="emojione:white-heavy-check-mark" />
+              {'อนุมัติแล้ว'}
+            </Space>
+          </Tag>
+        ) : (
+          <Tag>
+            <Space>
+              <Icon icon="carbon:time" />
+              {'รอการอนุมัติ'}
+            </Space>
+          </Tag>
+        );
       },
     },
     {
       title: '',
-      dataIndex: 'key',
-      key: 'key',
+      dataIndex: 'uuidprofile',
+      key: 'uuidprofile',
       fixed: 'right',
       width: '5%',
       render: (text: any) => {

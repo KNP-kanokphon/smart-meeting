@@ -287,9 +287,9 @@ export const CreateMeeting: React.FC<Props> = ({ children, extra }) => {
           </Row>
         </Col>
         <Divider />
-        <TableBoard />
+        {/* <TableBoard /> */}
         <Divider />
-        <TableAttendee />
+        {/* <TableAttendee /> */}
         <Col span={24}>
           <Row>
             <Col

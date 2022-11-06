@@ -48,7 +48,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
       .then(data => {
         const dataNew = data.filter((e: any) => {
           const dateParts = e.day.split('-');
-          const dd = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+          const dd = new Date(e.day);
           const dn = new Date();
           const dateCreate = [
             dd.getDate(),

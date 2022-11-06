@@ -46,17 +46,17 @@ const menuConfigs: MenuConfig[] = [
       </>
     ),
   },
-  {
-    icon: <DiffOutlined />,
-    label: 'List Meeting',
-    path: 'meeting-list',
-    component: (
-      <>
-        <Route index element={<ListMeeting />} />
-        <Route path="detail:id" element={<DetailMeeting />} />
-      </>
-    ),
-  },
+  // {
+  //   icon: <DiffOutlined />,
+  //   label: 'List Meeting',
+  //   path: 'meeting-list',
+  //   component: (
+  //     <>
+  //       <Route index element={<ListMeeting />} />
+  //       <Route path="detail:id" element={<DetailMeeting />} />
+  //     </>
+  //   ),
+  // },
   {
     icon: <CalendarOutlined />,
     label: 'Meeting Schedule',

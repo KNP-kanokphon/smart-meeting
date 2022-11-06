@@ -129,7 +129,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
                   marginTop: '3px',
                 }}
               >
-                <Typography>คณะสมาคม :</Typography>
+                <Typography>คณะสมาคม</Typography>
               </Col>
               <Col span={16}>
                 <Select

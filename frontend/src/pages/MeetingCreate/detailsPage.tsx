@@ -1,6 +1,6 @@
 import { Button, Card, Input, Row, Steps, Tabs } from 'antd';
 import './styles.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DetailList } from './components/detailList';
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -22,12 +22,11 @@ export const DetailPage: React.FC<Props> = ({
   const [itemFiled, setItemFiled] = useState<any>([]);
 
   const onChangeSetItemFiled = async (filedList: any) => {
-    console.log(
-      `🚀 ~ file: detailsPage.tsx ~ line 25 ~ onChangeSetItemFiled ~ filedList`,
-      filedList,
-    );
-    setItemFiled((pre: any) => ({ ...pre, ...filedList }));
+    setItemFiled([...itemFiled, filedList]);
+    setDataField([...itemFiled, filedList]);
   };
+
+  useEffect(() => {}, [itemFiled]);
 
   const defaultPanes = new Array(initialIndexValue)
     .fill(null)
