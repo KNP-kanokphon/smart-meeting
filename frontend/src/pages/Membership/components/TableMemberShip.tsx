@@ -12,13 +12,19 @@ import {
   Form,
   Space,
   Tooltip,
+  message,
 } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
 import { useNavigate } from 'react-router-dom';
-import { AlignRightOutlined, MoreOutlined } from '@ant-design/icons';
+import {
+  AlignRightOutlined,
+  MoreOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { DatamanagementService } from '../../../stores/meeting-store';
 
 export const TableMemberShip: React.FC = (): React.ReactElement => {
+  const [formEdit] = Form.useForm();
   const { Option } = Select;
   const { Search } = Input;
   const navigate = useNavigate();
@@ -26,61 +32,114 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [dataUser, setDataUser] = useState<any>([]);
   const [modalVisible, setmodalVisible] = useState<boolean>(false);
 
-  const showModal = () => {
-    setmodalVisible(true);
-  };
+  const [dataUuid, setDataUuid] = useState<any>([]);
+  const [dataUsername, setDataUsername] = useState<any>('');
+  const [dataPhone, setDataPhone] = useState<string>('');
+  const [dataCourse, setDataCourse] = useState<string>('');
+  const [dataPosition, setDataPosition] = useState<string>('');
+
+  useEffect(() => {
+    async function getListmeeting() {
+      await DatamanagementService()
+        .getUser()
+        .then(async data => {
+          // console.log(`data`, data);
+          const newData = await data.map((e: any, i: number) => {
+            return {
+              key: i + 1,
+              uuid: e.uuid,
+              username: e.username,
+              phone: e.phone,
+              course: e.course,
+              position: e.position,
+              positionkpi: e.positionkpi,
+            };
+          });
+          // await setDataUser([]);
+          await setDataUser(newData);
+        });
+    }
+    getListmeeting();
+  }, []);
 
   const handleOpen = () => {
     setmodalVisible(false);
-  };
-
-  const handleOK = () => {
-    setmodalVisible(false);
+    formEdit.resetFields();
   };
 
   const handleCancel = () => {
     setmodalVisible(false);
+    formEdit.resetFields();
   };
-  useEffect(() => {
-    getListmeeting();
-  }, []);
 
-  const getListmeeting = async () => {
-    await DatamanagementService()
-      .getUser()
-      .then(async data => {
-        console.log(data);
-
-        const newData = await data.map((e: any, i: number) => {
-          return {
-            key: i + 1,
-            username: e.username,
-            phone: e.phone,
+  const handleOK = (e: any) => {
+    if (e) {
+      Modal.confirm({
+        title: 'ยืนยันการเปลี่ยนแปลง',
+        icon: <ExclamationCircleOutlined />,
+        content: 'คุณต้องการเปลี่ยนแปลงข้อมูล ใช่ หรือ ไม่ ?',
+        okText: 'ยืนยัน',
+        cancelText: 'ยกเลิก',
+        onOk: async () => {
+          const data = {
+            data: {
+              uuid: dataUuid,
+              username:
+                e.username != undefined || e.username != ''
+                  ? e.username
+                  : dataUsername,
+              phone:
+                e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
+            },
           };
-        });
-        setDataUser(newData);
+          await DatamanagementService()
+            .updateByid(dataUuid, data)
+            .then(() => {
+              message.success('บันทึกสำเร็จ');
+              setmodalVisible(false);
+              formEdit.resetFields();
+            });
+        },
+        onCancel: () => {
+          setmodalVisible(false);
+          formEdit.resetFields();
+        },
       });
+    }
   };
 
+  const showModal = async (event: any) => {
+    setmodalVisible(true);
+    setDataUuid(event.uuid);
+    setDataUsername(event.username);
+    setDataPhone(event.phone);
+    setDataCourse(event.course);
+    setDataPosition(event.position);
+  };
   const onSearch = (value: string) => console.log(value);
 
   const columnsToday: any = [
     {
       title: 'ลำดับที่',
       dataIndex: 'key',
+      key: 'key',
       fixed: 'left',
     },
     {
       title: 'ชื่อ - นามสกุล',
+      key: 'username',
       dataIndex: 'username',
     },
-    {
-      title: 'หลักสูตร  ',
-      dataIndex: '',
-    },
+
     {
       title: 'เบอร์โทรศัพท์',
+      key: 'phone',
       dataIndex: 'phone',
+    },
+    {
+      title: 'หลักสูตร',
+      key: 'course',
+      dataIndex: 'course',
     },
     {
       title: (
@@ -88,35 +147,30 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
           <AlignRightOutlined rotate={180} />
         </>
       ),
-      dataIndex: 'id',
-      // width: '2%',
+      dataIndex: 'uuid',
+      key: 'uuid',
       fixed: 'right',
       align: 'center',
       render: (text: any, row: any) => {
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <Tooltip title={'Edit'}>
-              <Button style={{ border: 'none' }} onClick={showModal}>
-                <MoreOutlined />
-              </Button>
-            </Tooltip>
-          </div>
-        );
+        if (text) {
+          return (
+            <div style={{ textAlign: 'center' }}>
+              <Tooltip title={'Edit'}>
+                <Button
+                  style={{ border: 'none' }}
+                  onClick={() => {
+                    showModal(row);
+                  }}
+                >
+                  <MoreOutlined />
+                </Button>
+              </Tooltip>
+            </div>
+          );
+        }
       },
     },
   ];
-
-  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
-
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-
-  // const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
       <Modal
@@ -126,25 +180,33 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
         onOk={handleOpen}
         onCancel={handleCancel}
       >
-        <Form layout="vertical">
-          <Form.Item label={'คำนำหน้า'}>
-            <Select placeholder="Text">
-              <Option key={0} value={'m'}>
-                นาย
-              </Option>
-              <Option key={1} value={'f'}>
-                นางสาว
-              </Option>
-            </Select>
+        <Form
+          name="formEdit"
+          form={formEdit}
+          layout="vertical"
+          onFinish={handleOK}
+          fields={[
+            {
+              name: ['username'],
+              value: dataUsername,
+            },
+            {
+              name: ['phone'],
+              value: dataPhone,
+            },
+          ]}
+        >
+          <Form.Item name="username" label={'ชื่อ - นามสกุล'}>
+            <Input id="username" name="username" value={dataUsername} />
           </Form.Item>
-          <Form.Item label={'ชื่อ'}>
-            <Input placeholder={'Text'} />
-          </Form.Item>
-          <Form.Item label={'สกุล'}>
-            <Input placeholder={'Text'} />
-          </Form.Item>
-          <Form.Item label={'เบอร์โทรศัพท์'}>
-            <Input placeholder={'Text'} />
+          <Form.Item name="phone" label={'เบอร์โทรศัพท์'}>
+            <Input
+              id="phone"
+              name="phone"
+              placeholder={'Text'}
+              value={dataPhone}
+              defaultValue={dataPhone}
+            />
           </Form.Item>
           <Form.Item label={'หลักสูตร'}>
             <Select placeholder="Please Select" allowClear>
@@ -180,7 +242,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               <Space>
                 <Button onClick={handleCancel}>ยกเลิก</Button>
                 <Button
-                  onClick={handleOK}
+                  htmlType="submit"
                   style={{ background: '#1E6541', color: 'white' }}
                 >
                   ยืนยัน
@@ -218,25 +280,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
           </Row>
         }
       >
-        {/* Test */}
-        {/* <Button
-        type="primary"
-        onClick={start}
-        disabled={!hasSelected}
-        loading={loading}
-      >
-        Reload
-      </Button>
-      <span style={{ marginLeft: 8 }}>
-        {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-      </span> */}
-        <Table
-          size="large"
-          // rowSelection={rowSelection}
-          dataSource={dataUser}
-          columns={columnsToday}
-          // scroll={{ x: 'calc(600px + 50%)' }}
-        />
+        <Table size="large" dataSource={dataUser} columns={columnsToday} />
       </Card>
     </>
   );
