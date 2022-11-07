@@ -83,8 +83,8 @@ const menuConfigs: MenuConfig[] = [
   },
   {
     icon: <SettingOutlined />,
-    label: 'Setting Permission',
-    path: 'settingpermission',
+    label: 'Setting Profile',
+    path: 'settingprofile',
     component: (
       <>
         <Route index element={<SettingPermission />} />{' '}

@@ -94,7 +94,6 @@ export const DatamanagementService = () => ({
   },
   getProfileByid: async (roomid: any, userid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}/${userid}`);
-
     return result.data;
   },
   getMeetingByid: async (roomid: any) => {
@@ -120,7 +119,7 @@ export const DatamanagementService = () => ({
     });
     return result.data;
   },
-  getuserInroom: async (roomid: string) => {
+  getuserInroom: async (roomid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}`);
     return result.data;
   },
@@ -162,6 +161,10 @@ export const DatamanagementService = () => ({
         },
       },
     );
+    return result.data;
+  },
+  getagendaByid: async (idroom: any) => {
+    const result = await httpClient.get(`meeting/agenda/${idroom}`);
     return result.data;
   },
 });

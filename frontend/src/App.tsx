@@ -15,6 +15,7 @@ import { DetailStepTwo } from './components/MainLayoutDetail/DetailStepTwo';
 import { DetailStepThree } from './components/MainLayoutDetail/DetailStepThree';
 import { MainLayoutProfileDetail } from './components/MainLayoutDetail/ProfileDetail';
 import { Login } from './pages/Login/Login';
+import { DetailAlready } from './components/MainLayoutDetail/DetailAlready';
 
 // const routeMapper = (x: MenuItem): React.ReactNode => (
 //   <Route
@@ -49,6 +50,12 @@ const App = () => {
           <Route
             path="/:id"
             element={<MainLayoutDetail baseURL={'/detail'} />}
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/:roomid/:userid"
+            element={<DetailAlready baseURL={'/detailAlready'} />}
           ></Route>
         </Routes>
         <Routes>

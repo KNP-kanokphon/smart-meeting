@@ -93,7 +93,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       title: 'ลำดับ',
       dataIndex: 'id',
       key: 'id',
-      width: '10%',
+      width: '5%',
       fixed: 'left',
     },
     {
@@ -101,6 +101,15 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'username',
       key: 'username',
       width: '20%',
+    },
+    {
+      title: 'link',
+      dataIndex: 'uuidprofile',
+      key: 'uuidprofile',
+      width: '20%',
+      render: (data: any) => {
+        return <>{`${window.origin}/detail/${state}/${data}`}</>;
+      },
     },
     {
       title: 'ตำแหน่ง',
@@ -215,24 +224,44 @@ export const CheckList: React.FC = (): React.ReactElement => {
               </Title>
             </Col>
           </Row>
-
-          <Typography>{dataIntable[0]?.title}</Typography>
         </Card>
 
         <div style={{ width: '100%', marginLeft: '10px', marginRight: '10px' }}>
           <Card
             style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
             title={
-              <Typography
-                style={{
-                  textAlign: 'left',
-                  // fontSize: '30px',
-                  // fontWeight: 'bold',
-                  color: 'grey',
-                }}
-              >
-                Check-in Lists
-              </Typography>
+              <>
+                <Typography
+                  style={{
+                    textAlign: 'left',
+                    // fontSize: '30px',
+                    // fontWeight: 'bold',
+                    color: 'grey',
+                  }}
+                >
+                  Check-in Lists
+                </Typography>
+                <Typography
+                  style={{
+                    textAlign: 'left',
+                    // fontSize: '30px',
+                    // fontWeight: 'bold',
+                    color: 'grey',
+                  }}
+                >
+                  {dataIntable[0]?.title}
+                </Typography>
+                <Typography
+                  style={{
+                    textAlign: 'left',
+                    // fontSize: '30px',
+                    // fontWeight: 'bold',
+                    color: 'grey',
+                  }}
+                >
+                  {`Link ${window.origin}/${state}`}
+                </Typography>
+              </>
             }
             // extra={}
           >

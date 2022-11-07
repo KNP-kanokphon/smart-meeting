@@ -56,7 +56,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      width: '70%',
+      width: '60%',
       ellipsis: true,
       render: (data: string, dataAll: any) => {
         return (
