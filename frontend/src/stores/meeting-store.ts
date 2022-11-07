@@ -23,7 +23,7 @@ export const DatamanagementService = () => ({
     starttime: string,
     endtime: string,
     uuid: string,
-    snack: boolean,
+    dataFood: any,
   ) => {
     const data = {
       detail: detail,
@@ -36,36 +36,45 @@ export const DatamanagementService = () => ({
       starttime: starttime,
       endtime: endtime,
       uuid: uuid,
-      snack: snack,
+      dataFood: dataFood,
     };
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
-  saveuserattendees: async (userAll: [], idmeeting: string) => {
-    const newData: any = [];
-    userAll.map(
-      (x: {
-        username: string;
-        phone: string;
-        email: string;
-        model: string;
-        position: string;
-        uuid: string;
-        idmeeting: string;
-        checkin: boolean;
-      }) => {
-        newData.push({
-          username: x.username,
-          email: x.email,
-          phone: x.phone,
-          model: x.model,
-          position: x.position,
-          uuid: x.uuid,
-          idmeeting: idmeeting,
-          checkin: false,
-        });
-      },
-    );
+  saveusermeetingall: async (
+    userBoard: [],
+    userAttendee: [],
+    idmeeting: string,
+  ) => {
+    const newData = {
+      userBoard: userBoard,
+      userAttendee: userAttendee,
+      idmeeting: idmeeting,
+    };
+    // const newData: any = [];
+    // userAll.map(
+    //   (x: {
+    //     username: string;
+    //     phone: string;
+    //     email: string;
+    //     model: string;
+    //     position: string;
+    //     uuid: string;
+    //     idmeeting: string;
+    //     checkin: boolean;
+    //   }) => {
+    //     newData.push({
+    //       username: x.username,
+    //       email: x.email,
+    //       phone: x.phone,
+    //       model: x.model,
+    //       position: x.position,
+    //       uuid: x.uuid,
+    //       idmeeting: idmeeting,
+    //       checkin: false,
+    //     });
+    //   },
+    // );
 
     const result = await httpClient.post(`/userattendees/`, newData);
     return result.data;
@@ -85,7 +94,6 @@ export const DatamanagementService = () => ({
   },
   getProfileByid: async (roomid: any, userid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}/${userid}`);
-
     return result.data;
   },
   getMeetingByid: async (roomid: any) => {
@@ -111,7 +119,7 @@ export const DatamanagementService = () => ({
     });
     return result.data;
   },
-  getuserInroom: async (roomid: string) => {
+  getuserInroom: async (roomid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}`);
     return result.data;
   },
@@ -132,6 +140,31 @@ export const DatamanagementService = () => ({
   },
   getUser: async () => {
     const result = await httpClient.post(`/userattendees/userAll`);
+    return result.data;
+  },
+  saveagenda: async (data: any, id: string, step: string) => {
+    const newData = {
+      agendas: data,
+      id: id,
+      step: step,
+    };
+    const result = await httpClient.post(`/meeting/agenda`, newData);
+    return result.data;
+  },
+  savefileagendas: async (file: any, id: string, step: string) => {
+    const result = await httpClient.post(
+      `/meeting/agendafile/${id}/${step}`,
+      file,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return result.data;
+  },
+  getagendaByid: async (idroom: any) => {
+    const result = await httpClient.get(`meeting/agenda/${idroom}`);
     return result.data;
   },
 });

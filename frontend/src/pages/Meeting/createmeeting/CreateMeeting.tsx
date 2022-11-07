@@ -225,9 +225,26 @@ export const CreateMeeting: React.FC = () => {
           </Row>
         </Col>
         <Divider />
-        <TableBoard />
+        {/* <TableBoard /> */}
         <Divider />
-        <TableAttendee />
+        {/* <TableAttendee /> */}
+        <Col span={24}>
+          <Row>
+            <Col
+              xs={{ span: 24 }}
+              lg={{ span: 24 }}
+              style={{ textAlign: 'center' }}
+            >
+              <br></br>
+              {/* <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                onClick={() => nextPage()}
+              >
+                Next
+              </Button> */}
+            </Col>
+          </Row>
+        </Col>
       </Row>
       </div>
     );

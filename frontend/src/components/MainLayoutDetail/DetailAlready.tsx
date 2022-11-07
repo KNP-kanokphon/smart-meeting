@@ -25,25 +25,30 @@ interface MeetingInterface {
   detail: string;
 }
 
-export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
-  const { id } = useParams<{ id: string }>();
+export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
+  const { roomid } = useParams<{ roomid: string }>();
+  const { userid } = useParams<{ userid: string }>();
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
   const [agenda, setAgenda] = useState<any>();
+  const [user, setUser] = useState<any>();
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
-    const result = await DatamanagementService().getMeetingByid(id);
-    const resultAgenda = await DatamanagementService().getagendaByid(id);
+    const result = await DatamanagementService().getMeetingByid(roomid);
+    const resultAgenda = await DatamanagementService().getagendaByid(roomid);
+    const resultUser = await DatamanagementService().getProfileByid(
+      roomid,
+      userid,
+    );
     setAgenda(resultAgenda);
-    console.log(resultAgenda);
-
     setMeetingData(result[0]);
+    setUser(resultUser[0]);
   };
 
   const navigate = useNavigate();
   const onChange = () => {
-    navigate(`/steptwo/${id}`);
+    navigate(`/steptwo/${roomid}`);
   };
   return (
     <Layout className="layout">
@@ -117,11 +122,49 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                       paddingRight: '20px',
                     }}
                   >
+                    <b>{'เรียนคุณ : '}</b>
+                    {user?.username}
+                  </Col>
+                  <Col span={8}></Col>
+                </Row>
+                <Row>
+                  <Col span={7}></Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '20px',
+                      paddingRight: '20px',
+                    }}
+                  >
+                    ขอเรียนเชิญประชุม
+                  </Col>
+                  <Col span={8}></Col>
+                </Row>
+                <Row>
+                  <Col span={7}></Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '20px',
+                      paddingRight: '20px',
+                    }}
+                  >
                     <b>{'Title : '}</b>
                     {meetingData?.title}
                   </Col>
                   <Col span={8}></Col>
                 </Row>
+
                 <Row>
                   <Col span={7}></Col>
 
@@ -170,11 +213,13 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                   >
                     <b>{'Agenda Item :'}</b>
                     <br></br>
-                    {agenda?.map((e: any) => {
+                    {agenda?.map((e: any, i: number) => {
                       return (
                         <>
-                          {e?.agendes} : {e?.detailagendes}
-                          <br></br>
+                          <Row key={i}>
+                            {e?.agendes} : {e?.detailagendes}
+                            <br></br>
+                          </Row>
                         </>
                       );
                     })}

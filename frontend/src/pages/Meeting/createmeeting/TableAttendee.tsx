@@ -1,19 +1,28 @@
 import { Button, Col, Input, Modal, Row, Select, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../stores/meeting-store';
 type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
+  onChangeSetItemFiledAtt: (filedList: any) => void;
 };
 const { Option } = Select;
 
-export const TableAttendee: React.FC<Props> = ({ children, extra }) => {
+export const TableAttendee: React.FC<Props> = ({
+  children,
+  extra,
+  onChangeSetItemFiledAtt,
+}) => {
   const [dataSourceAttendee, setDataSourceAttendee] = useState<any>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
   const [username, setUsername] = useState<any>([]);
+
+  useEffect(() => {
+    onChangeSetItemFiledAtt(dataSourceAttendee);
+  }, [dataSourceAttendee]);
 
   const handleAdd = () => {
     // const randomNumber = parseInt(Math.random() * 1000);

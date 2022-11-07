@@ -43,16 +43,24 @@ const { TextArea } = Input;
 type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
+  onChangeSetItemFiled: (filedList: any) => void;
 };
 
 const { Step } = Steps;
 const { Option } = Select;
 
-export const TableBoard: React.FC<Props> = ({ children, extra }) => {
+export const TableBoard: React.FC<Props> = ({
+  children,
+  extra,
+  onChangeSetItemFiled,
+}) => {
   const [dataSourceBoard, setDataSourceBoard] = useState<any>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
   const [username, setUsername] = useState<any>([]);
+  useEffect(() => {
+    onChangeSetItemFiled(dataSourceBoard);
+  }, [dataSourceBoard]);
 
   const handleAdd = () => {
     // const randomNumber = parseInt(Math.random() * 1000);
@@ -113,7 +121,6 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
       key: '7',
       title: 'Actions',
       width: '20%',
-
       render: (record: any) => {
         return (
           <>
