@@ -173,4 +173,17 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  updateByid: async (uuid: any, data: any) => {
+    const result = await httpClient.put(
+      `userattendees/updateUserbyid/${uuid}`,
+      data,
+    );
+    return result.data;
+  },
+  // getUserByid: async (userid: any) => {
+  //   const result = await httpClient.get(
+  //     `user/getuserbyid/${userid}`,
+  //   );
+  //   return result.data;
+  // },
 });
