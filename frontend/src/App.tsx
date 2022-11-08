@@ -16,6 +16,7 @@ import { DetailStepThree } from './components/MainLayoutDetail/DetailStepThree';
 import { MainLayoutProfileDetail } from './components/MainLayoutDetail/ProfileDetail';
 import { Login } from './pages/Login/Login';
 import { DetailAlready } from './components/MainLayoutDetail/DetailAlready';
+import { DetailConfirm } from './components/MainLayoutDetail/DetailConfirm';
 
 // const routeMapper = (x: MenuItem): React.ReactNode => (
 //   <Route
@@ -74,6 +75,13 @@ const App = () => {
           <Route
             path="/stepthree/:id/:userid"
             element={<DetailStepThree baseURL={'/stepthree'} />}
+          ></Route>
+        </Routes>
+
+        <Routes>
+          <Route
+            path="/detailconfirm/:id/:userid"
+            element={<DetailConfirm baseURL={'/detailconfirm'} />}
           ></Route>
         </Routes>
       </BrowserRouter>

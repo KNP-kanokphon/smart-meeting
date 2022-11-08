@@ -167,4 +167,10 @@ export const DatamanagementService = () => ({
     const result = await httpClient.get(`meeting/agenda/${idroom}`);
     return result.data;
   },
+  updateStatusUser: async (idroom: any, userId: any) => {
+    const result = await httpClient.put(
+      `userattendees/updatestatususer/${idroom}/${userId}`,
+    );
+    return result.data;
+  },
 });

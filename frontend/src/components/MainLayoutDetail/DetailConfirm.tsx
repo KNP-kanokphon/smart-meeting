@@ -1,13 +1,9 @@
 import { Layout, Button, Menu, Row, Col, Card, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../utils/auth';
-import { useId24 } from '../../drivers/id24/Id24Provider';
 import styles from './MainLayout.module.scss';
-import QRCode from 'qrcode.react';
-import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { CheckCircleFilled } from '@ant-design/icons';
 import { saveAs } from 'file-saver';
 
 const { Content, Sider, Header, Footer } = Layout;
@@ -16,14 +12,13 @@ export interface Props {
   baseURL: string;
 }
 
-export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
+export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
+  const [meetingData, setMeetingData] = useState<any>();
+  const [agenda, setAgenda] = useState<any>();
   useEffect(() => {
-    console.log(id);
-    console.log(userid);
-
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
@@ -32,31 +27,16 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
       userid,
     );
     setUserprofile(resultProfile[0]);
+    const result = await DatamanagementService().getMeetingByid(id);
+    setMeetingData(result[0]);
+    const resultAgenda = await DatamanagementService().getagendaByid(id);
+    setAgenda(resultAgenda);
+    console.log(resultAgenda);
   };
-  const navigate = useNavigate();
-  const onChange = () => {
-    navigate(`${baseURL}/steptwo/${id}`);
-  };
-  const downloadQRCode = () => {
-    const canvas: any = document.getElementById('qr-gen');
-    const pngUrl = canvas
-      .toDataURL('image/png')
-      .replace('image/png', 'image/octet-stream');
-    let downloadLink = document.createElement('a');
-    downloadLink.href = pngUrl;
-    downloadLink.download = `qrcode.png`;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  };
-
   const getFiles = async () => {
     const data = await DatamanagementService().getFiles(id);
     const blob = new Blob([data], { type: 'application/pdf' });
     saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
-  };
-  const nextPage = () => {
-    navigate(`/detailconfirm/${id}/${userid}`);
   };
   return (
     <Layout className="layout">
@@ -86,68 +66,70 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
               <Card style={{ textAlign: 'center' }}>
                 <Row>
                   <Col span={24}>
-                    <Logo />
+                    <CheckCircleFilled
+                      style={{
+                        color: '#1E6541',
+                        fontSize: '100px',
+                      }}
+                      size={50}
+                    />
                   </Col>
                 </Row>
                 <br></br>
                 <Row>
                   <Col span={2}></Col>
                   <Col span={20}>
-                    <b style={{ fontSize: '100%', color: 'red' }}>
-                      KPIS Society
-                    </b>
+                    <b style={{ fontSize: '100%' }}>Confirm Meeting</b>
                   </Col>
                   <Col span={2}></Col>
                 </Row>
-                <br></br>
                 <Row>
                   <Col span={24} style={{ fontSize: '80%' }}>
-                    กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ก่อนเข้าห้องประชุม
-                  </Col>
-                </Row>
-                <br></br>
-
-                <Row>
-                  <Col span={2}></Col>
-                  <Col span={20} style={{ fontSize: '18px' }}>
-                    <b>{userprofile?.username}</b>
-                  </Col>
-                  <Col span={2}></Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col span={24}>
-                    <QRCode
-                      id="qr-gen"
-                      size={128}
-                      value={`${window.location.host}/profileDetail/${id}/${userid}`}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={24}>
-                    <Button
-                      type="link"
-                      onClick={downloadQRCode}
-                      style={{
-                        textAlign: 'center',
-                        marginBottom: '10px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      Dowload QR-Code
-                      <VerticalAlignBottomOutlined />
-                    </Button>
+                    เช็คอินเรียบร้อย ท่านสามารถดาวน์โหลดเอกสารได้ที่หน้านี้
                   </Col>
                 </Row>
                 <Row>
                   <Col span={24} style={{ fontSize: '80%' }}>
-                    <Button type="primary" onClick={nextPage}>
-                      next
-                    </Button>
+                    เรื่อง {meetingData?.detail}
                   </Col>
                 </Row>
-                <br></br>
+                <Row>
+                  <Col span={24} style={{ fontSize: '80%' }}>
+                    วันที่ {meetingData?.day}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24} style={{ fontSize: '80%' }}>
+                    สถานที่ อาคาร {meetingData?.building} ชั้น{' '}
+                    {meetingData?.floor} ห่้อง {meetingData?.room}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={7}></Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '80%',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
+                    <b>{'Agenda Item :'}</b>
+                    <br></br>
+                    {agenda?.map((e: any, i: number) => {
+                      return (
+                        <Row key={i} style={{ fontSize: '80%' }}>
+                          {e?.agendes} : {e?.detailagendes}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col span={7}></Col>
+                </Row>
               </Card>
             </Col>
             <Col span={7}></Col>

@@ -47,8 +47,12 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   };
 
   const navigate = useNavigate();
-  const onChange = () => {
-    navigate(`/steptwo/${roomid}`);
+  const onChange = async () => {
+    const resultUpdate = await DatamanagementService().updateStatusUser(
+      roomid,
+      userid,
+    );
+    navigate(`/stepthree/${roomid}/${userid}`);
   };
   return (
     <Layout className="layout">

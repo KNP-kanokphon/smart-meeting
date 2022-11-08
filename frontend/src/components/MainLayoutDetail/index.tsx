@@ -28,16 +28,11 @@ interface MeetingInterface {
 export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
-  const [agenda, setAgenda] = useState<any>();
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
     const result = await DatamanagementService().getMeetingByid(id);
-    const resultAgenda = await DatamanagementService().getagendaByid(id);
-    setAgenda(resultAgenda);
-    console.log(resultAgenda);
-
     setMeetingData(result[0]);
   };
 
@@ -151,36 +146,7 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                   <Col span={7}></Col>
                 </Row>
-                <Row>
-                  <Col span={7}></Col>
 
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    <b>{'Agenda Item :'}</b>
-                    <br></br>
-                    {agenda?.map((e: any) => {
-                      return (
-                        <>
-                          {e?.agendes} : {e?.detailagendes}
-                          <br></br>
-                        </>
-                      );
-                    })}
-                  </Col>
-                  <Col span={7}></Col>
-                </Row>
                 <br></br>
                 <Row>
                   <Col span={24}>
