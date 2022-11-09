@@ -186,4 +186,16 @@ export const DatamanagementService = () => ({
   //   );
   //   return result.data;
   // },
+  importPosition: async (data: any, type: any) => {
+    console.log(data);
+    const newData = {
+      data: data,
+    };
+
+    const result = await httpClient.post(
+      `userattendees/import/position/${type}`,
+      newData,
+    );
+    return result.data;
+  },
 });
