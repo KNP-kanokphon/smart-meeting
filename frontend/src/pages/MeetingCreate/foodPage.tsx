@@ -56,7 +56,11 @@ export const FoodPage: React.FC<Props> = ({
       setDataField(values);
     });
     // console.log('Received values of form:', values);
+  
   };
+  const onSelectChange = () => {
+    setDataField(form.getFieldsValue(true))
+  }
   return (
     <>
       <Card style={{ width: '100%' }}>
@@ -68,6 +72,9 @@ export const FoodPage: React.FC<Props> = ({
           // initialValues={{ requiredMarkValue: requiredMark }}
           // onValuesChange={onRequiredTypeChange}
           // requiredMark={requiredMark}
+          // onFieldsChange={onFinish}
+          onValuesChange={onSelectChange}
+          
         >
           <Row gutter={16}>
             <Col span={24}>
@@ -102,7 +109,7 @@ export const FoodPage: React.FC<Props> = ({
                           //   { required: true, message: 'Missing first name' },
                           // ]}
                         >
-                          <Select placeholder={'Please Select'} allowClear>
+                          <Select placeholder={'Please Select'} allowClear onChange={onSelectChange}>
                             <Option key={'1'} value={'food'}>
                               อาหาร
                             </Option>
@@ -123,7 +130,7 @@ export const FoodPage: React.FC<Props> = ({
                           //   { required: true, message: 'Missing last name' },
                           // ]}
                         >
-                          <Input placeholder="Text" />
+                          <Input placeholder="Text" onChange={onSelectChange}/>
                         </Form.Item>
                       </Col>
 

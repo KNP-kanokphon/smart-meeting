@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Steps, Modal } from 'antd';
+import { Button, Card, Col, Row, Steps, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { AgendaPage } from './agendaPage';
@@ -19,6 +19,29 @@ export const CreateMeeting: React.FC = () => {
   const onChangeCurrentStep = (step: number) => {
     setCurrentStep(step);
   };
+  const onChangeCurrentCheckStep = (step: number) => {
+    console.log(dataAgenda);
+    
+    if(dataAgenda.title === '' || typeof dataAgenda.title === 'undefined'){
+      message.error(`กรุณากรอกเรื่องของการประชุม`)
+      return
+    }
+    else if(dataAgenda.date === ''|| !dataAgenda.date){
+      message.error(`กรุณากรอกวันที่ของการประชุม`)
+      return
+    }
+    else if(dataAgenda.timeStart === ''|| !dataAgenda.timeStart){
+      message.error(`กรุณากรอกเวลาเริ่มของการประชุม`)
+      return
+    }
+    else if(dataAgenda.timeEnd === ''|| !dataAgenda.timeEnd){
+      message.error(`กรุณากรอกเวลาสิ้นสุดของการประชุม`)
+      return
+    }
+    else{
+      setCurrentStep(step);
+    }
+  };
 
   const setDataAgendaField = (dataField: any) => {
     setDataDetail(dataField);
@@ -34,6 +57,49 @@ export const CreateMeeting: React.FC = () => {
     setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
   };
 
+  const checkSubmitForm = () => {
+    console.log(dataFood);
+    
+    if(dataFood.length === 0){
+      message.error('0 length')
+      return
+    }
+    // dataFood.fooddetail.forEach((element:any,index:number) => {
+    //   if(typeof element.typefood == 'undefined'){
+    //     message.error(`typefood undefiend index:${index}`)
+    //     return
+    //   }
+    //   else if(!element.namefood || typeof element.namefood == 'undefined'){
+    //     message.error(`namefood undefined`)
+    //     return
+    //   }
+    // });
+
+    const check = new Promise<void>((resolve,reject)=>{
+      if(dataFood.fooddetail.length === 0){
+        message.error('กรุณารายการอาหารและเครื่องดื่มอย่างน้อย1รายการ')
+        return
+      }
+      dataFood.fooddetail.forEach((element:any,index:number,array: string | any[]) => {
+        if(!element){
+          message.error('กรุณากรอกข้อมูลให้ครบถ้วน')
+          return
+        }
+        if(!element.typefood){
+          message.error(`กรุณากรอกประเภทอาหารและเครื่องดื่ม`)
+          return
+        }
+        else if(!element.namefood || typeof element.namefood == 'undefined'){
+          message.error(`กรุณากรอกชื่อรายการอาหารและเครื่องดื่ม`)
+          return
+        }
+
+        if(index === array.length -1)resolve();
+      });
+    })
+
+    check.then(()=>submitForm())
+  }
   const submitForm = () => {
     const id = uuidv4();
     Modal.confirm({
@@ -79,8 +145,8 @@ export const CreateMeeting: React.FC = () => {
       onCancel: () => {},
     });
     // console.log(dataAgenda);
-    console.log(dataDetail);
-    // console.log(dataFood);
+    // console.log(dataDetail);
+    console.log(dataFood);
   };
 
   // useEffect(() => {
@@ -94,7 +160,7 @@ export const CreateMeeting: React.FC = () => {
     },
     {
       title: 'DetailPage',
-      content: <DetailPage setDataField={setDataAgendaField} />,
+      content: <DetailPage setDataField={setDataAgendaField}/>,
     },
     {
       title: 'FoodPage',
@@ -161,10 +227,18 @@ export const CreateMeeting: React.FC = () => {
               Back
             </Button>
           )}
-          {currentStep < steps.length - 1 && (
+          {currentStep < steps.length - 1 && currentStep !== 0 &&(
             <Button
               style={{ color: 'white', background: '#1E6541' }}
               onClick={() => onChangeCurrentStep(currentStep + 1)}
+            >
+              Next
+            </Button>
+          )}
+          {currentStep < steps.length - 1 && currentStep === 0 &&(
+            <Button
+              style={{ color: 'white', background: '#1E6541' }}
+              onClick={() => onChangeCurrentCheckStep(currentStep + 1)}
             >
               Next
             </Button>
@@ -173,7 +247,7 @@ export const CreateMeeting: React.FC = () => {
             <Button
               style={{ color: 'white', background: '#1E6541' }}
               htmlType="submit"
-              onClick={submitForm}
+              onClick={checkSubmitForm}
             >
               Submit
             </Button>

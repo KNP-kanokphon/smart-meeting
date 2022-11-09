@@ -29,6 +29,9 @@ export const DetailList: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
+  const agendas = Form.useWatch('agendas', form);
+  const detail = Form.useWatch('detail', form);
+  const detailAgendes = Form.useWatch('detailAgendes', form);
   const props = {
     onRemove: async (file: any) => {
       const index = fileList.indexOf(file);
@@ -45,7 +48,8 @@ export const DetailList: React.FC<Props> = ({
 
   useEffect(() => {
     onFinish();
-  }, [fileList]);
+
+  }, [fileList,agendas,detail,detailAgendes]);
 
   const onFinish = async () => {
     const formData = new FormData();
