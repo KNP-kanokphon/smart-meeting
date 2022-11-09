@@ -187,15 +187,21 @@ export const DatamanagementService = () => ({
   //   return result.data;
   // },
   importPosition: async (data: any, type: any) => {
-    console.log(data);
     const newData = {
       data: data,
     };
-
     const result = await httpClient.post(
       `userattendees/import/position/${type}`,
       newData,
     );
+    return result.data;
+  },
+  getPositionall: async () => {
+    const result = await httpClient.get(`userattendees/positionall`);
+    return result.data;
+  },
+  getCourseall: async () => {
+    const result = await httpClient.get(`userattendees/courseall`);
     return result.data;
   },
 });

@@ -35,33 +35,66 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [dataUuid, setDataUuid] = useState<any>([]);
   const [dataUsername, setDataUsername] = useState<any>('');
   const [dataPhone, setDataPhone] = useState<string>('');
-  const [dataCourse, setDataCourse] = useState<string>('');
-  const [dataPosition, setDataPosition] = useState<string>('');
+  const [dataCourse, setDataCourse] = useState<any>([]);
+  const [dataPosition, setDataPosition] = useState<any>([]);
 
   useEffect(() => {
-    async function getListmeeting() {
-      await DatamanagementService()
-        .getUser()
-        .then(async data => {
-          // console.log(`data`, data);
-          const newData = await data.map((e: any, i: number) => {
-            return {
-              key: i + 1,
-              uuid: e.uuid,
-              username: e.username,
-              phone: e.phone,
-              course: e.course,
-              position: e.position,
-              positionkpi: e.positionkpi,
-            };
-          });
-          // await setDataUser([]);
-          await setDataUser(newData);
-        });
-    }
     getListmeeting();
+    getListPosition();
+    getListCourse();
   }, []);
+  async function getListmeeting() {
+    await DatamanagementService()
+      .getUser()
+      .then(async data => {
+        // console.log(`data`, data);
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            key: i + 1,
+            uuid: e.uuid,
+            username: e.username,
+            phone: e.phone,
+            course: e.course,
+            position: e.position,
+            positionkpi: e.positionkpi,
+          };
+        });
+        // await setDataUser([]);
+        setDataUser(newData);
+      });
+  }
+  const getListPosition = async () => {
+    const result = await DatamanagementService()
+      .getPositionall()
+      .then(async data => {
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            key: i + 1,
+            uuid: e.uuid,
+            nameposition: e.nameposition,
+          };
+        });
+        setDataPosition(newData);
+      });
+  };
+  const getListCourse = async () => {
+    const result = await DatamanagementService()
+      .getCourseall()
+      .then(async data => {
+        console.log(data);
 
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            key: i + 1,
+            uuid: e.uuid,
+            namecourse: e.namecourse,
+          };
+        });
+        console.log(newData);
+
+        setDataCourse(newData);
+      });
+  };
   const handleOpen = () => {
     setmodalVisible(false);
     formEdit.resetFields();
@@ -109,6 +142,8 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   };
 
   const showModal = async (event: any) => {
+    getListPosition();
+    getListCourse();
     setmodalVisible(true);
     setDataUuid(event.uuid);
     setDataUsername(event.username);
@@ -209,32 +244,25 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             />
           </Form.Item>
           <Form.Item label={'หลักสูตร'}>
-            <Select placeholder="Please Select" allowClear>
-              <Option key={0} value={'manager'}>
-                นายกสมาคม
-              </Option>
-              <Option key={1} value={'assistant_manager'}>
-                นายกกิติมศักดิ์และประธานฝ่ายกิจกรรมสาธารณะประโยชน์
-              </Option>
+            <Select placeholder="Please Select" mode="multiple" allowClear>
+              {dataPosition?.map((x: any, i: number) => {
+                return (
+                  <Option key={i} value={x.uuid}>
+                    {x.nameposition}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           <Form.Item label={'ตำแหน่ง'}>
-            <Select placeholder="Please Select" allowClear>
-              <Option key={0} value={'aec1'}>
-                AEC.10
-              </Option>
-              <Option key={1} value={'tag10'}>
-                ที.เอ.จี.10
-              </Option>
-              <Option key={2} value={'tag1'}>
-                ที.เอ.จี.1
-              </Option>
-              <Option key={1} value={'tag2'}>
-                ที.เอ.จี.2
-              </Option>
-              <Option key={1} value={'tag3'}>
-                ที.เอ.จี.3
-              </Option>
+            <Select placeholder="Please Select" mode="multiple" allowClear>
+              {dataCourse?.map((x: any, i: number) => {
+                return (
+                  <Option key={i} value={x.uuid}>
+                    {x.namecourse}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           <Form.Item>
