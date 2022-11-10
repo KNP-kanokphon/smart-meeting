@@ -43,6 +43,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
     );
     setAgenda(resultAgenda);
     setMeetingData(result[0]);
+    console.log(resultUser[0]);
+
     setUser(resultUser[0]);
   };
 

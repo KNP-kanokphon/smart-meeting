@@ -21,13 +21,14 @@ export const TableToday: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
   useEffect(() => {
     getListmeeting();
+    // getListUser();
   }, []);
 
   const getListmeeting = async () => {
     await DatamanagementService()
       .getListmeeting()
       .then(data => {
-        const dataNew = data.filter((e: any) => {
+        const dataNew = data.filter(async (e: any) => {
           const dateParts = e.day.split('-');
           const dd = new Date(e.day);
           const dn = new Date();
@@ -36,9 +37,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
             dd.getMonth() + 1,
             dd.getFullYear(),
           ];
-
           const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
-          console.log(new Date(e.day));
           if (
             `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
             `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
@@ -51,6 +50,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
         setDataIntable(dataNew);
       });
   };
+
   const columnsToday = [
     {
       title: 'Title',
@@ -90,27 +90,6 @@ export const TableToday: React.FC = (): React.ReactElement => {
             <Row>
               <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
                 ห้องประชุม
-              </Typography>
-            </Row>
-            <Row>
-              <Typography style={{ color: 'grey' }}>{data}</Typography>
-            </Row>
-          </>
-        );
-      },
-    },
-    {
-      title: 'Participant',
-      dataIndex: 'uuid',
-      key: 'uuid',
-      width: '10%',
-      ellipsis: true,
-      render: (data: any, dataAll: any) => {
-        return (
-          <>
-            <Row>
-              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                ผู้ตกลงเข้าร่วม
               </Typography>
             </Row>
             <Row>

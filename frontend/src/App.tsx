@@ -55,16 +55,16 @@ const App = () => {
         </Routes>
         <Routes>
           <Route
-            path="/:roomid/:userid"
+            path="detailalready/:roomid/:userid"
             element={<DetailAlready baseURL={'/detailAlready'} />}
           ></Route>
         </Routes>
-        <Routes>
+        {/* <Routes>
           <Route
             path="/userdetail/:userid/roomid/:roomid"
             element={<MainLayoutDetail baseURL={'/detail'} />}
           ></Route>
-        </Routes>
+        </Routes> */}
         <Routes>
           <Route
             path="/steptwo/:id"

@@ -108,7 +108,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       key: 'uuidprofile',
       width: '20%',
       render: (data: any) => {
-        return <>{`${window.origin}/detail/${state}/${data}`}</>;
+        return <>{`${window.origin}/detail/detailalready/${state}/${data}`}</>;
       },
     },
     {
@@ -259,7 +259,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
                     color: 'grey',
                   }}
                 >
-                  {`Link ${window.origin}/${state}`}
+                  {`Link ${window.origin}/detail/${state}`}
                 </Typography>
               </>
             }

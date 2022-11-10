@@ -90,8 +90,6 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             namecourse: e.namecourse,
           };
         });
-        console.log(newData);
-
         setDataCourse(newData);
       });
   };
@@ -172,7 +170,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
       dataIndex: 'phone',
     },
     {
-      title: 'หลักสูตร',
+      title: 'ตำแหน่ง',
       key: 'course',
       dataIndex: 'course',
     },
@@ -243,7 +241,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               defaultValue={dataPhone}
             />
           </Form.Item>
-          <Form.Item label={'หลักสูตร'}>
+          <Form.Item label={'ตำแหน่ง'}>
             <Select placeholder="Please Select" mode="multiple" allowClear>
               {dataPosition?.map((x: any, i: number) => {
                 return (
@@ -254,7 +252,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               })}
             </Select>
           </Form.Item>
-          <Form.Item label={'ตำแหน่ง'}>
+          {/* <Form.Item label={'ตำแหน่ง'}>
             <Select placeholder="Please Select" mode="multiple" allowClear>
               {dataCourse?.map((x: any, i: number) => {
                 return (
@@ -264,7 +262,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
                 );
               })}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <div style={{ textAlign: 'right' }}>
               <Space>

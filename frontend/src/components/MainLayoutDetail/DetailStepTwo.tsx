@@ -9,7 +9,7 @@ import {
   Select,
   message,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
@@ -33,6 +33,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
   const [email, setEmail] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [position, setPosition] = useState<string>('');
+  console.log(id);
 
   const navigate = useNavigate();
   const onSave = async () => {
@@ -78,12 +79,47 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
       navigate(`/stepthree/${id}/${data.uuid}`);
     }
   };
-
+  useEffect(() => {
+    getListPosition();
+    getListCourse();
+  }, []);
   const selectModel = (e: any) => {
     setModel(e);
   };
   const selectPosition = (e: any) => {
     setPosition(e);
+  };
+  const [dataCourse, setDataCourse] = useState<any>([]);
+  const [dataPosition, setDataPosition] = useState<any>([]);
+  const getListPosition = async () => {
+    const result = await DatamanagementService()
+      .getPositionall()
+      .then(async data => {
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            key: i + 1,
+            uuid: e.uuid,
+            nameposition: e.nameposition,
+          };
+        });
+        setDataPosition(newData);
+      });
+  };
+  const getListCourse = async () => {
+    const result = await DatamanagementService()
+      .getCourseall()
+      .then(async data => {
+        console.log(data);
+
+        const newData = await data.map((e: any, i: number) => {
+          return {
+            key: i + 1,
+            uuid: e.uuid,
+            namecourse: e.namecourse,
+          };
+        });
+        setDataCourse(newData);
+      });
   };
 
   return (
@@ -176,17 +212,18 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       style={{ width: '100%' }}
                       onChange={e => selectPosition(e)}
                     >
-                      <Option value="กรรมการบริหาร">กรรมการบริหาร</Option>
-                      <Option value="เลขาธิการสมาคม">เลขาธิการสมาคม</Option>
-                      <Option value="รองสมาคม">รองสมาคม</Option>
-                      <Option value="กรรมการสมาคม">กรรมการสมาคม</Option>
-                      <Option value="สมาชิกสมาคม">สมาชิกสมาคม</Option>
+                      {dataPosition?.map((e: any, i: number) => {
+                        return (
+                          <Option key={i} value={e.uuid}>
+                            {e.nameposition}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   </Col>
                 </Row>
                 <br></br>
                 <Row>
-                  {/* <Col span={6}></Col> */}
                   <Col span={24}>
                     <Button
                       style={{
@@ -199,7 +236,6 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       Submit
                     </Button>
                   </Col>
-                  {/* <Col span={6}></Col> */}
                 </Row>
               </Card>
             </Col>
