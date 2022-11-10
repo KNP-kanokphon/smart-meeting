@@ -60,23 +60,28 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
       email: string;
       model: string;
       position: string;
-      uuid: string;
+      uuidprofile: string;
       idmeeting: any;
+      confirm: boolean;
       checkin: boolean;
+      type_user: string;
     } = {
       username: username,
       phone: phone,
       email: email,
       model: model,
       position: position,
-      uuid: uuidv4(),
+      uuidprofile: uuidv4(),
       idmeeting: id,
+      confirm: true,
       checkin: false,
+      type_user: 'after',
     };
+    console.log(data);
 
     const save = await DatamanagementService().saveuserattendeesByuser(data);
     if (save) {
-      navigate(`/stepthree/${id}/${data.uuid}`);
+      navigate(`/stepthree/${id}/${data.uuidprofile}`);
     }
   };
   useEffect(() => {

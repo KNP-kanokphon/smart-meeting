@@ -75,9 +75,10 @@ export const DatamanagementService = () => ({
     //     });
     //   },
     // );
+    console.log(newData);
 
-    const result = await httpClient.post(`/userattendees/`, newData);
-    return result.data;
+    // const result = await httpClient.post(`/userattendees/`, newData);
+    // return result.data;
   },
   saveuserattendeesByuser: async (userDetail: {
     username: string;
@@ -85,7 +86,7 @@ export const DatamanagementService = () => ({
     email: string;
     model: string;
     position: string;
-    uuid: string;
+    uuidprofile: string;
     idmeeting: string;
     checkin: boolean;
   }) => {

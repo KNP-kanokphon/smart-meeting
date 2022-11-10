@@ -29,6 +29,7 @@ export const TableAttendee: React.FC<Props> = ({
     const newStudent = {
       username: '',
       uuidprofile: '',
+      type_user: 'previous',
       uuid: uuidv4(),
     };
     setDataSourceAttendee((pre: any) => {

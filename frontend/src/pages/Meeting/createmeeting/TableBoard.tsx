@@ -67,6 +67,7 @@ export const TableBoard: React.FC<Props> = ({
     const newStudent = {
       username: '',
       uuidprofile: '',
+      type_user: 'previous',
       uuid: uuidv4(),
     };
     setDataSourceBoard((pre: any) => {
