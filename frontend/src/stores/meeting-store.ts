@@ -123,6 +123,11 @@ export const DatamanagementService = () => ({
     const result = await httpClient.get(`/userattendees/${roomid}`);
     return result.data;
   },
+  getuserInroomAll: async () => {
+    const result = await httpClient.get(`/userattendees/userinroomall`);
+    // console.log(result);
+    return result.data;
+  },
   getFiles: async (roomid: any) => {
     const result = await httpClient.get(`/meeting/filepdf/${roomid}`, {
       headers: {

@@ -21,6 +21,7 @@ import { EllipsisOutlined, DownOutlined } from '@ant-design/icons';
 import { idText } from 'typescript';
 import { useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../../stores/meeting-store';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -28,24 +29,54 @@ const { RangePicker } = DatePicker;
 
 export const TableLast: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
-  const [dataIntable, setDataIntable] = useState([]);
+  const [dataIntable, setDataIntable] = useState<any>([]);
   const [openToday, setOpenToday] = useState(false);
   const [openLastmeet, setOpenLastmeet] = useState(false);
+  const [dataUuidMeet, setUuidMeet] = useState<any>([]);
 
-  const handleOpenChangeToday = (newOpen: boolean) => {
-    setOpenToday(newOpen);
-  };
-  const handleOpenChangeLastmeet = (newOpen: boolean) => {
-    setOpenLastmeet(newOpen);
-  };
   useEffect(() => {
+    getydataAlluserubnroom();
     getListmeeting();
   }, []);
+
+  // const handleOpenChangeToday = (newOpen: boolean) => {
+  //   setOpenToday(newOpen);
+  // };
+  // const handleOpenChangeLastmeet = (newOpen: boolean) => {
+  //   setOpenLastmeet(newOpen);
+  // };
+
+  const getydataAlluserubnroom = async () => {
+    const res = await DatamanagementService().getuserInroomAll();
+    // console.log(res);
+    const newData = await res.map((e: any) => {
+      // console.log(e);
+      return {
+        checkin: e.checkin,
+        confirm: e.confirm,
+        email: e.email,
+        id: e.id,
+        idmeeting: e.idmeeting,
+        model: e.model,
+        phone: e.phone,
+        position: e.position,
+        type: e.type,
+        type_user: e.type_user,
+        username: e.username,
+        uuidprofile: e.uuidprofile,
+      };
+    });
+    // console.log(newData);
+    setUuidMeet(newData);
+  };
+  // console.log(dataUuidMeet);
 
   const getListmeeting = async () => {
     await DatamanagementService()
       .getListmeeting()
       .then(data => {
+        // console.log(data);
+
         const dataNew = data.filter((e: any) => {
           const dateParts = e.day.split('-');
           const dd = new Date(e.day);
@@ -98,9 +129,11 @@ export const TableLast: React.FC = (): React.ReactElement => {
             </Row>
             <Row>
               <Space>
-                <Typography style={{ color: 'grey' }}>{dataAll.day}</Typography>
                 <Typography style={{ color: 'grey' }}>
-                  {dataAll.starttime}-{dataAll.endtime}
+                  {dayjs(dataAll.day).add(543, 'year').format('DD-MM-YYYY')}
+                </Typography>
+                <Typography style={{ color: 'grey' }}>
+                  {dataAll.starttime}-{dataAll.endtime} น.
                 </Typography>
               </Space>
             </Row>
@@ -133,18 +166,37 @@ export const TableLast: React.FC = (): React.ReactElement => {
       title: 'Participant',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '10%',
-      ellipsis: true,
+      width: '30%',
+      // ellipsis: true,
       render: (data: any, dataAll: any) => {
         return (
           <>
-            <Row>
-              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                ผู้ตกลงเข้าร่วม
-              </Typography>
-            </Row>
-            <Row>
-              <Typography style={{ color: 'grey' }}>{data}</Typography>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                  ผู้ตกลงเข้าร่วม
+                </Typography>
+              </Col>
+              <Col span={24} style={{ color: 'grey' }}>
+                {dataUuidMeet.map((event: any) => {
+                  if (event.length < 2) {
+                    return event.idmeeting == data ? event.username : <></>;
+                  } else {
+                    let ressss: string = '';
+                    if (event.idmeeting === data) {
+                      ressss += ' ' + event.username;
+                    } else {
+                      <></>;
+                    }
+                    let splittt = ressss;
+                    return (
+                      <>
+                        <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
+                      </>
+                    );
+                  }
+                })}
+              </Col>
             </Row>
           </>
         );
