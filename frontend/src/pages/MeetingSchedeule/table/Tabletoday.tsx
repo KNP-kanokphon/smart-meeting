@@ -28,7 +28,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
     await DatamanagementService()
       .getListmeeting()
       .then(data => {
-        const dataNew = data.filter(async (e: any) => {
+        const dataNew = data.filter((e: any) => {
           const dateParts = e.day.split('-');
           const dd = new Date(e.day);
           const dn = new Date();

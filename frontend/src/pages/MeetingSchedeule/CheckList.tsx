@@ -55,15 +55,20 @@ export const CheckList: React.FC = (): React.ReactElement => {
         })
         const newData = await data.map((e: any, i: number) => {
           const pname = position.find((name:{id:string,uuid:string,nameposition:string,createdate:string}) => name.uuid === e.position)
-          return {
-            id: i + 1,
-            uuidprofile: e.uuidprofile,
-            uuidroom: e.uuid,
-            username: e.username,
-            statuscheckin: e.checkin,
-            position: pname.nameposition,
-            statusconfirm: e.confirm
-          };
+          console.log(pname);
+          
+      
+            return {
+              id: i + 1,
+              uuidprofile: e.uuidprofile,
+              uuidroom: e.uuid,
+              username: e.username,
+              statuscheckin: e.checkin,
+              position: !pname?'':pname.nameposition,
+              statusconfirm: e.confirm
+            };
+          
+          
         });
         setDataUser(newData);
         console.log(newData,'newData');
@@ -125,6 +130,19 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'position',
       key: 'position',
       width: '20%',
+      render: (e: any, row: any) => {
+        if (e) {
+          return (
+            <>
+              {positionName.map((x: any) => {
+               console.log(x,'x');
+               
+               return <>{x.uuid === e ? x.nameposition : ''}</>;
+              })}
+            </>
+          );
+        }
+      },
     },
     {
       title: 'หลักสูตร',
