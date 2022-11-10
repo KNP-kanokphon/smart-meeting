@@ -27,8 +27,8 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [formEdit] = Form.useForm();
   const { Option } = Select;
   const { Search } = Input;
-  const navigate = useNavigate();
-  const [dataResult, setDataResult] = useState<any>([]);
+  // const navigate = useNavigate();
+  // const [dataResult, setDataResult] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
   const [modalVisible, setmodalVisible] = useState<boolean>(false);
 
@@ -37,6 +37,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [dataPhone, setDataPhone] = useState<string>('');
   const [dataCourse, setDataCourse] = useState<any>([]);
   const [dataPosition, setDataPosition] = useState<any>([]);
+  const [dataPositionupdate, setDataPositionupdate] = useState<string>('');
 
   useEffect(() => {
     getListmeeting();
@@ -47,7 +48,6 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     await DatamanagementService()
       .getUser()
       .then(async data => {
-        // console.log(`data`, data);
         const newData = await data.map((e: any, i: number) => {
           return {
             key: i + 1,
@@ -81,7 +81,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     const result = await DatamanagementService()
       .getCourseall()
       .then(async data => {
-        console.log(data);
+        // console.log(data);
 
         const newData = await data.map((e: any, i: number) => {
           return {
@@ -90,6 +90,8 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             namecourse: e.namecourse,
           };
         });
+        // console.log(newData);
+
         setDataCourse(newData);
       });
   };
@@ -121,6 +123,12 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
                   : dataUsername,
               phone:
                 e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
+              position:
+                e.position != undefined ||
+                e.position != '' ||
+                e.position != null
+                  ? e.position
+                  : dataPositionupdate,
             },
           };
           await DatamanagementService()
@@ -128,6 +136,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             .then(() => {
               message.success('บันทึกสำเร็จ');
               setmodalVisible(false);
+              getListmeeting();
               formEdit.resetFields();
             });
         },
@@ -140,14 +149,12 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   };
 
   const showModal = async (event: any) => {
-    getListPosition();
-    getListCourse();
     setmodalVisible(true);
+    setDataPositionupdate(event.position);
     setDataUuid(event.uuid);
     setDataUsername(event.username);
     setDataPhone(event.phone);
     setDataCourse(event.course);
-    setDataPosition(event.position);
   };
   const onSearch = (value: string) => console.log(value);
 
@@ -171,8 +178,11 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     },
     {
       title: 'ตำแหน่ง',
-      key: 'course',
-      dataIndex: 'course',
+      key: 'position',
+      dataIndex: 'position',
+      render: (e: any, row: any) => {
+        return e;
+      },
     },
     {
       title: (
@@ -227,6 +237,10 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               name: ['phone'],
               value: dataPhone,
             },
+            {
+              name: ['position'],
+              value: dataPositionupdate,
+            },
           ]}
         >
           <Form.Item name="username" label={'ชื่อ - นามสกุล'}>
@@ -241,7 +255,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               defaultValue={dataPhone}
             />
           </Form.Item>
-          <Form.Item label={'ตำแหน่ง'}>
+          {/* <Form.Item name="course" label={'หลักสูตร'}>
             <Select placeholder="Please Select" mode="multiple" allowClear>
               {dataPosition?.map((x: any, i: number) => {
                 return (
@@ -251,18 +265,24 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
                 );
               })}
             </Select>
-          </Form.Item>
-          {/* <Form.Item label={'ตำแหน่ง'}>
-            <Select placeholder="Please Select" mode="multiple" allowClear>
-              {dataCourse?.map((x: any, i: number) => {
+          </Form.Item> */}
+          <Form.Item name={'position'} label={'ตำแหน่ง'}>
+            <Select
+              id="position"
+              placeholder="Please Select"
+              allowClear
+              value={dataPositionupdate}
+            >
+              {dataPosition?.map((x: any, i: number) => {
+                // console.log(x);
                 return (
                   <Option key={i} value={x.uuid}>
-                    {x.namecourse}
+                    {x.nameposition}
                   </Option>
                 );
               })}
             </Select>
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item>
             <div style={{ textAlign: 'right' }}>
               <Space>

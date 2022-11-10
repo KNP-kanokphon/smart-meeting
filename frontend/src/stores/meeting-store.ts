@@ -204,4 +204,16 @@ export const DatamanagementService = () => ({
     const result = await httpClient.get(`userattendees/courseall`);
     return result.data;
   },
+  deletePosition: async (data: any) => {
+    console.log(data.uuid);
+    const newData = {
+      data: data,
+    };
+    console.log(newData);
+    const result = await httpClient.delete(
+      `userattendees/delete/position/${data.uuid}`,
+      newData,
+    );
+    return result?.data;
+  },
 });
