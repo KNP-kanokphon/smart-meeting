@@ -34,7 +34,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
   const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
   const navigate = useNavigate();
-
+  const [positionName,setPositionName] = useState<[{id:string,uuid:string,nameposition:string,createdate:string}]>([{id:'',uuid:'',nameposition:'',createdate:''}]);
   useEffect(() => {
     getListmeeting();
   }, []);
@@ -49,16 +49,25 @@ export const CheckList: React.FC = (): React.ReactElement => {
     await DatamanagementService()
       .getuserInroom(String(state))
       .then(async (data: any) => {
+        const position = await DatamanagementService().getPositionall().then(data =>{
+          setPositionName(data)
+          return (data)
+        })
         const newData = await data.map((e: any, i: number) => {
+          const pname = position.find((name:{id:string,uuid:string,nameposition:string,createdate:string}) => name.uuid === e.position)
           return {
             id: i + 1,
             uuidprofile: e.uuidprofile,
             uuidroom: e.uuid,
             username: e.username,
             statuscheckin: e.checkin,
+            position: pname.nameposition,
+            statusconfirm: e.confirm
           };
         });
         setDataUser(newData);
+        console.log(newData,'newData');
+        
       });
   };
 
@@ -182,6 +191,30 @@ export const CheckList: React.FC = (): React.ReactElement => {
         );
       },
     },
+    {
+      title: 'สถานะการลงทะเบียน',
+      dataIndex: 'statusconfirm',
+      key: 'statuscheckin',
+      width: '10%',
+
+      render: (text: any) => {
+        return text === true ? (
+          <Tag>
+            <Space>
+              
+              {'เข้าร่วม'}
+            </Space>
+          </Tag>
+        ) : (
+          <Tag>
+            <Space>
+              
+              {'ไม่เข้าร่วม'}
+            </Space>
+          </Tag>
+        );
+      },
+    }
   ];
   return (
     <>
