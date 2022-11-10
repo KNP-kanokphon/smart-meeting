@@ -44,8 +44,27 @@ export const SettingPermissionPosition: React.FC<props> = ({
     setDataSource(result);
   };
 
-  const handleDel = async (e: any) => {
-    (await DatamanagementService().deletePosition(e)) as any;
+  const handleDel = (e: any) => {
+    if (e) {
+      Modal.confirm({
+        // title: 'ต้องการลบข้อมูลนี้ ใช่ หรือ ไม่ ?',
+        title: 'ยืนยันการเปลี่ยนแปลง',
+        content: 'คุณต้องการลบข้อมูล ใช่ หรือ ไม่ ?',
+        okText: 'ใช่',
+        okType: 'danger',
+        onOk: async () => {
+          const res: any = await DatamanagementService().deletePosition(e);
+          if (res) {
+            message.success('ลบข้อมูลสำเร็จ');
+            getDataAll();
+            FormAdd.resetFields();
+          }
+        },
+        onCancel: () => {
+          FormAdd.resetFields();
+        },
+      });
+    }
   };
 
   const showModal = () => {
@@ -59,21 +78,31 @@ export const SettingPermissionPosition: React.FC<props> = ({
     }
     setDatanamePosition(e.position);
     if (e) {
-      const newData: any = [];
-      newData.push({
-        uuid: uuidv4(),
-        nameposition: String(e.position),
-        createdate: new Date(),
+      Modal.confirm({
+        title: 'ยืนยันการเปลี่ยนแปลง',
+        content: 'คุณต้องการเปลี่ยนแปลงข้อมูล ใช่ หรือ ไม่ ?',
+        okText: 'ใช่',
+        onOk: async () => {
+          const newData: any = [];
+          newData.push({
+            uuid: uuidv4(),
+            nameposition: String(e.position),
+            createdate: new Date(),
+          });
+          await DatamanagementService()
+            .importPosition(newData, 1)
+            .then((response: any) => {
+              console.log(response);
+              message.success('ทำการเพิ่มข้อมูลตำแหน่งสำเร็จ');
+              getDataAll();
+              FormAdd.resetFields();
+              setIsModalOpen(false);
+            });
+        },
+        onCancel: () => {
+          // FormAdd.resetFields();
+        },
       });
-      await DatamanagementService()
-        .importPosition(newData, 1)
-        .then((response: any) => {
-          console.log(response);
-          message.success('ทำการเพิ่มข้อมูลตำแหน่งสำเร็จ');
-          getDataAll();
-          FormAdd.resetFields();
-          setIsModalOpen(false);
-        });
     }
   };
   const handleCancel = () => {
@@ -149,15 +178,21 @@ export const SettingPermissionPosition: React.FC<props> = ({
                 name="position"
                 id="position"
                 placeholder="Text"
-                // onChange={(e: any) => {
-                //   setDatanamePosition(e.target.value);
-                // }}
               />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+              <div style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{
+                    backgroundColor: '#1E6541',
+                    color: 'white',
+                  }}
+                >
+                  ยืนยัน
+                </Button>
+              </div>
             </Form.Item>
           </Form>
         </>
