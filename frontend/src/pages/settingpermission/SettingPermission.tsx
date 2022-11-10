@@ -9,7 +9,9 @@ import {
   Typography,
   Upload,
   Button,
+  Space,
 } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 import { SettingPermissionCourse } from './SettingPermissionCourse';
 import { SettingPermissionPosition } from './SettingPermissionPosition';
 import readXlsxFile from 'read-excel-file';
@@ -29,6 +31,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
   const [fileList, setFileList] = useState<any>([]);
   const [uploading, setUploading] = useState(false);
   const [typefile, setTypefile] = useState<string>('');
+
   const props = {
     onRemove: (file: any) => {
       const index = fileList.indexOf(file);
@@ -42,6 +45,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
     },
     fileList,
   };
+
   const onChangType = async (e: any) => {
     if (e === undefined) {
       setTypefile('');
@@ -49,6 +53,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
       setTypefile(e);
     }
   };
+
   const handleUpload = async () => {
     setUploading(true);
     var formData = new FormData();
@@ -66,29 +71,29 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
             });
           }
         });
-        const resual = await DatamanagementService().importPosition(
-          newData,
-          typefile,
-        );
-      });
-    } else {
-      // หลักสูตร
-      readXlsxFile(fileList[0]).then(async (rows: any) => {
-        rows.forEach((e: any, i: number) => {
-          if (i > 1) {
-            newData.push({
-              uuid: uuidv4(),
-              namecourse: e[0],
-              createdate: new Date(),
-            });
-          }
-        });
-        const resual = await DatamanagementService().importPosition(
-          newData,
-          typefile,
-        );
+        await DatamanagementService()
+          .importPosition(newData, typefile)
+          .then((response: any) => {
+            console.log(response);
+            setUploading(false);
+          });
       });
     }
+    // else {
+    //   // หลักสูตร
+    //   readXlsxFile(fileList[0]).then(async (rows: any) => {
+    //     rows.forEach((e: any, i: number) => {
+    //       if (i > 1) {
+    //         newData.push({
+    //           uuid: uuidv4(),
+    //           namecourse: e[0],
+    //           createdate: new Date(),
+    //         });
+    //       }
+    //     });
+    //     await DatamanagementService().importPosition(newData, typefile);
+    //   });
+    // }
   };
   return (
     <>
@@ -105,7 +110,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                   marginTop: '3px',
                 }}
               >
-                <Typography>นำเข้า ตำแหน่ง / หลักสูตร</Typography>
+                <Typography>{'นำเข้า ตำแหน่ง / หลักสูตร'}</Typography>
               </Col>
               <Col span={14}>
                 <Select
@@ -115,8 +120,8 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                   onChange={onChangType}
                   allowClear
                 >
-                  <Option key={'1'}>ตำแหน่ง</Option>
-                  <Option key={'2'}>หลักสูตร</Option>
+                  <Option key={'1'}>{'ตำแหน่ง'}</Option>
+                  {/* <Option key={'2'}>หลักสูตร</Option> */}
                 </Select>
               </Col>
             </Row>
@@ -124,27 +129,43 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
           <Col span={8}>
             <Upload {...props}>
               <Button
-              // disabled={fileList.length === 1 || typeImport === ''}
-              // icon={<UploadOutlined />}
+                type="default"
+                disabled={
+                  fileList.length === 1 ||
+                  typefile === '' ||
+                  typefile === undefined
+                }
               >
-                Select File
+                <Space>
+                  <DownloadOutlined />
+                  {'Select File'}
+                </Space>
               </Button>
             </Upload>
           </Col>
           <Col span={6} style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={handleUpload}>
-              Confirm Upload
+            <Button
+              type="primary"
+              disabled={fileList.length > 1 || fileList.length === 0}
+              onClick={handleUpload}
+              style={{
+                marginBottom: 16,
+                backgroundColor: '#1E6541',
+                color: 'white',
+              }}
+            >
+              {'Confirm Upload'}
             </Button>
           </Col>
         </Row>
       </Card>
       <div style={{ width: '100%' }}>
         <Row gutter={16}>
-          <Col span={12}>
+          {/* <Col span={12}>
             <SettingPermissionCourse />
-          </Col>
-          <Col span={12}>
-            <SettingPermissionPosition />
+          </Col> */}
+          <Col span={24}>
+            <SettingPermissionPosition Props={props} />
           </Col>
         </Row>
       </div>

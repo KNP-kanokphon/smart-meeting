@@ -4,6 +4,7 @@ import {
   CalendarOutlined,
   TeamOutlined,
   SettingOutlined,
+  CaretRightOutlined,
 } from '@ant-design/icons';
 import { pipe, replace, toLower } from 'lodash/fp';
 import { ReportLayout } from '../components/ReportLayout';
@@ -77,20 +78,45 @@ const menuConfigs: MenuConfig[] = [
     path: 'membership',
     component: (
       <>
-        <Route index element={<MemberShipRoute />} />
+        <Route index element={<MemberShipRoute />} />,
+        <Route path="membership" element={<MemberShipRoute />} />,
+        <Route path="settingprofile" element={<SettingPermission />} />
       </>
     ),
+    children: [
+      {
+        icon: <TeamOutlined />,
+        label: 'Membership',
+        path: 'membership',
+
+        component: (
+          <>
+            <Route path="membership" element={<MemberShipRoute />} />
+          </>
+        ),
+      },
+      {
+        icon: <SettingOutlined />,
+        label: 'Add Position',
+        path: 'settingprofile',
+        component: (
+          <>
+            <Route path="settingprofile" element={<SettingPermission />} />
+          </>
+        ),
+      },
+    ],
   },
-  {
-    icon: <SettingOutlined />,
-    label: 'Setting Profile',
-    path: 'settingprofile',
-    component: (
-      <>
-        <Route index element={<SettingPermission />} />{' '}
-      </>
-    ),
-  },
+  // {
+  //   icon: <SettingOutlined />,
+  //   label: 'Setting Profile',
+  //   path: 'settingprofile',
+  //   component: (
+  //     <>
+  //       <Route index element={<SettingPermission />} />{' '}
+  //     </>
+  //   ),
+  // },
 ];
 
 export type MenuItem = MenuConfig & {

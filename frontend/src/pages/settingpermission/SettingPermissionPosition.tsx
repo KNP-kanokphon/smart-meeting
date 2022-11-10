@@ -8,294 +8,176 @@ import {
   Table,
   Typography,
   Select,
+  Row,
+  Col,
+  Modal,
+  message,
 } from 'antd';
-import type { InputRef } from 'antd';
-import type { FormInstance } from 'antd/es/form';
+import { DatamanagementService } from '../../stores/meeting-store';
+import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 
-const EditableContext = React.createContext<FormInstance<any> | null>(null);
+// import type { InputRef } from 'antd';
+// import type { FormInstance } from 'antd/es/form';
 
-interface Item {
-  key: string;
-  name: string;
-  age: string;
-  address: string;
+interface props {
+  Props: any;
 }
 
-interface EditableRowProps {
-  index: number;
-}
-
-const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
-  const [form] = Form.useForm();
-  return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
-  );
-};
-
-interface EditableCellProps {
-  title: React.ReactNode;
-  editable: boolean;
-  children: React.ReactNode;
-  dataIndex: keyof Item;
-  record: Item;
-  handleSave: (record: Item) => void;
-}
-
-const EditableCell: React.FC<EditableCellProps> = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  ...restProps
-}) => {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<InputRef>(null);
-  const form = useContext(EditableContext)!;
+export const SettingPermissionPosition: React.FC<props> = ({
+  Props,
+}): React.ReactElement => {
+  // console.log(Props);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataSource, setDataSource] = useState<any>([]);
+  const [namePosition, setDatanamePosition] = useState<string>('');
+  const { Option } = Select;
+  const [FormAdd] = Form.useForm();
+  const inputRef = useRef<any>(null);
 
   useEffect(() => {
-    if (editing) {
-      inputRef.current!.focus();
+    getDataAll();
+  }, []);
+
+  const getDataAll = async () => {
+    const result = (await DatamanagementService().getPositionall()) as any;
+    setDataSource(result);
+  };
+
+  const handleDel = async (e: any) => {
+    (await DatamanagementService().deletePosition(e)) as any;
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = async (e: any) => {
+    if (e.position === undefined || e.position === '') {
+      inputRef.current.focus();
+      message.warning('กรุณากรอก ตำแหน่ง');
+      return true;
     }
-  }, [editing]);
-
-  const toggleEdit = () => {
-    setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-  };
-
-  const save = async () => {
-    try {
-      const values = await form.validateFields();
-
-      toggleEdit();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log('Save failed:', errInfo);
+    setDatanamePosition(e.position);
+    if (e) {
+      const newData: any = [];
+      newData.push({
+        uuid: uuidv4(),
+        nameposition: String(e.position),
+        createdate: new Date(),
+      });
+      await DatamanagementService()
+        .importPosition(newData, 1)
+        .then((response: any) => {
+          console.log(response);
+          message.success('ทำการเพิ่มข้อมูลตำแหน่งสำเร็จ');
+          getDataAll();
+          FormAdd.resetFields();
+          setIsModalOpen(false);
+        });
     }
   };
-
-  let childNode = children;
-
-  if (editable) {
-    childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-          },
-        ]}
-      >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={toggleEdit}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  return <td {...restProps}>{childNode}</td>;
-};
-
-type EditableTableProps = Parameters<typeof Table>[0];
-
-interface DataType {
-  key: React.Key;
-  title: string;
-  name: string;
-  lastname: string;
-  course: string;
-  id: string;
-}
-
-type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>;
-
-export const SettingPermissionPosition: React.FC = ({}): React.ReactElement => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
-    {
-      key: '1',
-      title: 'm',
-      name: 'string',
-      lastname: 'string',
-      course: 'string',
-      id: 'string',
-    },
-    {
-      key: '2',
-      title: 'f',
-      name: 'string',
-      lastname: 'string',
-      course: 'string',
-      id: 'string',
-    },
-  ]);
-  const { Option } = Select;
-
-  const [count, setCount] = useState(2);
-
-  const handleDelete = (key: React.Key) => {
-    const newData = dataSource.filter(item => item.key !== key);
-    setDataSource(newData);
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    FormAdd.resetFields();
   };
-
   const defaultColumns: any = [
     {
-      title: 'คำนำหน้า',
-      dataIndex: 'title',
-      width: '30%',
-      // editable: true,
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? (
-          <Select placeholder={'Please Select'} allowClear style={{width:"100%"}}>
-            <Option key={0} value={'m'}>
-              นาย
-            </Option>
-            <Option key={1} value={'f'}>
-              นางสาว
-            </Option>
-          </Select>
-        ) : (
-          <Select placeholder={'Please Select'} allowClear style={{width:"100%"}}>
-            <Option key={0} value={'m'}>
-              นาย
-            </Option>
-            <Option key={1} value={'f'}>
-              นางสาว
-            </Option>
-          </Select>
-        ),
-    },
-    {
-      title: 'ชื่อ',
-      dataIndex: 'age',
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? <Input /> : null,
-    },
-    {
-      title: 'นามสกุล',
-      dataIndex: 'address',
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? <Input /> : null,
-    },
-    {
       title: 'ตำแหน่ง',
-      dataIndex: 'address',
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? (
-          <Select placeholder={'Please Select'}>
-            <Option key={0} value={'m'}>
-              นายกสมาคม
-            </Option>
-            <Option key={1} value={'f'}>
-              รองนายกสมาคม
-            </Option>
-          </Select>
-        ) : (
-          <Select placeholder={'Please Select'} style={{width:"100%"}} allowClear>
-            <Option key={0} value={'m'}>
-              นายกสมาคม
-            </Option>
-            <Option key={1} value={'f'}>
-              รองนายกสมาคม
-            </Option>
-          </Select>
-        ),
+      dataIndex: 'uuid',
+      width: '75%',
+      render: (e: string, row: any, index: number) => {
+        return <>{row?.nameposition}</>;
+      },
     },
     {
-      title: 'action',
-      dataIndex: 'id',
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
+      title: 'วันที่เพิ่ม',
+      dataIndex: 'createdate',
+      width: '15%',
+      render: (e: string, row: any, index: number) => {
+        return <>{dayjs(e).add(543, 'year').format('DD-MM-YYYY HH:MM น.')}</>;
+      },
+    },
+    {
+      title: 'Action',
+      dataIndex: 'uuid',
+      width: '10%',
+      align: 'center',
+      render: (event: number, row: any, index: number) => {
+        // console.log(row);
+
+        return (
+          <>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Button
+                  type="default"
+                  style={{
+                    border: 'none',
+                    color: 'red',
+                  }}
+                  onClick={() => handleDel(row)}
+                >
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 
-  const handleAdd = () => {
-    const newData: DataType = {
-      key: count,
-      title: '',
-      name: 'string',
-      lastname: 'string',
-      course: 'string',
-      id: 'string',
-    };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
-  };
-
-  const handleSave = (row: DataType) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex(item => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    setDataSource(newData);
-  };
-
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell,
-    },
-  };
-
-  const columns = defaultColumns.map((col: any) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: DataType) => ({
-        record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title,
-        handleSave,
-      }),
-    };
-  });
   return (
     <>
-      <Card title={'หลักสูตร'} style={{ borderRadius: '10px' }}>
+      <Modal
+        title="เพิ่มตำแหน่ง"
+        visible={isModalOpen}
+        // onOk={handleOk}
+        onCancel={handleCancel}
+        footer={false}
+      >
+        <>
+          <Form
+            form={FormAdd}
+            layout={'vertical'}
+            onFinish={handleOk}
+            onChange={showModal}
+          >
+            <Form.Item label={'ตำแหน่ง'} name="position">
+              <Input
+                ref={inputRef}
+                name="position"
+                id="position"
+                placeholder="Text"
+                // onChange={(e: any) => {
+                //   setDatanamePosition(e.target.value);
+                // }}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </>
+      </Modal>
+      <Card
+        title={'ตำแหน่ง'}
+        style={{ borderRadius: '10px', marginTop: '20px' }}
+      >
         <div>
           <Button
-            onClick={handleAdd}
-            // type="primary"
+            onClick={showModal}
+            type="primary"
             style={{
               marginBottom: 16,
               backgroundColor: '#1E6541',
             }}
           >
-            <Typography style={{ color: 'white' }}>เพิ่มหลักสูตร</Typography>
+            <Typography style={{ color: 'white' }}>{'เพิ่มตำแหน่ง'}</Typography>
           </Button>
-          <Table
-            components={components}
-            rowClassName={() => 'editable-row'}
-            bordered
-            dataSource={dataSource}
-            columns={columns as ColumnTypes}
-          />
+          <Table bordered dataSource={dataSource} columns={defaultColumns} />
         </div>
       </Card>
     </>

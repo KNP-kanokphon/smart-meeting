@@ -155,17 +155,33 @@ export const SettingPermissionCourse: React.FC = (): React.ReactElement => {
       title: 'คำนำหน้า',
       dataIndex: 'title',
       width: '30%',
-    //   editable: true,
+      //   editable: true,
       render: (_: any, record: { key: React.Key }) =>
         dataSource.length >= 1 ? (
-          <Select placeholder={'Please Select'} allowClear style={{width:"100%"}}>
-            <Option key={0} value={"m"}>นาย</Option>
-            <Option key={1} value={"f"}>นางสาว</Option>
+          <Select
+            placeholder={'Please Select'}
+            allowClear
+            style={{ width: '100%' }}
+          >
+            <Option key={0} value={'m'}>
+              นาย
+            </Option>
+            <Option key={1} value={'f'}>
+              นางสาว
+            </Option>
           </Select>
         ) : (
-          <Select placeholder={'Please Select'} allowClear style={{width:"100%"}}>
-           <Option key={0} value={"m"}>นาย</Option>
-            <Option key={1} value={"f"}>นางสาว</Option>
+          <Select
+            placeholder={'Please Select'}
+            allowClear
+            style={{ width: '100%' }}
+          >
+            <Option key={0} value={'m'}>
+              นาย
+            </Option>
+            <Option key={1} value={'f'}>
+              นางสาว
+            </Option>
           </Select>
         ),
     },
@@ -181,22 +197,22 @@ export const SettingPermissionCourse: React.FC = (): React.ReactElement => {
       render: (_: any, record: { key: React.Key }) =>
         dataSource.length >= 1 ? <Input /> : null,
     },
-    {
-      title: 'ตำแหน่ง',
-      dataIndex: 'address',
-      render: (_: any, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? (
-          <Select placeholder={'Please Select'} style={{width:"100%"}} allowClear>
-            <Option key={0} value={"m"}>นายกสมาคม</Option>
-            <Option key={1} value={"f"}>รองนายกสมาคม</Option>
-          </Select>
-        ) : (
-          <Select placeholder={'Please Select'}>
-            <Option key={0} value={"m"}>นายกสมาคม</Option>
-            <Option key={1} value={"f"}>รองนายกสมาคม</Option>
-          </Select>
-        ),
-    },
+    // {
+    //   title: 'ตำแหน่ง',
+    //   dataIndex: 'address',
+    //   render: (_: any, record: { key: React.Key }) =>
+    //     dataSource.length >= 1 ? (
+    //       <Select placeholder={'Please Select'} style={{width:"100%"}} allowClear>
+    //         <Option key={0} value={"m"}>นายกสมาคม</Option>
+    //         <Option key={1} value={"f"}>รองนายกสมาคม</Option>
+    //       </Select>
+    //     ) : (
+    //       <Select placeholder={'Please Select'}>
+    //         <Option key={0} value={"m"}>นายกสมาคม</Option>
+    //         <Option key={1} value={"f"}>รองนายกสมาคม</Option>
+    //       </Select>
+    //     ),
+    // },
     {
       title: 'action',
       dataIndex: 'id',
