@@ -44,6 +44,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     getListPosition();
     getListCourse();
   }, []);
+
   async function getListmeeting() {
     await DatamanagementService()
       .getUser()
@@ -59,12 +60,38 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             positionkpi: e.positionkpi,
           };
         });
-        // await setDataUser([]);
+
+        // const newData = await data;
+        // const Data = (await newData.map(
+        //   (
+        //     x: {
+        //       // key: number;
+        //       uuid: string;
+        //       username: string;
+        //       phone: string;
+        //       course: string;
+        //       position: string;
+        //       positionkpi: string;
+        //     },
+        //     index: number,
+        //   ) => {
+        //     const mapData = {
+        //       key: index + 1,
+        //       uuid: x.uuid,
+        //       username: x.username,
+        //       phone: x.phone,
+        //       course: x.course,
+        //       position: x.position,
+        //       positionkpi: x.positionkpi,
+        //     };
+        //     return mapData;
+        //   },
+        // )) as any;
         setDataUser(newData);
       });
   }
   const getListPosition = async () => {
-    const result = await DatamanagementService()
+    await DatamanagementService()
       .getPositionall()
       .then(async data => {
         const newData = await data.map((e: any, i: number) => {
@@ -181,7 +208,15 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
       key: 'position',
       dataIndex: 'position',
       render: (e: any, row: any) => {
-        return e;
+        if (e) {
+          return (
+            <>
+              {dataPosition.map((x: any) => {
+                return <>{x.uuid == e ? x.nameposition : ''}</>;
+              })}
+            </>
+          );
+        }
       },
     },
     {

@@ -92,7 +92,7 @@ export const SettingPermissionPosition: React.FC<props> = ({
           await DatamanagementService()
             .importPosition(newData, 1)
             .then((response: any) => {
-              console.log(response);
+              // console.log(response);
               message.success('ทำการเพิ่มข้อมูลตำแหน่งสำเร็จ');
               getDataAll();
               FormAdd.resetFields();
