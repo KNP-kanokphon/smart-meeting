@@ -95,8 +95,7 @@ export const TableBoard: React.FC<Props> = ({
       }
     });
     setUsername(newresult);
-    console.log(newresult,'newresult');
-    
+
     setIsEditing(true);
     setEditingStudent({ ...record });
   };
@@ -132,7 +131,6 @@ export const TableBoard: React.FC<Props> = ({
                 <EditOutlined
                   onClick={() => {
                     onEditStudent(record);
-                    console.log(record,'record');
                     
                   }}
                 />
@@ -210,9 +208,9 @@ export const TableBoard: React.FC<Props> = ({
               value={editingStudent?.username}
               style={{ width: '100%' }}
               onChange={(e: any, dataAll: any) => {
-                console.log(username,'username');
+
                 const matchuser = username.find((x:any) => x.username === dataAll.children)
-                console.log(matchuser,'match');
+
                 
                 
                 setEditingStudent((pre: any) => {
