@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card, Checkbox } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Checkbox, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -41,25 +41,38 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
   };
 
   const navigate = useNavigate();
-  const onChange = async () => {
-    let statusFood = false;
-    detailFoodUpdate.map((e: any) => {
-      if (e.status === true) {
-        statusFood = true;
-      }
-    });
+  const onChange = async (values: any) => {
+    console.log('Received values of form: ', values);
+    // let statusFood = false;
+    // detailFoodUpdate.map((e: any) => {
+    //   if (e.status === true) {
+    //     statusFood = true;
+    //   }
+    // });
+    console.log(detailFoodUpdate);
+
     // const resultUpdate = await DatamanagementService().updateStatusFood(
     //   roomid,
     //   userid,
     //   statusFood,
     // );
-    navigate(`/detailalready/${roomid}/${userid}`);
+    // navigate(`/stepthree/${roomid}/${userid}`);
   };
-  const receiveOrderfood = async (e: string, x: CheckboxChangeEvent) => {
+  const receiveOrderfood = async (
+    e: string,
+    x: CheckboxChangeEvent,
+    i: number,
+  ) => {
     setDetailFoodUpdate([
-      ...detailFoodUpdate,
-      { name: e, status: x.target.checked },
+      {
+        id: i,
+        name: e,
+        status: x.target.checked,
+      },
     ]);
+  };
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
   };
   return (
     <Layout className="layout">
@@ -119,40 +132,48 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                   {/* <Col span={2}></Col> */}
                 </Row>
                 <br></br>
-                <Row>
-                  <Col span={7}></Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    lg={8}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                    }}
-                  >
-                    <b>{'อาหารและเครื่องดื่ม'}</b>
-                    <br></br>
-                    {food?.map((e: any, i: number) => {
-                      return (
-                        <Row>
-                          <Col span={12}>{e.namefood}</Col>
-                          <Col span={12}>
-                            <Checkbox
-                              onChange={x => receiveOrderfood(e.namefood, x)}
-                            >
-                              รับ
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                  </Col>
-                  <Col span={8}></Col>
-                </Row>
-
+                <Form name="validate_other" onFinish={onFinish}>
+                  <Row>
+                    <Col span={7}></Col>
+                    <Col
+                      xs={24}
+                      sm={24}
+                      md={8}
+                      lg={8}
+                      style={{
+                        textAlign: 'left',
+                        fontSize: '100%',
+                        paddingLeft: '20px',
+                        paddingRight: '20px',
+                      }}
+                    >
+                      <b>{'อาหารและเครื่องดื่ม'}</b>
+                      <br></br>
+                      <Form.Item name="checkbox-group" label="Checkbox.Group">
+                        <Checkbox.Group>
+                          {food?.map((e: any, i: number) => {
+                            return (
+                              <Row>
+                                <Col span={12}>{e.namefood}</Col>
+                                <Col span={12}>
+                                  <Checkbox
+                                    value={e.namefood}
+                                    // onChange={x =>
+                                    //   receiveOrderfood(e.namefood, x, i)
+                                    // }
+                                  >
+                                    รับ
+                                  </Checkbox>
+                                </Col>
+                              </Row>
+                            );
+                          })}
+                        </Checkbox.Group>
+                      </Form.Item>
+                    </Col>
+                    <Col span={8}></Col>
+                  </Row>
+                </Form>
                 <br></br>
                 <Row>
                   <Col span={24}>
