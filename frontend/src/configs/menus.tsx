@@ -25,6 +25,7 @@ import { MemberShipRoute } from '../pages/Membership/MemberShipRoute';
 // import { SignConfirm } from '../pages/signconfirm/SignConfirm';
 import { SettingPermission } from '../pages/settingpermission/SettingPermission';
 import { CreateMeeting } from '../pages/MeetingCreate/MeetingCreate';
+import { SignConfirm } from '../pages/signconfirm/SignConfirm';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
