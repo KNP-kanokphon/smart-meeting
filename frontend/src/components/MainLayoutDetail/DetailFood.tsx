@@ -29,6 +29,7 @@ interface MeetingInterface {
 export const DetailFood: React.FC<Props> = ({ baseURL }) => {
   const { roomid } = useParams<{ roomid: string }>();
   const { userid } = useParams<{ userid: string }>();
+  const [form] = Form.useForm();
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
   const [detailFoodUpdate, setDetailFoodUpdate] = useState<any>([]);
   const [food, setFood] = useState<any>();
@@ -42,21 +43,17 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
 
   const navigate = useNavigate();
   const onChange = async (values: any) => {
-    console.log('Received values of form: ', values);
-    // let statusFood = false;
-    // detailFoodUpdate.map((e: any) => {
-    //   if (e.status === true) {
-    //     statusFood = true;
-    //   }
-    // });
-    console.log(detailFoodUpdate);
+    form.validateFields().then(async values => {
+      const status: boolean = values['food-detail'].length > 0 ? true : false;
+      await DatamanagementService().updateStatusFood(roomid, userid, status);
+    });
 
     // const resultUpdate = await DatamanagementService().updateStatusFood(
     //   roomid,
     //   userid,
     //   statusFood,
     // );
-    // navigate(`/stepthree/${roomid}/${userid}`);
+    navigate(`/stepthree/${roomid}/${userid}`);
   };
   const receiveOrderfood = async (
     e: string,
@@ -132,7 +129,7 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                   {/* <Col span={2}></Col> */}
                 </Row>
                 <br></br>
-                <Form name="validate_other" onFinish={onFinish}>
+                <Form name="validate_other" onFinish={onFinish} form={form}>
                   <Row>
                     <Col span={7}></Col>
                     <Col
@@ -149,7 +146,7 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                     >
                       <b>{'อาหารและเครื่องดื่ม'}</b>
                       <br></br>
-                      <Form.Item name="checkbox-group" label="Checkbox.Group">
+                      <Form.Item name="food-detail" label="Checkbox.Group">
                         <Checkbox.Group>
                           {food?.map((e: any, i: number) => {
                             return (
