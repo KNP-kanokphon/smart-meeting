@@ -68,7 +68,14 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
         }}
       >
         <div className="site-card-wrapper">
-          <Row gutter={16}>
+          <Row
+            gutter={16}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              textAlign: 'center',
+            }}
+          >
             <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
