@@ -29,8 +29,6 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
       userid,
     );
     const result = await DatamanagementService().getMeetingByid(id);
-    console.log(result);
-
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
     setPathfile(resultPathfile);
