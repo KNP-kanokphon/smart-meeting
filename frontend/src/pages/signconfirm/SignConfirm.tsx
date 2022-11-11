@@ -15,7 +15,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/images/KPIS Logo.png';
 import SignaturePad from 'react-signature-pad-wrapper';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import SignatureCanvas from 'react-signature-canvas'
 
 export interface Props {
@@ -25,6 +25,10 @@ export interface Props {
 export const SignConfirm: React.FC<Props> = ({
   baseURL,
 }): React.ReactElement => {
+  const id = useParams<{id:string,userid:string}>()
+  console.log(id,'id');
+  
+  
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sigCanvas = useRef<any>(null);
@@ -37,14 +41,14 @@ export const SignConfirm: React.FC<Props> = ({
 >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
  
 
-const [userOwner,setUserOwner] = useState<String>('258ca024-5e7e-46c2-9d3a-74b0a0aadf19')
+const [userOwner,setUserOwner] = useState<String>(id.userid||'')
 
   useEffect(() => {
     getListmeeting();
   }, []);
   const getListmeeting = async () => {
     await DatamanagementService()
-      .getMeetingByid(state)
+      .getMeetingByid(id.id)
       .then(data => {
         setDataIntable(data);
       });
@@ -52,13 +56,13 @@ const [userOwner,setUserOwner] = useState<String>('258ca024-5e7e-46c2-9d3a-74b0a
 
     await DatamanagementService()
       // .getuserInroom(String(state))
-      .getuserInroom('3847fefc-a277-413b-80a8-88feab63cf73')
+      .getuserInroom(id.id)
       .then(async (data: any) => {
         const position = await DatamanagementService()
           .getPositionall()
           .then(data => {
           
-
+            
             setPositionName(data);
             return data;
           });
@@ -102,9 +106,9 @@ const [userOwner,setUserOwner] = useState<String>('258ca024-5e7e-46c2-9d3a-74b0a
     setOpen(false);
   };
 
-  const onFinish = () => {
-    setOpen(false);
-    console.log(imageURLone);
+  const onFinish = async () => {
+    console.log(id.userid);
+    
     if (
       !imageURLone 
       // 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC'
@@ -113,7 +117,16 @@ const [userOwner,setUserOwner] = useState<String>('258ca024-5e7e-46c2-9d3a-74b0a
       message.error('กรุณาเซ็นชื่อ !!')
       return
     }
-    
+    const data = {
+      data:{
+        uuid: id.userid,
+        signature:imageURLone,
+      }
+    }
+    await DatamanagementService().updateUserDetail(id.id,id.userid,data).then(() => {
+      message.success('บันทึกสำเร็จ');
+      setOpen(false);
+    })
   };
 
   const endSignager: any = {

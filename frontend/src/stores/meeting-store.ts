@@ -259,4 +259,10 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  updateUserDetail: async (roomid: any, userid: any, data: any) => {
+    const result = await httpClient.put(
+      `/userattendees/updateUserDetail/${roomid}/${userid}/`,data
+    );
+    return result.data;
+  },
 });

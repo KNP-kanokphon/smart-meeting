@@ -82,6 +82,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             statuscheckin: e.checkin,
             position: pname.nameposition,
             statusconfirm: e.confirm,
+            signature: e.signature,
           };
         });
         setDataUser2(newData);
@@ -92,7 +93,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
 
   const showModal = (e: any) => {
-    setnameUser(e.username);
+    setnameUser(e);
     console.log(e.username);
     setIsModalOpen(true);
   };
@@ -283,7 +284,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
                 </Col>
 
                 <Col style={{ color: 'grey', fontSize: '14px' }}>
-                  <Typography> ({getNameUser})</Typography>
+                  <Typography> ({getNameUser?.username})</Typography>
                 </Col>
               </Space>
             </Row>
@@ -305,7 +306,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
           <Image
             preview={false}
             width={400}
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            src={getNameUser.signature}
           />
           <Divider />
           <Typography>ลายเซ็นอนุมัติ</Typography>
