@@ -51,10 +51,12 @@ export const CreateMeeting: React.FC = () => {
 
   const setDataAgendaield = (dataField: any) => {
     setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
+    console.log(dataField,'setDataAgendaield');
+    
   };
 
   const checkSubmitForm = () => {
-    console.log(dataFood);
+    // console.log(dataFood);
 
     if (dataFood.length === 0) {
       message.error('0 length');
@@ -108,6 +110,7 @@ export const CreateMeeting: React.FC = () => {
         username: e.username,
         uuidprofile: e.uuidprofile,
         type_user: e.type_user,
+        position: e.position,
       });
     });
     dataAgenda.userAttendee.map((e: any) => {
@@ -115,6 +118,7 @@ export const CreateMeeting: React.FC = () => {
         username: e.username,
         uuidprofile: e.uuidprofile,
         type_user: e.type_user,
+        position: e.position
       });
     });
     const id = uuidv4();
@@ -161,8 +165,8 @@ export const CreateMeeting: React.FC = () => {
       },
       onCancel: () => {},
     });
-    // console.log(dataAgenda);
-    // console.log(dataDetail);
+    console.log(dataAgenda);
+    console.log(dataDetail);
     console.log(dataFood);
   };
 

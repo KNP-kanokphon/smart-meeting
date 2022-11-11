@@ -130,19 +130,17 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'position',
       key: 'position',
       width: '20%',
-      render: (e: any, row: any) => {
-        if (e) {
-          return (
-            <>
-              {positionName.map((x: any) => {
-               console.log(x,'x');
-               
-               return <>{x.uuid === e ? x.nameposition : ''}</>;
-              })}
-            </>
-          );
-        }
-      },
+      // render: (e: any, row: any) => {
+      //   if (e) {
+      //     return (
+      //       <>
+      //         {positionName.map((x: any) => {
+      //          return <>{x.uuid === e ? x.nameposition : ''}</>;
+      //         })}
+      //       </>
+      //     );
+      //   }
+      // },
     },
     {
       title: 'หลักสูตร',
