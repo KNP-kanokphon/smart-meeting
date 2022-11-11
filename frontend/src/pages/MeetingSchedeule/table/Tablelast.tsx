@@ -151,12 +151,14 @@ export const TableLast: React.FC = (): React.ReactElement => {
         return (
           <>
             <Row>
-              <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                ห้องประชุม
-              </Typography>
-            </Row>
-            <Row>
-              <Typography style={{ color: 'grey' }}>{data}</Typography>
+              <Col span={24}>
+                <Typography style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                  ห้องประชุม
+                </Typography>
+              </Col>
+              <Col span={24}>
+                <Typography style={{ color: 'grey' }}>{data}</Typography>
+              </Col>
             </Row>
           </>
         );
@@ -166,7 +168,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
       title: 'Participant',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '30%',
+      width: '15%',
       // ellipsis: true,
       render: (data: any, dataAll: any) => {
         return (
@@ -182,13 +184,13 @@ export const TableLast: React.FC = (): React.ReactElement => {
                   if (event.length < 2) {
                     return event.idmeeting == data ? event.username : <></>;
                   } else {
-                    let ressss: string = '';
+                    let nameusermeeting: string = '';
                     if (event.idmeeting === data) {
-                      ressss += ' ' + event.username;
+                      nameusermeeting += ' ' + event.username;
                     } else {
                       <></>;
                     }
-                    let splittt = ressss;
+                    let splittt = nameusermeeting;
                     return (
                       <>
                         <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
