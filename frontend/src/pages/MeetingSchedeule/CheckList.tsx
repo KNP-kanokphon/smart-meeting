@@ -139,7 +139,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'position',
       key: 'position',
       width: '20%',
-<<<<<<< HEAD
       // render: (e: any, row: any) => {
       //   if (e) {
       //     return (
@@ -151,21 +150,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
       //     );
       //   }
       // },
-=======
-      render: (e: any, row: any) => {
-        if (e) {
-          return (
-            <>
-              {positionName.map((x: any) => {
-                console.log(x, 'x');
-
-                return <>{x.uuid === e ? x.nameposition : ''}</>;
-              })}
-            </>
-          );
-        }
-      },
->>>>>>> 130c8279359ca98f2b103121058d6a1403ae4b51
     },
     {
       title: 'หลักสูตร',
