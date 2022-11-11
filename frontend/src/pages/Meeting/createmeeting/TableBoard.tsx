@@ -69,6 +69,7 @@ export const TableBoard: React.FC<Props> = ({
       uuidprofile: '',
       type_user: 'previous',
       uuid: uuidv4(),
+      position: ''
     };
     setDataSourceBoard((pre: any) => {
       return [...pre, newStudent];
@@ -130,6 +131,7 @@ export const TableBoard: React.FC<Props> = ({
                 <EditOutlined
                   onClick={() => {
                     onEditStudent(record);
+                    
                   }}
                 />
               </Col>
@@ -206,11 +208,19 @@ export const TableBoard: React.FC<Props> = ({
               value={editingStudent?.username}
               style={{ width: '100%' }}
               onChange={(e: any, dataAll: any) => {
+
+                const matchuser = username.find((x:any) => x.username === dataAll.children)
+
+                
+                
                 setEditingStudent((pre: any) => {
                   return { ...pre, uuidprofile: dataAll.value };
                 });
                 setEditingStudent((pre: any) => {
                   return { ...pre, username: dataAll.children };
+                });
+                setEditingStudent((pre: any) => {
+                  return { ...pre, position: matchuser.position };
                 });
               }}
             >

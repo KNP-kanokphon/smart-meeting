@@ -14,7 +14,13 @@ import React, { useState, useRef } from 'react';
 import Logo from '../../assets/images/KPIS Logo.png';
 import SignaturePad from 'react-signature-pad-wrapper';
 
-export const SignConfirm: React.FC = (): React.ReactElement => {
+export interface Props {
+  baseURL: string;
+}
+
+export const SignConfirm: React.FC<Props> = ({
+  baseURL,
+}): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sigCanvas = useRef<any>(null);
