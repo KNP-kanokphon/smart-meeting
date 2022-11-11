@@ -112,7 +112,9 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                   marginTop: '3px',
                 }}
               >
-                <Typography>{'นำเข้า ตำแหน่ง / หลักสูตร'}</Typography>
+                <Typography style={{ fontWeight: 'bold' }}>
+                  {'อัปโหลดไฟล์ ตำแหน่ง'}
+                </Typography>
               </Col>
               <Col span={14}>
                 <Select
