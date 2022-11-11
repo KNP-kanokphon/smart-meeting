@@ -44,6 +44,8 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
   const navigate = useNavigate();
   const onChange = async (values: any) => {
     form.validateFields().then(async values => {
+      console.log(values['food-detail']);
+
       const status: boolean = values['food-detail'].length > 0 ? true : false;
       await DatamanagementService().updateStatusFood(roomid, userid, status);
     });
@@ -146,7 +148,7 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                     >
                       <b>{'อาหารและเครื่องดื่ม'}</b>
                       <br></br>
-                      <Form.Item name="food-detail" label="Checkbox.Group">
+                      <Form.Item name="food-detail">
                         <Checkbox.Group>
                           {food?.map((e: any, i: number) => {
                             return (

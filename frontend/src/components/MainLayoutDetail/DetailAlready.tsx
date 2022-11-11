@@ -31,6 +31,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
   const [agenda, setAgenda] = useState<any>();
   const [user, setUser] = useState<any>();
+  const [food, setFood] = useState<any>([]);
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -41,10 +42,10 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
       roomid,
       userid,
     );
+    const resultFood = await DatamanagementService().getDetailfood(roomid);
+    setFood(resultFood);
     setAgenda(resultAgenda);
     setMeetingData(result[0]);
-    console.log(resultUser[0]);
-
     setUser(resultUser[0]);
   };
 
@@ -54,8 +55,11 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
       roomid,
       userid,
     );
-    navigate(`/detailalready/detailfood/${roomid}/${userid}`);
-    // navigate(`/stepthree/${roomid}/${userid}`);
+    if (food.length > 0) {
+      navigate(`/detailalready/detailfood/${roomid}/${userid}`);
+    } else {
+      navigate(`/stepthree/${roomid}/${userid}`);
+    }
   };
   return (
     <Layout className="layout">
