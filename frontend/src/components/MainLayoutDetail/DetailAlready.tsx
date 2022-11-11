@@ -54,7 +54,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
       roomid,
       userid,
     );
-    navigate(`/stepthree/${roomid}/${userid}`);
+    navigate(`/detailalready/detailfood/${roomid}/${userid}`);
     // navigate(`/stepthree/${roomid}/${userid}`);
   };
   return (

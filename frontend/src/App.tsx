@@ -18,6 +18,7 @@ import { Login } from './pages/Login/Login';
 import { DetailAlready } from './components/MainLayoutDetail/DetailAlready';
 import { DetailConfirm } from './components/MainLayoutDetail/DetailConfirm';
 import { DetailFood } from './components/MainLayoutDetail/DetailFood';
+import { SignConfirm } from './pages/signconfirm/SignConfirm';
 
 // const routeMapper = (x: MenuItem): React.ReactNode => (
 //   <Route
@@ -97,6 +98,14 @@ const App = () => {
           <Route
             path="/:roomid/:userid"
             element={<MainLayoutProfileDetail baseURL={'/profileDetail'} />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+      <BrowserRouter >
+        <Routes>
+          <Route
+            path="/signconfirm/:id/:userid"
+            element={<SignConfirm baseURL={'/signconfirm'} />}
           ></Route>
         </Routes>
       </BrowserRouter>

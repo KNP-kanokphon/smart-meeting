@@ -27,6 +27,11 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const { state } = useLocation();
   const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
+  const [dataUser2, setDataUser2] = useState<any>([]);
+  const [getPositionName, setPositionName] = useState<any>([]);
+  const [getNameUser, setnameUser] = useState<any>('');
+  const [getNameUser2, setnameUser2] = useState<any>('');
+  const [getNameuuid, setnameuuid] = useState<any>('');
 
   useEffect(() => {
     getListmeeting();
@@ -51,11 +56,44 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
         });
         setDataUser(newData);
       });
+    await DatamanagementService()
+      .getuserInroom(String(state))
+      .then(async (data: any) => {
+        const position = await DatamanagementService()
+          .getPositionall()
+          .then(data => {
+            setPositionName(data);
+            return data;
+          });
+        const newData = await data.map((e: any, i: number) => {
+          const pname = position.find(
+            (name: {
+              id: string;
+              uuid: string;
+              nameposition: string;
+              createdate: string;
+            }) => name.uuid === e.position,
+          );
+          return {
+            id: i + 1,
+            uuidprofile: e.uuidprofile,
+            uuidroom: e.uuid,
+            username: e.username,
+            statuscheckin: e.checkin,
+            position: pname.nameposition,
+            statusconfirm: e.confirm,
+          };
+        });
+        setDataUser2(newData);
+      });
   };
   const [datasource, setDatasource] = useState<any>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
 
-  const showModal = () => {
+  const showModal = (e: any) => {
+    setnameUser(e.username);
+    console.log(e.username);
     setIsModalOpen(true);
   };
 
@@ -65,6 +103,21 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const showModal2 = (e: any) => {
+    console.log(e);
+    setnameUser2(e.username);
+    setnameuuid(e.uuidprofile);
+    setIsModalOpen2(true);
+  };
+
+  const handleOk2 = () => {
+    setIsModalOpen2(false);
+  };
+
+  const handleCancel2 = () => {
+    setIsModalOpen2(false);
   };
 
   const contentAction = (
@@ -99,26 +152,13 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       title: 'ตำแหน่ง',
       dataIndex: 'position',
       key: 'position',
-      width: '10%',
+      width: '20%',
     },
-    {
-      title: 'หลักสูตร',
-      dataIndex: 'course',
-      key: 'course',
-      width: '10%',
-    },
-    {
-      title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phone',
-      key: 'phone',
-      width: '10%',
-    },
-
     {
       title: 'สถานะ',
       dataIndex: 'statuscheckin',
       key: 'statuscheckin',
-      width: '10%',
+      width: '5%',
       render: (text: any) => {
         return text === true ? (
           <Tag color="lime">
@@ -138,17 +178,42 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       },
     },
     {
+      title: 'Link',
+      dataIndex: 'uuidprofile',
+      key: 'uuidprofile',
+      fixed: 'right',
+      width: '5%',
+      render: (text: any, row: any) => {
+        return (
+          <>
+            <div style={{ textAlign: 'center' }}>
+              <Button
+                onClick={() => showModal2(row)}
+                style={{
+                  border: 'none',
+                  textAlign: 'center',
+                  background: 'none',
+                }}
+              >
+                Link
+              </Button>
+            </div>
+          </>
+        );
+      },
+    },
+    {
       title: '',
       dataIndex: 'uuidprofile',
       key: 'uuidprofile',
       fixed: 'right',
       width: '5%',
-      render: (text: any) => {
+      render: (text: any, row: any) => {
         return (
           <>
             <div style={{ textAlign: 'center' }}>
               <Button
-                onClick={showModal}
+                onClick={() => showModal(row)}
                 style={{
                   border: 'none',
                   textAlign: 'center',
@@ -165,25 +230,41 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
     },
   ];
 
-  const close = () => {
-    console.log(
-      'Notification was closed. Either the close button was clicked or duration time elapsed.',
-    );
-  };
-  const wasmee = () => {
-    <a>asdasd</a>;
-  };
+  // const close = () => {
+  //   console.log(
+  //     'Notification was closed. Either the close button was clicked or duration time elapsed.',
+  //   );
+  // };
 
-  const openNotification = () => {
-    confirm({
-      title: 'Do you Want to delete these items?',
-      icon: <ExclamationCircleOutlined />,
-      content: `Link : ${wasmee}`,
-      onOk() {
-        console.log('OK');
-      },
-    });
-  };
+  // const openNotification = (e: any) => {
+  //   console.log(e);
+
+  //   confirm({
+  //     title: 'ลิ้งค์การประชุม',
+  //     icon: <ExclamationCircleOutlined />,
+  //     okText: 'ปิด',
+  //     content: (
+  //       <>
+  //         <Typography style={{ marginBottom: '20px' }}>
+  //           คัดลอกลิ้งค์การประชุมข้างล่าง
+  //         </Typography>
+  //         <Typography style={{ marginBottom: '20px' }}>
+  //           <a
+  //           // onClick={e => {
+  //           //   `${window.location.host}/profileDetail/`;
+  //           // }}
+  //           >
+  //             ลิ้งค์เซ็นลายเซ็นดิจิตอล
+  //           </a>
+  //         </Typography>
+  //       </>
+  //     ),
+  //     onOk() {
+  //       console.log('OK');
+  //     },
+  //   });
+  // };
+
   return (
     <Row
       gutter={[
@@ -191,25 +272,24 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
         { xs: 8, sm: 16 },
       ]}
     >
+      {/* 1 */}
       <Modal
         title={
           <>
             <Row>
               <Space>
                 <Col>
-                  <Icon icon="akar-icons:eye" />
-                </Col>
-                <Col>
                   <Typography>View</Typography>
                 </Col>
+
                 <Col style={{ color: 'grey', fontSize: '14px' }}>
-                  {'(วัสมี จาหลง)'}
+                  <Typography> ({getNameUser})</Typography>
                 </Col>
               </Space>
             </Row>
           </>
         }
-        open={isModalOpen}
+        visible={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -230,6 +310,40 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
           <Divider />
           <Typography>ลายเซ็นอนุมัติ</Typography>
         </div>
+      </Modal>
+      {/* 2 */}
+      <Modal
+        title={
+          <>
+            <Row>
+              <Space>
+                <Col>
+                  <Typography>View</Typography>
+                </Col>
+
+                <Col style={{ color: 'grey', fontSize: '14px' }}>
+                  <Typography> ({getNameUser2})</Typography>
+                </Col>
+              </Space>
+            </Row>
+          </>
+        }
+        visible={isModalOpen2}
+        onOk={handleOk2}
+        onCancel={handleCancel2}
+        footer={[
+          <Button
+            onClick={handleOk2}
+            style={{ color: 'white', background: '#1E6541' }}
+          >
+            OK
+          </Button>,
+        ]}
+      >
+        <Typography style={{ marginBottom: '20px' }}>
+          <Typography>ลิ้งค์เซ็นลายเซ็นดิจิตอล</Typography>
+          <Typography>{`${window.location.host}/signconfirm/${state}/${getNameuuid}`}</Typography>
+        </Typography>
       </Modal>
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}>
         <Row>
@@ -283,10 +397,10 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
         >
           <Table
             columns={columns}
-            dataSource={dataUser}
-            scroll={{ x: 'calc(1000px + 50%)' }}
+            dataSource={dataUser2}
+            scroll={{ x: 'calc(500px + 50%)' }}
           />
-          <div style={{ textAlign: 'center' }}>
+          {/* <div style={{ textAlign: 'center' }}>
             <Space>
               <Button onClick={() => navigate(-1)}>{'Back'}</Button>
               <Button style={{ color: 'white', background: '#1E6541' }}>
@@ -300,7 +414,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
                 {'Link for Approval E-Signature'}
               </Button>
             </Space>
-          </div>
+          </div> */}
         </Card>
       </div>
     </Row>

@@ -18,7 +18,13 @@ import { DatamanagementService } from '../../stores/meeting-store';
 import { useLocation } from 'react-router-dom';
 import SignatureCanvas from 'react-signature-canvas'
 
-export const SignConfirm: React.FC = (): React.ReactElement => {
+export interface Props {
+  baseURL: string;
+}
+
+export const SignConfirm: React.FC<Props> = ({
+  baseURL,
+}): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sigCanvas = useRef<any>(null);
