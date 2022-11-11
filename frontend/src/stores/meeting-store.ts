@@ -133,6 +133,19 @@ export const DatamanagementService = () => ({
         responseType: 'arraybuffer',
       },
     );
+  },
+
+  getuserInroomAll: async () => {
+    const result = await httpClient.get(`/userattendees/userinroomall`);
+    // console.log(result);
+    return result.data;
+  },
+  getFiles: async (roomid: any) => {
+    const result = await httpClient.get(`/meeting/filepdf/${roomid}`, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return result.data;
   },
   upLoadfilecsv: async (data: any) => {
