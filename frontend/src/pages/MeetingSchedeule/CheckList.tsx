@@ -34,7 +34,9 @@ export const CheckList: React.FC = (): React.ReactElement => {
   const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
   const navigate = useNavigate();
-  const [positionName,setPositionName] = useState<[{id:string,uuid:string,nameposition:string,createdate:string}]>([{id:'',uuid:'',nameposition:'',createdate:''}]);
+  const [positionName, setPositionName] = useState<
+    [{ id: string; uuid: string; nameposition: string; createdate: string }]
+  >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
   useEffect(() => {
     getListmeeting();
   }, []);
@@ -49,30 +51,37 @@ export const CheckList: React.FC = (): React.ReactElement => {
     await DatamanagementService()
       .getuserInroom(String(state))
       .then(async (data: any) => {
-        const position = await DatamanagementService().getPositionall().then(data =>{
-          setPositionName(data)
-          return (data)
-        })
+        const position = await DatamanagementService()
+          .getPositionall()
+          .then(data => {
+            console.log(data);
+
+            setPositionName(data);
+            return data;
+          });
         const newData = await data.map((e: any, i: number) => {
-          const pname = position.find((name:{id:string,uuid:string,nameposition:string,createdate:string}) => name.uuid === e.position)
-          console.log(pname);
-          
-      
-            return {
-              id: i + 1,
-              uuidprofile: e.uuidprofile,
-              uuidroom: e.uuid,
-              username: e.username,
-              statuscheckin: e.checkin,
-              position: !pname?'':pname.nameposition,
-              statusconfirm: e.confirm
-            };
-          
-          
+          console.log(e);
+
+          const pname = position.find(
+            (name: {
+              id: string;
+              uuid: string;
+              nameposition: string;
+              createdate: string;
+            }) => name.uuid === e.position,
+          );
+          return {
+            id: i + 1,
+            uuidprofile: e.uuidprofile,
+            uuidroom: e.uuid,
+            username: e.username,
+            statuscheckin: e.checkin,
+            position: pname.nameposition,
+            statusconfirm: e.confirm,
+          };
         });
         setDataUser(newData);
-        console.log(newData,'newData');
-        
+        console.log(newData, 'newData');
       });
   };
 
@@ -130,6 +139,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'position',
       key: 'position',
       width: '20%',
+<<<<<<< HEAD
       // render: (e: any, row: any) => {
       //   if (e) {
       //     return (
@@ -141,6 +151,21 @@ export const CheckList: React.FC = (): React.ReactElement => {
       //     );
       //   }
       // },
+=======
+      render: (e: any, row: any) => {
+        if (e) {
+          return (
+            <>
+              {positionName.map((x: any) => {
+                console.log(x, 'x');
+
+                return <>{x.uuid === e ? x.nameposition : ''}</>;
+              })}
+            </>
+          );
+        }
+      },
+>>>>>>> 130c8279359ca98f2b103121058d6a1403ae4b51
     },
     {
       title: 'หลักสูตร',
@@ -216,21 +241,15 @@ export const CheckList: React.FC = (): React.ReactElement => {
       render: (text: any) => {
         return text === true ? (
           <Tag>
-            <Space>
-              
-              {'เข้าร่วม'}
-            </Space>
+            <Space>{'เข้าร่วม'}</Space>
           </Tag>
         ) : (
           <Tag>
-            <Space>
-              
-              {'ไม่เข้าร่วม'}
-            </Space>
+            <Space>{'ไม่เข้าร่วม'}</Space>
           </Tag>
         );
       },
-    }
+    },
   ];
   return (
     <>

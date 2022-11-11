@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card, Result } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Checkbox } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -6,6 +6,7 @@ import { useId24 } from '../../drivers/id24/Id24Provider';
 import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 const { Content, Sider, Header, Footer } = Layout;
 export interface Props {
@@ -25,37 +26,40 @@ interface MeetingInterface {
   detail: string;
 }
 
-export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
+export const DetailFood: React.FC<Props> = ({ baseURL }) => {
   const { roomid } = useParams<{ roomid: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
-  const [agenda, setAgenda] = useState<any>();
-  const [user, setUser] = useState<any>();
+  const [detailFoodUpdate, setDetailFoodUpdate] = useState<any>([]);
+  const [food, setFood] = useState<any>();
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
-    const result = await DatamanagementService().getMeetingByid(roomid);
-    const resultAgenda = await DatamanagementService().getagendaByid(roomid);
-    const resultUser = await DatamanagementService().getProfileByid(
-      roomid,
-      userid,
-    );
-    setAgenda(resultAgenda);
-    setMeetingData(result[0]);
-    console.log(resultUser[0]);
-
-    setUser(resultUser[0]);
+    const result = await DatamanagementService().getDetailfood(roomid);
+    setFood(result);
   };
 
   const navigate = useNavigate();
   const onChange = async () => {
-    const resultUpdate = await DatamanagementService().updateStatusUser(
-      roomid,
-      userid,
-    );
-    navigate(`/stepthree/${roomid}/${userid}`);
-    // navigate(`/stepthree/${roomid}/${userid}`);
+    let statusFood = false;
+    detailFoodUpdate.map((e: any) => {
+      if (e.status === true) {
+        statusFood = true;
+      }
+    });
+    // const resultUpdate = await DatamanagementService().updateStatusFood(
+    //   roomid,
+    //   userid,
+    //   statusFood,
+    // );
+    navigate(`/detailalready/${roomid}/${userid}`);
+  };
+  const receiveOrderfood = async (e: string, x: CheckboxChangeEvent) => {
+    setDetailFoodUpdate([
+      ...detailFoodUpdate,
+      { name: e, status: x.target.checked },
+    ]);
   };
   return (
     <Layout className="layout">
@@ -129,110 +133,26 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       paddingRight: '20px',
                     }}
                   >
-                    <b>{'เรียนคุณ : '}</b>
-                    {user?.username}
-                  </Col>
-                  <Col span={8}></Col>
-                </Row>
-                <Row>
-                  <Col span={7}></Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    lg={8}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                    }}
-                  >
-                    ขอเรียนเชิญประชุม
-                  </Col>
-                  <Col span={8}></Col>
-                </Row>
-                <Row>
-                  <Col span={7}></Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    lg={8}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                    }}
-                  >
-                    <b>{'Title : '}</b>
-                    {meetingData?.title}
-                  </Col>
-                  <Col span={8}></Col>
-                </Row>
-
-                <Row>
-                  <Col span={7}></Col>
-
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    <b>{'Schedual : '}</b>
-                    วันที่ {meetingData?.day}
+                    <b>{'อาหารและเครื่องดื่ม'}</b>
                     <br></br>
-                    เวลา {meetingData?.starttime} ถึง {meetingData?.endtime}
-                    <br></br>ณ ห้อง {meetingData?.room}
-                    <br></br>
-                    อาคาร {meetingData?.building}
-                    <br></br>
-                    รายละเอียด {meetingData?.detail}
-                  </Col>
-                  <Col span={7}></Col>
-                </Row>
-                <Row>
-                  <Col span={7}></Col>
-
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    <b>{'Agenda Item :'}</b>
-                    <br></br>
-                    {agenda?.map((e: any, i: number) => {
+                    {food?.map((e: any, i: number) => {
                       return (
-                        <>
-                          <Row key={i}>
-                            {e?.agendes} : {e?.detailagendes}
-                            <br></br>
-                          </Row>
-                        </>
+                        <Row>
+                          <Col span={12}>{e.namefood}</Col>
+                          <Col span={12}>
+                            <Checkbox
+                              onChange={x => receiveOrderfood(e.namefood, x)}
+                            >
+                              รับ
+                            </Checkbox>
+                          </Col>
+                        </Row>
                       );
                     })}
                   </Col>
-                  <Col span={7}></Col>
+                  <Col span={8}></Col>
                 </Row>
+
                 <br></br>
                 <Row>
                   <Col span={24}>
