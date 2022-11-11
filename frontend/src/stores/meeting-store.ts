@@ -123,13 +123,16 @@ export const DatamanagementService = () => ({
     const result = await httpClient.get(`/userattendees/${roomid}`);
     return result.data;
   },
-  getFiles: async (roomid: any) => {
-    const result = await httpClient.get(`/meeting/filepdf/${roomid}`, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+  getFilesoverview: async (roomid: any, namefile: string) => {
+    const result = await httpClient.get(
+      `/meeting/getfileoverview/${roomid}/${namefile}`,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
       },
-      responseType: 'arraybuffer',
-    });
+    );
     return result.data;
   },
   upLoadfilecsv: async (data: any) => {
@@ -215,5 +218,32 @@ export const DatamanagementService = () => ({
       newData,
     );
     return result?.data;
+  },
+  getPathFilePdf: async (roomid: any) => {
+    const result = await httpClient.get(`/meeting/getPathFilePdf/${roomid}`);
+    return result.data;
+  },
+
+  getPathFileStep: async (roomid: any, step: any, namefile: string) => {
+    const result = await httpClient.get(
+      `/meeting/getfilestep/${roomid}/${step}/${namefile}`,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      },
+    );
+    return result.data;
+  },
+  getDetailfood: async (roomid: any) => {
+    const result = await httpClient.get(`/meeting/detailfood/${roomid}`);
+    return result.data;
+  },
+  updateStatusFood: async (roomid: any, userid: any, status: boolean) => {
+    const result = await httpClient.put(
+      `/userattendees/foodupdate/${roomid}/${userid}/${status}`,
+    );
+    return result.data;
   },
 });

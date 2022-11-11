@@ -16,27 +16,36 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
+  const [pathfile, setPathfile] = useState<any>([]);
+
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
   useEffect(() => {
-    getDataProfile();
+    getDataAll();
   }, []);
-  const getDataProfile = async () => {
+  const getDataAll = async () => {
     const resultProfile = await DatamanagementService().getProfileByid(
       id,
       userid,
     );
-    setUserprofile(resultProfile[0]);
     const result = await DatamanagementService().getMeetingByid(id);
-    setMeetingData(result[0]);
+    console.log(result);
+
     const resultAgenda = await DatamanagementService().getagendaByid(id);
+    const resultPathfile = await DatamanagementService().getPathFilePdf(id);
+    setPathfile(resultPathfile);
+    setUserprofile(resultProfile[0]);
+    setMeetingData(result[0]);
     setAgenda(resultAgenda);
-    console.log(resultAgenda);
   };
-  const getFiles = async () => {
-    const data = await DatamanagementService().getFiles(id);
+  const getFiles = async (roomid: string, step: any, namefile: string) => {
+    const data = await DatamanagementService().getPathFileStep(
+      roomid,
+      step,
+      namefile,
+    );
     const blob = new Blob([data], { type: 'application/pdf' });
-    saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
+    saveAs(blob, `${namefile}`);
   };
   return (
     <Layout className="layout">
@@ -105,6 +114,24 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <Row>
+                  <Col span={24} style={{ fontSize: '80%' }}>
+                    ดาวโหลดเอกสารเพิ่มเติม
+                    {pathfile.map((e: any) => {
+                      if (e.type === 'fileOverviwe') {
+                        return (
+                          <Button
+                            type="link"
+                            onClick={() => getFiles(e.uuid, null, e.namefile)}
+                            key={`${e.uuid}.${e.namefile}`}
+                          >
+                            {e.namefile}
+                          </Button>
+                        );
+                      }
+                    })}
+                  </Col>
+                </Row>
+                <Row>
                   <Col span={7}></Col>
                   <Col
                     xs={24}
@@ -124,6 +151,22 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       return (
                         <Row key={i} style={{ fontSize: '80%' }}>
                           {e?.agendes} : {e?.detailagendes}
+                          <br></br>
+                          {pathfile.map((x: any) => {
+                            if (x.type === 'fileAgenda' && x.step === e.step) {
+                              return (
+                                <Button
+                                  type="link"
+                                  onClick={() =>
+                                    getFiles(e.uuid, e.step, x.namefile)
+                                  }
+                                  key={`${e.uuid}.${e.step}.${x.namefile}`}
+                                >
+                                  {x.namefile}
+                                </Button>
+                              );
+                            }
+                          })}
                         </Row>
                       );
                     })}

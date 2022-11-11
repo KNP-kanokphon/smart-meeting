@@ -50,11 +50,11 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
     document.body.removeChild(downloadLink);
   };
 
-  const getFiles = async () => {
-    const data = await DatamanagementService().getFiles(id);
-    const blob = new Blob([data], { type: 'application/pdf' });
-    saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
-  };
+  // const getFiles = async () => {
+  //   const data = await DatamanagementService().getFilesoverview(id);
+  //   const blob = new Blob([data], { type: 'application/pdf' });
+  //   saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
+  // };
   const nextPage = () => {
     navigate(`/detailconfirm/${id}/${userid}`);
   };

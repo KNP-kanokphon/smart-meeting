@@ -17,6 +17,7 @@ import { MainLayoutProfileDetail } from './components/MainLayoutDetail/ProfileDe
 import { Login } from './pages/Login/Login';
 import { DetailAlready } from './components/MainLayoutDetail/DetailAlready';
 import { DetailConfirm } from './components/MainLayoutDetail/DetailConfirm';
+import { DetailFood } from './components/MainLayoutDetail/DetailFood';
 
 // const routeMapper = (x: MenuItem): React.ReactNode => (
 //   <Route
@@ -56,15 +57,21 @@ const App = () => {
         <Routes>
           <Route
             path="detailalready/:roomid/:userid"
-            element={<DetailAlready baseURL={'/detailAlready'} />}
+            element={<DetailAlready baseURL={'/detailalready'} />}
           ></Route>
         </Routes>
-        {/* <Routes>
+        <Routes>
+          <Route
+            path="detailalready/detailfood/:roomid/:userid"
+            element={<DetailFood baseURL={'/detailfood'} />}
+          ></Route>
+        </Routes>
+        <Routes>
           <Route
             path="/userdetail/:userid/roomid/:roomid"
             element={<MainLayoutDetail baseURL={'/detail'} />}
           ></Route>
-        </Routes> */}
+        </Routes>
         <Routes>
           <Route
             path="/steptwo/:id"
