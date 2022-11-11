@@ -8,17 +8,78 @@ import {
   Typography,
   Modal,
   Space,
+  message,
 } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/images/KPIS Logo.png';
 import SignaturePad from 'react-signature-pad-wrapper';
+import { DatamanagementService } from '../../stores/meeting-store';
+import { useLocation } from 'react-router-dom';
+import SignatureCanvas from 'react-signature-canvas'
 
 export const SignConfirm: React.FC = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sigCanvas = useRef<any>(null);
+  const [imageURLone, setImageURlone] = useState<any>(null)
+  const { state } = useLocation();
+  const [dataIntable, setDataIntable] = useState<any>([]);
+  const [dataUser, setDataUser] = useState<any>([]);
+  const [positionName, setPositionName] = useState<
+  [{ id: string; uuid: string; nameposition: string; createdate: string }]
+>([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
+ 
 
+const [userOwner,setUserOwner] = useState<String>('258ca024-5e7e-46c2-9d3a-74b0a0aadf19')
+
+  useEffect(() => {
+    getListmeeting();
+  }, []);
+  const getListmeeting = async () => {
+    await DatamanagementService()
+      .getMeetingByid(state)
+      .then(data => {
+        setDataIntable(data);
+      });
+   
+
+    await DatamanagementService()
+      // .getuserInroom(String(state))
+      .getuserInroom('3847fefc-a277-413b-80a8-88feab63cf73')
+      .then(async (data: any) => {
+        const position = await DatamanagementService()
+          .getPositionall()
+          .then(data => {
+          
+
+            setPositionName(data);
+            return data;
+          });
+        const newData = await data.map((e: any, i: number) => {
+
+          const pname = position.find(
+            (name: {
+              id: string;
+              uuid: string;
+              nameposition: string;
+              createdate: string;
+            }) => name.uuid === e.position,
+          );
+          return {
+            id: i + 1,
+            uuidprofile: e.uuidprofile,
+            uuidroom: e.uuid,
+            username: e.username,
+            statuscheckin: e.checkin,
+            position: pname.nameposition,
+            statusconfirm: e.confirm,
+          };
+        });
+        setDataUser(newData);
+   
+      });
+  };
   const showModal = (e: any) => {
     setOpen(true);
   };
@@ -37,37 +98,58 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
 
   const onFinish = () => {
     setOpen(false);
+    console.log(imageURLone);
+    if (
+      !imageURLone 
+      // 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC'
+    
+    ) {
+      message.error('กรุณาเซ็นชื่อ !!')
+      return
+    }
+    
   };
-  const data = [
-    {
-      id: '1',
-      name: 'suchart',
-      position: 'manager',
-      place: 'monk',
-      phone: '0999999999',
-    },
-    {
-      id: '2',
-      name: 'supred',
-      position: 'manager',
-      place: 'monk',
-      phone: '0999999999',
-    },
-    {
-      id: '3',
-      name: 'supra',
-      position: 'manager',
-      place: 'monk',
-      phone: '0999999999',
-    },
-    {
-      id: '4',
-      name: 'sushi',
-      position: 'manager',
-      place: 'monk',
-      phone: '0999999999',
-    },
-  ];
+
+  const endSignager: any = {
+    onEnd: () => {
+      const pngUrl = sigCanvas.current
+        .getTrimmedCanvas()
+        .toDataURL('image/png')
+      setImageURlone(pngUrl)
+    }
+  }
+
+  
+  // const data = [
+  //   {
+  //     id: '1',
+  //     name: 'suchart',
+  //     position: 'manager',
+  //     place: 'monk',
+  //     phone: '0999999999',
+  //   },
+  //   {
+  //     id: '2',
+  //     name: 'supred',
+  //     position: 'manager',
+  //     place: 'monk',
+  //     phone: '0999999999',
+  //   },
+  //   {
+  //     id: '3',
+  //     name: 'supra',
+  //     position: 'manager',
+  //     place: 'monk',
+  //     phone: '0999999999',
+  //   },
+  //   {
+  //     id: '4',
+  //     name: 'sushi',
+  //     position: 'manager',
+  //     place: 'monk',
+  //     phone: '0999999999',
+  //   },
+  // ];
   const columns: any = [
     {
       title: 'ลำดับ',
@@ -76,7 +158,7 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
     },
     {
       title: 'รายชื่อคณะกรรมการบริหารสมาคม',
-      dataIndex: 'name',
+      dataIndex: 'username',
       width: '30%',
     },
     {
@@ -101,7 +183,7 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
       align: 'center' as const,
       fixed: 'right',
       render: (e: any, record: any) => {
-        if (e) {
+        if (record.uuidprofile === userOwner) {
           return (
             <>
               <div style={{ textAlign: 'center' }}>
@@ -210,7 +292,7 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
                     bordered
                     pagination={false}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={dataUser}
                     scroll={{ x: 'calc(700px + 50%)' }}
                   />
                 </Col>
@@ -245,7 +327,17 @@ export const SignConfirm: React.FC = (): React.ReactElement => {
           footer={false}
         >
           <div style={{ textAlign: 'center' }}>
-            <SignaturePad ref={sigCanvas} />
+            {/* <SignatureCanvas ref={sigCanvas} /> */}
+            <SignatureCanvas
+                          canvasProps={{
+                            width: 250,
+                            height: 200,
+                            className: 'sigCanvas'
+                          }}
+                          ref={sigCanvas}
+                          {...endSignager}
+                          backgroundColor="#EBEDF0"
+                        />
           </div>
           <Row gutter={14}>
             <Col
