@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card, Input } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Input, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
@@ -59,17 +59,17 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
 
       <Content
         style={{
-          padding: '0 50px',
+          padding: '30px 30px',
           backgroundColor: '#F4FAF7',
-          paddingTop: '30px',
-          paddingBottom: '30px',
-          height: '85vh',
+          paddingTop: '20px',
+          // paddingBottom: '30px',
+          height: '80vh',
+          overflow: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
           <Row gutter={16}>
-            <Col span={7}></Col>
-            <Col xs={24} sm={24} md={10} lg={10}>
+            <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
                   <Col span={24}>
@@ -82,37 +82,73 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     />
                   </Col>
                 </Row>
-                <br></br>
-                <Row>
-                  <Col span={2}></Col>
-                  <Col span={20}>
-                    <b style={{ fontSize: '100%' }}>Confirm Meeting</b>
+
+                <Row gutter={16}>
+                  <Col span={24} style={{ marginTop: '10px' }}>
+                    <b style={{ fontSize: '18px' }}>Confirm Meeting</b>
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
-                <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
+                <Row gutter={16}>
+                  <Col
+                    span={24}
+                    style={{ fontSize: '14px', marginTop: '10px' }}
+                  >
                     เช็คอินเรียบร้อย ท่านสามารถดาวน์โหลดเอกสารได้ที่หน้านี้
                   </Col>
                 </Row>
-                <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
-                    เรื่อง {meetingData?.detail}
+                <Row gutter={16}>
+                  <Col
+                    span={24}
+                    style={{
+                      fontSize: '16px',
+                      marginTop: '10px',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <Space>
+                      <b>เรื่อง</b>
+                      {meetingData?.detail}
+                    </Space>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col
+                    span={24}
+                    style={{
+                      fontSize: '16px',
+                      marginTop: '10px',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <Space>
+                      <b>วันที่</b> {meetingData?.day}
+                    </Space>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
-                    วันที่ {meetingData?.day}
+                  <Col
+                    span={24}
+                    style={{
+                      fontSize: '16px',
+                      marginTop: '10px',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <Space>
+                      <b>สถานที่ / อาคาร</b> {meetingData?.building} <b>ชั้น</b>
+                      {meetingData?.floor} <b>ห่้อง</b> {meetingData?.room}
+                    </Space>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
-                    สถานที่ อาคาร {meetingData?.building} ชั้น{' '}
-                    {meetingData?.floor} ห่้อง {meetingData?.room}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
+                  <Col
+                    span={24}
+                    style={{
+                      fontSize: '16px',
+                      marginTop: '10px',
+                      textAlign: 'left',
+                    }}
+                  >
                     ดาวโหลดเอกสารเพิ่มเติม
                     {pathfile.map((e: any) => {
                       if (e.type === 'fileOverviwe') {
@@ -130,24 +166,31 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={7}></Col>
                   <Col
                     xs={24}
                     sm={24}
                     md={10}
                     lg={10}
                     style={{
+                      fontSize: '16px',
+                      marginTop: '10px',
                       textAlign: 'left',
-                      fontSize: '80%',
                       // display: 'flex',
                       // justifyContent: 'center',
                     }}
                   >
                     <b>{'Agenda Item :'}</b>
-                    <br></br>
+
                     {agenda?.map((e: any, i: number) => {
                       return (
-                        <Row key={i} style={{ fontSize: '80%' }}>
+                        <Row
+                          key={i}
+                          style={{
+                            fontSize: '14px',
+                            marginTop: '10px',
+                            textAlign: 'left',
+                          }}
+                        >
                           {e?.agendes} : {e?.detailagendes}
                           <br></br>
                           {pathfile.map((x: any) => {
@@ -169,11 +212,9 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       );
                     })}
                   </Col>
-                  <Col span={7}></Col>
                 </Row>
               </Card>
             </Col>
-            <Col span={7}></Col>
           </Row>
         </div>
       </Content>
