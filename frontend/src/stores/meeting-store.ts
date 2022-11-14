@@ -41,6 +41,11 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
+  createuser: async (data: any) => {
+    console.log(data);
+    const result = await httpClient.post(`/userattendees/createuser`, data);
+    return result.data;
+  },
   saveusermeetingall: async (
     userBoard: [],
     userAttendee: [],

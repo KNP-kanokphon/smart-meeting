@@ -7,6 +7,7 @@ import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const { Content, Sider, Header, Footer } = Layout;
 export interface Props {
@@ -87,53 +88,51 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
 
       <Content
         style={{
-          padding: '0 50px',
+          padding: '30px 30px',
           backgroundColor: '#F4FAF7',
-          paddingTop: '30px',
-          paddingBottom: '30px',
-          height: '85vh',
+          paddingTop: '20px',
+          // paddingBottom: '30px',
+          height: '80vh',
+          overflow: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
-          <Row gutter={16}>
-            <Col span={7}></Col>
-            <Col xs={24} sm={24} md={10} lg={10}>
+          <Row
+            gutter={16}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              textAlign: 'center',
+            }}
+          >
+            <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
-                <Row>
-                  {/* <Col span={8}></Col> */}
+                <Row style={{ marginBottom: '10px' }}>
                   <Col xs={24} sm={24} md={24} lg={24}>
                     <Logo />
                   </Col>
-                  {/* <Col span={8}></Col> */}
                 </Row>
-                <br></br>
-                <Row>
-                  {/* <Col span={2}></Col> */}
+                <Row gutter={16}>
                   <Col xs={24} sm={24} md={24} lg={24}>
-                    <b style={{ fontSize: '100%' }}>Welcome to </b>
-                    <b style={{ fontSize: '100%', color: 'red' }}>
+                    <b style={{ fontSize: '18px' }}>Welcome to </b>
+                    <b style={{ fontSize: '18px', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
-                  {/* <Col span={2}></Col> */}
                 </Row>
-                <Row>
-                  {/* <Col span={2}></Col> */}
+                <Row gutter={16} style={{ marginBottom: '10px' }}>
                   <Col
                     xs={24}
                     sm={24}
                     md={24}
                     lg={24}
-                    style={{ fontSize: '100%' }}
+                    style={{ fontSize: '14px' }}
                   >
                     Please check in for Generate your ticket
                   </Col>
-                  {/* <Col span={2}></Col> */}
                 </Row>
-                <br></br>
                 <Form name="validate_other" onFinish={onFinish} form={form}>
                   <Row>
-                    <Col span={7}></Col>
                     <Col
                       xs={24}
                       sm={24}
@@ -142,17 +141,17 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                       style={{
                         textAlign: 'left',
                         fontSize: '100%',
-                        paddingLeft: '20px',
-                        paddingRight: '20px',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
                       }}
                     >
                       <b>{'อาหารและเครื่องดื่ม'}</b>
-                      <br></br>
+
                       <Form.Item name="food-detail">
                         <Checkbox.Group>
                           {food?.map((e: any, i: number) => {
                             return (
-                              <Row>
+                              <Row gutter={16}>
                                 <Col span={12}>{e.namefood}</Col>
                                 <Col span={12}>
                                   <Checkbox
@@ -170,10 +169,9 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                         </Checkbox.Group>
                       </Form.Item>
                     </Col>
-                    <Col span={8}></Col>
                   </Row>
                 </Form>
-                <br></br>
+                {/* <br></br> */}
                 <Row>
                   <Col span={24}>
                     <Button
@@ -185,13 +183,12 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onChange}
                     >
-                      Submit
+                      <ArrowRightOutlined /> Next
                     </Button>
                   </Col>
                 </Row>
               </Card>
             </Col>
-            <Col span={8}></Col>
           </Row>
         </div>
       </Content>

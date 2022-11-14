@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card, Result } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Result, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -69,58 +69,56 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
           padding: 0,
           borderBottom: '1px solid #F0F0F0',
         }}
-      >
-        {/* <div className="logo" /> */}
-      </Header>
+      ></Header>
 
       <Content
         style={{
-          padding: '0 50px',
+          padding: '30px 30px',
           backgroundColor: '#F4FAF7',
-          paddingTop: '30px',
-          paddingBottom: '30px',
-          height: '85vh',
+          paddingTop: '20px',
+          // paddingBottom: '10px',
+          height: '80vh',
+          overflow: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
-          <Row gutter={16}>
-            <Col span={7}></Col>
-            <Col xs={24} sm={24} md={10} lg={10}>
+          <Row
+            gutter={16}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              textAlign: 'center',
+            }}
+          >
+            <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
-                  {/* <Col span={8}></Col> */}
                   <Col xs={24} sm={24} md={24} lg={24}>
                     <Logo />
                   </Col>
-                  {/* <Col span={8}></Col> */}
                 </Row>
                 <br></br>
-                <Row>
-                  {/* <Col span={2}></Col> */}
+                <Row gutter={16}>
                   <Col xs={24} sm={24} md={24} lg={24}>
-                    <b style={{ fontSize: '100%' }}>Welcome to </b>
-                    <b style={{ fontSize: '100%', color: 'red' }}>
+                    <b style={{ fontSize: '18px' }}>Welcome to </b>
+                    <b style={{ fontSize: '18px', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
-                  {/* <Col span={2}></Col> */}
                 </Row>
                 <Row>
-                  {/* <Col span={2}></Col> */}
                   <Col
                     xs={24}
                     sm={24}
                     md={24}
                     lg={24}
-                    style={{ fontSize: '100%' }}
+                    style={{ fontSize: '14px' }}
                   >
                     Please check in for Generate your ticket
                   </Col>
-                  {/* <Col span={2}></Col> */}
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={7}></Col>
                   <Col
                     xs={24}
                     sm={24}
@@ -129,17 +127,23 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
-                    <b>{'เรียนคุณ : '}</b>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                      }}
+                    >
+                      {'เรียนคุณ : '}
+                    </Typography>
                     {user?.username}
                   </Col>
-                  <Col span={8}></Col>
                 </Row>
                 <Row>
-                  <Col span={7}></Col>
                   <Col
                     xs={24}
                     sm={24}
@@ -148,16 +152,14 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
                     ขอเรียนเชิญประชุม
                   </Col>
-                  <Col span={8}></Col>
                 </Row>
                 <Row>
-                  <Col span={7}></Col>
                   <Col
                     xs={24}
                     sm={24}
@@ -166,19 +168,25 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
-                    <b>{'Title : '}</b>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'Title : '}
+                    </Typography>
                     {meetingData?.title}
                   </Col>
-                  <Col span={8}></Col>
                 </Row>
 
                 <Row>
-                  <Col span={7}></Col>
-
                   <Col
                     xs={24}
                     sm={24}
@@ -187,13 +195,22 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                       // display: 'flex',
                       // justifyContent: 'center',
                     }}
                   >
-                    <b>{'Schedual : '}</b>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'Schedual : '}
+                    </Typography>
                     วันที่ {meetingData?.day}
                     <br></br>
                     เวลา {meetingData?.starttime} ถึง {meetingData?.endtime}
@@ -203,11 +220,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     <br></br>
                     รายละเอียด {meetingData?.detail}
                   </Col>
-                  <Col span={7}></Col>
                 </Row>
                 <Row>
-                  <Col span={7}></Col>
-
                   <Col
                     xs={24}
                     sm={24}
@@ -216,14 +230,23 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
-                      paddingLeft: '20px',
-                      paddingRight: '20px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                       // display: 'flex',
                       // justifyContent: 'center',
                     }}
                   >
-                    <b>{'Agenda Item :'}</b>
-                    <br></br>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'Agenda Item :'}
+                    </Typography>
+
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>
@@ -235,7 +258,6 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       );
                     })}
                   </Col>
-                  <Col span={7}></Col>
                 </Row>
                 <br></br>
                 <Row>
@@ -255,7 +277,6 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                 </Row>
               </Card>
             </Col>
-            <Col span={8}></Col>
           </Row>
         </div>
       </Content>

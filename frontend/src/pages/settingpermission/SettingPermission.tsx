@@ -10,6 +10,7 @@ import {
   Upload,
   Button,
   Space,
+  message,
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { SettingPermissionCourse } from './SettingPermissionCourse';
@@ -74,7 +75,8 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
         await DatamanagementService()
           .importPosition(newData, typefile)
           .then((response: any) => {
-            console.log(response);
+            message.success('import file ตำแหน่งสำเร็จ');
+            // console.log(response);
             setUploading(false);
           });
       });
@@ -110,7 +112,9 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                   marginTop: '3px',
                 }}
               >
-                <Typography>{'นำเข้า ตำแหน่ง / หลักสูตร'}</Typography>
+                <Typography style={{ fontWeight: 'bold' }}>
+                  {'อัปโหลดไฟล์ ตำแหน่ง'}
+                </Typography>
               </Col>
               <Col span={14}>
                 <Select

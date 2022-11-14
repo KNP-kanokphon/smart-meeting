@@ -141,65 +141,74 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
 
       <Content
         style={{
-          padding: '0 50px',
+          padding: '30px 30px',
           backgroundColor: '#F4FAF7',
-          paddingTop: '30px',
-          paddingBottom: '30px',
-          height: '85vh',
+          paddingTop: '20px',
+          // paddingBottom: '10px',
+          height: '80vh',
+          overflow: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
-          <Row gutter={16}>
-            <Col span={7}></Col>
-            <Col xs={24} sm={24} md={10} lg={10}>
+          <Row
+            gutter={16}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              textAlign: 'center',
+            }}
+          >
+            <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
-                  <Col span={24}>
+                  <Col xs={24} sm={24} md={24} lg={24}>
                     <Logo />
                   </Col>
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20}>
-                    <b style={{ fontSize: '100%' }}>Welcome to </b>
-                    <b style={{ fontSize: '100%', color: 'red' }}>
+                  <Col span={24}>
+                    <b style={{ fontSize: '18px' }}>Welcome to </b>
+                    <b style={{ fontSize: '18px', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20}>Please check in for Generate your ticket</Col>
-                  <Col span={2}></Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    style={{ fontSize: '14px' }}
+                  >
+                    Please check in for Generate your ticket
+                  </Col>
                 </Row>
                 <br></br>
-                <br></br>
-                <Row style={{ textAlign: 'left' }}>
-                  <Col span={22} offset={1}>
-                    ขื่อ- นามสกุล*
+
+                <Row gutter={16} style={{ textAlign: 'left' }}>
+                  <Col span={24}>
+                    ขื่อ- นามสกุล *
                     <Input onChange={e => setUsername(e.target.value)} />
                   </Col>
                 </Row>
-                <br></br>
-                <Row style={{ textAlign: 'left' }}>
-                  <Col span={22} offset={1}>
-                    เบอรโทรศัพท์*
+
+                <Row gutter={16} style={{ textAlign: 'left' }}>
+                  <Col span={24}>
+                    เบอรโทรศัพท์ *
                     <Input onChange={e => setPhone(e.target.value)} />
                   </Col>
                 </Row>
-                <br></br>
-                <Row style={{ textAlign: 'left' }}>
-                  <Col span={22} offset={1}>
-                    อีเมล*
+                <Row gutter={16} style={{ textAlign: 'left' }}>
+                  <Col span={24}>
+                    อีเมล *
                     <Input onChange={e => setEmail(e.target.value)} />
                   </Col>
                 </Row>
-                <br></br>
-                <Row style={{ textAlign: 'left' }}>
-                  <Col span={10} offset={1}>
-                    รุ่น*
+                <Row gutter={16} style={{ textAlign: 'left' }}>
+                  <Col span={12}>
+                    รุ่น *
                     <Select
                       style={{ width: '100%' }}
                       onChange={e => selectModel(e)}
@@ -211,7 +220,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       <Option value="5">5</Option>
                     </Select>
                   </Col>
-                  <Col span={11} offset={1}>
+                  <Col span={12}>
                     ตำแหน่งสมาคม*
                     <Select
                       style={{ width: '100%' }}
@@ -244,7 +253,6 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 </Row>
               </Card>
             </Col>
-            <Col span={7}></Col>
           </Row>
         </div>
       </Content>

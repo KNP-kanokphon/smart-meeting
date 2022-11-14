@@ -22,9 +22,11 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { DatamanagementService } from '../../../stores/meeting-store';
+import { v4 as uuidv4 } from 'uuid';
 
 export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [formEdit] = Form.useForm();
+  const [formAdd] = Form.useForm();
   const { Option } = Select;
   const { Search } = Input;
   // const navigate = useNavigate();
@@ -38,6 +40,8 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [dataCourse, setDataCourse] = useState<any>([]);
   const [dataPosition, setDataPosition] = useState<any>([]);
   const [dataPositionupdate, setDataPositionupdate] = useState<string>('');
+
+  const [modalAdduser, setmodalAdduser] = useState<boolean>(false);
 
   useEffect(() => {
     getListmeeting();
@@ -183,6 +187,67 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     setDataPhone(event.phone);
     setDataCourse(event.course);
   };
+
+  const showModalAdd = async (event: any) => {
+    setmodalAdduser(true);
+  };
+  const handleOpen2 = () => {
+    setmodalAdduser(false);
+    formAdd.resetFields();
+  };
+
+  const handleCancel2 = () => {
+    setmodalAdduser(false);
+    formAdd.resetFields();
+  };
+
+  const handleOK2 = (e: any) => {
+    console.log(e);
+    if (e) {
+      Modal.confirm({
+        title: 'ยืนยันการเปลี่ยนแปลง',
+        icon: <ExclamationCircleOutlined />,
+        content: 'คุณต้องการเปลี่ยนแปลงข้อมูล ใช่ หรือ ไม่ ?',
+        okText: 'ยืนยัน',
+        cancelText: 'ยกเลิก',
+        onOk: async () => {
+          const data = {
+            data: {
+              uuid: uuidv4(),
+              username:
+                e.username != undefined || e.username != ''
+                  ? e.username
+                  : dataUsername,
+              phone:
+                e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
+              position:
+                e.position != undefined ||
+                e.position != '' ||
+                e.position != null  
+                  ? e.position
+                  : dataPositionupdate,
+              type: '',
+              course: '',
+              positionkpi: '',
+            },
+          };
+          await DatamanagementService()
+            .createuser(data)
+            .then(() => {
+              message.success('บันทึกสำเร็จ');
+              setmodalAdduser(false);
+              getListmeeting();
+              formAdd.resetFields();
+            });
+        },
+        onCancel: () => {
+          setmodalAdduser(false);
+          formAdd.resetFields();
+        },
+      });
+    }
+  };
+
   const onSearch = (value: string) => console.log(value);
 
   const columnsToday: any = [
@@ -251,6 +316,64 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   ];
   return (
     <>
+      <Modal
+        title="เพิ่มสมาชิก"
+        open={modalAdduser}
+        footer={null}
+        onOk={handleOpen2}
+        onCancel={handleCancel2}
+      >
+        <Form
+          name="formAdd"
+          form={formAdd}
+          layout="vertical"
+          onFinish={handleOK2}
+        >
+          <Form.Item name="username" label={'ชื่อ - นามสกุล'}>
+            <Input id="username" name="username" placeholder={'Text'} />
+          </Form.Item>
+          <Form.Item name="phone" label={'เบอร์โทรศัพท์'}>
+            <Input
+              type="number"
+              id="phone"
+              name="phone"
+              placeholder={'Nummber Phone'}
+              showCount
+              maxLength={10}
+            />
+          </Form.Item>
+          <Form.Item name={'position'} label={'ตำแหน่ง'}>
+            <Select
+              id="position"
+              placeholder="Please Select"
+              allowClear
+              value={dataPositionupdate}
+            >
+              {dataPosition?.map((x: any, i: number) => {
+                // console.log(x);
+                return (
+                  <Option key={i} value={x.uuid}>
+                    {x.nameposition}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <div style={{ textAlign: 'right' }}>
+              <Space>
+                <Button onClick={handleCancel2}>ยกเลิก</Button>
+                <Button
+                  htmlType="submit"
+                  style={{ background: '#1E6541', color: 'white' }}
+                >
+                  ยืนยัน
+                </Button>
+              </Space>
+            </div>
+          </Form.Item>
+        </Form>
+      </Modal>
       <Modal
         title="แก้ไขข้อมูล"
         open={modalVisible}
@@ -348,15 +471,26 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               </Typography>
             </Col>
             <Col span={20}>
-              <Select placeholder={'Filter'} bordered={false}>
-                <Option>Filter</Option>
-              </Select>
-              <Search
-                placeholder="input search text"
-                allowClear
-                onSearch={onSearch}
-                style={{ width: 'auto' }}
-              />
+              <Space>
+                <Button
+                  style={{
+                    backgroundColor: '#1E6541',
+                    color: 'white',
+                  }}
+                  onClick={showModalAdd}
+                >
+                  เพิ่มสมาชิก
+                </Button>{' '}
+                {/* <Select placeholder={'Filter'} bordered={false}>
+                  <Option>Filter</Option>
+                </Select>
+                <Search
+                  placeholder="input search text"
+                  allowClear
+                  onSearch={onSearch}
+                  style={{ width: 'auto' }}
+                /> */}
+              </Space>
             </Col>
           </Row>
         }

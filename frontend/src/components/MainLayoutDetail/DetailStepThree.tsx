@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card, Input } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Input, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -7,7 +7,10 @@ import styles from './MainLayout.module.scss';
 import QRCode from 'qrcode.react';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { VerticalAlignBottomOutlined } from '@ant-design/icons';
+import {
+  VerticalAlignBottomOutlined,
+  ArrowRightOutlined,
+} from '@ant-design/icons';
 import { saveAs } from 'file-saver';
 
 const { Content, Sider, Header, Footer } = Layout;
@@ -72,17 +75,24 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
 
       <Content
         style={{
-          padding: '0 50px',
+          padding: '30px 30px',
           backgroundColor: '#F4FAF7',
-          paddingTop: '30px',
-          paddingBottom: '30px',
-          height: '85vh',
+          paddingTop: '20px',
+          // paddingBottom: '10px',
+          height: '80vh',
+          overflow: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
-          <Row gutter={16}>
-            <Col span={7}></Col>
-            <Col xs={24} sm={24} md={10} lg={10}>
+          <Row
+            gutter={16}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              textAlign: 'center',
+            }}
+          >
+            <Col xs={24} sm={24} md={18} lg={20}>
               <Card style={{ textAlign: 'center' }}>
                 <Row>
                   <Col span={24}>
@@ -91,28 +101,24 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20}>
-                    <b style={{ fontSize: '100%', color: 'red' }}>
+                  <Col span={24}>
+                    <b style={{ fontSize: '18px', color: 'red' }}>
                       KPIS Society
                     </b>
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
                 <br></br>
                 <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
+                  <Col span={24} style={{ fontSize: '14px' }}>
                     กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ก่อนเข้าห้องประชุม
                   </Col>
                 </Row>
                 <br></br>
 
                 <Row>
-                  <Col span={2}></Col>
-                  <Col span={20} style={{ fontSize: '18px' }}>
+                  <Col span={24} style={{ fontSize: '18px' }}>
                     <b>{userprofile?.username}</b>
                   </Col>
-                  <Col span={2}></Col>
                 </Row>
                 <br></br>
                 <Row>
@@ -142,15 +148,25 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <Row>
                   <Col span={24} style={{ fontSize: '80%' }}>
-                    <Button type="primary" onClick={nextPage}>
-                      next
+                    <Button
+                      type="primary"
+                      onClick={nextPage}
+                      style={{
+                        textAlign: 'center',
+                        width: 'auto',
+                        backgroundColor: '#1E6541',
+                        color: '#ffffff',
+                      }}
+                    >
+                      <Space>
+                        next <ArrowRightOutlined />
+                      </Space>
                     </Button>
                   </Col>
                 </Row>
                 <br></br>
               </Card>
             </Col>
-            <Col span={7}></Col>
           </Row>
         </div>
       </Content>

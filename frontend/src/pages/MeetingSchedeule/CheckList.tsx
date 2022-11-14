@@ -56,6 +56,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
             setPositionName(data);
             return data;
           });
+        // console.log(position);
+
         const newData = await data.map((e: any, i: number) => {
           const pname = position.find(
             (name: {
@@ -76,6 +78,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
           };
         });
         setDataUser(newData);
+        // console.log(newData, 'newData');
       });
   };
 
@@ -117,7 +120,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       title: 'ชื่อ-นามสกุล',
       dataIndex: 'username',
       key: 'username',
-      width: '20%',
+      width: '15%',
     },
     {
       title: 'link',
@@ -145,28 +148,28 @@ export const CheckList: React.FC = (): React.ReactElement => {
       //   }
       // },
     },
-    {
-      title: 'หลักสูตร',
-      dataIndex: 'course',
-      key: 'course',
-      width: '15%',
-    },
-    {
-      title: 'เบอร์โทรศัพท์',
-      dataIndex: 'phone',
-      key: 'phone',
-      width: '15%',
-    },
-    {
-      title: 'อีเมล',
-      dataIndex: 'email',
-      key: 'email',
-      width: '20%',
+    // {
+    //   title: 'หลักสูตร',
+    //   dataIndex: 'course',
+    //   key: 'course',
+    //   width: '15%',
+    // },
+    // {
+    //   title: 'เบอร์โทรศัพท์',
+    //   dataIndex: 'phone',
+    //   key: 'phone',
+    //   width: '15%',
+    // },
+    // {
+    //   title: 'อีเมล',
+    //   dataIndex: 'email',
+    //   key: 'email',
+    //   width: '20%',
 
-      render: (text: any) => {
-        return text ? text : '-';
-      },
-    },
+    //   render: (text: any) => {
+    //     return text ? text : '-';
+    //   },
+    // },
     // {
     //   title: 'สถานะการลงทะเบียน',
     //   dataIndex: 'statuscheckin',
@@ -295,7 +298,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
                     color: 'grey',
                   }}
                 >
-                  {dataIntable[0]?.title}
+                  ชื่อห้องประชุม ( {dataIntable[0]?.title} )
                 </Typography>
                 <Typography
                   style={{
@@ -305,7 +308,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
                     color: 'grey',
                   }}
                 >
-                  {`Link ${window.origin}/detail/${state}`}
+                  {`ลิ้งค์ห้องประชุม ${window.origin}/detail/${state}`}
                 </Typography>
               </>
             }
