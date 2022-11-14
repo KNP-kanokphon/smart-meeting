@@ -41,6 +41,11 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
+  createuser: async (data: any) => {
+    console.log(data);
+    const result = await httpClient.post(`/userattendees/createuser`, data);
+    return result.data;
+  },
   saveusermeetingall: async (
     userBoard: [],
     userAttendee: [],
@@ -261,7 +266,8 @@ export const DatamanagementService = () => ({
   },
   updateUserDetail: async (roomid: any, userid: any, data: any) => {
     const result = await httpClient.put(
-      `/userattendees/updateUserDetail/${roomid}/${userid}/`,data
+      `/userattendees/updateUserDetail/${roomid}/${userid}/`,
+      data,
     );
     return result.data;
   },
