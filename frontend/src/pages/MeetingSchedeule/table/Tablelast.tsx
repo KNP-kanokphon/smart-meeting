@@ -101,11 +101,9 @@ export const TableLast: React.FC = (): React.ReactElement => {
       });
   };
   const onclickViwe = (e: any) => {
-    console.log(e.item.props.title);
-
     if (e.key === 'view') {
       navigate(`detail/view`, { state: e.item.props.title });
-    } else if ((e.key === 'signate', { state: e.item.props.title })) {
+    } else if (e.key === 'signate') {
       navigate(`detail/signate`, { state: e.item.props.title });
     } else if (e.key === 'minutes') {
       navigate(`detail/minutes`, { state: e.item.props.title });

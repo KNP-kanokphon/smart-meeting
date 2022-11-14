@@ -261,7 +261,14 @@ export const DatamanagementService = () => ({
   },
   updateUserDetail: async (roomid: any, userid: any, data: any) => {
     const result = await httpClient.put(
-      `/userattendees/updateUserDetail/${roomid}/${userid}/`,data
+      `/userattendees/updateUserDetail/${roomid}/${userid}/`,
+      data,
+    );
+    return result.data;
+  },
+  getDetailagenda: async (roomid: string, idagendess: string) => {
+    const result = await httpClient.get(
+      `/meeting/getDetailagendes/${roomid}/${idagendess}`,
     );
     return result.data;
   },

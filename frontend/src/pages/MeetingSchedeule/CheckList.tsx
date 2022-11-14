@@ -46,7 +46,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
       .then(data => {
         setDataIntable(data);
       });
-   
 
     await DatamanagementService()
       .getuserInroom(String(state))
@@ -54,13 +53,10 @@ export const CheckList: React.FC = (): React.ReactElement => {
         const position = await DatamanagementService()
           .getPositionall()
           .then(data => {
-          
-
             setPositionName(data);
             return data;
           });
         const newData = await data.map((e: any, i: number) => {
-
           const pname = position.find(
             (name: {
               id: string;
@@ -80,7 +76,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
           };
         });
         setDataUser(newData);
-   
       });
   };
 
