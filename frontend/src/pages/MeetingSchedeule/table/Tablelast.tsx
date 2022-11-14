@@ -277,6 +277,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
         dataSource={dataIntable}
         columns={columnsLast as any}
         showHeader={false}
+        rowKey={'uuid'}
       />
     </Card>
   );

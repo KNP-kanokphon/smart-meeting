@@ -97,6 +97,7 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
               defaultActiveKey={activeKey}
               type="editable-card"
               // onEdit={onEdit}
+
               items={agenda
                 ?.fill(null)
                 .map((_: any, index: string, data: any) => {

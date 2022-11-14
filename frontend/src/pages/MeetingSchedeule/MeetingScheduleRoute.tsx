@@ -18,32 +18,10 @@ import {
 import { EllipsisOutlined } from '@ant-design/icons';
 import { TableLast } from './table/Tablelast';
 import { TableToday } from './table/Tabletoday';
+import { TableUpcomingmeeting } from './table/TableUpcomingmeeting';
 
 export const MeetingScheduleRoute: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
-  // const contentToday = (
-  //   <>
-  //     <Row gutter={16}>
-  //       <Col span={24}>
-  //         <Button style={{ border: 'none', width: '100%', textAlign: 'left' }}>
-  //           Edit
-  //         </Button>
-  //       </Col>
-  //       <Col span={24}>
-  //         <Button
-  //           style={{
-  //             border: 'none',
-  //             color: 'red',
-  //             width: '100%',
-  //             textAlign: 'left',
-  //           }}
-  //         >
-  //           Delete
-  //         </Button>
-  //       </Col>
-  //     </Row>
-  //   </>
-  // );
   return (
     <Row
       gutter={[
@@ -57,6 +35,7 @@ export const MeetingScheduleRoute: React.FC = (): React.ReactElement => {
         </Title>
       </Card>
       <TableToday />
+      <TableUpcomingmeeting />
       <TableLast />
     </Row>
   );

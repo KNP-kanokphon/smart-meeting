@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../../stores/meeting-store';
 // import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
 
-export const TableToday: React.FC = (): React.ReactElement => {
+export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
   const [dataIntable, setDataIntable] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -39,7 +39,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
           ];
           const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
           if (
-            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
+            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` >
             `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
           ) {
             return e;
@@ -133,7 +133,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
             color: 'grey',
           }}
         >
-          Today
+          Up Comingmeeting
         </Typography>
       }
     >
