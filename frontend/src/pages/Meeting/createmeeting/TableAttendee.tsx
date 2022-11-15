@@ -101,6 +101,9 @@ export const TableAttendee: React.FC<Props> = ({
       },
     },
   ];
+  const onSearch = (value: string) => {
+    console.log('search:', value);
+  };
 
   return (
     <>
@@ -157,8 +160,17 @@ export const TableAttendee: React.FC<Props> = ({
         <Col span={24}>
           ชื่อ - นามสกุลผู้เข้าร่วมประชุม
           <Select
+            showSearch
             value={editingStudent?.username}
             style={{ width: '100%' }}
+            onSearch={onSearch}
+            optionFilterProp="children"
+            filterOption={(input: any, option: any) =>
+              option.children
+                .toString()
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
             onChange={(e: any, dataAll: any) => {
               const matchuser = username.find(
                 (x: any) => x.username === dataAll.children,

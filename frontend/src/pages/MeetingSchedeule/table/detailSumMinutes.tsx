@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { saveAs } from 'file-saver';
 type RequiredMark = boolean | 'optional';
 const { TextArea } = Input;
 
@@ -30,17 +31,10 @@ export const DetailSumMinutes: React.FC<Props> = ({
   idstep,
 }) => {
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
-  const agendas = Form.useWatch('agendas', form);
-  const detail = Form.useWatch('detail', form);
-  const detailAgendes = Form.useWatch('detailAgendes', form);
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
   const [agendaDetail, setAgendaDetail] = useState<any[]>([]);
-  //   console.log(Pagestep);
-  //   console.log(idstep);
-  //   console.log(idroom);
-
+  const [pathfile, setPathfile] = useState<any>([]);
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -51,9 +45,9 @@ export const DetailSumMinutes: React.FC<Props> = ({
       idroom,
       idstep,
     );
+    const resultPathfile = await DatamanagementService().getPathFilePdf(idroom);
+    setPathfile(resultPathfile);
     setAgendaDetail(resultDetailagenda);
-    console.log(resultDetailagenda);
-
     const resultFood = await DatamanagementService().getDetailfood(idroom);
     setMeetingData(result[0]);
     const filterDataAgenda = await resultAgenda?.filter(
@@ -61,9 +55,15 @@ export const DetailSumMinutes: React.FC<Props> = ({
     );
     setAgenda(filterDataAgenda[0]);
   };
-
-  //   console.log(filterData);
-
+  const getFiles = async (roomid: string, step: any, namefile: string) => {
+    const data = await DatamanagementService().getPathFileStep(
+      roomid,
+      step,
+      namefile,
+    );
+    const blob = new Blob([data], { type: 'application/pdf' });
+    saveAs(blob, `${namefile}`);
+  };
   return (
     <>
       <Row>
@@ -85,14 +85,7 @@ export const DetailSumMinutes: React.FC<Props> = ({
             tooltip="This is a required field"
             name="agendas"
           >
-            <Input
-              placeholder={agenda?.agendes}
-              disabled
-              //   defaultValue={agenda?.agendes}
-              // onChange={e =>
-              //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-              // }
-            />
+            <Input placeholder={agenda?.agendes} disabled />
           </Form.Item>
           <Form.Item
             label="รายละเอียดการประชุม"
@@ -118,6 +111,25 @@ export const DetailSumMinutes: React.FC<Props> = ({
                 <Col offset={1} span={3}></Col>
               </Row>
             );
+          })}
+          <br></br>
+          ไฟลเอกสารเพิ่มเติม (ถ้ามี)
+          <br></br>
+          {pathfile.map((x: any) => {
+            if (x.type === 'fileAgenda' && String(x.step) === String(idstep)) {
+              return (
+                <>
+                  <Button
+                    type="link"
+                    onClick={() => getFiles(idroom, idstep, x.namefile)}
+                    key={`${idroom}.${idstep}.${x.namefile}`}
+                  >
+                    {x.namefile}
+                  </Button>
+                  <br></br>
+                </>
+              );
+            }
           })}
           <br></br>
         </Form>

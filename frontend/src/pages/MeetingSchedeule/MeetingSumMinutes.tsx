@@ -16,6 +16,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadOutlined, LeftCircleOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
+import { saveAs } from 'file-saver';
 
 import React, { useEffect, useState } from 'react';
 import { DatamanagementService } from '../../stores/meeting-store';
@@ -32,15 +33,20 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
   const [agenda, setAgenda] = useState<any>();
   const [detailsummary, setDetailsummary] = useState<string>('');
   const [fileList, setFileList] = useState<any>([]);
+  const [pathfile, setPathfile] = useState<any>([]);
+  const [nameFilesummary, setNamefilesummary] = useState<any>([]);
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
     const result = await DatamanagementService().getMeetingByid(state);
     const resultAgenda = await DatamanagementService().getagendaByid(state);
+    const resultnamefilesummary =
+      await DatamanagementService().getnamefileSummary(state);
     setMeetingData(result[0]);
     setAgenda(resultAgenda);
-    console.log(result);
+    setNamefilesummary(resultnamefilesummary);
+    // console.log(resultnamefilesummary);
   };
 
   const [activeKey, setActiveKey] = useState<any>(1);
@@ -74,12 +80,16 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
       state,
       fileList,
     );
-
-    // console.log(state);
-    // console.log(detailsummary);
-    // console.log(fileList);
   };
-
+  const getFiles = async (namefile: string) => {
+    const data = await DatamanagementService().getPathFileStep(
+      state,
+      null,
+      namefile,
+    );
+    const blob = new Blob([data], { type: 'application/pdf' });
+    saveAs(blob, `${namefile}`);
+  };
   return (
     <React.Fragment>
       <Row gutter={16}>
@@ -162,10 +172,17 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                 <Form layout="vertical">
                   <Form.Item label={'สรุปรายงานการประชุม'}>
                     <TextArea
+                      disabled={
+                        meetingData?.summarychecklist === true ? true : false
+                      }
                       placeholder="Text"
                       showCount
                       maxLength={255}
-                      value={detailsummary}
+                      value={
+                        meetingData?.summarychecklist === true
+                          ? meetingData?.summarymeeting
+                          : detailsummary
+                      }
                       onChange={e => setDetailsummary(e.target.value)}
                     />
                   </Form.Item>
@@ -173,7 +190,11 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }}>
                       <Upload {...props}>
                         <Button
-                          // disabled={fileList.length === 1}
+                          disabled={
+                            meetingData?.summarychecklist === true
+                              ? true
+                              : false
+                          }
                           icon={<UploadOutlined />}
                         >
                           Click To Upload
@@ -181,6 +202,25 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                       </Upload>
                     </Col>
                   </Row>
+                  <br></br>
+                  ไฟลเอกสารสรุปรายงานการประชุม (ถ้ามี)
+                  <br></br>
+                  {nameFilesummary?.map((x: any) => {
+                    if (x.type === 'filesummary') {
+                      return (
+                        <>
+                          <Button
+                            type="link"
+                            onClick={() => getFiles(x.namefile)}
+                            key={`${x.namefile}`}
+                          >
+                            {x.namefile}
+                          </Button>
+                          <br></br>
+                        </>
+                      );
+                    }
+                  })}
                   <Form.Item></Form.Item>
                   <Form.Item style={{ textAlign: 'center' }}>
                     <Space>
@@ -194,6 +234,9 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                         htmlType="submit"
                         style={{ color: 'white', background: '#1E6541' }}
                         onClick={saveSummarymeeting}
+                        hidden={
+                          meetingData?.summarychecklist === true ? true : false
+                        }
                       >
                         Save
                       </Button>

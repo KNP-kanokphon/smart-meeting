@@ -303,4 +303,22 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  getPathFileSummary: async (roomid: any, namefile: string) => {
+    const result = await httpClient.get(
+      `/meeting/getfilesummary/${roomid}/${namefile}`,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      },
+    );
+    return result.data;
+  },
+  getnamefileSummary: async (roomid: any) => {
+    const result = await httpClient.get(
+      `/meeting/getfilenamesummary/${roomid}/`,
+    );
+    return result.data;
+  },
 });
