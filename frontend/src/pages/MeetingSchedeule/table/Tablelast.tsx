@@ -169,6 +169,9 @@ export const TableLast: React.FC = (): React.ReactElement => {
       width: '15%',
       // ellipsis: true,
       render: (data: any, dataAll: any) => {
+        const countTypes = dataUuidMeet.filter(
+          (event: any) => event.idmeeting === data,
+        );
         return (
           <>
             <Row gutter={16}>
@@ -178,13 +181,14 @@ export const TableLast: React.FC = (): React.ReactElement => {
                 </Typography>
               </Col>
               <Col span={24} style={{ color: 'grey' }}>
-                {dataUuidMeet.map((event: any) => {
+                {countTypes.length} {/* count ผู้ร่วมประชุม */}
+                {/* {dataUuidMeet.map((event: any, row: any) => {
                   if (event.length < 2) {
                     return event.idmeeting == data ? event.username : <></>;
                   } else {
                     let nameusermeeting: string = '';
                     if (event.idmeeting === data) {
-                      nameusermeeting += ' ' + event.username;
+                      nameusermeeting += " " + event.username;
                     } else {
                       <></>;
                     }
@@ -195,7 +199,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
                       </>
                     );
                   }
-                })}
+                })} */}
               </Col>
             </Row>
           </>
@@ -271,7 +275,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
           Last Meeting
         </Typography>
       }
-      extra={filterSearch}
+      // extra={filterSearch}
     >
       <Table
         dataSource={dataIntable}
