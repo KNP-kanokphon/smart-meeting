@@ -1,4 +1,14 @@
-import { Layout, Button, Menu, Row, Col, Card, Input, Space } from 'antd';
+import {
+  Layout,
+  Button,
+  Menu,
+  Row,
+  Col,
+  Card,
+  Input,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
@@ -108,12 +118,12 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     span={24}
                     style={{
                       fontSize: '16px',
-                      marginTop: '10px',
+                      marginTop: '15px',
                       textAlign: 'left',
                     }}
                   >
                     <Space>
-                      <b>เรื่อง</b>
+                      <b>เรื่อง :</b>
                       {meetingData?.detail}
                     </Space>
                   </Col>
@@ -128,7 +138,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     }}
                   >
                     <Space>
-                      <b>วันที่</b> {meetingData?.day}
+                      <b>วันที่ :</b> {meetingData?.day}
                     </Space>
                   </Col>
                 </Row>
@@ -141,10 +151,36 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       textAlign: 'left',
                     }}
                   >
-                    <Space>
-                      <b>สถานที่ / อาคาร</b> {meetingData?.building} <b>ชั้น</b>
-                      {meetingData?.floor} <b>ห่้อง</b> {meetingData?.room}
-                    </Space>
+                    <Row gutter={16}>
+                      <Col>
+                        <Typography style={{ fontWeight: 'bold' }}>
+                          สถานที่/อาคาร :
+                        </Typography>
+                      </Col>
+                      <Col>
+                        <Typography>{meetingData?.building}</Typography>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col>
+                        <Typography style={{ fontWeight: 'bold' }}>
+                          ชั้น :
+                        </Typography>
+                      </Col>
+                      <Col>
+                        <Typography>{meetingData?.floor}</Typography>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col>
+                        <Typography style={{ fontWeight: 'bold' }}>
+                          ห่้อง :
+                        </Typography>
+                      </Col>
+                      <Col>
+                        <Typography> {meetingData?.room}</Typography>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
                 <Row>
@@ -156,7 +192,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       textAlign: 'left',
                     }}
                   >
-                    ดาวโหลดเอกสารเพิ่มเติม
+                    <b> ดาวโหลดเอกสารเพิ่มเติม :</b>
                     {pathfile.map((e: any) => {
                       if (e.type === 'fileOverviwe') {
                         return (
@@ -168,6 +204,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                             {e.namefile}
                           </Button>
                         );
+                      } else {
+                        return <Typography>{'-'}</Typography>;
                       }
                     })}
                   </Col>
