@@ -26,9 +26,11 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
   const { roomid } = useParams<{ roomid: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<ProfileInterface>();
+  const [getdataPosition, setdataPosition] = useState<any>([]);
 
   useEffect(() => {
     getDataProfile();
+    getDataPosition();
   }, []);
 
   const getDataProfile = async () => {
@@ -37,6 +39,11 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
       userid,
     );
     setUserprofile(resultProfile[0]);
+  };
+
+  const getDataPosition = async () => {
+    const resultDataPosiotion = await DatamanagementService().getPositionall();
+    setdataPosition(resultDataPosiotion);
   };
 
   const onCheckin = async () => {
@@ -150,7 +157,18 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                         ตำแหน่ง
                       </Typography>
                       <Typography>
-                        {userprofile?.position ? userprofile?.position : '-'}
+                        {/* {userprofile?.position ? userprofile?.position : '-'} */}
+                        {getdataPosition.map((event: any) => {
+                          if (event.uuid === userprofile?.position) {
+                            return event.uuid != null ||
+                              event.uuid != undefined ||
+                              event.uuid != ''
+                              ? event.nameposition
+                              : '-';
+                          } else {
+                            return <></>;
+                          }
+                        })}
                       </Typography>
                     </Space>
                   </Col>
