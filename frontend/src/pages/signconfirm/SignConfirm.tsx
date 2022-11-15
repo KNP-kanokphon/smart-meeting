@@ -16,7 +16,7 @@ import Logo from '../../assets/images/KPIS Logo.png';
 import SignaturePad from 'react-signature-pad-wrapper';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { useLocation, useParams } from 'react-router-dom';
-import SignatureCanvas from 'react-signature-canvas'
+import SignatureCanvas from 'react-signature-canvas';
 
 export interface Props {
   baseURL: string;
@@ -25,23 +25,21 @@ export interface Props {
 export const SignConfirm: React.FC<Props> = ({
   baseURL,
 }): React.ReactElement => {
-  const id = useParams<{id:string,userid:string}>()
-  console.log(id,'id');
-  
-  
+  const id = useParams<{ id: string; userid: string }>();
+  console.log(id, 'id');
+
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sigCanvas = useRef<any>(null);
-  const [imageURLone, setImageURlone] = useState<any>(null)
+  const [imageURLone, setImageURlone] = useState<any>(null);
   const { state } = useLocation();
   const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
   const [positionName, setPositionName] = useState<
-  [{ id: string; uuid: string; nameposition: string; createdate: string }]
->([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
- 
+    [{ id: string; uuid: string; nameposition: string; createdate: string }]
+  >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
 
-const [userOwner,setUserOwner] = useState<String>(id.userid||'')
+  const [userOwner, setUserOwner] = useState<String>(id.userid || '');
 
   useEffect(() => {
     getListmeeting();
@@ -52,7 +50,6 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
       .then(data => {
         setDataIntable(data);
       });
-   
 
     await DatamanagementService()
       // .getuserInroom(String(state))
@@ -61,13 +58,10 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
         const position = await DatamanagementService()
           .getPositionall()
           .then(data => {
-          
-            
             setPositionName(data);
             return data;
           });
         const newData = await data.map((e: any, i: number) => {
-
           const pname = position.find(
             (name: {
               id: string;
@@ -82,12 +76,16 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
             uuidroom: e.uuid,
             username: e.username,
             statuscheckin: e.checkin,
-            position: pname.nameposition,
+            position:
+              e.position === null ||
+              e.position === '' ||
+              e.position === undefined
+                ? '-'
+                : pname.nameposition,
             statusconfirm: e.confirm,
           };
         });
         setDataUser(newData);
-   
       });
   };
   const showModal = (e: any) => {
@@ -108,37 +106,37 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
 
   const onFinish = async () => {
     console.log(id.userid);
-    
+
     if (
-      !imageURLone 
+      !imageURLone
       // 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC'
-    
     ) {
-      message.error('กรุณาเซ็นชื่อ !!')
-      return
+      message.error('กรุณาเซ็นชื่อ !!');
+      return;
     }
     const data = {
-      data:{
+      data: {
         uuid: id.userid,
-        signature:imageURLone,
-      }
-    }
-    await DatamanagementService().updateUserDetail(id.id,id.userid,data).then(() => {
-      message.success('บันทึกสำเร็จ');
-      setOpen(false);
-    })
+        signature: imageURLone,
+      },
+    };
+    await DatamanagementService()
+      .updateUserDetail(id.id, id.userid, data)
+      .then(() => {
+        message.success('บันทึกสำเร็จ');
+        setOpen(false);
+      });
   };
 
   const endSignager: any = {
     onEnd: () => {
       const pngUrl = sigCanvas.current
         .getTrimmedCanvas()
-        .toDataURL('image/png')
-      setImageURlone(pngUrl)
-    }
-  }
+        .toDataURL('image/png');
+      setImageURlone(pngUrl);
+    },
+  };
 
-  
   // const data = [
   //   {
   //     id: '1',
@@ -203,18 +201,29 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
       fixed: 'right',
       render: (e: any, record: any) => {
         if (record.uuidprofile === userOwner) {
-          return (
-            <>
-              <div style={{ textAlign: 'center' }}>
-                <Button
-                  style={{ background: '#1E6541', color: 'white' }}
-                  onClick={() => showModal(record)}
-                >
-                  <EditOutlined />
-                </Button>
-              </div>
-            </>
-          );
+          if ((record.statusconfirm = false)) {
+            return (
+              <>
+                <div style={{ textAlign: 'center' }}>
+                  <Button
+                    style={{ background: '#1E6541', color: 'white' }}
+                    onClick={() => showModal(record)}
+                  >
+                    <EditOutlined />
+                  </Button>
+                </div>
+              </>
+            );
+          } else {
+            return (
+              <Button
+                disabled
+                style={{ background: '#1E6541', color: 'white' }}
+              >
+                <EditOutlined />
+              </Button>
+            );
+          }
         }
       },
     },
@@ -348,15 +357,15 @@ const [userOwner,setUserOwner] = useState<String>(id.userid||'')
           <div style={{ textAlign: 'center' }}>
             {/* <SignatureCanvas ref={sigCanvas} /> */}
             <SignatureCanvas
-                          canvasProps={{
-                            width: 250,
-                            height: 200,
-                            className: 'sigCanvas'
-                          }}
-                          ref={sigCanvas}
-                          {...endSignager}
-                          backgroundColor="#EBEDF0"
-                        />
+              canvasProps={{
+                width: 250,
+                height: 200,
+                className: 'sigCanvas',
+              }}
+              ref={sigCanvas}
+              {...endSignager}
+              backgroundColor="#EBEDF0"
+            />
           </div>
           <Row gutter={14}>
             <Col

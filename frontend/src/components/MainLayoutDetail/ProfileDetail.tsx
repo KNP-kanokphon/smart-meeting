@@ -1,4 +1,4 @@
-import { Layout, Button, Menu, Row, Col, Card } from 'antd';
+import { Layout, Button, Menu, Row, Col, Card, Typography, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -95,39 +95,69 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     </b>
                   </Col>
                 </Row>
-
                 <Row>
                   <Col
                     xs={24}
                     sm={24}
                     md={24}
                     lg={24}
-                    style={{ fontSize: '14px', textAlign: 'left' }}
+                    style={{
+                      fontSize: '14px',
+                      textAlign: 'left',
+                      marginTop: '15px',
+                    }}
                   >
-                    <b>ชื่อ {userprofile?.username}</b>
+                    <Space>
+                      <Typography style={{ fontWeight: 'bold' }}>
+                        ชื่อ
+                      </Typography>
+                      <Typography>{userprofile?.username}</Typography>
+                    </Space>
                   </Col>
                 </Row>
 
                 <Row>
                   <Col
                     span={24}
-                    style={{ fontSize: '14px', textAlign: 'left' }}
+                    style={{
+                      fontSize: '14px',
+                      textAlign: 'left',
+                      marginTop: '10px',
+                    }}
                   >
-                    รุ่นที่ {userprofile?.model}
+                    <Space>
+                      <Typography style={{ fontWeight: 'bold' }}>
+                        รุ่นที่
+                      </Typography>
+                      <Typography>
+                        {userprofile?.model ? userprofile?.model : '-'}
+                      </Typography>
+                    </Space>
                   </Col>
                 </Row>
 
                 <Row>
                   <Col
                     span={24}
-                    style={{ fontSize: '14px', textAlign: 'left' }}
+                    style={{
+                      fontSize: '14px',
+                      textAlign: 'left',
+                      marginTop: '10px',
+                    }}
                   >
-                    ตำแหน่ง {userprofile?.position}
+                    <Space>
+                      <Typography style={{ fontWeight: 'bold' }}>
+                        ตำแหน่ง
+                      </Typography>
+                      <Typography>
+                        {userprofile?.position ? userprofile?.position : '-'}
+                      </Typography>
+                    </Space>
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col span={24}>
+                  <Col span={24} style={{ marginTop: '15px' }}>
                     <Button
                       style={{
                         width: 'auto',

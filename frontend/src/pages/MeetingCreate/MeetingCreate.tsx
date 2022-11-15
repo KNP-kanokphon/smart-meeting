@@ -223,40 +223,49 @@ export const CreateMeeting: React.FC = () => {
           ))}
         </Row>
         <br></br>
-        <Row justify="center">
-          {currentStep > 0 && (
-            <Button
-              style={{ marginLeft: 8 }}
-              onClick={() => onChangeCurrentStep(currentStep - 1)}
-            >
-              Back
-            </Button>
-          )}
-          {currentStep < steps.length - 1 && currentStep !== 0 && (
-            <Button
-              style={{ color: 'white', background: '#1E6541' }}
-              onClick={() => onChangeCurrentStep(currentStep + 1)}
-            >
-              Next
-            </Button>
-          )}
-          {currentStep < steps.length - 1 && currentStep === 0 && (
-            <Button
-              style={{ color: 'white', background: '#1E6541' }}
-              onClick={() => onChangeCurrentCheckStep(currentStep + 1)}
-            >
-              Next
-            </Button>
-          )}
-          {currentStep === steps.length - 1 && (
-            <Button
-              style={{ color: 'white', background: '#1E6541' }}
-              htmlType="submit"
-              onClick={checkSubmitForm}
-            >
-              Submit
-            </Button>
-          )}
+        <Row justify="center" gutter={16}>
+          <Col>
+            {currentStep > 0 && (
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => onChangeCurrentStep(currentStep - 1)}
+              >
+                Back
+              </Button>
+            )}
+          </Col>
+          <Col>
+            {currentStep < steps.length - 1 && currentStep !== 0 && (
+              <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                onClick={() => onChangeCurrentStep(currentStep + 1)}
+              >
+                Next
+              </Button>
+            )}
+          </Col>
+          <Col>
+            {currentStep < steps.length - 1 && currentStep === 0 && (
+              <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                onClick={() => onChangeCurrentCheckStep(currentStep + 1)}
+              >
+                Next
+              </Button>
+            )}
+          </Col>
+          <Col>
+            {' '}
+            {currentStep === steps.length - 1 && (
+              <Button
+                style={{ color: 'white', background: '#1E6541' }}
+                htmlType="submit"
+                onClick={checkSubmitForm}
+              >
+                Submit
+              </Button>
+            )}
+          </Col>
         </Row>
       </Card>
     </>

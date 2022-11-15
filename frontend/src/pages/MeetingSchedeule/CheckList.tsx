@@ -73,7 +73,12 @@ export const CheckList: React.FC = (): React.ReactElement => {
             uuidroom: e.uuid,
             username: e.username,
             statuscheckin: e.checkin,
-            position: pname.nameposition,
+            position:
+              e.position === null ||
+              e.position === '' ||
+              e.position === undefined
+                ? '-'
+                : pname.nameposition,
             statusconfirm: e.confirm,
           };
         });
@@ -216,7 +221,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
     {
       title: 'สถานะการลงทะเบียน',
       dataIndex: 'statusconfirm',
-      key: 'statuscheckin',
+      key: 'statusconfirm',
       width: '10%',
 
       render: (text: any) => {

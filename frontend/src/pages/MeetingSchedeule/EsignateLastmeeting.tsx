@@ -80,7 +80,12 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             uuidroom: e.uuid,
             username: e.username,
             statuscheckin: e.checkin,
-            position: pname.nameposition,
+            position:
+              e.position === null ||
+              e.position === '' ||
+              e.position === undefined
+                ? '-'
+                : pname.nameposition,
             statusconfirm: e.confirm,
             signature: e.signature,
           };
