@@ -7,10 +7,12 @@ import { FoodPage } from './foodPage';
 import './styles.css';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 const { Step } = Steps;
 
 export const CreateMeeting: React.FC = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   const [dataDetail, setDataDetail] = useState<any>([]);
@@ -20,7 +22,6 @@ export const CreateMeeting: React.FC = () => {
     setCurrentStep(step);
   };
   const onChangeCurrentCheckStep = (step: number) => {
-
     if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
       message.error(`กรุณากรอกเรื่องของการประชุม`);
       return;
@@ -50,26 +51,13 @@ export const CreateMeeting: React.FC = () => {
 
   const setDataAgendaield = (dataField: any) => {
     setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
-
-    
   };
 
   const checkSubmitForm = () => {
-
     if (dataFood.length === 0) {
       message.error('0 length');
       return;
     }
-    // dataFood.fooddetail.forEach((element:any,index:number) => {
-    //   if(typeof element.typefood == 'undefined'){
-    //     message.error(`typefood undefiend index:${index}`)
-    //     return
-    //   }
-    //   else if(!element.namefood || typeof element.namefood == 'undefined'){
-    //     message.error(`namefood undefined`)
-    //     return
-    //   }
-    // });
 
     const check = new Promise<void>((resolve, reject) => {
       if (dataFood.fooddetail.length === 0) {
@@ -116,7 +104,7 @@ export const CreateMeeting: React.FC = () => {
         username: e.username,
         uuidprofile: e.uuidprofile,
         type_user: e.type_user,
-        position: e.position
+        position: e.position,
       });
     });
     const id = uuidv4();
@@ -160,10 +148,10 @@ export const CreateMeeting: React.FC = () => {
         dataDetail.map((e: any, i: string) => {
           DatamanagementService().savefileagendas(e.files, id, i);
         });
+        navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });
-
   };
 
   // useEffect(() => {

@@ -45,8 +45,6 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
   const navigate = useNavigate();
   const onChange = async (values: any) => {
     form.validateFields().then(async values => {
-      console.log(values['food-detail']);
-
       const status: boolean = values['food-detail'].length > 0 ? true : false;
       await DatamanagementService().updateStatusFood(roomid, userid, status);
     });

@@ -93,6 +93,8 @@ export const DatamanagementService = () => ({
     uuidprofile: string;
     idmeeting: string;
     checkin: boolean;
+    foodstatus: boolean;
+    type_user: string;
   }) => {
     const result = await httpClient.post(`/userattendees/byuser`, userDetail);
     return result.data;
@@ -274,6 +276,30 @@ export const DatamanagementService = () => ({
   getDetailagenda: async (roomid: string, idagendess: string) => {
     const result = await httpClient.get(
       `/meeting/getDetailagendes/${roomid}/${idagendess}`,
+    );
+    return result.data;
+  },
+  saveSummaryMeetingFile: async (roomid: any, files: any) => {
+    const result = await httpClient.post(
+      `/meeting/savesummarymeetingFile/${roomid}`,
+      files,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      },
+    );
+    return result.data;
+  },
+  saveSummaryMeeting: async (roomid: any, detail: string) => {
+    const newData = {
+      data: detail,
+    };
+
+    const result = await httpClient.post(
+      `/meeting/savesummarymeeting/${roomid}`,
+      newData,
     );
     return result.data;
   },

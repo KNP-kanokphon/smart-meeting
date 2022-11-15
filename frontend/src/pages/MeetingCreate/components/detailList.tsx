@@ -48,8 +48,7 @@ export const DetailList: React.FC<Props> = ({
 
   useEffect(() => {
     onFinish();
-
-  }, [fileList,agendas,detail,detailAgendes]);
+  }, [fileList, agendas, detail, detailAgendes]);
 
   const onFinish = async () => {
     const formData = new FormData();
@@ -163,12 +162,12 @@ export const DetailList: React.FC<Props> = ({
             </Col>
           </Row>
           <br></br>
-          <Button
+          {/* <Button
             onClick={onFinish}
             style={{ color: 'white', background: '#1E6541' }}
           >
             บันทึก ระเบียบวาระที่ {Pagestep}
-          </Button>
+          </Button> */}
         </Form>
       </Row>
     </>

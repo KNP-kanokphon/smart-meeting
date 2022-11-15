@@ -180,7 +180,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'Title : '}
+                      {'Title '}
                     </Typography>
                     {meetingData?.title}
                   </Col>
@@ -209,7 +209,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'Schedual : '}
+                      {'Schedual '}
                     </Typography>
                     วันที่ {meetingData?.day}
                     <br></br>

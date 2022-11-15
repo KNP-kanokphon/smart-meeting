@@ -119,7 +119,7 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                         marginBottom: '5px',
                       }}
                     >
-                      {'Title : '}
+                      {'Title '}
                     </Typography>
 
                     {meetingData?.title}
@@ -147,7 +147,7 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                         marginBottom: '5px',
                       }}
                     >
-                      {'Schedual : '}
+                      {'Schedual '}
                     </Typography>
                     วันที่ {meetingData?.day}
                     <br></br>
