@@ -321,4 +321,8 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  findbyid: async (userid: any) => {
+    const result = await httpClient.get(`/user/findbyid/${userid}/`);
+    return result.data;
+  },
 });

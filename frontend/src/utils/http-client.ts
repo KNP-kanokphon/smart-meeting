@@ -15,7 +15,7 @@ const instance = axios.create({
 instance.interceptors.response.use(
   res => {
     const { method, url, params } = res.config;
-    message.success(`${method?.toUpperCase()} ${url}?${qs.stringify(params)}`);
+    // message.success(`${method?.toUpperCase()} ${url}?${qs.stringify(params)}`);
     return res;
   },
   err => {
