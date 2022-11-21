@@ -26,7 +26,6 @@ export const SignConfirm: React.FC<Props> = ({
   baseURL,
 }): React.ReactElement => {
   const id = useParams<{ id: string; userid: string }>();
-  console.log(id, 'id');
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -35,6 +34,10 @@ export const SignConfirm: React.FC<Props> = ({
   const { state } = useLocation();
   const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
+  const [nameUser, setNameUser] = useState<any>('');
+  const [signatureValue, setSignature] = useState<string>('');
+  // console.log(dataIntable);
+
   const [positionName, setPositionName] = useState<
     [{ id: string; uuid: string; nameposition: string; createdate: string }]
   >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
@@ -61,7 +64,11 @@ export const SignConfirm: React.FC<Props> = ({
             setPositionName(data);
             return data;
           });
+        // console.log(data);
+
         const newData = await data.map((e: any, i: number) => {
+          console.log(e);
+
           const pname = position.find(
             (name: {
               id: string;
@@ -82,13 +89,18 @@ export const SignConfirm: React.FC<Props> = ({
               e.position === undefined
                 ? '-'
                 : pname.nameposition,
-            statusconfirm: e.confirm,
+            confirm: e.confirm,
+            signature: e.signature,
           };
         });
+        console.log(newData);
+
         setDataUser(newData);
       });
   };
   const showModal = (e: any) => {
+    setNameUser(e.username);
+    setSignature(e.signature);
     setOpen(true);
   };
 
@@ -105,12 +117,7 @@ export const SignConfirm: React.FC<Props> = ({
   };
 
   const onFinish = async () => {
-    console.log(id.userid);
-
-    if (
-      !imageURLone
-      // 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC'
-    ) {
+    if (!imageURLone) {
       message.error('กรุณาเซ็นชื่อ !!');
       return;
     }
@@ -118,6 +125,7 @@ export const SignConfirm: React.FC<Props> = ({
       data: {
         uuid: id.userid,
         signature: imageURLone,
+        confirm: true,
       },
     };
     await DatamanagementService()
@@ -126,6 +134,13 @@ export const SignConfirm: React.FC<Props> = ({
         message.success('บันทึกสำเร็จ');
         setOpen(false);
       });
+
+    // await DatamanagementService()
+    // .updateUserDetail(id.id, id.userid, data)
+    // .then(() => {
+    //   message.success('บันทึกสำเร็จ');
+    //   setOpen(false);
+    // });
   };
 
   const endSignager: any = {
@@ -137,36 +152,6 @@ export const SignConfirm: React.FC<Props> = ({
     },
   };
 
-  // const data = [
-  //   {
-  //     id: '1',
-  //     name: 'suchart',
-  //     position: 'manager',
-  //     place: 'monk',
-  //     phone: '0999999999',
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'supred',
-  //     position: 'manager',
-  //     place: 'monk',
-  //     phone: '0999999999',
-  //   },
-  //   {
-  //     id: '3',
-  //     name: 'supra',
-  //     position: 'manager',
-  //     place: 'monk',
-  //     phone: '0999999999',
-  //   },
-  //   {
-  //     id: '4',
-  //     name: 'sushi',
-  //     position: 'manager',
-  //     place: 'monk',
-  //     phone: '0999999999',
-  //   },
-  // ];
   const columns: any = [
     {
       title: 'ลำดับ',
@@ -200,28 +185,30 @@ export const SignConfirm: React.FC<Props> = ({
       align: 'center' as const,
       fixed: 'right',
       render: (e: any, record: any) => {
+        console.log(record);
+
         if (record.uuidprofile === userOwner) {
-          if ((record.statusconfirm = false)) {
+          if (record.signature === '') {
             return (
-              <>
-                <div style={{ textAlign: 'center' }}>
-                  <Button
-                    style={{ background: '#1E6541', color: 'white' }}
-                    onClick={() => showModal(record)}
-                  >
-                    <EditOutlined />
-                  </Button>
-                </div>
-              </>
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  style={{ background: '#1E6541', color: 'white' }}
+                  onClick={() => showModal(record)}
+                >
+                  <EditOutlined />
+                </Button>
+              </div>
             );
           } else {
             return (
-              <Button
-                disabled
-                style={{ background: '#1E6541', color: 'white' }}
-              >
-                <EditOutlined />
-              </Button>
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  disabled
+                  style={{ background: '#1E6541', color: 'white' }}
+                >
+                  <EditOutlined />
+                </Button>
+              </div>
             );
           }
         }
@@ -340,7 +327,7 @@ export const SignConfirm: React.FC<Props> = ({
                     <Typography>Signature</Typography>
                   </Col>
                   <Col>
-                    <Typography>( {'นาย สมศรี'} )</Typography>
+                    <Typography>( {nameUser} )</Typography>
                   </Col>
                 </Space>
               </Row>
@@ -351,11 +338,9 @@ export const SignConfirm: React.FC<Props> = ({
           onOk={handleOk}
           onCancel={handleCancel}
           closable={false}
-          // header={false}
           footer={false}
         >
           <div style={{ textAlign: 'center' }}>
-            {/* <SignatureCanvas ref={sigCanvas} /> */}
             <SignatureCanvas
               canvasProps={{
                 width: 250,
