@@ -196,7 +196,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
 
-                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                <Row gutter={16} style={{ marginBottom: '5px' }}>
                   <Col offset={2} span={22} style={{ textAlign: 'left' }}>
                     <Row gutter={16}>
                       <Col span={2}>
@@ -206,83 +206,110 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row gutter={6} style={{ textAlign: 'center' }}>
-                  <Col span={6} style={{ textAlign: 'right' }}>
-                    <a
-                      style={{ color: '#1E6541' }}
-                      href="https://www.kpi.ac.th/"
-                    >
-                      <GlobalOutlined />
-                    </a>
+                <Row>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    style={{ textAlign: 'center' }}
+                  >
+                    <Row gutter={6} style={{ justifyContent: 'center' }}>
+                      <Col style={{ textAlign: 'right' }}>
+                        <a
+                          style={{ color: '#1E6541' }}
+                          href="https://www.kpi.ac.th/"
+                        >
+                          <GlobalOutlined />
+                        </a>
+                      </Col>
+                      <Col style={{ textAlign: 'left' }}>
+                        <a
+                          style={{ color: '#1E6541' }}
+                          href="https://www.kpi.ac.th/"
+                        >
+                          www.kpisociety.com
+                        </a>
+                      </Col>
+                    </Row>
                   </Col>
-                  <Col span={18} style={{ textAlign: 'left' }}>
-                    <a
-                      style={{ color: '#1E6541' }}
-                      href="https://www.kpi.ac.th/"
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    style={{ textAlign: 'center' }}
+                  >
+                    <Row
+                      // gutter={3}
+                      style={{ marginBottom: '10px', textAlign: 'center' }}
                     >
-                      www.kpisociety.com
-                    </a>
+                      <Col
+                        span={8}
+                        style={{
+                          fontSize: '12px',
+                          color: '#C6A970',
+                        }}
+                      >
+                        <Row gutter={2} style={{ justifyContent: 'right' }}>
+                          <Col>
+                            <PhoneOutlined />
+                          </Col>
+                          <Col style={{ textDecoration: 'underline' }}>
+                            <a
+                              href="tel:021419772"
+                              style={{ color: '#C6A970' }}
+                            >
+                              02-1419772
+                            </a>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col
+                        span={8}
+                        style={{
+                          fontSize: '12px',
+                          color: '#C6A970',
+                        }}
+                      >
+                        <Row gutter={6} style={{ justifyContent: 'center' }}>
+                          <Col>|</Col>
+                          <Col
+                            style={{
+                              textDecoration: 'underline',
+                            }}
+                          >
+                            <a
+                              href="tel:020965777"
+                              style={{ color: '#C6A970' }}
+                            >
+                              02-0965777
+                            </a>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col
+                        span={8}
+                        style={{
+                          fontSize: '12px',
+                          color: '#C6A970',
+                        }}
+                      >
+                        <Row gutter={1} style={{ justifyContent: 'left' }}>
+                          <Col>|</Col>
+                          <Col style={{ textDecoration: 'underline' }}>
+                            <a
+                              href="tel:0814714777"
+                              style={{ color: '#C6A970' }}
+                            >
+                              081-4714777
+                            </a>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
-                <Row
-                  // gutter={3}
-                  style={{ marginBottom: '10px', textAlign: 'center' }}
-                >
-                  <Col
-                    span={8}
-                    style={{
-                      fontSize: '12px',
-                      textAlign: 'right',
-                      color: '#C6A970',
-                    }}
-                  >
-                    <Row gutter={2}>
-                      <Col>
-                        <PhoneOutlined />
-                      </Col>
-                      <Col style={{ textDecoration: 'underline' }}>
-                        <a href="tel:021419772" style={{ color: '#C6A970' }}>
-                          02-1419772
-                        </a>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col
-                    span={8}
-                    style={{
-                      fontSize: '12px',
-                      textAlign: 'center',
-                      color: '#C6A970',
-                    }}
-                  >
-                    <Row gutter={6}>
-                      <Col>|</Col>
-                      <Col style={{ textDecoration: 'underline' }}>
-                        <a href="tel:020965777" style={{ color: '#C6A970' }}>
-                          02-0965777
-                        </a>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col
-                    span={8}
-                    style={{
-                      fontSize: '12px',
-                      textAlign: 'left',
-                      color: '#C6A970',
-                    }}
-                  >
-                    <Row gutter={1}>
-                      <Col>|</Col>
-                      <Col style={{ textDecoration: 'underline' }}>
-                        <a href="tel:0814714777" style={{ color: '#C6A970' }}>
-                          081-4714777
-                        </a>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-
                 <Row>
                   <Col span={24} style={{ marginTop: '15px' }}>
                     <Button
