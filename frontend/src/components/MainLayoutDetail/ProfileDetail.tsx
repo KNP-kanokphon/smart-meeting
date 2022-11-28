@@ -1,12 +1,30 @@
-import { Layout, Button, Menu, Row, Col, Card, Typography, Space } from 'antd';
+import {
+  Layout,
+  Button,
+  Menu,
+  Row,
+  Col,
+  Card,
+  Typography,
+  Space,
+  Image,
+  Anchor,
+} from 'antd';
+import {
+  PhoneOutlined,
+  MailOutlined,
+  MobileOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
 import styles from './MainLayout.module.scss';
-import { Logo } from './Logo';
+import { Logo, Logogold } from './Logo';
 import Background2 from '../../assets/images/BG_2.jpg';
 import { DatamanagementService } from '../../stores/meeting-store';
+import leam from '../../assets/images/4leam.png';
 
 const { Content, Sider, Header, Footer } = Layout;
 export interface Props {
@@ -24,6 +42,7 @@ interface ProfileInterface {
 }
 
 export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
+  const { Link } = Anchor;
   const { roomid } = useParams<{ roomid: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<ProfileInterface>();
@@ -96,257 +115,171 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                 style={{
                   textAlign: 'center',
                   backgroundColor: '#F5F4F1',
-                  // borderRadius:"10px",
+                  borderRadius: '10px',
                   boxShadow:
                     'rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px',
                 }}
               >
-                <Row>
+                <Row style={{ marginBottom: '20px' }}>
                   <Col xs={24} sm={24} md={24} lg={24}>
-                    <Logo />
+                    <Logogold />
                   </Col>
                 </Row>
-                <br></br>
-                <Row>
-                  <Col xs={24} sm={24} md={24} lg={24}>
-                    <Row gutter={6}>
-                      <Col span={12} style={{ textAlign: 'right' }}>
-                        <Typography
-                          style={{ fontSize: '20px', fontWeight: 'bold' }}
-                        >
-                          Welcome to
-                        </Typography>
-                      </Col>
-                      <Col span={12} style={{ textAlign: 'left' }}>
+                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                  <Col span={2}>
+                    <Image
+                      src={leam}
+                      width={10}
+                      height={'auto'}
+                      preview={false}
+                    />
+                  </Col>
+                  <Col span={22} style={{ textAlign: 'left' }}>
+                    <Row gutter={16}>
+                      <Col span={24}>
                         <Typography
                           style={{
-                            fontSize: '20px',
-                            color: 'red',
                             fontWeight: 'bold',
+                            color: '#1F4E3A',
+                            fontSize: '22px',
+                            marginBottom: '5px',
+                            fontFamily: 'kanit',
                           }}
                         >
-                          KPIS Society
+                          {userprofile?.username}
                         </Typography>
                       </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={24}
-                    lg={24}
-                    style={{
-                      marginLeft: '10%',
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '15px',
-                    }}
-                  >
-                    <Row gutter={20}>
-                      <Col span={6}>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          ชื่อ
+                      <Col span={24}>
+                        <Typography
+                          style={{
+                            fontWeight: 'bold',
+                            color: '#C6A970',
+                            fontSize: '22px',
+                            marginBottom: '5px',
+                            fontFamily: 'kanit',
+                          }}
+                        >
+                          {/* {userprofile?.username} */}
+                          PHIBOON NITITHAWAN
                         </Typography>
                       </Col>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>{userprofile?.username}</Typography>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-
-                {/* <Row>
-                  <Col
-                    span={24}
-                    style={{
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Space>
-                      <Typography style={{ fontWeight: 'bold' }}>
-                        รุ่นที่
-                      </Typography>
-                      <Typography>
-                        {userprofile?.model ? userprofile?.model : '-'}
-                      </Typography>
-                    </Space>
-                  </Col>
-                </Row> */}
-
-                <Row>
-                  <Col
-                    span={24}
-                    style={{
-                      marginLeft: '10%',
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Row gutter={20}>
-                      <Col span={6}>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          Name
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>
-                          {/* {userprofile?.position ? userprofile?.position : '-'} */}
-                          {getdataPosition.map((event: any) => {
-                            if (event.uuid === userprofile?.position) {
-                              return event.uuid != null ||
-                                event.uuid != undefined ||
-                                event.uuid != ''
-                                ? ': ' + event.nameposition
-                                : '-';
-                            } else {
-                              return <></>;
-                            }
-                          })}
+                      <Col span={24}>
+                        <Typography
+                          style={{
+                            color: '#58585A',
+                            fontSize: '16px',
+                            fontFamily: 'kanit',
+                          }}
+                        >
+                          {/* {getdataPosition.map((event: any) => {
+                            return event.nameposition;
+                          })} */}
+                          นายกเทศมนตรี
                         </Typography>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
 
-                <Row>
-                  <Col
-                    span={24}
-                    style={{
-                      marginLeft: '10%',
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Row gutter={20}>
-                      <Col span={6}>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          ตำแหน่ง
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>
-                          {/* {userprofile?.position ? userprofile?.position : '-'} */}
-                          {getdataPosition.map((event: any) => {
-                            if (event.uuid === userprofile?.position) {
-                              return event.uuid != null ||
-                                event.uuid != undefined ||
-                                event.uuid != ''
-                                ? ': ' + event.nameposition
-                                : '-';
-                            } else {
-                              return <></>;
-                            }
-                          })}
-                        </Typography>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col
-                    span={24}
-                    style={{
-                      marginLeft: '10%',
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '10px',
-                    }}
-                  >
+                <Row gutter={16}>
+                  <Col offset={2} span={22} style={{ textAlign: 'left' }}>
                     <Row gutter={16}>
-                      <Col span={6}>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          เบอร์โทรศัพท์
-                        </Typography>
+                      <Col span={2}>
+                        <MobileOutlined />
                       </Col>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>
-                          {/* {userprofile?.position ? userprofile?.position : '-'} */}
-                          {getdataPosition.map((event: any) => {
-                            if (event.uuid === userprofile?.position) {
-                              return event.uuid != null ||
-                                event.uuid != undefined ||
-                                event.uuid != ''
-                                ? event.nameposition
-                                : '-';
-                            } else {
-                              return <></>;
-                            }
-                          })}
-                        </Typography>
+                      <Col span={22} style={{ textDecoration: 'underline' }}>
+                        <a href="tel:0901585061" style={{ color: '#58585A' }}>
+                          0901585061
+                        </a>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
 
-                <Row>
+                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                  <Col offset={2} span={22} style={{ textAlign: 'left' }}>
+                    <Row gutter={16}>
+                      <Col span={2}>
+                        <MailOutlined />
+                      </Col>
+                      <Col span={22}>Wasmee13440@gmail.com</Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row gutter={6} style={{ textAlign: 'center' }}>
+                  <Col span={6} style={{ textAlign: 'right' }}>
+                    <a
+                      style={{ color: '#1E6541' }}
+                      href="https://www.kpi.ac.th/"
+                    >
+                      <GlobalOutlined />
+                    </a>
+                  </Col>
+                  <Col span={18} style={{ textAlign: 'left' }}>
+                    <a
+                      style={{ color: '#1E6541' }}
+                      href="https://www.kpi.ac.th/"
+                    >
+                      www.kpisociety.com
+                    </a>
+                  </Col>
+                </Row>
+                <Row
+                  // gutter={3}
+                  style={{ marginBottom: '10px', textAlign: 'center' }}
+                >
                   <Col
-                    span={24}
+                    span={8}
                     style={{
-                      marginLeft: '10%',
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      marginTop: '10px',
+                      fontSize: '12px',
+                      textAlign: 'right',
+                      color: '#C6A970',
                     }}
                   >
-                    <Row gutter={16}>
-                      <Col span={6}>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          อีเมล
-                        </Typography>
-                      </Col>
+                    <Row gutter={2}>
                       <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          :
-                        </Typography>
+                        <PhoneOutlined />
                       </Col>
-                      <Col>
-                        <Typography>
-                          {/* {userprofile?.position ? userprofile?.position : '-'} */}
-                          {getdataPosition.map((event: any) => {
-                            if (event.uuid === userprofile?.position) {
-                              return event.uuid != null ||
-                                event.uuid != undefined ||
-                                event.uuid != ''
-                                ? ': ' + event.nameposition
-                                : '-';
-                            } else {
-                              return <></>;
-                            }
-                          })}
-                        </Typography>
+                      <Col style={{ textDecoration: 'underline' }}>
+                        <a href="tel:021419772" style={{ color: '#C6A970' }}>
+                          02-1419772
+                        </a>
                       </Col>
                     </Row>
-                    {/* <Space>
-
-                      
-                    </Space> */}
+                  </Col>
+                  <Col
+                    span={8}
+                    style={{
+                      fontSize: '12px',
+                      textAlign: 'center',
+                      color: '#C6A970',
+                    }}
+                  >
+                    <Row gutter={6}>
+                      <Col>|</Col>
+                      <Col style={{ textDecoration: 'underline' }}>
+                        <a href="tel:020965777" style={{ color: '#C6A970' }}>
+                          02-0965777
+                        </a>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col
+                    span={8}
+                    style={{
+                      fontSize: '12px',
+                      textAlign: 'left',
+                      color: '#C6A970',
+                    }}
+                  >
+                    <Row gutter={1}>
+                      <Col>|</Col>
+                      <Col style={{ textDecoration: 'underline' }}>
+                        <a href="tel:0814714777" style={{ color: '#C6A970' }}>
+                          081-4714777
+                        </a>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -357,6 +290,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                         width: 'auto',
                         backgroundColor: '#1F4E3A',
                         color: '#ffffff',
+                        borderRadius: '10px',
                       }}
                       onClick={onCheckin}
                     >
