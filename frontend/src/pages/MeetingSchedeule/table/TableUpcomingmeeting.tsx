@@ -10,8 +10,14 @@ import {
   Table,
   Tag,
   Badge,
+  Tooltip,
 } from 'antd';
 import { Icon } from '@iconify/react';
+import {
+  AlignRightOutlined,
+  MoreOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../../stores/meeting-store';
 // import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
@@ -37,11 +43,18 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
             dd.getMonth() + 1,
             dd.getFullYear(),
           ];
+          
+          
           const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
-          if (
-            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` >
-            `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
-          ) {
+          console.log( `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}`,"test",`${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`);
+          // if (
+          //   `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` >
+          //   `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
+          // ) {
+            if (
+              `${dateCreate[2]}-${dateCreate[1]}-${dateCreate[0]}` >
+              `${dateNow[2]}-${dateNow[1]}-${dateNow[0]}`
+            ) {
             return e;
           } else {
             return;
@@ -117,6 +130,28 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
             </Row>
           </>
         );
+      },
+    },
+    {
+      title: 'Edit',
+      dataIndex: 'uuid',
+      key: 'uuid',
+      width: '10%',
+      render: (text: any, row: any) => {
+        if (text) {
+          return (
+            <div style={{ textAlign: 'center' }}>
+              <Tooltip title={'Edit'}>
+              <Button
+                  style={{ border: 'none' }}
+                  onClick={() => navigate('detail/edit', { state: text })}
+                >
+                  <MoreOutlined />
+                  </Button>
+              </Tooltip>
+            </div>
+          );
+        }
       },
     },
   ];

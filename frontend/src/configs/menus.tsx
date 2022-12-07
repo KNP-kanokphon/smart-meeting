@@ -5,6 +5,7 @@ import {
   TeamOutlined,
   SettingOutlined,
   CaretRightOutlined,
+  TableOutlined,
 } from '@ant-design/icons';
 import { pipe, replace, toLower } from 'lodash/fp';
 import { ReportLayout } from '../components/ReportLayout';
@@ -26,6 +27,8 @@ import { MemberShipRoute } from '../pages/Membership/MemberShipRoute';
 import { SettingPermission } from '../pages/settingpermission/SettingPermission';
 import { CreateMeeting } from '../pages/MeetingCreate/MeetingCreate';
 import { SignConfirm } from '../pages/signconfirm/SignConfirm';
+import { ReserveMeet } from '../pages/ReserveMeet/RevserveMeet';
+import { EditMeeting } from '../pages/MeetingSchedeule/MeetingEdit/MeetingEdit';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
@@ -69,6 +72,7 @@ const menuConfigs: MenuConfig[] = [
         <Route path="detail/view" element={<CheckList />} />
         <Route path="detail/signate" element={<EsignateLastmeeting />} />
         <Route path="detail/minutes" element={<MeetingSumMinutes />} />
+        <Route path="detail/edit" element={<EditMeeting />} />
       </>
     ),
   },
@@ -107,6 +111,16 @@ const menuConfigs: MenuConfig[] = [
         ),
       },
     ],
+  },
+  {
+    icon: <TableOutlined />,
+    label: 'Reserve Meet',
+    path: 'Reserve-Meet',
+    component: (
+      <>
+        <Route index element={<ReserveMeet />} />
+      </>
+    ),
   },
   // {
   //   icon: <SettingOutlined />,

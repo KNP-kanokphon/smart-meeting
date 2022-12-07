@@ -5,19 +5,82 @@ import { AgendaPage } from './agendaPage';
 import { DetailPage } from './detailsPage';
 import { FoodPage } from './foodPage';
 import './styles.css';
-import { DatamanagementService } from '../../stores/meeting-store';
+import { DatamanagementService } from '../../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const { Step } = Steps;
 
-export const CreateMeeting: React.FC = () => {
+export const EditMeeting: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   const [dataDetail, setDataDetail] = useState<any>([]);
+  const [dataIntable, setDataIntable] = useState<any>([]);
   const [dataFood, setDataFood] = useState<any>([]);
+  const { state } = useLocation();
+  const [positionName, setPositionName] = useState<
+    [{ id: string; uuid: string; nameposition: string; createdate: string }]
+  >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
 
+  const [dataUser, setDataUser] = useState<any>([]);
+  const [nameFilesummary, setNamefilesummary] = useState<any>([]);
+  const [agenda, setAgenda] = useState<any>();
+  const [food,setFood] = useState<any>([])
+  useEffect(() => {
+
+    const getListmeeting = async () => {
+      await DatamanagementService()
+        .getMeetingByid(state)
+        .then(data => {
+
+          
+          setDataIntable(data);
+        });
+  
+      await DatamanagementService()
+        .getuserInroom(state)
+        .then(async (data: any) => {
+          setDataUser(data)
+          const position = await DatamanagementService()
+            .getPositionall()
+            .then(data => {
+              setPositionName(data);
+              return data;
+            });
+            
+          // console.log(position);
+          // console.log(newData, 'newData');
+        });
+
+        const resultnamefilesummary =
+      await DatamanagementService().getnamefileSummary(state);
+
+      setNamefilesummary(resultnamefilesummary);
+      const resultAgenda = await DatamanagementService().getagendaByid(state);
+      setAgenda(resultAgenda)
+      const food = await DatamanagementService().getDetailfood(state)
+      
+      const fooddetail: any[] = [];
+      food?.map((x:any,y:number)=>{
+      if(x.typefood === "food"){
+        fooddetail.push({typefood:'food',namefood:`${x.namefood}`})
+      }
+      else if(x.typefood === "snack"){
+        fooddetail.push({typefood:'snack',namefood:`${x.namefood}`})
+      }
+      else if(x.typefood === "drink"){
+        fooddetail.push({typefood:'drink',namefood:`${x.namefood}`})
+      }})
+      setFood(fooddetail)
+    };
+
+    getListmeeting().catch(console.error);
+    
+    
+  }, []);
+
+  
   const onChangeCurrentStep = (step: number) => {
     setCurrentStep(step);
   };
@@ -43,6 +106,8 @@ export const CreateMeeting: React.FC = () => {
     setDataDetail(dataField);
 
     // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
+    
+    // setDataDetail([ ...dataDetail, ...dataField ]);
   };
 
   const setDataFoodField = (dataField: any) => {
@@ -57,6 +122,7 @@ export const CreateMeeting: React.FC = () => {
     console.log(dataAgenda,'dataAgenda');
     console.log(dataDetail,'dataDetail');
     console.log(dataFood,'dataFood');
+    
     if (dataFood.length === 0) {
       message.error('0 length');
       return;
@@ -133,7 +199,7 @@ export const CreateMeeting: React.FC = () => {
             dataAgenda.room,
             dataAgenda.floor,
             dataAgenda.building,
-            dataAgenda.meetingPlace,
+            dataAgenda.meetingplace,
             dataAgenda.date,
             dataAgenda.timeStart,
             dataAgenda.timeEnd,
@@ -164,15 +230,15 @@ export const CreateMeeting: React.FC = () => {
   const steps = [
     {
       title: 'AgendaPage',
-      content: <AgendaPage setDataField={setDataAgendaield} />,
+      content: <AgendaPage setDataField={setDataAgendaield} data={dataIntable} user={dataUser} nameFilesummary={nameFilesummary}/>,
     },
     {
-      title: 'DetailPage',
-      content: <DetailPage setDataField={setDataAgendaField} />,
+      title: 'DetailPage', 
+      content: <DetailPage setDataField={setDataAgendaField} data={dataIntable} agenda={agenda} nameFilesummary={nameFilesummary}/>,
     },
     {
       title: 'FoodPage',
-      content: <FoodPage setDataField={setDataFoodField} />,
+      content: <FoodPage setDataField={setDataFoodField} data={dataIntable} food={food}/>,
     },
   ];
   return (

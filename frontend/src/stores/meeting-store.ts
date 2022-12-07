@@ -279,9 +279,9 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
-  getDetailagenda: async (roomid: string, idagendess: string) => {
+  getDetailagenda: async (roomid: string, step: string) => {
     const result = await httpClient.get(
-      `/meeting/getDetailagendes/${roomid}/${idagendess}`,
+      `/meeting/getDetailagendes/${roomid}/${step}`,
     );
     return result.data;
   },
