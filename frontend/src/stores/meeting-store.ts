@@ -161,6 +161,12 @@ export const DatamanagementService = () => ({
     });
     return result.data;
   },
+  upLoadfilecsvparty: async (data: any) => {
+    const result = await httpClient.post(`/userparty`, {
+      data: data,
+    });
+    return result.data;
+  },
   getUser: async () => {
     const result = await httpClient.post(`/userattendees/userAll`);
     return result.data;
@@ -323,6 +329,18 @@ export const DatamanagementService = () => ({
   },
   findbyid: async (userid: any) => {
     const result = await httpClient.get(`/user/findbyid/${userid}/`);
+    return result.data;
+  },
+  updatecheckinparty: async (userid: string) => {
+    const result = await httpClient.put(`/userparty/userin/${userid}`);
+    return result.data;
+  },
+  getUserInparty: async (userid: any) => {
+    const result = await httpClient.get(`/userparty/${userid}`);
+    return result.data;
+  },
+  updaterecivegift: async (userid: string) => {
+    const result = await httpClient.put(`/userparty/recivegif/${userid}`);
     return result.data;
   },
 });

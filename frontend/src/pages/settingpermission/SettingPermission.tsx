@@ -80,22 +80,29 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
             setUploading(false);
           });
       });
+    } else {
+      console.log(typefile);
+
+      // หลักสูตร
+      readXlsxFile(fileList[0]).then(async (rows: any) => {
+        rows.forEach((e: any, i: number) => {
+          if (i > 1) {
+            newData.push({
+              uuid: uuidv4(),
+              namecourse: e[0],
+              createdate: new Date(),
+            });
+          }
+        });
+        await DatamanagementService()
+          .importPosition(newData, typefile)
+          .then((response: any) => {
+            message.success('import file หลักสูตร');
+            // console.log(response);
+            setUploading(false);
+          });
+      });
     }
-    // else {
-    //   // หลักสูตร
-    //   readXlsxFile(fileList[0]).then(async (rows: any) => {
-    //     rows.forEach((e: any, i: number) => {
-    //       if (i > 1) {
-    //         newData.push({
-    //           uuid: uuidv4(),
-    //           namecourse: e[0],
-    //           createdate: new Date(),
-    //         });
-    //       }
-    //     });
-    //     await DatamanagementService().importPosition(newData, typefile);
-    //   });
-    // }
   };
   return (
     <>
@@ -104,7 +111,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
           <Col span={10}>
             <Row gutter={16}>
               <Col
-                span={10}
+                span={16}
                 style={{
                   justifyContent: 'center',
                   display: 'flex',
@@ -113,10 +120,10 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                 }}
               >
                 <Typography style={{ fontWeight: 'bold' }}>
-                  {'อัปโหลดไฟล์ ตำแหน่ง'}
+                  {'อัปโหลดไฟล์ ตำแหน่ง/หลักสูตร'}
                 </Typography>
               </Col>
-              <Col span={14}>
+              <Col span={8}>
                 <Select
                   bordered={false}
                   style={{ width: '100%' }}
@@ -124,8 +131,8 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
                   onChange={onChangType}
                   allowClear
                 >
-                  <Option key={'1'}>{'ตำแหน่ง'}</Option>
-                  {/* <Option key={'2'}>หลักสูตร</Option> */}
+                  <Option key={'1'}>ตำแหน่ง</Option>
+                  <Option key={'2'}>หลักสูตร</Option>
                 </Select>
               </Col>
             </Row>

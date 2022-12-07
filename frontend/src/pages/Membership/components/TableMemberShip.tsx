@@ -23,6 +23,7 @@ import {
 } from '@ant-design/icons';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
+const { TextArea } = Input;
 
 export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [formEdit] = Form.useForm();
@@ -39,7 +40,10 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   const [dataPhone, setDataPhone] = useState<string>('');
   const [dataCourse, setDataCourse] = useState<any>([]);
   const [dataPosition, setDataPosition] = useState<any>([]);
+  const [dataCourseupdate, setDataCourseupdate] = useState<any>([]);
   const [dataPositionupdate, setDataPositionupdate] = useState<string>('');
+  const [dataEmail, setDataEmail] = useState<string>('');
+  const [dataAddress, setDataAddress] = useState<string>('');
 
   const [modalAdduser, setmodalAdduser] = useState<boolean>(false);
 
@@ -62,35 +66,10 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             course: e.course,
             position: e.position,
             positionkpi: e.positionkpi,
+            address: e.address,
+            email: e.email,
           };
         });
-
-        // const newData = await data;
-        // const Data = (await newData.map(
-        //   (
-        //     x: {
-        //       // key: number;
-        //       uuid: string;
-        //       username: string;
-        //       phone: string;
-        //       course: string;
-        //       position: string;
-        //       positionkpi: string;
-        //     },
-        //     index: number,
-        //   ) => {
-        //     const mapData = {
-        //       key: index + 1,
-        //       uuid: x.uuid,
-        //       username: x.username,
-        //       phone: x.phone,
-        //       course: x.course,
-        //       position: x.position,
-        //       positionkpi: x.positionkpi,
-        //     };
-        //     return mapData;
-        //   },
-        // )) as any;
         setDataUser(newData);
       });
   }
@@ -109,20 +88,16 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
       });
   };
   const getListCourse = async () => {
-    const result = await DatamanagementService()
+    await DatamanagementService()
       .getCourseall()
       .then(async data => {
-        // console.log(data);
-
         const newData = await data.map((e: any, i: number) => {
           return {
-            key: i + 1,
-            uuid: e.uuid,
+            key: e.id,
+            uuid: String(e.uuid),
             namecourse: e.namecourse,
           };
         });
-        // console.log(newData);
-
         setDataCourse(newData);
       });
   };
@@ -149,19 +124,23 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
             data: {
               uuid: dataUuid,
               username:
-                e.username != undefined || e.username != ''
+                e.username !== undefined || e.username !== ''
                   ? e.username
                   : dataUsername,
               phone:
-                e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
+                e.phone !== undefined || e.phone !== '' ? e.phone : dataPhone,
               position:
-                e.position != undefined ||
-                e.position != '' ||
-                e.position != null
+                e.position !== undefined ||
+                e.position !== '' ||
+                e.position !== null
                   ? e.position
                   : dataPositionupdate,
+              email: e.email,
+              course: e.course,
+              address: e.address,
             },
           };
+
           await DatamanagementService()
             .updateByid(dataUuid, data)
             .then(() => {
@@ -185,7 +164,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
     setDataUuid(event.uuid);
     setDataUsername(event.username);
     setDataPhone(event.phone);
-    setDataCourse(event.course);
+    setDataCourseupdate(event.course);
   };
 
   const showModalAdd = async (event: any) => {
@@ -202,7 +181,6 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
   };
 
   const handleOK2 = (e: any) => {
-    console.log(e);
     if (e) {
       Modal.confirm({
         title: 'ยืนยันการเปลี่ยนแปลง',
@@ -211,34 +189,36 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
         okText: 'ยืนยัน',
         cancelText: 'ยกเลิก',
         onOk: async () => {
-          const data = {
-            data: {
-              uuid: uuidv4(),
-              username:
-                e.username != undefined || e.username != ''
-                  ? e.username
-                  : dataUsername,
-              phone:
-                e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
-              position:
-                e.position != undefined ||
-                e.position != '' ||
-                e.position != null  
-                  ? e.position
-                  : dataPositionupdate,
-              type: '',
-              course: '',
-              positionkpi: '',
-            },
-          };
-          await DatamanagementService()
-            .createuser(data)
-            .then(() => {
-              message.success('บันทึกสำเร็จ');
-              setmodalAdduser(false);
-              getListmeeting();
-              formAdd.resetFields();
-            });
+          console.log(e);
+
+          // const data = {
+          //   data: {
+          //     uuid: uuidv4(),
+          //     username:
+          //       e.username != undefined || e.username != ''
+          //         ? e.username
+          //         : dataUsername,
+          //     phone:
+          //       e.phone != undefined || e.phone != '' ? e.phone : dataPhone,
+          //     position:
+          //       e.position != undefined ||
+          //       e.position != '' ||
+          //       e.position != null
+          //         ? e.position
+          //         : dataPositionupdate,
+          //     type: '',
+          //     course: '',
+          //     positionkpi: '',
+          //   },
+          // };
+          // await DatamanagementService()
+          //   .createuser(data)
+          //   .then(() => {
+          //     message.success('บันทึกสำเร็จ');
+          //     setmodalAdduser(false);
+          //     getListmeeting();
+          //     formAdd.resetFields();
+          //   });
         },
         onCancel: () => {
           setmodalAdduser(false);
@@ -255,34 +235,82 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
       title: 'ลำดับที่',
       dataIndex: 'key',
       key: 'key',
-      fixed: 'left',
+      width: 100,
     },
     {
       title: 'ชื่อ - นามสกุล',
       key: 'username',
       dataIndex: 'username',
+      width: 200,
     },
 
     {
       title: 'เบอร์โทรศัพท์',
       key: 'phone',
       dataIndex: 'phone',
+      width: 150,
+    },
+    {
+      title: 'อีเมล',
+      key: 'email',
+      dataIndex: 'email',
+      width: 200,
+      // render: (e: any, row: any) => {
+      //   return <>-</>;
+      // },
     },
     {
       title: 'ตำแหน่ง',
       key: 'position',
       dataIndex: 'position',
+      width: 150,
       render: (e: any, row: any) => {
         if (e) {
           return (
             <>
-              {dataPosition.map((x: any) => {
-                return <>{x.uuid == e ? x.nameposition : ''}</>;
+              {dataPosition?.map((x: any) => {
+                return <>{x.uuid === e ? x.nameposition : ''}</>;
               })}
             </>
           );
         }
       },
+    },
+    {
+      title: 'หลักสูตร',
+      key: 'course',
+      dataIndex: 'course',
+      width: 150,
+      render: (value: any, row: any) => {
+        const name: any = [];
+        const data = value?.filter((e: any) => {
+          return dataPosition.map((x: any) => {
+            if (String(e) === String(x.uuid)) {
+              name.push(x);
+            }
+          });
+        });
+        if (value) {
+          return (
+            <>
+              {value.map((v: any) => {
+                return dataCourse?.map((x: any) => {
+                  return <>{x.uuid === v ? x.namecourse : ''}</>;
+                });
+              })}
+            </>
+          );
+        }
+      },
+    },
+    {
+      title: 'ที่อยู่',
+      key: 'address',
+      dataIndex: 'address',
+      width: 150,
+      // render: (e: any, row: any) => {
+      //   return <>-</>;
+      // },
     },
     {
       title: (
@@ -342,6 +370,9 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               maxLength={10}
             />
           </Form.Item>
+          <Form.Item name="email" label={'อีเมล'}>
+            <Input id="email" name="email" value={dataUsername} />
+          </Form.Item>
           <Form.Item name={'position'} label={'ตำแหน่ง'}>
             <Select
               id="position"
@@ -358,6 +389,20 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
                 );
               })}
             </Select>
+          </Form.Item>
+          <Form.Item name="course" label={'หลักสูตร'}>
+            <Select placeholder="Please Select" mode="multiple" allowClear>
+              {dataPosition?.map((x: any, i: number) => {
+                return (
+                  <Option key={i} value={x.uuid}>
+                    {x.nameposition}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item name="address" label={'ที่อยู่'}>
+            <TextArea rows={4} />
           </Form.Item>
           <Form.Item>
             <div style={{ textAlign: 'right' }}>
@@ -399,6 +444,18 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               name: ['position'],
               value: dataPositionupdate,
             },
+            {
+              name: ['email'],
+              value: dataEmail,
+            },
+            {
+              name: ['course'],
+              value: dataCourseupdate,
+            },
+            {
+              name: ['address'],
+              value: dataAddress,
+            },
           ]}
         >
           <Form.Item name="username" label={'ชื่อ - นามสกุล'}>
@@ -413,17 +470,9 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               defaultValue={dataPhone}
             />
           </Form.Item>
-          {/* <Form.Item name="course" label={'หลักสูตร'}>
-            <Select placeholder="Please Select" mode="multiple" allowClear>
-              {dataPosition?.map((x: any, i: number) => {
-                return (
-                  <Option key={i} value={x.uuid}>
-                    {x.nameposition}
-                  </Option>
-                );
-              })}
-            </Select>
-          </Form.Item> */}
+          <Form.Item name="email" label={'อีเมล'}>
+            <Input id="email" name="email" value={dataUsername} />
+          </Form.Item>
           <Form.Item name={'position'} label={'ตำแหน่ง'}>
             <Select
               id="position"
@@ -432,7 +481,6 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
               value={dataPositionupdate}
             >
               {dataPosition?.map((x: any, i: number) => {
-                // console.log(x);
                 return (
                   <Option key={i} value={x.uuid}>
                     {x.nameposition}
@@ -440,6 +488,26 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
                 );
               })}
             </Select>
+          </Form.Item>
+          <Form.Item name="course" label={'หลักสูตร'}>
+            <Select
+              id="course"
+              placeholder="Please Select"
+              allowClear
+              mode="multiple"
+              value={dataCourseupdate}
+            >
+              {dataCourse?.map((x: any, i: number) => {
+                return (
+                  <Option key={i} value={x.uuid}>
+                    {x.namecourse}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item name="address" label={'ที่อยู่'}>
+            <TextArea rows={4} />
           </Form.Item>
           <Form.Item>
             <div style={{ textAlign: 'right' }}>
@@ -495,7 +563,12 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
           </Row>
         }
       >
-        <Table size="large" dataSource={dataUser} columns={columnsToday} />
+        <Table
+          size="large"
+          dataSource={dataUser}
+          columns={columnsToday}
+          scroll={{ x: 1200 }}
+        />
       </Card>
     </>
   );

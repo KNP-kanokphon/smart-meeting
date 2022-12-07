@@ -38,7 +38,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     formData.append('file', fileList[0]);
     const newData: any = [];
     readXlsxFile(fileList[0]).then(async (rows: any) => {
-      console.log(rows);
+      // console.log(rows);
       if (typeImport === '1') {
         rows.forEach((e: any, i: number) => {
           if (i > 2) {
@@ -72,13 +72,30 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             });
           }
         });
-      }
-
-      const resual = await DatamanagementService()
-        .upLoadfilecsv(newData)
-        .then(e => {
-          console.log(e);
+      } else if (typeImport === '5') {
+        rows.forEach((e: any, i: number) => {
+          if (i > 2) {
+            newData.push({
+              name: e[1],
+              iduser: e[0].replaceAll(/-/g, ''),
+              uuid: uuidv4(),
+            });
+          }
         });
+      }
+      if (typeImport !== '5') {
+        const resual = await DatamanagementService()
+          .upLoadfilecsv(newData)
+          .then(e => {
+            console.log(e);
+          });
+      } else {
+        const resualuploadpartymeeting = await DatamanagementService()
+          .upLoadfilecsvparty(newData)
+          .then(e => {
+            console.log(e);
+          });
+      }
     });
   };
 
@@ -147,6 +164,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
                   </Option>
                   <Option key={'3'}>รายชื่อคณะที่ปรึกษาสมาคม</Option>
                   <Option key={'4'}>สมาชิกทั่วไป</Option>
+                  <Option key={'5'}>สมาชิกปาตี้</Option>
                 </Select>
               </Col>
             </Row>

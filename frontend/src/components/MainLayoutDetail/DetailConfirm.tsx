@@ -123,7 +123,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     }}
                   >
                     <Space>
-                      <b>เรื่อง :</b>
+                      <b>เรื่อง</b>
                       {meetingData?.detail}
                     </Space>
                   </Col>

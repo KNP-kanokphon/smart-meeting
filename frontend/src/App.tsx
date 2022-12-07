@@ -20,6 +20,9 @@ import { DetailConfirm } from './components/MainLayoutDetail/DetailConfirm';
 import { DetailFood } from './components/MainLayoutDetail/DetailFood';
 import { SignConfirm } from './pages/signconfirm/SignConfirm';
 import { MainLayoutProfile } from './components/MainLayoutDetail/profile';
+import { PartyQRcodeCheckin } from './components/MainLayoutParty/PartyQRcodeCheckin';
+import { PartyConfirm } from './components/MainLayoutParty/PartyConfirm';
+import { PartyQRcodeCheckout } from './components/MainLayoutParty/PartyQRcodeCheckout';
 
 // const routeMapper = (x: MenuItem): React.ReactNode => (
 //   <Route
@@ -49,6 +52,28 @@ const App = () => {
   };
   return (
     <>
+      <BrowserRouter basename={'/party'}>
+        <Routes>
+          <Route
+            path="/checkin"
+            element={<PartyQRcodeCheckin baseURL={'/partymeeting/checkin'} />}
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/partyConfirm/:userid"
+            element={
+              <PartyConfirm baseURL={'/partymeeting/partyConfirm/:userid'} />
+            }
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/checkout"
+            element={<PartyQRcodeCheckout baseURL={'/checkout'} />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
       <BrowserRouter basename={'/detail'}>
         <Routes>
           <Route
