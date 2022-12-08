@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Footer } = Layout;
 
 export const MainLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -57,12 +57,16 @@ export const MainLayout: React.FC = () => {
               paddingLeft: 24,
               paddingRight: 24,
               margin: '0px 16px',
-              minHeight: '100vh',
+              minHeight: '80vh',
               overflow: 'initial',
             }}
           >
             <Outlet />
           </Content>
+          <Footer style={{ textAlign: 'center', color: 'rgba(0,0,0,.45)' }}>
+            <p>Smart-Meeting | Version: 1.1</p>
+            <p>Copyright ©2022 OSD</p>
+          </Footer>
         </Layout>
       </Layout>
     </Layout>
