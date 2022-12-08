@@ -29,21 +29,38 @@ export const MainLayout: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Layout
-        className="site-layout"
-        style={{ height: '100vh', overflow: 'auto' }}
-      >
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Layout className="site-layout">
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            height: '100vh',
+            position: 'fixed',
+          }}
+        >
           <MainMenu />
         </Sider>
-        <Layout>
+        <Layout style={{ marginLeft: 200 }}>
           <MainHeader
             onLogout={() => {
               setUserRequestedLogout(true);
               logout().then(() => login(window.location.href, false));
             }}
           />
-          <Content style={{ margin: 16 }}>
+          <Content
+            style={{
+              // margin: 16,
+              paddingBottom: 24,
+              paddingLeft: 24,
+              paddingRight: 24,
+              margin: '0px 16px',
+              minHeight: '100vh',
+              overflow: 'initial',
+            }}
+          >
             <Outlet />
           </Content>
         </Layout>
