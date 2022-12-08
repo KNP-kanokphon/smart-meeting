@@ -3,24 +3,27 @@ import {
   Card,
   Row,
   Typography,
-  List,
-  Skeleton,
-  Button,
+  // List,
+  // Skeleton,
+  // Button,
   // Avatar,
   Input,
-  Col,
-  Popover,
+  // Col,
+  // Popover,
   DatePicker,
-  Space,
+  // Space,
   Select,
-  Table,
-  Upload,
+  // Table,
+  // Upload,
+
+  Tabs,
 } from 'antd';
-import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
-import { TableMemberShip } from './components/TableMemberShip';
+// import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
+// import { TableMemberShip } from './components/TableMemberShip';
 import { DatamanagementService } from '../../stores/meeting-store';
 import readXlsxFile from 'read-excel-file';
 import { v4 as uuidv4 } from 'uuid';
+import { AddmemberRoute } from './components/AddmemberRoute';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -121,6 +124,10 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     fileList,
   };
 
+  const onChange = (key: string) => {
+    console.log(key);
+  };
+
   return (
     <Row
       gutter={[
@@ -132,8 +139,29 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
           MEMBERSHIP
         </Title>
+        <Tabs
+          type="card"
+          defaultActiveKey="1"
+          onChange={onChange}
+          items={[
+            {
+              label: `แบบฟอร์ม`,
+              key: '1',
+              children: (
+                <>
+                  <AddmemberRoute />
+                </>
+              ),
+            },
+            {
+              label: `รายละเอียดผู้ใช้บริการ`,
+              key: '2',
+              children: <></>,
+            },
+          ]}
+        />
       </Card>
-      <Card style={{ width: '100%' }}>
+      {/* <Card style={{ width: '100%' }}>
         <Row gutter={16}>
           <Col span={10}>
             <Row gutter={16}>
@@ -189,8 +217,8 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             </Button>
           </Col>
         </Row>
-      </Card>
-      <TableMemberShip />
+      </Card> */}
+      {/* <TableMemberShip /> */}
     </Row>
   );
 };
