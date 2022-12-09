@@ -38,64 +38,94 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     formData.append('file', fileList[0]);
     const newData: any = [];
     readXlsxFile(fileList[0]).then(async (rows: any) => {
+      rows.forEach((e: any, i: number) => {
+        if (i > 0) {
+          newData.push({
+            uuid: e[0] === null ? undefined : e[0],
+            prefix: e[1] === null ? undefined : e[1],
+            username: e[2] === null ? undefined : e[2],
+            idcard: e[3] === null ? undefined : e[3],
+            bridday: e[4] === null ? undefined : e[4],
+            phonenumber: e[5] === null ? undefined : e[5],
+            email: e[6] === null ? undefined : e[6],
+            course: e[7] === null ? undefined : e[7],
+            course1: e[8] === null ? undefined : e[8],
+            model: e[9] === null ? undefined : e[9],
+            position: e[10] === null ? undefined : e[10],
+            studentid: e[11] === null ? undefined : e[11],
+          });
+        }
+      });
+      await DatamanagementService()
+        .importuser(newData)
+        .then(e => {
+          console.log(e);
+        });
+
+      // const resualuploadpartymeeting = await DatamanagementService()
+      //   .upLoadfilecsvparty(newData)
+      //   .then(e => {
+      //     console.log(e);
+      //   });
+
       // console.log(rows);
-      if (typeImport === '1') {
-        rows.forEach((e: any, i: number) => {
-          if (i > 2) {
-            newData.push({
-              uuid: uuidv4(),
-              username: e[1],
-              phone: e[4],
-              type: typeImport,
-            });
-          }
-        });
-      } else if (typeImport === '2') {
-        rows.forEach((e: any, i: number) => {
-          if (i > 2) {
-            newData.push({
-              uuid: uuidv4(),
-              username: e[1],
-              phone: e[3],
-              type: typeImport,
-            });
-          }
-        });
-      } else if (typeImport === '3') {
-        rows.forEach((e: any, i: number) => {
-          if (i > 2) {
-            newData.push({
-              uuid: uuidv4(),
-              username: e[1],
-              phone: e[5],
-              type: typeImport,
-            });
-          }
-        });
-      } else if (typeImport === '5') {
-        rows.forEach((e: any, i: number) => {
-          if (i > 2) {
-            newData.push({
-              name: e[1],
-              iduser: e[0].replaceAll(/-/g, ''),
-              uuid: uuidv4(),
-            });
-          }
-        });
-      }
-      if (typeImport !== '5') {
-        const resual = await DatamanagementService()
-          .upLoadfilecsv(newData)
-          .then(e => {
-            console.log(e);
-          });
-      } else {
-        const resualuploadpartymeeting = await DatamanagementService()
-          .upLoadfilecsvparty(newData)
-          .then(e => {
-            console.log(e);
-          });
-      }
+      // if (typeImport === '1') {
+      //   rows.forEach((e: any, i: number) => {
+      //     if (i > 2) {
+      //       newData.push({
+      //         uuid: uuidv4(),
+      //         username: e[1],
+      //         phone: e[4],
+      //         type: typeImport,
+      //       });
+      //     }
+      //   });
+      // } else if (typeImport === '2') {
+      //   rows.forEach((e: any, i: number) => {
+      //     if (i > 2) {
+      //       newData.push({
+      //         uuid: uuidv4(),
+      //         username: e[1],
+      //         phone: e[3],
+      //         type: typeImport,
+      //       });
+      //     }
+      //   });
+      // } else if (typeImport === '3') {
+      //   rows.forEach((e: any, i: number) => {
+      //     if (i > 2) {
+      //       newData.push({
+      //         uuid: uuidv4(),
+      //         username: e[1],
+      //         phone: e[5],
+      //         type: typeImport,
+      //       });
+      //     }
+      //   });
+      // } else if (typeImport === '5') {
+      //   rows.forEach((e: any, i: number) => {
+      //     if (i > 2) {
+      //       newData.push({
+      //         name: e[1],
+      //         iduser: e[0].replaceAll(/-/g, ''),
+      //         uuid: uuidv4(),
+      //       });
+      //     }
+      //   });
+      // }
+      // if (typeImport !== '5') {
+      //   const resual = await DatamanagementService()
+      //     .upLoadfilecsv(newData)
+      //     .then(e => {
+      //       console.log(e);
+      //     });
+      // } else {
+      //   const resualuploadpartymeeting = await DatamanagementService()
+      //     .upLoadfilecsvparty(newData)
+      //     .then(e => {
+      //       console.log(e);
+      //     });
+      // }
     });
   };
 
@@ -156,15 +186,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
                   onChange={onChangType}
                   allowClear
                 >
-                  <Option key={'1'}>
-                    รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
-                  </Option>
-                  <Option key={'2'}>
-                    รายชื่อคณะกรรมการกลางสมาคมแห่งสถาบันพระปกเกล้า
-                  </Option>
-                  <Option key={'3'}>รายชื่อคณะที่ปรึกษาสมาคม</Option>
-                  <Option key={'4'}>สมาชิกทั่วไป</Option>
-                  <Option key={'5'}>สมาชิกปาตี้</Option>
+                  <Option key={'1'}>นำเข้าสมาชิค</Option>
                 </Select>
               </Col>
             </Row>

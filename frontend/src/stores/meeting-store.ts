@@ -343,4 +343,8 @@ export const DatamanagementService = () => ({
     const result = await httpClient.put(`/userparty/recivegif/${userid}`);
     return result.data;
   },
+  importuser: async (data: string[]) => {
+    const result = await httpClient.post(`/user/importuser`, data);
+    return result.data;
+  },
 });
