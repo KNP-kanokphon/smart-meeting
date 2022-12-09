@@ -15,7 +15,6 @@ import {
   Select,
   // Table,
   // Upload,
-
   Tabs,
 } from 'antd';
 // import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
@@ -24,6 +23,7 @@ import { DatamanagementService } from '../../stores/meeting-store';
 import readXlsxFile from 'read-excel-file';
 import { v4 as uuidv4 } from 'uuid';
 import { AddmemberRoute } from './components/AddmemberRoute';
+import { TableAddMember } from './components/TableAddMember';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -156,7 +156,11 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             {
               label: `รายละเอียดผู้ใช้บริการ`,
               key: '2',
-              children: <></>,
+              children: (
+                <>
+                  <TableAddMember />
+                </>
+              ),
             },
           ]}
         />

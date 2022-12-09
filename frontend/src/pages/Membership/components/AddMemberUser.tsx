@@ -15,6 +15,7 @@ import {
   Upload,
   message,
   Modal,
+  Badge,
 } from 'antd';
 import { EditOutlined, UploadOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
@@ -54,6 +55,52 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
   const [imageURLone, setImageURlone] = useState<any>(null);
   const sigCanvas = useRef<any>(null);
   const [fileList, setFileList] = useState<any>([]);
+
+  //   state collect data
+  const [getStatus, setStatus] = useState<string>('');
+  const [getTitle, setTitle] = useState<string>('');
+  const [getNameLastName, setNameLastName] = useState<string>('');
+  const [getIdCard, setIdCard] = useState<string>('');
+  const [getDOB, setDOB] = useState<string>('');
+  const [getAge, setAge] = useState<string>('');
+  const [getPhoneNumber, setPhoneNumber] = useState<string>('');
+  const [getEmail, setEmail] = useState<string>('');
+  const [getCourse, setCourse] = useState<string>('');
+  const [getCourse1, setCourse1] = useState<string>('');
+  const [getGeneration, setGeneration] = useState<string>('');
+  const [getPosition, setPosition] = useState<string>('');
+  const [getHouseNumber, setHouseNumber] = useState<string>('');
+  const [getRoomNumber, setRoomNumber] = useState<string>('');
+  const [getVillage, setVillage] = useState<string>('');
+  const [getGroup, setGroup] = useState<string>('');
+  const [getAlley, setAlley] = useState<string>('');
+  const [getRoad, setRoad] = useState<string>('');
+  const [getSubDistrict, setSubDistrict] = useState<string>('');
+  const [getDistrict, setDistrict] = useState<string>('');
+  const [getProvince, setProvince] = useState<string>('');
+  const [getPostalCode, setPostalCode] = useState<string>('');
+  const [getPassNumber, setPassNumber] = useState<string>('');
+  const [getImpPassNumber, setImpPassNumber] = useState<string>('');
+  const [getWorkDocument, setWorkDocument] = useState<string>('');
+  const [getCareer, setCareer] = useState<string>('');
+  const [getPositionCareer, setPositionCareer] = useState<string>('');
+  const [getSalary, setSalary] = useState<string>('');
+  const [getOffice, setOffice] = useState<string>('');
+  const [getHouseNumberOffice, setHouseNumberOffice] = useState<string>('');
+  const [getGroupOffice, setGroupOffice] = useState<string>('');
+  const [getAlleyOffice, setAlleyOffice] = useState<string>('');
+  const [getRoadOffice, setRoadOffice] = useState<string>('');
+  const [getSubDistrictOffice, setSubDistrictOffice] = useState<string>('');
+  const [getDistrictOffice, setDistrictOffice] = useState<string>('');
+  const [getProvinceOffice, setProvinceOffice] = useState<string>('');
+  const [getPostalCodeOffice, setPostalCodeOffice] = useState<string>('');
+  const [getPhoneNumberOffice, setPhoneNumberOffice] = useState<string>('');
+  const [getUploadFile, setUploadFile] = useState<string>('');
+  const [getESignature, setESignature] = useState<string>('');
+
+  const onFinish = (e: any) => {
+    // Modal.confirm()
+  };
 
   const props: UploadProps = {
     name: 'file',
@@ -180,8 +227,15 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                   placeholder={'สถานะ'}
                   style={{ width: '20%', textAlign: 'left' }}
                 >
-                  <Option value="1">สถานะ 1</Option>
-                  <Option value="2">สถานะ 2</Option>
+                  <Option value="active">
+                    <Badge color="green" text="Active" />
+                  </Option>
+                  <Option value="close">
+                    <Badge color="red" text="Close" />
+                  </Option>
+                  <Option value="died">
+                    <Badge status="default" text="Died" />
+                  </Option>
                 </Select>
               </Col>
             </Row>
@@ -194,8 +248,10 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'คำนำหน้า'}>
                   <Select placeholder={'เลือกคำนำหน้า'}>
-                    <Option value={'M'}>นาย</Option>
-                    <Option value={'F'}>นางสาว</Option>
+                    <Option value={'m'}>นาย</Option>
+                    <Option value={'f'}>นาง</Option>
+                    <Option value={'g'}>นางสาว</Option>
+                    <Option value={'dr'}>ดร.</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -258,8 +314,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'}>
                   <Select placeholder={'กรุณาเลือก'}>
-                    <Option value={'1'}>ตำแหน่ง A</Option>
-                    <Option value={'2'}>ตำแหน่ง B</Option>
+                    <Option value={'1'}>ประธานรุ่น</Option>
+                    <Option value={'2'}>ผู้ประสานงาน</Option>
+                    <Option value={'3'}>สมาชิกทั่วไป</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -297,11 +354,6 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'อีเมลล์'}>
-                  <Input placeholder="อีเมลล์" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'}>
                   <Input placeholder="ตำบล / แขวง" />
                 </Form.Item>
@@ -312,7 +364,12 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'จัหงวัด'}>
+                <Form.Item label={'จังหวัด'}>
+                  <Input placeholder="จังหวัด" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item label={'รหัสไปรษณีย์'}>
                   <Input type="number" placeholder="รหัสไปรษณีย์" />
                 </Form.Item>
               </Col>
@@ -536,12 +593,15 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               style={{ justifyContent: 'center', display: 'flex' }}
             >
               <Col>
-                <Button type="primary" style={{ backgroundColor: '#1E6541' }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: '#1E6541' }}
+                  onClick={(e: any) => {
+                    onFinish(e);
+                  }}
+                >
                   ยืนยัน
                 </Button>
-              </Col>
-              <Col>
-                <Button>ยกเลิก</Button>
               </Col>
             </Row>
           </Form>

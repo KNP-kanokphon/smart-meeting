@@ -52,7 +52,6 @@ export const MainLayout: React.FC = () => {
           />
           <Content
             style={{
-              // margin: 16,
               paddingBottom: 24,
               paddingLeft: 24,
               paddingRight: 24,
