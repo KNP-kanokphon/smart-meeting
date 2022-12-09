@@ -17,9 +17,14 @@ import {
   Modal,
   Badge,
 } from 'antd';
-import { EditOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  UploadOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import SignatureCanvas from 'react-signature-canvas';
+import { v4 as uuidv4 } from 'uuid';
 
 // datepicker local thialand
 import dayjs from 'dayjs';
@@ -55,14 +60,12 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [imageURLone, setImageURlone] = useState<any>(null);
   const sigCanvas = useRef<any>(null);
   const [fileList, setFileList] = useState<any>([]);
-  
+
   //   state collect data
   const [getStatus, setStatus] = useState<string>('');
   const [getTitle, setTitle] = useState<string>('');
   const [getNameLastName, setNameLastName] = useState<string>('');
   const [getIdCard, setIdCard] = useState<string>('');
-  const [getDOB, setDOB] = useState<string>('');
-  const [getAge, setAge] = useState<string>('');
   const [getPhoneNumber, setPhoneNumber] = useState<string>('');
   const [getEmail, setEmail] = useState<string>('');
   const [getCourse, setCourse] = useState<string>('');
@@ -79,50 +82,83 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [getDistrict, setDistrict] = useState<string>('');
   const [getProvince, setProvince] = useState<string>('');
   const [getPostalCode, setPostalCode] = useState<string>('');
-  const [getPassNumber, setPassNumber] = useState<string>('');
-  const [getImpPassNumber, setImpPassNumber] = useState<string>('');
-  const [getWorkDocument, setWorkDocument] = useState<string>('');
-  const [getCareer, setCareer] = useState<string>('');
-  const [getPositionCareer, setPositionCareer] = useState<string>('');
-  const [getSalary, setSalary] = useState<string>('');
-  const [getOffice, setOffice] = useState<string>('');
-  const [getHouseNumberOffice, setHouseNumberOffice] = useState<string>('');
-  const [getGroupOffice, setGroupOffice] = useState<string>('');
-  const [getAlleyOffice, setAlleyOffice] = useState<string>('');
-  const [getRoadOffice, setRoadOffice] = useState<string>('');
-  const [getSubDistrictOffice, setSubDistrictOffice] = useState<string>('');
-  const [getDistrictOffice, setDistrictOffice] = useState<string>('');
-  const [getProvinceOffice, setProvinceOffice] = useState<string>('');
-  const [getPostalCodeOffice, setPostalCodeOffice] = useState<string>('');
-  const [getPhoneNumberOffice, setPhoneNumberOffice] = useState<string>('');
-  const [getUploadFile, setUploadFile] = useState<string>('');
-  const [getESignature, setESignature] = useState<string>('');
+
+  const onFinish = (e: any) => {
+    const data = {
+      data: {
+        uuid: uuidv4(),
+        status: getStatus,
+        title: getTitle,
+        namelastname: getNameLastName,
+        idcard: getIdCard,
+        phonenumber: getPhoneNumber,
+        email: getEmail,
+        course: getCourse,
+        course1: getCourse1,
+        generation: getGeneration,
+        position: getPosition,
+        housenumber: getHouseNumber,
+        roomnumber: getRoomNumber,
+        village: getVillage,
+        group: getGroup,
+        alley: getAlley,
+        road: getRoad,
+        subdistrict: getSubDistrict,
+        district: getDistrict,
+        province: getProvince,
+        postalcode: getPostalCode,
+        uploadfile: fileList,
+        esignature: imageURLone,
+      },
+    };
+    console.log(data);
+
+    Modal.confirm({
+      title: 'ยืนยันการสมัครเป็นสมาชิก',
+      icon: <ExclamationCircleOutlined />,
+      content: 'โปรดตรวจสอบข้อมูลให้แน่ใจก่อนกดยืนยัน',
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      onOk: () => {
+        console.log('OK');
+      },
+      onCancel: () => {
+        console.log('Cancel');
+      },
+    });
+  };
 
   const props: UploadProps = {
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
       authorization: 'authorization-text',
     },
+
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
+
       if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
       }
     },
+
     onRemove: (file: any) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
+
     beforeUpload: (file: any) => {
-      setFileList([...fileList, file]);
-      return false;
+      const PDFFile = file.type === 'application/pdf';
+      if (file.type === 'application/pdf') {
+        setFileList([...fileList, file]);
+        return false;
+      } else {
+        message.error(`${file.name} is not a pdf file`);
+        return PDFFile || Upload.LIST_IGNORE;
+      }
     },
     fileList,
   };
@@ -188,13 +224,18 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
         </div>
         <Row gutter={14}>
           <Col
-            xs={{ span: 12 }}
-            lg={{ span: 12 }}
-            style={{ textAlign: 'right' }}
+            xs={{ span: 24 }}
+            lg={{ span: 24 }}
+            style={{ textAlign: 'center' }}
           >
-            <Button onClick={handleCancel}>Back</Button>
+            <Button
+              onClick={handleCancel}
+              style={{ background: '#1E6541', color: 'white' }}
+            >
+              OK
+            </Button>
           </Col>
-          <Col
+          {/* <Col
             xs={{ span: 12 }}
             lg={{ span: 12 }}
             style={{ textAlign: 'left' }}
@@ -205,7 +246,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
             >
               Submit
             </Button>
-          </Col>
+          </Col> */}
         </Row>
       </Modal>
       <Card
@@ -220,6 +261,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 <Select
                   placeholder={'สถานะ'}
                   style={{ width: '20%', textAlign: 'left' }}
+                  onChange={(e: string) => {
+                    setStatus(e);
+                  }}
                 >
                   <Option value="active">
                     <Badge color="green" text="Active" />
@@ -241,7 +285,12 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item label={'คำนำหน้า'}>
-                  <Select placeholder={'เลือกคำนำหน้า'}>
+                  <Select
+                    placeholder={'เลือกคำนำหน้า'}
+                    onChange={(e: string) => {
+                      setTitle(e);
+                    }}
+                  >
                     <Option value={'m'}>นาย</Option>
                     <Option value={'f'}>นาง</Option>
                     <Option value={'g'}>นางสาว</Option>
@@ -251,19 +300,32 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'ชื่อ-นามสกุล'}>
-                  <Input placeholder="ชื่อ สกุล" />
+                  <Input
+                    placeholder="ชื่อ สกุล"
+                    onChange={(e: any) => {
+                      setNameLastName(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'เลขบัตรประชาชน'}>
-                  <Input placeholder="เลขบัตรประชาชน" />
+                  <Input
+                    placeholder="เลขบัตรประชาชน"
+                    onChange={(e: any) => {
+                      setIdCard(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หมายเลขโทรศัพท์'}>
-                  <InputNumber
+                  <Input
+                    onChange={(e: any) => {
+                      setPhoneNumber(e.target.value);
+                    }}
                     type="phone"
-                    maxLength={10}
+                    // maxLength={10}
                     placeholder="หมายเลขโทรศัพท์"
                     style={{ width: '100%' }}
                   />
@@ -271,12 +333,22 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'อีเมลล์'}>
-                  <Input placeholder="อีเมลล์" />
+                  <Input
+                    placeholder="อีเมลล์"
+                    onChange={(e: any) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setCourse(e);
+                    }}
+                  >
                     <Option value={'1'}>หลักสูตร A</Option>
                     <Option value={'2'}>หลักสูตร B</Option>
                   </Select>
@@ -284,7 +356,12 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร 1'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setCourse1(e);
+                    }}
+                  >
                     <Option value={'1'}>หลักสูตร A</Option>
                     <Option value={'2'}>หลักสูตร B</Option>
                   </Select>
@@ -292,12 +369,23 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={2}>
                 <Form.Item label={'รุ่น'}>
-                  <Input type="number" placeholder="#1" />
+                  <Input
+                    type="number"
+                    placeholder="#1"
+                    onChange={(e: any) => {
+                      setGeneration(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setPosition(e);
+                    }}
+                  >
                     <Option value={'1'}>ประธานรุ่น</Option>
                     <Option value={'2'}>ผู้ประสานงาน</Option>
                     <Option value={'3'}>สมาชิกทั่วไป</Option>
@@ -309,52 +397,103 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
             <Row gutter={16}>
               <Col span={2}>
                 <Form.Item label={'บ้านเลขที่'}>
-                  <Input placeholder="บ้านเลขที่" />
+                  <Input
+                    placeholder="บ้านเลขที่"
+                    onChange={(e: any) => {
+                      setHouseNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'เลขที่ห้อง'}>
-                  <Input placeholder="เลขที่ห้อง" />
+                  <Input
+                    placeholder="เลขที่ห้อง"
+                    onChange={(e: any) => {
+                      setRoomNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อาคาร / หมู่บ้าน'}>
-                  <Input placeholder="อาคาร / หมู่บ้าน" />
+                  <Input
+                    placeholder="อาคาร / หมู่บ้าน"
+                    onChange={(e: any) => {
+                      setVillage(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={2}>
                 <Form.Item label={'หมู่ที่'}>
-                  <Input placeholder="#1" />
+                  <Input
+                    placeholder="#1"
+                    onChange={(e: any) => {
+                      setGroup(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตรอก / ซอย'}>
-                  <Input type="number" placeholder="ตรอก / ซอย" />
+                  <Input
+                    placeholder="ตรอก / ซอย"
+                    onChange={(e: any) => {
+                      setAlley(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ถนน'}>
-                  <Input type="number" placeholder="ถนน" />
+                  <Input
+                    placeholder="ถนน"
+                    onChange={(e: any) => {
+                      setRoad(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'}>
-                  <Input type="number" placeholder="ตำบล / แขวง" />
+                  <Input
+                    placeholder="ตำบล / แขวง"
+                    onChange={(e: any) => {
+                      setSubDistrict(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อำเภอ / เขต'}>
-                  <Input type="number" placeholder="อำเภอ / เขต" />
+                  <Input
+                    placeholder="อำเภอ / เขต"
+                    onChange={(e: any) => {
+                      setDistrict(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'จังหวัด'}>
-                  <Input type="number" placeholder="จังหวัด" />
+                  <Input
+                    placeholder="จังหวัด"
+                    onChange={(e: any) => {
+                      setProvince(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'รหัสไปรษณีย์'}>
-                  <Input type="number" placeholder="รหัสไปรษณีย์" />
+                  <Input
+                    type="number"
+                    placeholder="รหัสไปรษณีย์"
+                    onChange={(e: any) => {
+                      setPostalCode(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -393,7 +532,13 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               style={{ justifyContent: 'center', display: 'flex' }}
             >
               <Col>
-                <Button type="primary" style={{ backgroundColor: '#1E6541' }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: '#1E6541' }}
+                  onClick={(e: any) => {
+                    onFinish(e);
+                  }}
+                >
                   ยืนยัน
                 </Button>
               </Col>

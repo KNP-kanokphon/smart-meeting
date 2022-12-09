@@ -17,9 +17,14 @@ import {
   Modal,
   Badge,
 } from 'antd';
-import { EditOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  UploadOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import SignatureCanvas from 'react-signature-canvas';
+import { v4 as uuidv4 } from 'uuid';
 
 // datepicker local thialand
 import dayjs from 'dayjs';
@@ -95,38 +100,112 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
   const [getProvinceOffice, setProvinceOffice] = useState<string>('');
   const [getPostalCodeOffice, setPostalCodeOffice] = useState<string>('');
   const [getPhoneNumberOffice, setPhoneNumberOffice] = useState<string>('');
-  const [getUploadFile, setUploadFile] = useState<string>('');
-  const [getESignature, setESignature] = useState<string>('');
+  const [getDetail1, setDetail1] = useState<string>('');
+  const [getDetail2, setDetail2] = useState<string>('');
+  const [getDetail3, setDetail3] = useState<string>('');
+  const [getAssociaton, setAssociaton] = useState<string>('');
+  const [getApplyPosition, setApplyPosition] = useState<string>('');
+  const [getOther, setOther] = useState<string>('');
 
   const onFinish = (e: any) => {
-    // Modal.confirm()
+    const data = {
+      data: {
+        uuid: uuidv4(),
+        status: getStatus,
+        title: getTitle,
+        namelastname: getNameLastName,
+        idcard: getIdCard,
+        dob: getDOB,
+        age: getAge,
+        phonenumber: getPhoneNumber,
+        email: getEmail,
+        course: getCourse,
+        course1: getCourse1,
+        generation: getGeneration,
+        position: getPosition,
+        housenumber: getHouseNumber,
+        roomnumber: getRoomNumber,
+        village: getVillage,
+        group: getGroup,
+        alley: getAlley,
+        road: getRoad,
+        subdistrict: getSubDistrict,
+        district: getDistrict,
+        province: getProvince,
+        postalcode: getPostalCode,
+        passnumber: getPassNumber,
+        imppassnumber: getImpPassNumber,
+        workdocument: getWorkDocument,
+        career: getCareer,
+        positioncareer: getPositionCareer,
+        salary: getSalary,
+        office: getOffice,
+        housenumberoffice: getHouseNumberOffice,
+        groupoffice: getGroupOffice,
+        alleyoffice: getAlleyOffice,
+        roadoffice: getRoadOffice,
+        subdistrictoffice: getSubDistrictOffice,
+        districtoffice: getDistrictOffice,
+        provinceoffice: getProvinceOffice,
+        postalcodeoffice: getPostalCodeOffice,
+        phonenumberoffice: getPhoneNumberOffice,
+        detail1: getDetail1,
+        detail2: getDetail2,
+        detail3: getDetail3,
+        applyposition: getApplyPosition,
+        association: getAssociaton,
+        other: getOther,
+        uploadfile: fileList,
+        esignature: imageURLone,
+      },
+    };
+    console.log(data);
+    Modal.confirm({
+      title: 'ยืนยันการสมัครเป็นสมาชิก',
+      icon: <ExclamationCircleOutlined />,
+      content: 'โปรดตรวจสอบข้อมูลให้แน่ใจก่อนกดยืนยัน',
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      onOk: () => {
+        console.log('OK');
+      },
+      onCancel: () => {
+        console.log('Cancel');
+      },
+    });
   };
 
   const props: UploadProps = {
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
       authorization: 'authorization-text',
     },
+
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
+
       if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
       }
     },
+
     onRemove: (file: any) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
+
     beforeUpload: (file: any) => {
-      setFileList([...fileList, file]);
-      return false;
+      const PDFFile = file.type === 'application/pdf';
+      if (file.type === 'application/pdf') {
+        setFileList([...fileList, file]);
+        return false;
+      } else {
+        message.error(`${file.name} is not a pdf file`);
+        return PDFFile || Upload.LIST_IGNORE;
+      }
     },
     fileList,
   };
@@ -192,23 +271,11 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
         </div>
         <Row gutter={14}>
           <Col
-            xs={{ span: 12 }}
-            lg={{ span: 12 }}
-            style={{ textAlign: 'right' }}
+            xs={{ span: 24 }}
+            lg={{ span: 24 }}
+            style={{ textAlign: 'center' }}
           >
-            <Button onClick={handleCancel}>Back</Button>
-          </Col>
-          <Col
-            xs={{ span: 12 }}
-            lg={{ span: 12 }}
-            style={{ textAlign: 'left' }}
-          >
-            <Button
-              style={{ background: '#1E6541', color: 'white' }}
-              //   onClick={onFinish}
-            >
-              Submit
-            </Button>
+            <Button onClick={handleCancel}>OK</Button>
           </Col>
         </Row>
       </Modal>
@@ -226,6 +293,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 <Select
                   placeholder={'สถานะ'}
                   style={{ width: '20%', textAlign: 'left' }}
+                  onChange={(e: string) => {
+                    setStatus(e);
+                  }}
                 >
                   <Option value="active">
                     <Badge color="green" text="Active" />
@@ -247,7 +317,12 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item label={'คำนำหน้า'}>
-                  <Select placeholder={'เลือกคำนำหน้า'}>
+                  <Select
+                    placeholder={'เลือกคำนำหน้า'}
+                    onChange={(e: string) => {
+                      setTitle(e);
+                    }}
+                  >
                     <Option value={'m'}>นาย</Option>
                     <Option value={'f'}>นาง</Option>
                     <Option value={'g'}>นางสาว</Option>
@@ -257,29 +332,55 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'ชื่อ-นามสกุล'}>
-                  <Input placeholder="ชื่อ สกุล" />
+                  <Input
+                    placeholder="ชื่อ สกุล"
+                    onChange={(e: any) => {
+                      setNameLastName(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'เลขบัตรประชาชน'}>
-                  <Input placeholder="เลขบัตรประชาชน" />
+                  <Input
+                    placeholder="เลขบัตรประชาชน"
+                    onChange={(e: any) => {
+                      setIdCard(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'วัน-เดือน-ปี'}>
-                  <DatePicker format={'DD-MM-BBBB'} style={{ width: '100%' }} />
+                  <DatePicker
+                    format={'DD-MM-BBBB'}
+                    style={{ width: '100%' }}
+                    onChange={(e: any) => {
+                      let date: any = 0;
+                      date = dayjs(e).format('YYYY-MM-DD');
+                      setDOB(date);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={2}>
                 <Form.Item label={'อายุ'}>
-                  <Input placeholder="อายุ" />
+                  <Input
+                    placeholder="อายุ"
+                    onChange={(e: any) => {
+                      setAge(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หมายเลขโทรศัพท์'}>
-                  <InputNumber
+                  <Input
+                    onChange={(e: any) => {
+                      setPhoneNumber(e.target.value);
+                    }}
                     type="phone"
-                    maxLength={10}
+                    // maxLength={10}
                     placeholder="หมายเลขโทรศัพท์"
                     style={{ width: '100%' }}
                   />
@@ -287,12 +388,22 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'อีเมลล์'}>
-                  <Input placeholder="อีเมลล์" />
+                  <Input
+                    placeholder="อีเมลล์"
+                    onChange={(e: any) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setCourse(e);
+                    }}
+                  >
                     <Option value={'1'}>หลักสูตร A</Option>
                     <Option value={'2'}>หลักสูตร B</Option>
                   </Select>
@@ -300,7 +411,12 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร 1'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setCourse1(e);
+                    }}
+                  >
                     <Option value={'1'}>หลักสูตร A</Option>
                     <Option value={'2'}>หลักสูตร B</Option>
                   </Select>
@@ -308,12 +424,23 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={2}>
                 <Form.Item label={'รุ่น'}>
-                  <Input type="number" placeholder="#1" />
+                  <Input
+                    type="number"
+                    placeholder="#1"
+                    onChange={(e: any) => {
+                      setGeneration(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'}>
-                  <Select placeholder={'กรุณาเลือก'}>
+                  <Select
+                    placeholder={'กรุณาเลือก'}
+                    onChange={(e: string) => {
+                      setPosition(e);
+                    }}
+                  >
                     <Option value={'1'}>ประธานรุ่น</Option>
                     <Option value={'2'}>ผู้ประสานงาน</Option>
                     <Option value={'3'}>สมาชิกทั่วไป</Option>
@@ -325,52 +452,103 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
             <Row gutter={16}>
               <Col span={2}>
                 <Form.Item label={'บ้านเลขที่'}>
-                  <Input placeholder="บ้านเลขที่" />
+                  <Input
+                    placeholder="บ้านเลขที่"
+                    onChange={(e: any) => {
+                      setHouseNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'เลขที่ห้อง'}>
-                  <Input placeholder="เลขที่ห้อง" />
+                  <Input
+                    placeholder="เลขที่ห้อง"
+                    onChange={(e: any) => {
+                      setRoomNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อาคาร / หมู่บ้าน'}>
-                  <Input placeholder="อาคาร / หมู่บ้าน" />
+                  <Input
+                    placeholder="อาคาร / หมู่บ้าน"
+                    onChange={(e: any) => {
+                      setVillage(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={2}>
                 <Form.Item label={'หมู่'}>
-                  <Input placeholder="#1" />
+                  <Input
+                    placeholder="#1"
+                    onChange={(e: any) => {
+                      setGroup(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตรอก / ซอย'}>
-                  <Input placeholder="ตรอก / ซอย" />
+                  <Input
+                    placeholder="ตรอก / ซอย"
+                    onChange={(e: any) => {
+                      setAlley(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ถนน'}>
-                  <Input placeholder="ถนน" />
+                  <Input
+                    placeholder="ถนน"
+                    onChange={(e: any) => {
+                      setRoad(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'}>
-                  <Input placeholder="ตำบล / แขวง" />
+                  <Input
+                    placeholder="ตำบล / แขวง"
+                    onChange={(e: any) => {
+                      setSubDistrict(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อำเภอ / เขต'}>
-                  <Input placeholder="อำเภอ / เขต" />
+                  <Input
+                    placeholder="อำเภอ / เขต"
+                    onChange={(e: any) => {
+                      setDistrict(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'จังหวัด'}>
-                  <Input placeholder="จังหวัด" />
+                  <Input
+                    placeholder="จังหวัด"
+                    onChange={(e: any) => {
+                      setProvince(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'รหัสไปรษณีย์'}>
-                  <Input type="number" placeholder="รหัสไปรษณีย์" />
+                  <Input
+                    type="number"
+                    placeholder="รหัสไปรษณีย์"
+                    onChange={(e: any) => {
+                      setPostalCode(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -380,7 +558,12 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 <Form.Item
                   label={'กรณีเป็นบุคคลต่างด้าว ถือหนังสือเดินทางเลขที่'}
                 >
-                  <Input placeholder="กรอกข้อมูล" />
+                  <Input
+                    placeholder="กรอกข้อมูล"
+                    onChange={(e: any) => {
+                      setPassNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -389,12 +572,22 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                     'ใบสำคัญถิ่นที่อยู่/ใบสาคัญประจาตัวคนต่างด้าวเลขที่ (ถ้ามี)'
                   }
                 >
-                  <Input placeholder="กรอกข้อมูล" />
+                  <Input
+                    placeholder="กรอกข้อมูล"
+                    onChange={(e: any) => {
+                      setImpPassNumber(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ใบอนุญาตทำงานเลขที่ (ถ้ามี)'}>
-                  <Input placeholder="กรอกข้อมูล" />
+                  <Input
+                    placeholder="กรอกข้อมูล"
+                    onChange={(e: any) => {
+                      setWorkDocument(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -402,12 +595,22 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item label={'ข้าพเจ้าประกอบอาชีพ'}>
-                  <Input placeholder="ข้าพเจ้าประกอบอาชีพ" />
+                  <Input
+                    placeholder="ข้าพเจ้าประกอบอาชีพ"
+                    onChange={(e: any) => {
+                      setCareer(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำแหน่ง'}>
-                  <Input placeholder="ตำแหน่ง" />
+                  <Input
+                    placeholder="ตำแหน่ง"
+                    onChange={(e: any) => {
+                      setPositionCareer(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -422,57 +625,109 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                     parser={(value: any) => value!.replace(/\$\s?|(,*)/g, '')}
                     placeholder="รายได้เฉลี่ยเดือนละ"
                     addonAfter="บาท"
+                    onChange={(e: any) => {
+                      setSalary(e);
+                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'สถานที่ประกอบอาชีพ'}>
-                  <Input placeholder="สถานที่ประกอบอาชีพ" />
+                  <Input
+                    placeholder="สถานที่ประกอบอาชีพ"
+                    onChange={(e: any) => {
+                      setOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={4}>
                 <Form.Item label={'เลขที่'}>
-                  <Input placeholder="เลขที่" />
+                  <Input
+                    placeholder="เลขที่"
+                    onChange={(e: any) => {
+                      setHouseNumberOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={4}>
                 <Form.Item label={'หมู่ที่'}>
-                  <Input placeholder="#1" />
+                  <Input
+                    placeholder="#1"
+                    onChange={(e: any) => {
+                      setGroupOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตรอก / ซอย'}>
-                  <Input type="number" placeholder="ตรอก / ซอย" />
+                  <Input
+                    placeholder="ตรอก / ซอย"
+                    onChange={(e: any) => {
+                      setAlleyOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ถนน'}>
-                  <Input type="number" placeholder="ถนน" />
+                  <Input
+                    placeholder="ถนน"
+                    onChange={(e: any) => {
+                      setRoadOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'}>
-                  <Input type="number" placeholder="ตำบล / แขวง" />
+                  <Input
+                    placeholder="ตำบล / แขวง"
+                    onChange={(e: any) => {
+                      setSubDistrictOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อำเภอ / เขต'}>
-                  <Input type="number" placeholder="อำเภอ / เขต" />
+                  <Input
+                    placeholder="อำเภอ / เขต"
+                    onChange={(e: any) => {
+                      setDistrictOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'จังหวัด'}>
-                  <Input type="number" placeholder="จังหวัด" />
+                  <Input
+                    placeholder="จังหวัด"
+                    onChange={(e: any) => {
+                      setProvinceOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'รหัสไปรษณีย์'}>
-                  <Input type="number" placeholder="รหัสไปรษณีย์" />
+                  <Input
+                    type="number"
+                    placeholder="รหัสไปรษณีย์"
+                    onChange={(e: any) => {
+                      setPostalCodeOffice(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'โทรศัพท์สถานที่ประกอบอาชีพ'}>
                   <InputNumber
+                    onChange={(e: any) => {
+                      setPhoneNumberOffice(e);
+                    }}
                     style={{ width: '100%' }}
                     type="phone"
                     maxLength={10}
@@ -487,6 +742,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 <Form.Item label={'ปัจจุบันข้าพเจ้ามีทรัพย์สิน ดังต่อไปนี้'}>
                   <TextArea
                     showCount
+                    onChange={(e: any) => {
+                      setDetail1(e.target.value);
+                    }}
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
                   />
@@ -499,6 +757,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                   }
                 >
                   <TextArea
+                    onChange={(e: any) => {
+                      setDetail2(e.target.value);
+                    }}
                     showCount
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
@@ -512,6 +773,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                   }
                 >
                   <TextArea
+                    onChange={(e: any) => {
+                      setDetail3(e.target.value);
+                    }}
                     showCount
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
@@ -526,6 +790,9 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                   label={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
                 >
                   <Select
+                    onChange={(e: any) => {
+                      setApplyPosition(e);
+                    }}
                     style={{ width: '100%' }}
                     placeholder={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
                   >
@@ -537,12 +804,20 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               </Col>
               <Col span={12}>
                 <Form.Item label={'ของสมาคม'}>
-                  <Input placeholder="กรอกข้อมูล" />
+                  <Input
+                    placeholder="กรอกข้อมูล"
+                    onChange={(e: any) => {
+                      setAssociaton(e.target.value);
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={24}>
                 <Form.Item label={'ข้อความเพิ่มเติม (ถ้ามี)'}>
                   <TextArea
+                    onChange={(e: any) => {
+                      setOther(e.target.value);
+                    }}
                     showCount
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
