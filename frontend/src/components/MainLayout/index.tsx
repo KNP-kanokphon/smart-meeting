@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Footer } = Layout;
 
 export const MainLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -29,23 +29,43 @@ export const MainLayout: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Layout
-        className="site-layout"
-        style={{ height: '100vh', overflow: 'auto' }}
-      >
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Layout className="site-layout">
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            height: '100vh',
+            position: 'fixed',
+          }}
+        >
           <MainMenu />
         </Sider>
-        <Layout>
+        <Layout style={{ marginLeft: 200 }}>
           <MainHeader
             onLogout={() => {
               setUserRequestedLogout(true);
               logout().then(() => login(window.location.href, false));
             }}
           />
-          <Content style={{ margin: 16 }}>
+          <Content
+            style={{
+              paddingBottom: 24,
+              paddingLeft: 24,
+              paddingRight: 24,
+              margin: '0px 16px',
+              minHeight: '80vh',
+              overflow: 'initial',
+            }}
+          >
             <Outlet />
           </Content>
+          <Footer style={{ textAlign: 'center', color: 'rgba(0,0,0,.45)' }}>
+            <p>Smart-Meeting | Version: 1.1</p>
+            <p>Copyright ©2022 OSD</p>
+          </Footer>
         </Layout>
       </Layout>
     </Layout>
