@@ -29,19 +29,9 @@ export const TableToday: React.FC = (): React.ReactElement => {
       .getListmeeting()
       .then(data => {
         const dataNew = data.filter((e: any) => {
-          const dateParts = e.day.split('-');
           const dd = new Date(e.day);
           const dn = new Date();
-          const dateCreate = [
-            dd.getDate(),
-            dd.getMonth() + 1,
-            dd.getFullYear(),
-          ];
-          const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
-          if (
-            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
-            `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
-          ) {
+          if (dd === dn) {
             return e;
           } else {
             return;

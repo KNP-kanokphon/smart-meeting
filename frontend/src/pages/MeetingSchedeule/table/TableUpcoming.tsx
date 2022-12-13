@@ -35,26 +35,9 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       .getListmeeting()
       .then(data => {
         const dataNew = data.filter((e: any) => {
-          const dateParts = e.day.split('-');
           const dd = new Date(e.day);
           const dn = new Date();
-          const dateCreate = [
-            dd.getDate(),
-            dd.getMonth() + 1,
-            dd.getFullYear(),
-          ];
-          
-          
-          const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
-          console.log( `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}`,"test",`${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`);
-          // if (
-          //   `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` >
-          //   `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
-          // ) {
-            if (
-              `${dateCreate[2]}-${dateCreate[1]}-${dateCreate[0]}` >
-              `${dateNow[2]}-${dateNow[1]}-${dateNow[0]}`
-            ) {
+          if (dd >= dn) {
             return e;
           } else {
             return;
@@ -116,7 +99,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Checklist',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '10%',
+      width: '15%',
       render: (data: string) => {
         return (
           <>
@@ -136,18 +119,18 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Edit',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '10%',
+      width: '15%',
       render: (text: any, row: any) => {
         if (text) {
           return (
             <div style={{ textAlign: 'center' }}>
               <Tooltip title={'Edit'}>
-              <Button
+                <Button
                   style={{ border: 'none' }}
                   onClick={() => navigate('detail/edit', { state: text })}
                 >
                   <MoreOutlined />
-                  </Button>
+                </Button>
               </Tooltip>
             </div>
           );

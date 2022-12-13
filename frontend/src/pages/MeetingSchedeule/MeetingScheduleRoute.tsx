@@ -18,7 +18,7 @@ import {
 import { EllipsisOutlined } from '@ant-design/icons';
 import { TableLast } from './table/Tablelast';
 import { TableToday } from './table/Tabletoday';
-import { TableUpcomingmeeting } from './table/TableUpcomingmeeting';
+import { TableUpcomingmeeting } from './table/TableUpcoming';
 
 export const MeetingScheduleRoute: React.FC = (): React.ReactElement => {
   const { Title } = Typography;

@@ -18,9 +18,9 @@ type Props = {
   Pagestep: string;
   field?: any[];
   onChangeSetItemFiled: (filedList: any) => void;
-  item?:any;
-  resultDetailagenda?:any;
-  file?:any;
+  item?: any;
+  resultDetailagenda?: any;
+  file?: any;
 };
 
 export const DetailList: React.FC<Props> = ({
@@ -31,10 +31,10 @@ export const DetailList: React.FC<Props> = ({
   onChangeSetItemFiled,
   item,
   resultDetailagenda,
-  file
+  file,
 }) => {
   // console.log(resultDetailagenda,'');
-  
+
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
   const agendas = Form.useWatch('agendas', form);
@@ -54,108 +54,105 @@ export const DetailList: React.FC<Props> = ({
     },
     fileList,
   };
-  useEffect(()=>{
+  useEffect(() => {
     form.setFieldsValue({
-      agendas:item.agendes,detail:item.detailagendes
-    })
-    const detailAgendes: any[] = []
-    resultDetailagenda?.map((x:any,y:number)=>{
-      detailAgendes.push({detail:`${x.detail}`})
-    })
+      agendas: item.agendes,
+      detail: item.detailagendes,
+    });
+    const detailAgendes: any[] = [];
+    resultDetailagenda?.map((x: any, y: number) => {
+      detailAgendes.push({ detail: `${x.detail}` });
+    });
     // form.setFieldsValue(Detailagenda)
     // const fixedDetail = {detailAgendes:{Detailagenda}}
     // console.log(detailAgendes,'Detailagenda');
-    const fixed = {detailAgendes}
-    console.log(fixed,'fixed');
-    form.setFieldsValue(fixed)
-    
-  },[resultDetailagenda])
+    const fixed = { detailAgendes };
+    form.setFieldsValue(fixed);
+  }, [resultDetailagenda]);
   useEffect(() => {
     onFinish();
     // console.log(resultDetailagenda,'resultDetailagenda');
-    
   }, [fileList, agendas, detail, detailAgendes]);
-  useEffect(()=>{
-    setFileList(file)
-  },[file])
+  useEffect(() => {
+    setFileList(file);
+  }, [file]);
 
   const onFinish = () => {
     const formData = new FormData();
     fileList.map((e: any) => {
       formData.append('file', e);
     });
-     form.validateFields().then(values => {
+    form.validateFields().then(values => {
       onChangeSetItemFiled({ values, files: formData });
-      console.log(values,"values change");
-    }); 
+    });
     // console.log('Received values of form:', values);
   };
-  
-  if(item && resultDetailagenda){
+
+  if (item && resultDetailagenda) {
     // const Detailagenda: any[] = []
     // resultDetailagenda?.map((x:any,y:number)=>{
     //   Detailagenda.push({detail:`${x.detail}`})
     // })
     // console.log(Detailagenda,'gain');
-    
+
     // form.setFieldsValue({
     //   agendas:item.agendes,detail:item.detailagendes
     // })
-    return(
-        <>
-          <Row>
-            <Form
-              name="dynamic_form_nest_item"
-              // onFinish={onFinish}
-              autoComplete="off"
-              style={{ width: '100%' }}
-              form={form}
-            //  onValuesChange={onFinish} 
-              // layout="vertical"
-              // initialValues={{ requiredMarkValue: requiredMark }}
-              // onValuesChange={onRequiredTypeChange}
-              // requiredMark={requiredMark}
+    return (
+      <>
+        <Row>
+          <Form
+            name="dynamic_form_nest_item"
+            // onFinish={onFinish}
+            autoComplete="off"
+            style={{ width: '100%' }}
+            form={form}
+            //  onValuesChange={onFinish}
+            // layout="vertical"
+            // initialValues={{ requiredMarkValue: requiredMark }}
+            // onValuesChange={onRequiredTypeChange}
+            // requiredMark={requiredMark}
+          >
+            <Form.Item
+              label={`ระเบียบวาระที่ ${Pagestep}`}
+              required
+              tooltip="This is a required field"
+              name="agendas"
             >
-              <Form.Item
-                label={`ระเบียบวาระที่ ${Pagestep}`}
-                required
-                tooltip="This is a required field"
-                name="agendas"
-              >
-                <Input
-                  placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-                  defaultValue={item.agendes}
-                  // onChange={e =>
-                  //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-                  // }
-                />
-              </Form.Item>
-              <Form.Item
-                label="รายละเอียดการประชุม"
-                tooltip={{
-                  title: 'Tooltip with customize icon',
-                  icon: <InfoCircleOutlined />,
-                }}
-                name="detail"
-              >
-                <TextArea
+              <Input
+                placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
+                defaultValue={item.agendes}
+                // onChange={e =>
+                //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
+                // }
+              />
+            </Form.Item>
+            <Form.Item
+              label="รายละเอียดการประชุม"
+              tooltip={{
+                title: 'Tooltip with customize icon',
+                icon: <InfoCircleOutlined />,
+              }}
+              name="detail"
+            >
+              <TextArea
                 // onChange={e =>
                 //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
                 // }
                 defaultValue={item.detailagendes}
-                />
-              </Form.Item>
-              <Row>
-                <Col span={2}>เรื่องที่</Col>
-                <Col span={18}>รายละเอียด</Col>
-                <Col offset={1} span={3}></Col>
-              </Row>
-              <Form.List name="detailAgendes" 
+              />
+            </Form.Item>
+            <Row>
+              <Col span={2}>เรื่องที่</Col>
+              <Col span={18}>รายละเอียด</Col>
+              <Col offset={1} span={3}></Col>
+            </Row>
+            <Form.List
+              name="detailAgendes"
               // initialValue={Detailagenda}
-              >
-                {(fields, { add, remove }) => {
-                  
-                  return (
+            >
+              {(fields, { add, remove }) => {
+                return (
                   <>
                     {fields.map(({ key, name, ...restField }) => {
                       return (
@@ -164,17 +161,11 @@ export const DetailList: React.FC<Props> = ({
                             <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
                           </Col>
                           <Col span={18}>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'detail']}
-                              // rules={[
-                              //   { required: true, message: 'Missing detail' },
-                              // ]}
-                            >
+                            <Form.Item {...restField} name={[name, 'detail']}>
                               <Input />
                             </Form.Item>
                           </Col>
-    
+
                           <Col offset={1} span={3}>
                             <DeleteOutlined onClick={() => remove(name)} />
                           </Col>
@@ -184,7 +175,7 @@ export const DetailList: React.FC<Props> = ({
                     <Form.Item>
                       <Button
                         type="dashed"
-                        onClick={() => [add(),console.log(fields,'fields')]}
+                        onClick={() => [add()]}
                         block
                         icon={<PlusOutlined />}
                       >
@@ -192,33 +183,33 @@ export const DetailList: React.FC<Props> = ({
                       </Button>
                     </Form.Item>
                   </>
-                )}}
-              </Form.List>
-              <Row>
-                <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-                  <Upload {...props}>
-                    <Button
-                      // disabled={fileList.length === 1}
-                      icon={<UploadOutlined />}
-                    >
-                      Select File
-                    </Button>
-                  </Upload>
-                </Col>
-              </Row>
-              <br></br>
-              {/* <Button
+                );
+              }}
+            </Form.List>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Upload {...props}>
+                  <Button
+                    // disabled={fileList.length === 1}
+                    icon={<UploadOutlined />}
+                  >
+                    Select File
+                  </Button>
+                </Upload>
+              </Col>
+            </Row>
+            <br></br>
+            {/* <Button
                 onClick={onFinish}
                 style={{ color: 'white', background: '#1E6541' }}
               >
                 บันทึก ระเบียบวาระที่ {Pagestep}
               </Button> */}
-            </Form>
-          </Row>
-        </>
-      );
-  }
-  else{
+          </Form>
+        </Row>
+      </>
+    );
+  } else {
     return (
       <>
         <Row>
@@ -268,47 +259,45 @@ export const DetailList: React.FC<Props> = ({
             </Row>
             <Form.List name="detailAgendes" initialValue={[{}]}>
               {(fields, { add, remove }) => {
-              
-              return (
-                <>
-                  {fields.map(({ key, name, ...restField }) => {
-                    return (
-                      <Row key={key}>
-                        <Col span={2}>
-                          <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
-                        </Col>
-                        <Col span={18}>
-                          <Form.Item
-                            {...restField}
-                            name={[name, 'detail']}
-                            // rules={[
-                            //   { required: true, message: 'Missing detail' },
-                            // ]}
-                          >
-                            <Input />
-                          </Form.Item>
-                        </Col>
-  
-                        <Col offset={1} span={3}>
-                          <DeleteOutlined onClick={() => remove(name)} />
-                        </Col>
-                      </Row>
-                    );
-                  })}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      เพิ่มเรื่อง
-                    </Button>
-                  </Form.Item>
-                </>
-              )
-            }
-          }
+                return (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => {
+                      return (
+                        <Row key={key}>
+                          <Col span={2}>
+                            <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
+                          </Col>
+                          <Col span={18}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, 'detail']}
+                              // rules={[
+                              //   { required: true, message: 'Missing detail' },
+                              // ]}
+                            >
+                              <Input />
+                            </Form.Item>
+                          </Col>
+
+                          <Col offset={1} span={3}>
+                            <DeleteOutlined onClick={() => remove(name)} />
+                          </Col>
+                        </Row>
+                      );
+                    })}
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        เพิ่มเรื่อง
+                      </Button>
+                    </Form.Item>
+                  </>
+                );
+              }}
             </Form.List>
             <Row>
               <Col xs={{ span: 24 }} lg={{ span: 24 }}>
@@ -333,5 +322,5 @@ export const DetailList: React.FC<Props> = ({
         </Row>
       </>
     );
-          }
+  }
 };

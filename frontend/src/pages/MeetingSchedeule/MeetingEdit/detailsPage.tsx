@@ -1,10 +1,11 @@
 import { Button, Card, Input, Row, Steps, Tabs } from 'antd';
 import './styles.css';
 import React, { useEffect, useState } from 'react';
-import { DetailList } from './components/detailList';
+import { DetailListedit } from './components/detailListedit';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import { result } from 'lodash';
 import { numberFormat } from '../../../utils';
+import { DetailList } from './components/detailList';
 const { TextArea } = Input;
 const { Step } = Steps;
 
@@ -12,9 +13,9 @@ type Props = {
   setDataField: (dataField: any) => void;
   children?: React.ReactNode;
   extra?: React.ReactNode;
-  data?:any;
-  agenda:any;
-  nameFilesummary:any;
+  data?: any;
+  agenda: any;
+  nameFilesummary: any;
 };
 
 const initialIndexValue = 0;
@@ -25,70 +26,55 @@ export const DetailPage: React.FC<Props> = ({
   extra,
   data,
   agenda,
-  nameFilesummary
+  nameFilesummary,
 }) => {
   const [newTabIndex, setNewTabIndex] = useState(initialIndexValue + 1);
   const [itemFiled, setItemFiled] = useState<any>([]);
-  // const [fileList, setFileList] = useState<any>([]);
   const onChangeSetItemFiled = (filedList: any) => {
-    console.log(itemFiled,'itemFiled');
-    
-    console.log(...itemFiled,'dotdotitemFiled');
-    
     setItemFiled([...itemFiled, filedList]);
     setDataField([...itemFiled, filedList]);
+    // console.log(...itemFiled);
+    // console.log(filedList);
   };
 
   useEffect(() => {}, [itemFiled]);
-  useEffect(()=>{
-    const newfileAgenda:any = []
-    nameFilesummary?.map((x:any,y:any)=>{
-      if(x.type === "fileAgenda"){
-        newfileAgenda.push({...x,name:x.namefile,uid:y})
-        // return {...x,name:x.namefile,uid:y}
+  useEffect(() => {
+    const newfileAgenda: any = [];
+    nameFilesummary?.map((x: any, y: any) => {
+      if (x.type === 'fileAgenda') {
+        newfileAgenda.push({ ...x, name: x.namefile, uid: y });
       }
-    })
-
-    
-    // console.log(agenda,'agendaagenda');
-    if(agenda){
-    Promise.all(agenda?.map(async (item:any,key:any)=>{
-      // console.log(item,'item');
-      const resultDetailagenda =  await DatamanagementService().getDetailagenda(
-        item.uuid,
-        item.step,
-      );
-      console.log(resultDetailagenda,'resultDetailagenda');
-      const file = newfileAgenda.filter((file:any) => Number(file.step) === key)
-
-      return {
-        label: `ระเบียบวาระที่ ${key+1}`,
-        children: (
-          <DetailList
-            Pagestep={key+1}
-            onChangeSetItemFiled={onChangeSetItemFiled}
-            item={item}
-            resultDetailagenda={resultDetailagenda}
-            file={file}
-          />
-        ),
-        key: key+1,
-        closable: true,
-      };
-
-    })).then((result)=>{
-      setItems(result)
-    setNewTabIndex((result?.length)+1)
-    })
-  }
-    // Promise.all(itemfortabs).then((result)=>{
-    //   setItems(result)
-    // setNewTabIndex((result?.length)+1)
-    // })
-    // setItems(itemfortabs)
-    // setNewTabIndex((itemfortabs?.length)+1)
-    
-  },[nameFilesummary,agenda])
+    });
+    if (agenda) {
+      Promise.all(
+        agenda?.map(async (item: any, key: any) => {
+          const resultDetailagenda =
+            await DatamanagementService().getDetailagenda(item.uuid, item.step);
+          const file = newfileAgenda.filter(
+            (file: any) => Number(file.step) === key,
+          );
+          return {
+            label: `ระเบียบวาระที่ ${key + 1}`,
+            children: (
+              <DetailList
+                Pagestep={key + 1}
+                onChangeSetItemFiled={onChangeSetItemFiled}
+                item={item}
+                resultDetailagenda={resultDetailagenda}
+                file={file}
+              />
+            ),
+            key: `ระเบียบวาระที่ ${key + 1}`,
+            closable: false,
+          };
+        }),
+      ).then(result => {
+        setDataField(result);
+        setItems(result);
+        setNewTabIndex(result?.length + 1);
+      });
+    }
+  }, [nameFilesummary, agenda]);
   const defaultPanes = new Array(initialIndexValue)
     // .fill(null)
     .map((_, index) => {
@@ -101,7 +87,7 @@ export const DetailPage: React.FC<Props> = ({
             onChangeSetItemFiled={onChangeSetItemFiled}
           />
         ),
-        key: id,
+        key: `ระเบียบวาระที่ ${id}`,
         closable: false,
       };
     });
@@ -120,8 +106,8 @@ export const DetailPage: React.FC<Props> = ({
       {
         label: `ระเบียบวาระที่ ${newTabIndex}`,
         children: (
-          <DetailList
-            Pagestep={String(newTabIndex)}
+          <DetailListedit
+            Pagestep={newTabIndex}
             onChangeSetItemFiled={onChangeSetItemFiled}
           />
         ),
@@ -131,6 +117,20 @@ export const DetailPage: React.FC<Props> = ({
     ]);
     setNewTabIndex(newTabIndex + 1);
     setActiveKey(newActiveKey);
+    setDataField((pre: any) => [
+      ...pre,
+      {
+        label: `ระเบียบวาระที่ ${newTabIndex}`,
+        children: (
+          <DetailListedit
+            Pagestep={newTabIndex}
+            onChangeSetItemFiled={onChangeSetItemFiled}
+          />
+        ),
+        key: newActiveKey,
+        closable: true,
+      },
+    ]);
   };
 
   const remove = (targetKey: string) => {
@@ -143,6 +143,7 @@ export const DetailPage: React.FC<Props> = ({
         ];
       setActiveKey(key);
     }
+    setDataField(newPanes);
     setNewTabIndex(newTabIndex - 1);
     setItems(newPanes);
   };

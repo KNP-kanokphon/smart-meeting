@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IDataroom, IUsers } from '../pages/common/type';
 import { httpClient } from '../utils/http-client';
 
 // import { makeAutoObservable } from 'mobx';
@@ -7,6 +8,7 @@ import { httpClient } from '../utils/http-client';
 // export interface IDatamanagementService {
 //   getListmeeting: () => Promise<any>;
 // }
+
 export const DatamanagementService = () => ({
   getListmeeting: async () => {
     const result = await httpClient.get(`/meeting/`);
@@ -345,6 +347,18 @@ export const DatamanagementService = () => ({
   },
   importuser: async (data: string[]) => {
     const result = await httpClient.post(`/user/importuser`, data);
+    return result.data;
+  },
+  updateroom: async (
+    data: IDataroom,
+    userAttendee: IUsers,
+    userBoard: IUsers,
+  ) => {
+    const result = await httpClient.put(`/meeting`, {
+      data: data,
+      usersatd: userAttendee,
+      userboard: userBoard,
+    });
     return result.data;
   },
 });

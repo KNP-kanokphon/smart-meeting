@@ -66,35 +66,22 @@ export const TableLast: React.FC = (): React.ReactElement => {
         uuidprofile: e.uuidprofile,
       };
     });
-    // console.log(newData);
     setUuidMeet(newData);
   };
-  // console.log(dataUuidMeet);
 
   const getListmeeting = async () => {
     await DatamanagementService()
       .getListmeeting()
       .then(data => {
-        // console.log(data);
-
         const dataNew = data.filter((e: any) => {
-          const dateParts = e.day.split('-');
           const dd = new Date(e.day);
           const dn = new Date();
-          const dateCreate = [
-            dd.getDate(),
-            dd.getMonth() + 1,
-            dd.getFullYear(),
-          ];
+          console.log(dd < dn);
 
-          const dateNow = [dn.getDate(), dn.getMonth() + 1, dn.getFullYear()];
-          if (
-            `${dateCreate[0]}-${dateCreate[1]}-${dateCreate[2]}` ===
-            `${dateNow[0]}-${dateNow[1]}-${dateNow[2]}`
-          ) {
-            return;
-          } else {
+          if (dd < dn) {
             return e;
+          } else {
+            return;
           }
         });
         setDataIntable(dataNew);

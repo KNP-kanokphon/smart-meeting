@@ -1,11 +1,11 @@
 import { Button, Card, Col, Row, Steps, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { AgendaPage } from './agendaPage';
-import { DetailPage } from './detailsPage';
-import { FoodPage } from './foodPage';
-import './styles.css';
-import { DatamanagementService } from '../../stores/meeting-store';
+import { AgendaPage } from '../../MeetingCreate/agendaPage';
+import { DetailPage } from '../../MeetingCreate/detailsPage';
+import { FoodPage } from '../../MeetingCreate/foodPage';
+// import './styles.css';
+import { DatamanagementService } from '../../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,9 +54,9 @@ export const CreateMeeting: React.FC = () => {
   };
 
   const checkSubmitForm = () => {
-    console.log(dataAgenda,'dataAgenda');
-    console.log(dataDetail,'dataDetail');
-    console.log(dataFood,'dataFood');
+    console.log(dataAgenda, 'dataAgenda');
+    console.log(dataDetail, 'dataDetail');
+    console.log(dataFood, 'dataFood');
     if (dataFood.length === 0) {
       message.error('0 length');
       return;

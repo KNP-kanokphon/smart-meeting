@@ -18,34 +18,38 @@ import moment from 'moment';
 
 interface IProp {
   setDataField: (dataField: any) => void;
-  data?:any;
-  user?:any;
-  nameFilesummary?:any;
+  data?: any;
+  user?: any;
+  nameFilesummary?: any;
 }
 
-export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesummary }) => {
+export const AgendaPage: React.FC<IProp> = ({
+  setDataField,
+  data,
+  user,
+  nameFilesummary,
+}) => {
   const [fileList, setFileList] = useState<any>([]);
 
   useEffect(() => {
     // setFileList(nameFilesummary)
     // console.log(nameFilesummary,'nameFilesummary');
-    const newNameFilesummary = nameFilesummary.map((x:any,y:any)=>{
-      return {...x,name:x.namefile,uid:y}
-    })
-    setFileList(newNameFilesummary)
+    const newNameFilesummary = nameFilesummary.map((x: any, y: any) => {
+      return { ...x, name: x.namefile, uid: y };
+    });
+    setFileList(newNameFilesummary);
     const oldanswer = {
-      title:dataAgenda?.title,
-      room:dataAgenda?.room,
-      floor:dataAgenda?.floor,
-      building:dataAgenda?.building,
-      meetingPlace:dataAgenda?.meetingplace,
-      date:dataAgenda?.day,
-      timeStart:dataAgenda?.starttime,
-      timeEnd:dataAgenda?.endtime,
-      detailMeeting:dataAgenda?.detail,
-    }
-    setDataField(oldanswer)
-   
+      title: dataAgenda?.title,
+      room: dataAgenda?.room,
+      floor: dataAgenda?.floor,
+      building: dataAgenda?.building,
+      meetingPlace: dataAgenda?.meetingplace,
+      date: dataAgenda?.day,
+      timeStart: dataAgenda?.starttime,
+      timeEnd: dataAgenda?.endtime,
+      detailMeeting: dataAgenda?.detail,
+    };
+    setDataField(oldanswer);
   }, [nameFilesummary]);
   const onChangeDate = (date: any) => {
     console.log(date);
@@ -73,8 +77,7 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
     beforeUpload: (file: any) => {
       setFileList([...fileList, file]);
       setDataField({ fileOverview: [...fileList, file] });
-      console.log([...fileList, file]);
-      
+
       return false;
     },
     fileList,
@@ -84,8 +87,7 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
   };
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   useEffect(() => {
-    setDataAgendaield(data[0])
-  
+    setDataAgendaield(data[0]);
   }, [data]);
 
   return (
@@ -96,8 +98,10 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
             เรื่อง
             <Input
               value={dataAgenda?.title}
-              onChange={(e: any) => [setDataField({ title: e.target.value }),
-              setDataAgendaield({ title: e.target.value })]}
+              onChange={(e: any) => [
+                setDataField({ title: e.target.value }),
+                setDataAgendaield({ title: e.target.value }),
+              ]}
             />
           </Col>
         </Row>
@@ -107,25 +111,31 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             ห้องประชุม
             <Input
-            value={dataAgenda?.room}
-              onChange={(e: any) => [setDataField({ room: e.target.value }),
-                setDataAgendaield({ room: e.target.value })]}
+              value={dataAgenda?.room}
+              onChange={(e: any) => [
+                setDataField({ room: e.target.value }),
+                setDataAgendaield({ room: e.target.value }),
+              ]}
             />
           </Col>
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             ชั้น
             <Input
-             value={dataAgenda?.floor}
-              onChange={(e: any) => [setDataField({ floor: e.target.value }),
-                setDataAgendaield({ floor: e.target.value })]}
+              value={dataAgenda?.floor}
+              onChange={(e: any) => [
+                setDataField({ floor: e.target.value }),
+                setDataAgendaield({ floor: e.target.value }),
+              ]}
             />
           </Col>
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             อาคาร
             <Input
-             value={dataAgenda?.building}
-              onChange={(e: any) => [setDataField({ building: e.target.value }),
-                setDataAgendaield({ building: e.target.value })]}
+              value={dataAgenda?.building}
+              onChange={(e: any) => [
+                setDataField({ building: e.target.value }),
+                setDataAgendaield({ building: e.target.value }),
+              ]}
             />
           </Col>
         </Row>
@@ -135,11 +145,11 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
           <Col xs={{ span: 24 }} lg={{ span: 24 }}>
             สถานที่ประชุม
             <Input
-             value={dataAgenda?.meetingplace}
-              onChange={(e: any) =>
-                [setDataField({ meetingPlace: e.target.value }),
-                  setDataAgendaield({ meetingplace: e.target.value })]
-              }
+              value={dataAgenda?.meetingplace}
+              onChange={(e: any) => [
+                setDataField({ meetingPlace: e.target.value }),
+                setDataAgendaield({ meetingplace: e.target.value }),
+              ]}
             />
           </Col>
         </Row>
@@ -149,32 +159,45 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             วันที่
             <DatePicker
-             value={typeof dataAgenda?.day === 'string' ? moment(dataAgenda?.day) : dataAgenda?.day}
-              onChange={(date, dateString) =>
-                [setDataField({ date: dateString }),
-                  setDataAgendaield({ day: dateString })]
+              value={
+                typeof dataAgenda?.day === 'string'
+                  ? moment(dataAgenda?.day)
+                  : dataAgenda?.day
               }
+              onChange={(date, dateString) => [
+                setDataField({ date: dateString }),
+                setDataAgendaield({ day: dateString }),
+              ]}
               style={{ width: '100%' }}
             />
           </Col>
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             เวลาเริ่ม
             <TimePicker
-             value={typeof dataAgenda?.starttime === 'string' ? moment(dataAgenda?.starttime,'HH:mm:ss') : dataAgenda?.starttime}
-              onChange={(date, dateString) =>
-                [setDataField({ timeStart: date?.format('HH:mm:ss') }),
-                setDataAgendaield({ starttime: date?.format('HH:mm:ss') })]
+              value={
+                typeof dataAgenda?.starttime === 'string'
+                  ? moment(dataAgenda?.starttime, 'HH:mm:ss')
+                  : dataAgenda?.starttime
               }
+              onChange={(date, dateString) => [
+                setDataField({ timeStart: date?.format('HH:mm:ss') }),
+                setDataAgendaield({ starttime: date?.format('HH:mm:ss') }),
+              ]}
               style={{ width: '100%' }}
             />
           </Col>
           <Col xs={{ span: 8 }} lg={{ span: 8 }}>
             เวลาสิ้นสุด
             <TimePicker
-            value={typeof dataAgenda?.endtime === 'string' ? moment(dataAgenda?.endtime,'HH:mm:ss') : dataAgenda?.endtime}
-              onChange={(date, dateString) =>
-                [setDataField({ timeEnd: date?.format('HH:mm:ss') }),setDataAgendaield({ endtime: date?.format('HH:mm:ss') })]
+              value={
+                typeof dataAgenda?.endtime === 'string'
+                  ? moment(dataAgenda?.endtime, 'HH:mm:ss')
+                  : dataAgenda?.endtime
               }
+              onChange={(date, dateString) => [
+                setDataField({ timeEnd: date?.format('HH:mm:ss') }),
+                setDataAgendaield({ endtime: date?.format('HH:mm:ss') }),
+              ]}
               style={{ width: '100%' }}
             />
           </Col>
@@ -187,9 +210,10 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
             <TextArea
               rows={4}
               value={dataAgenda?.detail}
-              onChange={(e: any) =>
-                [setDataField({ detailMeeting: e.target.value }),setDataAgendaield({ detail: e.target.value })]
-              }
+              onChange={(e: any) => [
+                setDataField({ detailMeeting: e.target.value }),
+                setDataAgendaield({ detail: e.target.value }),
+              ]}
               showCount
               maxLength={1000}
             />
@@ -216,9 +240,12 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField,data,user,nameFilesum
         </Row>
       </Col>
       <Divider />
-      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} user={user}/>
+      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} user={user} />
       <Divider />
-      <TableAttendee onChangeSetItemFiledAtt={onChangeSetItemFiledAtt} user={user}/>
+      <TableAttendee
+        onChangeSetItemFiledAtt={onChangeSetItemFiledAtt}
+        user={user}
+      />
     </>
   );
 };
