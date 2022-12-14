@@ -147,7 +147,7 @@ export const TableAttendee: React.FC<Props> = ({
               }}
             >
               <PlusOutlined />
-              เพิ่มผู้เข้ารวม
+              เพิ่มผู้เข้าร่วม
             </Button>
           </Col>
         </Row>
