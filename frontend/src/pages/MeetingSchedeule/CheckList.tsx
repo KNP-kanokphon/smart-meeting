@@ -26,6 +26,7 @@ import {
   EllipsisOutlined,
   LeftCircleOutlined,
 } from '@ant-design/icons';
+import QRCode from 'qrcode.react';
 import { DatamanagementService } from '../../stores/meeting-store';
 
 export const CheckList: React.FC = (): React.ReactElement => {
@@ -194,6 +195,41 @@ export const CheckList: React.FC = (): React.ReactElement => {
     //     );
     //   },
     // },
+    {
+      title: 'QR CODE',
+      dataIndex: 'uuidprofile',
+      key: 'uuidprofile',
+      width: '10%',
+
+      render: (text: any, row: any) => {
+        console.log(row);
+
+        // return text === true ? (
+        //   <Tag color="lime">
+        //     <Space>
+        //       <Icon icon="emojione:white-heavy-check-mark" />
+        //       {'เช็คอิน'}
+        //     </Space>
+        //   </Tag>
+        // ) : (
+        //   <Tag>
+        //     <Space>
+        //       <Icon icon="emojione-v1:cross-mark" />
+        //       {'ไม่ได้เช็คอิน'}
+        //     </Space>
+        //   </Tag>
+        // );
+        return (
+          <>
+            <QRCode
+              id="qr-gen"
+              size={128}
+              value={`${window.location.host}/detail/detailalready/${state}/${text}`}
+            />
+          </>
+        );
+      },
+    },
     {
       title: 'สถานะเข้าร่วมประชุม',
       dataIndex: 'statuscheckin',
