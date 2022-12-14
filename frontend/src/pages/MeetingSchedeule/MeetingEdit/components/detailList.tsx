@@ -40,7 +40,14 @@ export const DetailList: React.FC<Props> = ({
   const agendas = Form.useWatch('agendas', form);
   const detail = Form.useWatch('detail', form);
   const detailAgendes = Form.useWatch('detailAgendes', form);
+  const [checkFormChange, setCheckFormChange] = useState<boolean>(false);
 
+  const onChangeFormTrue = () => {
+    setCheckFormChange(true);
+  };
+  const onChangeFormFalse = () => {
+    setCheckFormChange(false);
+  };
   const props = {
     onRemove: async (file: any) => {
       const index = fileList.indexOf(file);
@@ -82,14 +89,18 @@ export const DetailList: React.FC<Props> = ({
     fileList.map((e: any) => {
       formData.append('file', e);
     });
-    form.validateFields().then(values => {
-      onChangeSetItemFiled({
-        values,
-        files: formData,
-        id: resultDetailagenda[0]?.idmeeting,
-        step: resultDetailagenda[0]?.step,
+    if (checkFormChange) {
+      form.validateFields().then(values => {
+        onChangeSetItemFiled({
+          values,
+          files: formData,
+          id: resultDetailagenda[0]?.idmeeting,
+          step: resultDetailagenda[0]?.step,
+        });
       });
-    });
+      onChangeFormFalse();
+    }
+
     // console.log('Received values of form:', values);
   };
 
@@ -114,9 +125,11 @@ export const DetailList: React.FC<Props> = ({
             form={form}
             //  onValuesChange={onFinish}
             // layout="vertical"
-            // initialValues={{ requiredMarkValue: requiredMark }}
-            // onValuesChange={onRequiredTypeChange}
-            // requiredMark={requiredMark}
+            initialValues={{
+              agendas: item.agendes,
+              detail: item.detailagendes,
+            }}
+            onValuesChange={onChangeFormTrue}
           >
             <Form.Item
               label={`ระเบียบวาระที่ ${Pagestep}`}
@@ -126,10 +139,7 @@ export const DetailList: React.FC<Props> = ({
             >
               <Input
                 placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-                defaultValue={item.agendes}
-                // onChange={e =>
-                //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-                // }
+                value={item.agendes}
               />
             </Form.Item>
             <Form.Item
@@ -140,12 +150,7 @@ export const DetailList: React.FC<Props> = ({
               }}
               name="detail"
             >
-              <TextArea
-                // onChange={e =>
-                //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
-                // }
-                defaultValue={item.detailagendes}
-              />
+              <TextArea value={item.detailagendes} />
             </Form.Item>
             <Row>
               <Col span={2}>เรื่องที่</Col>
@@ -154,6 +159,7 @@ export const DetailList: React.FC<Props> = ({
             </Row>
             <Form.List
               name="detailAgendes"
+
               // initialValue={Detailagenda}
             >
               {(fields, { add, remove }) => {

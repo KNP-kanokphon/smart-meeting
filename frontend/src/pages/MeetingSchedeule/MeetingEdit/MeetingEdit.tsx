@@ -13,7 +13,6 @@ import { IDataroom } from '../../common/type';
 const { Step } = Steps;
 
 export const EditMeeting: React.FC = () => {
-  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   const [dataDetail, setDataDetail] = useState<any>([]);
@@ -29,6 +28,7 @@ export const EditMeeting: React.FC = () => {
   const [agenda, setAgenda] = useState<any>();
   const [dataMap, setDataMap] = useState<any>([]);
   const [food, setFood] = useState<any>([]);
+
   useEffect(() => {
     const getListmeeting = async () => {
       await DatamanagementService()
@@ -47,9 +47,6 @@ export const EditMeeting: React.FC = () => {
               setPositionName(data);
               return data;
             });
-
-          // console.log(position);
-          // console.log(newData, 'newData');
         });
 
       const resultnamefilesummary =
@@ -79,6 +76,7 @@ export const EditMeeting: React.FC = () => {
   const onChangeCurrentStep = (step: number) => {
     setCurrentStep(step);
   };
+
   const onChangeCurrentCheckStep = (step: number) => {
     if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
       message.error(`กรุณากรอกเรื่องของการประชุม`);
@@ -98,35 +96,44 @@ export const EditMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
-    console.log(dataField);
+    console.log(
+      `🚀 ~ file: MeetingEdit.tsx:99 ~ setDataAgendaField ~ dataField`,
+      dataField,
+    );
+    const checkEdit = agenda.find(
+      (x: any) =>
+        x.uuid === dataField.id && String(x.step) === String(dataField.step),
+    );
+    console.log(
+      `🚀 ~ file: MeetingEdit.tsx:103 ~ setDataAgendaField ~ dataMap`,
+      dataMap,
+    );
+    let resultData = [];
+    if (checkEdit) {
+      const newState = {
+        id: 2,
+        ...dataField.values,
+        uuid: dataField.id,
+        step: dataField.step,
+      };
+      const oldData = agenda.filter(
+        (z: any) =>
+          z.uuid === dataField.id && String(z.step) != String(dataField.step),
+      );
+      console.log(
+        `🚀 ~ file: MeetingEdit.tsx:119 ~ setDataAgendaField ~ oldData`,
+        JSON.stringify(oldData),
+      );
+      resultData = oldData;
+      resultData.push(newState);
+      console.log(
+        `🚀 ~ file: MeetingEdit.tsx:125 ~ setDataAgendaField ~ resultData`,
+        resultData,
+      );
+      setAgenda(resultData);
+    }
 
-    // console.log(dataMap);
-    // // const
-    // const newData = dataMap.filter(
-    //   (obj: any) =>
-    //     obj.uuid === dataField.id &&
-    //     String(obj.step) !== String(dataField.step),
-    // );
-    // console.log([...newData, dataField.values]);
-
-    // const newState = dataMap.map((obj: any) => {
-    //   if (
-    //     obj.uuid === dataField.id &&
-    //     String(obj.step) === String(dataField.step)
-    //   ) {
-    //     return {
-    //       ...dataField.values,
-    //       uuid: dataField.id,
-    //       step: dataField.step,
-    //     };
-    //   }
-    //   return obj;
-    // });
-
-    // setDataMap(newState);
-    // setDataMap([newData, dataField.values]);
     // setDataDetail([newData, dataField.values]);
-    // setDataMap(newState);
     // console.log(oldState);
     // console.log(newState);
 
@@ -201,6 +208,7 @@ export const EditMeeting: React.FC = () => {
 
     check.then(() => submitForm());
   };
+
   const submitForm = () => {
     const newDatauserBoard: any = [];
     const newDatauserAgenda: any = [];
@@ -245,7 +253,7 @@ export const EditMeeting: React.FC = () => {
         };
         // console.log(dataAgenda);
         // console.log(newDatauserBoard);
-        console.log(dataMap);
+        console.log(agenda);
 
         // dataDetail?.map((data: any) => {
         //   console.log(data.children.props);
@@ -294,10 +302,6 @@ export const EditMeeting: React.FC = () => {
     });
   };
 
-  // useEffect(() => {
-  //   console.log('useEffect ran. ', dataAgenda);
-  // }, [dataAgenda]);
-
   const steps = [
     {
       title: 'AgendaPage',
@@ -333,6 +337,7 @@ export const EditMeeting: React.FC = () => {
       ),
     },
   ];
+
   return (
     <>
       <>
