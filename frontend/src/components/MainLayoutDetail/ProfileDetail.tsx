@@ -53,7 +53,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
     getDataPosition();
     onCheckin();
     dataAll();
-  }, []);
+  }, [getuserAll, userprofile]);
 
   const dataAll = async () => {
     const dataAll = await DatamanagementService().findAll();
@@ -69,8 +69,6 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
       const matchuser = getuserAll.find(
         (event: any) => event.uuid === x.uuidprofile,
       );
-      console.log(matchuser);
-
       const data = {
         position:
           matchuser?.position === null ||
@@ -95,7 +93,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
           matchuser?.username_eng === '' ||
           matchuser?.username_eng === undefined
             ? 'N/A'
-            : matchuser?.username_eng,
+            : matchuser?.username_eng.toUpperCase(),
         email:
           matchuser?.email === null ||
           matchuser?.email === '' ||
@@ -256,6 +254,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     </Row>
                   </Col>
                 </Row>
+                <br></br>
                 <Row>
                   <Col
                     xs={24}
