@@ -3,21 +3,21 @@ import {
   Card,
   Row,
   Typography,
-  // List,
-  // Skeleton,
-  // Button,
-  // Avatar,
+  List,
+  Skeleton,
+  Button,
+  Avatar,
   Input,
-  // Col,
-  // Popover,
+  Col,
+  Popover,
   DatePicker,
-  // Space,
+  Space,
   Select,
-  // Table,
-  // Upload,
+  Table,
+  Upload,
   Tabs,
 } from 'antd';
-// import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
 // import { TableMemberShip } from './components/TableMemberShip';
 import { DatamanagementService } from '../../stores/meeting-store';
 import readXlsxFile from 'read-excel-file';
@@ -56,6 +56,8 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             model: e[9] === null ? undefined : e[9],
             position: e[10] === null ? undefined : e[10],
             studentid: e[11] === null ? undefined : e[11],
+            username_eng: e[12] === null ? undefined : e[12],
+            line: e[12] === null ? undefined : e[13],
           });
         }
       });
@@ -148,6 +150,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       setFileList(newFileList);
     },
     beforeUpload: (file: any) => {
+      console.log(file);
       setFileList([...fileList, file]);
       return false;
     },
@@ -169,7 +172,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
           MEMBERSHIP
         </Title>
-        <Tabs
+        {/* <Tabs
           type="card"
           defaultActiveKey="1"
           onChange={onChange}
@@ -193,9 +196,9 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
               ),
             },
           ]}
-        />
+        /> */}
       </Card>
-      {/* <Card style={{ width: '100%' }}>
+      <Card style={{ width: '100%' }}>
         <Row gutter={16}>
           <Col span={10}>
             <Row gutter={16}>
@@ -214,11 +217,11 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
                 <Select
                   bordered={false}
                   style={{ width: '100%' }}
-                  placeholder="ประเภทสมาชิค"
+                  placeholder="ประเภทสมาชิก"
                   onChange={onChangType}
                   allowClear
                 >
-                  <Option key={'1'}>นำเข้าสมาชิค</Option>
+                  <Option key={'1'}>นำเข้าสมาชิก</Option>
                 </Select>
               </Col>
             </Row>
@@ -243,7 +246,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             </Button>
           </Col>
         </Row>
-      </Card> */}
+      </Card>
       {/* <TableMemberShip /> */}
     </Row>
   );
