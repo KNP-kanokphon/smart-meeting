@@ -88,13 +88,15 @@ export const TableBoard: React.FC<Props> = ({
     });
   };
   const onEditStudent = async (record: any) => {
-    const resual = await DatamanagementService().getUser();
-    const newresult = resual.filter((e: any) => {
-      if (e.type === '1') {
-        return e;
-      }
-    });
-    setUsername(newresult);
+    // console.log(record);
+
+    const resual = await DatamanagementService().findAll();
+    // const newresult = resual.filter((e: any) => {
+    //   if (e.type === '1') {
+    //     return e;
+    //   }
+    // });
+    setUsername(resual);
 
     setIsEditing(true);
     setEditingStudent({ ...record });
@@ -124,6 +126,8 @@ export const TableBoard: React.FC<Props> = ({
       title: 'Actions',
       width: '20%',
       render: (record: any) => {
+        console.log(record);
+
         return (
           <>
             <Row gutter={16}>
@@ -164,7 +168,7 @@ export const TableBoard: React.FC<Props> = ({
               }}
             >
               <PlusOutlined />
-              เพิ่มผู้เข้ารวม
+              เพิ่มผู้เข้าร่วม
             </Button>
           </Col>
         </Row>
@@ -182,7 +186,7 @@ export const TableBoard: React.FC<Props> = ({
       </Col>
       <Modal
         title="แก้ใขข้อมูล"
-        visible={isEditing}
+        open={isEditing}
         okText="Save"
         onCancel={() => {
           resetEditing();
@@ -202,38 +206,47 @@ export const TableBoard: React.FC<Props> = ({
       >
         <Col span={24}>
           <Row>
-            รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า
+            รายชื่อคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า1
             <Select
+              // placeholder={'Please Select'}
               showSearch
               value={editingStudent?.username}
               style={{ width: '100%' }}
               optionFilterProp="children"
-              filterOption={(input: any, option: any) =>
-                option.children
+              filterOption={(input: any, option: any) => {
+                return option.children
                   .toString()
                   .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
+                  .includes(input.toLowerCase());
+              }}
               onChange={(e: any, dataAll: any) => {
+                console.log(dataAll);
+
                 const matchuser = username.find(
-                  (x: any) => x.username === dataAll.children,
+                  (x: any) => x.username === dataAll?.children?.props.children,
                 );
 
                 setEditingStudent((pre: any) => {
                   return { ...pre, uuidprofile: dataAll.value };
                 });
                 setEditingStudent((pre: any) => {
-                  return { ...pre, username: dataAll.children };
+                  return { ...pre, username: matchuser?.username };
                 });
                 setEditingStudent((pre: any) => {
-                  return { ...pre, position: matchuser.position };
+                  return { ...pre, position: '' };
                 });
               }}
             >
+              <Option value={''} disabled>
+                Please Select
+              </Option>
               {username.map((e: any, i: number) => {
                 return (
                   <Option key={i} value={e.uuid}>
-                    {e.username}
+                    <Space>
+                      {/* {e.prefix} */}
+                      {e.username}
+                    </Space>
                   </Option>
                 );
               })}
