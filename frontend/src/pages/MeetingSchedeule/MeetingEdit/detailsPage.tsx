@@ -3,7 +3,7 @@ import './styles.css';
 import React, { useEffect, useState } from 'react';
 import { DetailListedit } from './components/detailListedit';
 import { DatamanagementService } from '../../../stores/meeting-store';
-import { result } from 'lodash';
+import { find, result } from 'lodash';
 import { numberFormat } from '../../../utils';
 import { DetailList } from './components/detailList';
 const { TextArea } = Input;
@@ -16,6 +16,7 @@ type Props = {
   data?: any;
   agenda: any;
   nameFilesummary: any;
+  id: any;
 };
 
 const initialIndexValue = 0;
@@ -27,18 +28,33 @@ export const DetailPage: React.FC<Props> = ({
   data,
   agenda,
   nameFilesummary,
+  id,
 }) => {
   const [newTabIndex, setNewTabIndex] = useState(initialIndexValue + 1);
   const [itemFiled, setItemFiled] = useState<any>([]);
+  const [agendaDetail, setAgendaDetail] = useState<any>([]);
   const onChangeSetItemFiled = (filedList: any) => {
-    setItemFiled([...itemFiled, filedList]);
-    setDataField([...itemFiled, filedList]);
-    // console.log(...itemFiled);
-    // console.log(filedList);
+    // const dataOld = agendaDetail?.filter((pane: any) => {
+    //   return (
+    //     pane.uuid === filedList.id &&
+    //     String(pane.step) !== String(filedList.step)
+    //   );
+    // });
+    // const newDataagenda = {
+    //   ...filedList.values,
+    //   uuid: filedList.id,
+    //   step: filedList.step,
+    // };
+    // console.log(agendaDetail);
+    // dataOld.push(newDataagenda);
+    // console.log(dataOld);
+    // setDataField
+    // setAgendaDetail(dataOld);
   };
 
   useEffect(() => {}, [itemFiled]);
   useEffect(() => {
+    getData();
     const newfileAgenda: any = [];
     nameFilesummary?.map((x: any, y: any) => {
       if (x.type === 'fileAgenda') {
@@ -57,8 +73,9 @@ export const DetailPage: React.FC<Props> = ({
             label: `ระเบียบวาระที่ ${key + 1}`,
             children: (
               <DetailList
+                key={item?.uuid}
                 Pagestep={key + 1}
-                onChangeSetItemFiled={onChangeSetItemFiled}
+                onChangeSetItemFiled={setDataField}
                 item={item}
                 resultDetailagenda={resultDetailagenda}
                 file={file}
@@ -69,12 +86,25 @@ export const DetailPage: React.FC<Props> = ({
           };
         }),
       ).then(result => {
-        setDataField(result);
+        // const data = result?.map((data: any) => {
+        //   return {
+        //     values: {
+        //       agendas: data?.children?.props?.item?.agendes,
+        //       detail: data?.children?.props?.item?.detailagendes,
+        //       detailAgendes: data?.children?.props?.resultDetailagenda,
+        //     },
+        //     files: data?.children?.props.file,
+        //   };
+        // });
         setItems(result);
         setNewTabIndex(result?.length + 1);
       });
     }
   }, [nameFilesummary, agenda]);
+  const getData = async () => {
+    const resultAgenda = await DatamanagementService().getagendaByid(id);
+    setAgendaDetail(resultAgenda);
+  };
   const defaultPanes = new Array(initialIndexValue)
     // .fill(null)
     .map((_, index) => {
@@ -82,10 +112,7 @@ export const DetailPage: React.FC<Props> = ({
       return {
         label: `ระเบียบวาระที่ ${id}`,
         children: (
-          <DetailList
-            Pagestep={id}
-            onChangeSetItemFiled={onChangeSetItemFiled}
-          />
+          <DetailList Pagestep={id} onChangeSetItemFiled={setDataField} />
         ),
         key: `ระเบียบวาระที่ ${id}`,
         closable: false,
@@ -108,7 +135,7 @@ export const DetailPage: React.FC<Props> = ({
         children: (
           <DetailListedit
             Pagestep={newTabIndex}
-            onChangeSetItemFiled={onChangeSetItemFiled}
+            onChangeSetItemFiled={setDataField}
           />
         ),
         key: newActiveKey,
@@ -117,20 +144,6 @@ export const DetailPage: React.FC<Props> = ({
     ]);
     setNewTabIndex(newTabIndex + 1);
     setActiveKey(newActiveKey);
-    setDataField((pre: any) => [
-      ...pre,
-      {
-        label: `ระเบียบวาระที่ ${newTabIndex}`,
-        children: (
-          <DetailListedit
-            Pagestep={newTabIndex}
-            onChangeSetItemFiled={onChangeSetItemFiled}
-          />
-        ),
-        key: newActiveKey,
-        closable: true,
-      },
-    ]);
   };
 
   const remove = (targetKey: string) => {
@@ -143,7 +156,6 @@ export const DetailPage: React.FC<Props> = ({
         ];
       setActiveKey(key);
     }
-    setDataField(newPanes);
     setNewTabIndex(newTabIndex - 1);
     setItems(newPanes);
   };

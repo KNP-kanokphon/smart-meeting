@@ -18,6 +18,7 @@
     "dayjs": "^1.11.4",
     "eslint": "^8.20.0",
     "file-saver": "^2.0.5",
+    "immutability-helper": "^3.1.1",
     "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
     "mobx": "^6.6.1",

@@ -61,7 +61,7 @@ export const DetailListedit: React.FC<Props> = ({
       formData.append('file', e);
     });
     await form.validateFields().then(async values => {
-      onChangeSetItemFiled({ values, files: formData });
+      // onChangeSetItemFiled({ values, files: formData });
     });
     // console.log('Received values of form:', values);
   };

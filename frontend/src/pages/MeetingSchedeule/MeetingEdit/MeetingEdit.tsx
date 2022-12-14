@@ -27,6 +27,7 @@ export const EditMeeting: React.FC = () => {
   const [dataUser, setDataUser] = useState<any>([]);
   const [nameFilesummary, setNamefilesummary] = useState<any>([]);
   const [agenda, setAgenda] = useState<any>();
+  const [dataMap, setDataMap] = useState<any>([]);
   const [food, setFood] = useState<any>([]);
   useEffect(() => {
     const getListmeeting = async () => {
@@ -53,10 +54,10 @@ export const EditMeeting: React.FC = () => {
 
       const resultnamefilesummary =
         await DatamanagementService().getnamefileSummary(state);
-
       setNamefilesummary(resultnamefilesummary);
       const resultAgenda = await DatamanagementService().getagendaByid(state);
       setAgenda(resultAgenda);
+      setDataMap(resultAgenda);
       const food = await DatamanagementService().getDetailfood(state);
 
       const fooddetail: any[] = [];
@@ -97,7 +98,57 @@ export const EditMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
-    setDataDetail(dataField);
+    console.log(dataField);
+
+    // console.log(dataMap);
+    // // const
+    // const newData = dataMap.filter(
+    //   (obj: any) =>
+    //     obj.uuid === dataField.id &&
+    //     String(obj.step) !== String(dataField.step),
+    // );
+    // console.log([...newData, dataField.values]);
+
+    // const newState = dataMap.map((obj: any) => {
+    //   if (
+    //     obj.uuid === dataField.id &&
+    //     String(obj.step) === String(dataField.step)
+    //   ) {
+    //     return {
+    //       ...dataField.values,
+    //       uuid: dataField.id,
+    //       step: dataField.step,
+    //     };
+    //   }
+    //   return obj;
+    // });
+
+    // setDataMap(newState);
+    // setDataMap([newData, dataField.values]);
+    // setDataDetail([newData, dataField.values]);
+    // setDataMap(newState);
+    // console.log(oldState);
+    // console.log(newState);
+
+    //
+    // const dataOld = dataMap?.filter((pane: any) => {
+    //   return (
+    //     pane.uuid === dataField.id &&
+    //     String(pane.step) !== String(dataField.step)
+    //   );
+    // });
+    // const newDataagenda = {
+    //   ...dataField.values,
+    //   uuid: dataField.id,
+    //   step: dataField.step,
+    // };
+    // dataOld.push(newDataagenda);
+    // console.log(dataOld);
+    // setDataDetail(dataOld)
+
+    // setAgenda(dataOld);
+    // setAgenda(dataField);
+    // setDataDetail(dataField);
 
     // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
 
@@ -177,9 +228,9 @@ export const EditMeeting: React.FC = () => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        console.log(dataAgenda);
-        console.log(newDatauserBoard);
-        console.log(dataDetail);
+        // console.log(dataAgenda);
+        // console.log(newDatauserBoard);
+        // console.log(dataDetail);
         const dataRoom: IDataroom = {
           roomid: state,
           title: dataAgenda.title,
@@ -192,17 +243,18 @@ export const EditMeeting: React.FC = () => {
           timeEnd: dataAgenda.timeEnd,
           detailMeeting: dataAgenda.detailMeeting,
         };
-        // const dataStep = {
+        // console.log(dataAgenda);
+        // console.log(newDatauserBoard);
+        console.log(dataMap);
 
-        // }
-        dataDetail?.map((data: any) => {
-          console.log(data.children.props);
-        });
-        await DatamanagementService().updateroom(
-          dataRoom,
-          dataAgenda.userAttendee,
-          dataAgenda.userBoard,
-        );
+        // dataDetail?.map((data: any) => {
+        //   console.log(data.children.props);
+        // });
+        // await DatamanagementService().updateroom(
+        //   dataRoom,
+        //   dataAgenda.userAttendee,
+        //   dataAgenda.userBoard,
+        // );
 
         // if (dataAgenda.fileOverview !== undefined) {
         //   const formData = new FormData();
@@ -266,6 +318,7 @@ export const EditMeeting: React.FC = () => {
           data={dataIntable}
           agenda={agenda}
           nameFilesummary={nameFilesummary}
+          id={state}
         />
       ),
     },

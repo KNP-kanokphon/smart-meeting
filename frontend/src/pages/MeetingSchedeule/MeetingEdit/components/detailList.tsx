@@ -83,7 +83,12 @@ export const DetailList: React.FC<Props> = ({
       formData.append('file', e);
     });
     form.validateFields().then(values => {
-      onChangeSetItemFiled({ values, files: formData });
+      onChangeSetItemFiled({
+        values,
+        files: formData,
+        id: resultDetailagenda[0]?.idmeeting,
+        step: resultDetailagenda[0]?.step,
+      });
     });
     // console.log('Received values of form:', values);
   };
