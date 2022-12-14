@@ -16,6 +16,7 @@ import {
   Table,
   Upload,
   Tabs,
+  Divider,
 } from 'antd';
 import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
 // import { TableMemberShip } from './components/TableMemberShip';
@@ -246,6 +247,32 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             </Button>
           </Col>
         </Row>
+        <Divider />
+        <Tabs
+          type="card"
+          defaultActiveKey="1"
+          onChange={onChange}
+          items={[
+            {
+              label: `แบบฟอร์ม`,
+              key: '1',
+              children: (
+                <>
+                  <AddmemberRoute />
+                </>
+              ),
+            },
+            {
+              label: `รายละเอียดผู้ใช้บริการ`,
+              key: '2',
+              children: (
+                <>
+                  <TableAddMember />
+                </>
+              ),
+            },
+          ]}
+        />
       </Card>
       {/* <TableMemberShip /> */}
     </Row>

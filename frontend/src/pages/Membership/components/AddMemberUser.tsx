@@ -481,7 +481,7 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={2}>
-                <Form.Item label={'หมู่'}>
+                <Form.Item label={'หมู่ที่'}>
                   <Input
                     placeholder="#1"
                     onChange={(e: any) => {
