@@ -68,7 +68,12 @@ export const Login: React.FC<Props> = ({ baseURL }): React.ReactElement => {
                 style={{ width: '35%', height: '10%', marginBottom: '20px' }}
               />
               <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-                <Form name="login" layout="vertical" autoComplete="off">
+                <Form
+                  name="login"
+                  layout="vertical"
+                  autoComplete="off"
+                  onFinish={onFinish}
+                >
                   <Form.Item label="Username" name="username">
                     <Input
                       placeholder="Username"
@@ -88,21 +93,22 @@ export const Login: React.FC<Props> = ({ baseURL }): React.ReactElement => {
                       onChange={(event: any) => setPassword(event.target.value)}
                     />
                   </Form.Item>
+                  <Form.Item>
+                    <Button
+                      style={{
+                        background: '#1E6541',
+                        border: 'none',
+                        width: '100%',
+                        borderRadius: '10px',
+                      }}
+                      size={'middle'}
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      เข้าสู่ระบบ
+                    </Button>
+                  </Form.Item>
                 </Form>
-
-                <Button
-                  style={{
-                    background: '#1E6541',
-                    border: 'none',
-                    width: '100%',
-                    borderRadius: '10px',
-                  }}
-                  size={'middle'}
-                  type="primary"
-                  onClick={onFinish}
-                >
-                  เข้าสู่ระบบ
-                </Button>
               </div>
             </Card>
             <div>

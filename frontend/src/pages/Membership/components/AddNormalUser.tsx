@@ -25,6 +25,7 @@ import {
 import type { UploadProps } from 'antd';
 import SignatureCanvas from 'react-signature-canvas';
 import { v4 as uuidv4 } from 'uuid';
+import { DatamanagementService } from '../../../stores/meeting-store';
 
 // datepicker local thialand
 import dayjs from 'dayjs';
@@ -60,6 +61,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [imageURLone, setImageURlone] = useState<any>(null);
   const sigCanvas = useRef<any>(null);
   const [fileList, setFileList] = useState<any>([]);
+  const [form] = Form.useForm();
 
   //   state collect data
   const [getStatus, setStatus] = useState<string>('');
@@ -84,34 +86,34 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [getPostalCode, setPostalCode] = useState<string>('');
 
   const onFinish = (e: any) => {
-    const data = {
-      data: {
-        uuid: uuidv4(),
-        status: getStatus,
-        title: getTitle,
-        namelastname: getNameLastName,
-        idcard: getIdCard,
-        phonenumber: getPhoneNumber,
-        email: getEmail,
-        course: getCourse,
-        course1: getCourse1,
-        generation: getGeneration,
-        position: getPosition,
-        housenumber: getHouseNumber,
-        roomnumber: getRoomNumber,
-        village: getVillage,
-        group: getGroup,
-        alley: getAlley,
-        road: getRoad,
-        subdistrict: getSubDistrict,
-        district: getDistrict,
-        province: getProvince,
-        postalcode: getPostalCode,
-        uploadfile: fileList,
-        esignature: imageURLone,
-      },
-    };
-    console.log(data);
+    // const data = {
+    //   data: {
+    //     uuid: uuidv4(),
+    //     status: getStatus,
+    //     title: getTitle,
+    //     namelastname: getNameLastName,
+    //     idcard: getIdCard,
+    //     phonenumber: getPhoneNumber,
+    //     email: getEmail,
+    //     course: getCourse,
+    //     course1: getCourse1,
+    //     generation: getGeneration,
+    //     position: getPosition,
+    //     housenumber: getHouseNumber,
+    //     roomnumber: getRoomNumber,
+    //     village: getVillage,
+    //     group: getGroup,
+    //     alley: getAlley,
+    //     road: getRoad,
+    //     subdistrict: getSubDistrict,
+    //     district: getDistrict,
+    //     province: getProvince,
+    //     postalcode: getPostalCode,
+    //     uploadfile: fileList,
+    //     esignature: imageURLone,
+    //   },
+    // };
+    // console.log(data);
 
     Modal.confirm({
       title: 'ยืนยันการสมัครเป็นสมาชิก',
@@ -119,7 +121,37 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
       content: 'โปรดตรวจสอบข้อมูลให้แน่ใจก่อนกดยืนยัน',
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
-      onOk: () => {
+      onOk: async () => {
+        const dataTest: any = {
+          type: 'normal',
+          uuid: uuidv4(),
+          prefix: getTitle,
+          username: getNameLastName,
+          idcard: getIdCard,
+          phonenumber: getPhoneNumber,
+          email: getEmail,
+          course: getCourse,
+          course1: getCourse1,
+          model: getGeneration,
+          position: getPosition,
+          active: getStatus,
+        };
+        await DatamanagementService()
+          .importuser(dataTest)
+          .then(e => {
+            message.success('Import User Success !!');
+            setTitle('');
+            setNameLastName('');
+            setIdCard('');
+            setPhoneNumber('');
+            setEmail('');
+            setCourse('');
+            setCourse1('');
+            setGeneration('');
+            setPosition('');
+            setStatus('');
+            form.resetFields();
+          });
         console.log('OK');
       },
       onCancel: () => {
@@ -203,7 +235,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
             </Row>
           </div>
         }
-        visible={open}
+        open={open}
         style={{ width: '500px', height: '500px' }}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -281,7 +313,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
         }
       >
         <ConfigProvider locale={configuredLocale}>
-          <Form layout="vertical">
+          <Form form={form} layout="vertical" autoComplete="off">
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item label={'คำนำหน้า'}>

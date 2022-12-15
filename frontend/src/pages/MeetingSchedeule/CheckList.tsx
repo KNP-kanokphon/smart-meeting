@@ -200,25 +200,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'uuidprofile',
       key: 'uuidprofile',
       width: '10%',
-
       render: (text: any, row: any) => {
-        console.log(row);
-
-        // return text === true ? (
-        //   <Tag color="lime">
-        //     <Space>
-        //       <Icon icon="emojione:white-heavy-check-mark" />
-        //       {'เช็คอิน'}
-        //     </Space>
-        //   </Tag>
-        // ) : (
-        //   <Tag>
-        //     <Space>
-        //       <Icon icon="emojione-v1:cross-mark" />
-        //       {'ไม่ได้เช็คอิน'}
-        //     </Space>
-        //   </Tag>
-        // );
         return (
           <>
             <QRCode
@@ -235,7 +217,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'statuscheckin',
       key: 'statuscheckin',
       width: '10%',
-
       render: (text: any) => {
         return text === true ? (
           <Tag color="lime">
@@ -259,7 +240,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'statusconfirm',
       key: 'statusconfirm',
       width: '10%',
-
       render: (text: any) => {
         return text === true ? (
           <Tag>
