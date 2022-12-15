@@ -33,6 +33,7 @@ export const DetailPage: React.FC<Props> = ({
   const [newTabIndex, setNewTabIndex] = useState(initialIndexValue + 1);
   const [itemFiled, setItemFiled] = useState<any>([]);
   const [agendaDetail, setAgendaDetail] = useState<any>([]);
+  const [newfileAgenda, setNewfileAgenda] = useState<any>([]);
   const onChangeSetItemFiled = (filedList: any) => {
     // const dataOld = agendaDetail?.filter((pane: any) => {
     //   return (
@@ -58,53 +59,90 @@ export const DetailPage: React.FC<Props> = ({
     const newfileAgenda: any = [];
     nameFilesummary?.map((x: any, y: any) => {
       if (x.type === 'fileAgenda') {
-        newfileAgenda.push({ ...x, name: x.namefile, uid: y });
+        setNewfileAgenda({ ...x, name: x.namefile, uid: y });
       }
     });
-    if (agenda) {
-      Promise.all(
-        agenda?.map(async (item: any, key: any) => {
-          const resultDetailagenda =
-            await DatamanagementService().getDetailagenda(item.uuid, item.step);
-          const file = newfileAgenda.filter(
-            (file: any) => Number(file.step) === key,
-          );
-          return {
-            label: `ระเบียบวาระที่ ${key + 1}`,
-            children: (
-              <DetailList
-                key={item?.uuid}
-                Pagestep={key + 1}
-                onChangeSetItemFiled={setDataField}
-                item={item}
-                resultDetailagenda={resultDetailagenda}
-                file={file}
-              />
-            ),
-            key: `ระเบียบวาระที่ ${key + 1}`,
-            closable: false,
-          };
-        }),
-      ).then(result => {
-        // const data = result?.map((data: any) => {
-        //   return {
-        //     values: {
-        //       agendas: data?.children?.props?.item?.agendes,
-        //       detail: data?.children?.props?.item?.detailagendes,
-        //       detailAgendes: data?.children?.props?.resultDetailagenda,
-        //     },
-        //     files: data?.children?.props.file,
-        //   };
-        // });
-        setItems(result);
-        setNewTabIndex(result?.length + 1);
-      });
-    }
+    // if (agenda) {
+    //   const oldItems = agenda?.map(async (item: any, key: any) => {
+    //     const resultDetailagenda =
+    //       await DatamanagementService().getDetailagenda(item.uuid, item.step);
+    //     const file = newfileAgenda.filter(
+    //       (file: any) => Number(file.step) === key,
+    //     );
+    //     return {
+    //       label: `ระเบียบวาระที่ ${key + 1}`,
+    //       children: (
+    //         <DetailList
+    //           key={item?.uuid}
+    //           Pagestep={key + 1}
+    //           onChangeSetItemFiled={setDataField}
+    //           item={item}
+    //           resultDetailagenda={resultDetailagenda}
+    //           file={file}
+    //         />
+    //       ),
+    //       key: `ระเบียบวาระที่ ${key + 1}`,
+    //       closable: false,
+    //     };
+    //   });
+    //   console.log(
+    //     `🚀 ~ file: detailsPage.tsx:66 ~ oldItems ~ oldItems`,
+    //     oldItems,
+    //   );
+
+    //   setItems(oldItems);
+    // }
+    createItems(agenda).then((xs: any) => {
+      console.log(
+        `🚀 ~ file: detailsPage.tsx:101 ~ createItems ~ agenda`,
+        agenda,
+      );
+      console.log(`🚀 ~ file: detailsPage.tsx:96 ~ createItems ~ xs`, xs);
+      setItems(xs);
+    });
   }, [nameFilesummary, agenda]);
+
+  const createItems = (agenda: any) => {
+    return new Promise(async (resolve, reject) => {
+      Promise.all(
+        agenda
+          .sort((a: any, b: any) => {
+            return parseInt(a.step) - parseInt(b.step);
+          })
+          .map(async (item: any, key: any) => {
+            const resultDetailagenda =
+              await DatamanagementService().getDetailagenda(
+                item.uuid,
+                item.step,
+              );
+            const file = newfileAgenda.filter(
+              (file: any) => Number(file.step) === key,
+            );
+            return {
+              label: `ระเบียบวาระที่ ${key + 1}`,
+              children: (
+                <DetailList
+                  key={item?.uuid}
+                  Pagestep={key + 1}
+                  onChangeSetItemFiled={setDataField}
+                  item={item}
+                  resultDetailagenda={resultDetailagenda}
+                  file={file}
+                />
+              ),
+              key: `ระเบียบวาระที่ ${key + 1}`,
+              closable: false,
+            };
+          }),
+      ).then(xxx => resolve(xxx));
+    });
+  };
+
   const getData = async () => {
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     setAgendaDetail(resultAgenda);
   };
+
   const defaultPanes = new Array(initialIndexValue)
     // .fill(null)
     .map((_, index) => {
@@ -175,15 +213,17 @@ export const DetailPage: React.FC<Props> = ({
           เพิ่มระเบียบวาระ
         </Button>
       </Row>
-      <Tabs
-        hideAdd
-        tabPosition="left"
-        onChange={onChange}
-        activeKey={activeKey}
-        type="editable-card"
-        onEdit={onEdit}
-        items={items}
-      />
+      {items && (
+        <Tabs
+          hideAdd
+          tabPosition="left"
+          onChange={onChange}
+          activeKey={activeKey}
+          type="editable-card"
+          onEdit={onEdit}
+          items={items}
+        />
+      )}
     </Card>
   );
 };

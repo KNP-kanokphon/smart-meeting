@@ -61,25 +61,19 @@ export const DetailList: React.FC<Props> = ({
     },
     fileList,
   };
-  useEffect(() => {
-    form.setFieldsValue({
-      agendas: item.agendes,
-      detail: item.detailagendes,
-    });
-    const detailAgendes: any[] = [];
-    resultDetailagenda?.map((x: any, y: number) => {
-      detailAgendes.push({ detail: `${x.detail}` });
-    });
-    // form.setFieldsValue(Detailagenda)
-    // const fixedDetail = {detailAgendes:{Detailagenda}}
-    // console.log(detailAgendes,'Detailagenda');
-    const fixed = { detailAgendes };
-    form.setFieldsValue(fixed);
-  }, [resultDetailagenda]);
+  // useEffect(() => {
+  //   const detailAgendes: any[] = [];
+  //   resultDetailagenda?.map((x: any, y: number) => {
+  //     detailAgendes.push({ detail: `${x.detail}` });
+  //   });
+  //   const fixed = { detailAgendes };
+  //   form.setFieldsValue(fixed);
+  // }, [resultDetailagenda]);
+
   useEffect(() => {
     onFinish();
-    // console.log(resultDetailagenda,'resultDetailagenda');
   }, [fileList, agendas, detail, detailAgendes]);
+
   useEffect(() => {
     setFileList(file);
   }, [file]);
@@ -100,238 +94,337 @@ export const DetailList: React.FC<Props> = ({
       });
       onChangeFormFalse();
     }
-
-    // console.log('Received values of form:', values);
   };
 
-  if (item && resultDetailagenda) {
-    // const Detailagenda: any[] = []
-    // resultDetailagenda?.map((x:any,y:number)=>{
-    //   Detailagenda.push({detail:`${x.detail}`})
-    // })
-    // console.log(Detailagenda,'gain');
-
-    // form.setFieldsValue({
-    //   agendas:item.agendes,detail:item.detailagendes
-    // })
-    return (
-      <>
-        <Row>
-          <Form
-            name="dynamic_form_nest_item"
-            // onFinish={onFinish}
-            autoComplete="off"
-            style={{ width: '100%' }}
-            form={form}
-            //  onValuesChange={onFinish}
-            // layout="vertical"
-            initialValues={{
-              agendas: item.agendes,
-              detail: item.detailagendes,
+  return (
+    <>
+      <Row>
+        <Form
+          name="dynamic_form_nest_item"
+          // onFinish={onFinish}
+          autoComplete="off"
+          style={{ width: '100%' }}
+          form={form}
+          //  onValuesChange={onFinish}
+          // layout="vertical"
+          initialValues={{
+            agendas: item.agendes,
+            detail: item.detailagendes,
+            detailAgendes: resultDetailagenda.map((x: any) => {
+              x.detail;
+            }),
+          }}
+          onValuesChange={onChangeFormTrue}
+        >
+          <Form.Item
+            label={`ระเบียบวาระที่ ${Pagestep}`}
+            required
+            tooltip="This is a required field"
+            name="agendas"
+          >
+            <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
+          </Form.Item>
+          <Form.Item
+            label="รายละเอียดการประชุม"
+            tooltip={{
+              title: 'Tooltip with customize icon',
+              icon: <InfoCircleOutlined />,
             }}
-            onValuesChange={onChangeFormTrue}
+            name="detail"
           >
-            <Form.Item
-              label={`ระเบียบวาระที่ ${Pagestep}`}
-              required
-              tooltip="This is a required field"
-              name="agendas"
-            >
-              <Input
-                placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-                value={item.agendes}
-              />
-            </Form.Item>
-            <Form.Item
-              label="รายละเอียดการประชุม"
-              tooltip={{
-                title: 'Tooltip with customize icon',
-                icon: <InfoCircleOutlined />,
-              }}
-              name="detail"
-            >
-              <TextArea value={item.detailagendes} />
-            </Form.Item>
-            <Row>
-              <Col span={2}>เรื่องที่</Col>
-              <Col span={18}>รายละเอียด</Col>
-              <Col offset={1} span={3}></Col>
-            </Row>
-            <Form.List
-              name="detailAgendes"
+            <TextArea />
+          </Form.Item>
+          <Row>
+            <Col span={2}>เรื่องที่</Col>
+            <Col span={18}>รายละเอียด</Col>
+            <Col offset={1} span={3}></Col>
+          </Row>
+          <Form.List
+            name="detailAgendes"
 
-              // initialValue={Detailagenda}
-            >
-              {(fields, { add, remove }) => {
-                return (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => {
-                      return (
-                        <Row key={key}>
-                          <Col span={2}>
-                            <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
-                          </Col>
-                          <Col span={18}>
-                            <Form.Item {...restField} name={[name, 'detail']}>
-                              <Input />
-                            </Form.Item>
-                          </Col>
-
-                          <Col offset={1} span={3}>
-                            <DeleteOutlined onClick={() => remove(name)} />
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                    <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => [add()]}
-                        block
-                        icon={<PlusOutlined />}
-                      >
-                        เพิ่มเรื่อง
-                      </Button>
-                    </Form.Item>
-                  </>
-                );
-              }}
-            </Form.List>
-            <Row>
-              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-                <Upload {...props}>
-                  <Button
-                    // disabled={fileList.length === 1}
-                    icon={<UploadOutlined />}
-                  >
-                    Select File
-                  </Button>
-                </Upload>
-              </Col>
-            </Row>
-            <br></br>
-            {/* <Button
-                onClick={onFinish}
-                style={{ color: 'white', background: '#1E6541' }}
-              >
-                บันทึก ระเบียบวาระที่ {Pagestep}
-              </Button> */}
-          </Form>
-        </Row>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Row>
-          <Form
-            name="dynamic_form_nest_item"
-            // onFinish={onFinish}
-            autoComplete="off"
-            style={{ width: '100%' }}
-            form={form}
-            // onChange={onFinish}
-            // layout="vertical"
-            // initialValues={{ requiredMarkValue: requiredMark }}
-            // onValuesChange={onRequiredTypeChange}
-            // requiredMark={requiredMark}
+            // initialValue={Detailagenda}
           >
-            <Form.Item
-              label={`ระเบียบวาระที่ ${Pagestep}`}
-              required
-              tooltip="This is a required field"
-              name="agendas"
-            >
-              <Input
-                placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-                // onChange={e =>
-                //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-                // }
-              />
-            </Form.Item>
-            <Form.Item
-              label="รายละเอียดการประชุม"
-              tooltip={{
-                title: 'Tooltip with customize icon',
-                icon: <InfoCircleOutlined />,
-              }}
-              name="detail"
-            >
-              <TextArea
-              // onChange={e =>
-              //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
-              // }
-              />
-            </Form.Item>
-            <Row>
-              <Col span={2}>เรื่องที่</Col>
-              <Col span={18}>รายละเอียด</Col>
-              <Col offset={1} span={3}></Col>
-            </Row>
-            <Form.List name="detailAgendes" initialValue={[{}]}>
-              {(fields, { add, remove }) => {
-                return (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => {
-                      return (
-                        <Row key={key}>
-                          <Col span={2}>
-                            <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
-                          </Col>
-                          <Col span={18}>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'detail']}
-                              // rules={[
-                              //   { required: true, message: 'Missing detail' },
-                              // ]}
-                            >
-                              <Input />
-                            </Form.Item>
-                          </Col>
+            {(fields, { add, remove }) => {
+              return (
+                <>
+                  {fields.map(({ key, name, ...restField }) => {
+                    return (
+                      <Row key={key}>
+                        <Col span={2}>
+                          <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
+                        </Col>
+                        <Col span={18}>
+                          <Form.Item {...restField} name={[name, 'detail']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>
 
-                          <Col offset={1} span={3}>
-                            <DeleteOutlined onClick={() => remove(name)} />
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                    <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => add()}
-                        block
-                        icon={<PlusOutlined />}
-                      >
-                        เพิ่มเรื่อง
-                      </Button>
-                    </Form.Item>
-                  </>
-                );
-              }}
-            </Form.List>
-            <Row>
-              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-                <Upload {...props}>
-                  <Button
-                    // disabled={fileList.length === 1}
-                    icon={<UploadOutlined />}
-                  >
-                    Select File
-                  </Button>
-                </Upload>
-              </Col>
-            </Row>
-            <br></br>
-            {/* <Button
-              onClick={onFinish}
-              style={{ color: 'white', background: '#1E6541' }}
-            >
-              บันทึก ระเบียบวาระที่ {Pagestep}
-            </Button> */}
-          </Form>
-        </Row>
-      </>
-    );
-  }
+                        <Col offset={1} span={3}>
+                          <DeleteOutlined onClick={() => remove(name)} />
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => [add()]}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      เพิ่มเรื่อง
+                    </Button>
+                  </Form.Item>
+                </>
+              );
+            }}
+          </Form.List>
+          <Row>
+            <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+              <Upload {...props}>
+                <Button
+                  // disabled={fileList.length === 1}
+                  icon={<UploadOutlined />}
+                >
+                  Select File
+                </Button>
+              </Upload>
+            </Col>
+          </Row>
+          <br></br>
+        </Form>
+      </Row>
+    </>
+  );
+
+  // if (item && resultDetailagenda) {
+  //   // const Detailagenda: any[] = []
+  //   // resultDetailagenda?.map((x:any,y:number)=>{
+  //   //   Detailagenda.push({detail:`${x.detail}`})
+  //   // })
+  //   // console.log(Detailagenda,'gain');
+
+  //   // form.setFieldsValue({
+  //   //   agendas:item.agendes,detail:item.detailagendes
+  //   // })
+  //   return (
+  //     <>
+  //       <Row>
+  //         <Form
+  //           name="dynamic_form_nest_item"
+  //           // onFinish={onFinish}
+  //           autoComplete="off"
+  //           style={{ width: '100%' }}
+  //           form={form}
+  //           //  onValuesChange={onFinish}
+  //           // layout="vertical"
+  //           initialValues={{
+  //             agendas: item.agendes,
+  //             detail: item.detailagendes,
+  //           }}
+  //           onValuesChange={onChangeFormTrue}
+  //         >
+  //           <Form.Item
+  //             label={`ระเบียบวาระที่ ${Pagestep}`}
+  //             required
+  //             tooltip="This is a required field"
+  //             name="agendas"
+  //           >
+  //             <Input
+  //               placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
+  //               value={item.agendes}
+  //             />
+  //           </Form.Item>
+  //           <Form.Item
+  //             label="รายละเอียดการประชุม"
+  //             tooltip={{
+  //               title: 'Tooltip with customize icon',
+  //               icon: <InfoCircleOutlined />,
+  //             }}
+  //             name="detail"
+  //           >
+  //             <TextArea value={item.detailagendes} />
+  //           </Form.Item>
+  //           <Row>
+  //             <Col span={2}>เรื่องที่</Col>
+  //             <Col span={18}>รายละเอียด</Col>
+  //             <Col offset={1} span={3}></Col>
+  //           </Row>
+  //           <Form.List
+  //             name="detailAgendes"
+
+  //             // initialValue={Detailagenda}
+  //           >
+  //             {(fields, { add, remove }) => {
+  //               return (
+  //                 <>
+  //                   {fields.map(({ key, name, ...restField }) => {
+  //                     return (
+  //                       <Row key={key}>
+  //                         <Col span={2}>
+  //                           <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
+  //                         </Col>
+  //                         <Col span={18}>
+  //                           <Form.Item {...restField} name={[name, 'detail']}>
+  //                             <Input />
+  //                           </Form.Item>
+  //                         </Col>
+
+  //                         <Col offset={1} span={3}>
+  //                           <DeleteOutlined onClick={() => remove(name)} />
+  //                         </Col>
+  //                       </Row>
+  //                     );
+  //                   })}
+  //                   <Form.Item>
+  //                     <Button
+  //                       type="dashed"
+  //                       onClick={() => [add()]}
+  //                       block
+  //                       icon={<PlusOutlined />}
+  //                     >
+  //                       เพิ่มเรื่อง
+  //                     </Button>
+  //                   </Form.Item>
+  //                 </>
+  //               );
+  //             }}
+  //           </Form.List>
+  //           <Row>
+  //             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+  //               <Upload {...props}>
+  //                 <Button
+  //                   // disabled={fileList.length === 1}
+  //                   icon={<UploadOutlined />}
+  //                 >
+  //                   Select File
+  //                 </Button>
+  //               </Upload>
+  //             </Col>
+  //           </Row>
+  //           <br></br>
+  //           {/* <Button
+  //               onClick={onFinish}
+  //               style={{ color: 'white', background: '#1E6541' }}
+  //             >
+  //               บันทึก ระเบียบวาระที่ {Pagestep}
+  //             </Button> */}
+  //         </Form>
+  //       </Row>
+  //     </>
+  //   );
+  // } else {
+  //   return (
+  //     <>
+  //       <Row>
+  //         <Form
+  //           name="dynamic_form_nest_item"
+  //           // onFinish={onFinish}
+  //           autoComplete="off"
+  //           style={{ width: '100%' }}
+  //           form={form}
+  //           // onChange={onFinish}
+  //           // layout="vertical"
+  //           // initialValues={{ requiredMarkValue: requiredMark }}
+  //           // onValuesChange={onRequiredTypeChange}
+  //           // requiredMark={requiredMark}
+  //         >
+  //           <Form.Item
+  //             label={`ระเบียบวาระที่ ${Pagestep}`}
+  //             required
+  //             tooltip="This is a required field"
+  //             name="agendas"
+  //           >
+  //             <Input
+  //               placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
+  //               // onChange={e =>
+  //               //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
+  //               // }
+  //             />
+  //           </Form.Item>
+  //           <Form.Item
+  //             label="รายละเอียดการประชุม"
+  //             tooltip={{
+  //               title: 'Tooltip with customize icon',
+  //               icon: <InfoCircleOutlined />,
+  //             }}
+  //             name="detail"
+  //           >
+  //             <TextArea
+  //             // onChange={e =>
+  //             //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
+  //             // }
+  //             />
+  //           </Form.Item>
+  //           <Row>
+  //             <Col span={2}>เรื่องที่</Col>
+  //             <Col span={18}>รายละเอียด</Col>
+  //             <Col offset={1} span={3}></Col>
+  //           </Row>
+  //           <Form.List name="detailAgendes" initialValue={[{}]}>
+  //             {(fields, { add, remove }) => {
+  //               return (
+  //                 <>
+  //                   {fields.map(({ key, name, ...restField }) => {
+  //                     return (
+  //                       <Row key={key}>
+  //                         <Col span={2}>
+  //                           <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
+  //                         </Col>
+  //                         <Col span={18}>
+  //                           <Form.Item
+  //                             {...restField}
+  //                             name={[name, 'detail']}
+  //                             // rules={[
+  //                             //   { required: true, message: 'Missing detail' },
+  //                             // ]}
+  //                           >
+  //                             <Input />
+  //                           </Form.Item>
+  //                         </Col>
+
+  //                         <Col offset={1} span={3}>
+  //                           <DeleteOutlined onClick={() => remove(name)} />
+  //                         </Col>
+  //                       </Row>
+  //                     );
+  //                   })}
+  //                   <Form.Item>
+  //                     <Button
+  //                       type="dashed"
+  //                       onClick={() => add()}
+  //                       block
+  //                       icon={<PlusOutlined />}
+  //                     >
+  //                       เพิ่มเรื่อง
+  //                     </Button>
+  //                   </Form.Item>
+  //                 </>
+  //               );
+  //             }}
+  //           </Form.List>
+  //           <Row>
+  //             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+  //               <Upload {...props}>
+  //                 <Button
+  //                   // disabled={fileList.length === 1}
+  //                   icon={<UploadOutlined />}
+  //                 >
+  //                   Select File
+  //                 </Button>
+  //               </Upload>
+  //             </Col>
+  //           </Row>
+  //           <br></br>
+  //           {/* <Button
+  //             onClick={onFinish}
+  //             style={{ color: 'white', background: '#1E6541' }}
+  //           >
+  //             บันทึก ระเบียบวาระที่ {Pagestep}
+  //           </Button> */}
+  //         </Form>
+  //       </Row>
+  //     </>
+  //   );
+  // }
 };

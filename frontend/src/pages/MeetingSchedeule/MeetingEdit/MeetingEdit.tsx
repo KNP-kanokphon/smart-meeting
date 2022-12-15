@@ -96,17 +96,9 @@ export const EditMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
-    console.log(
-      `🚀 ~ file: MeetingEdit.tsx:99 ~ setDataAgendaField ~ dataField`,
-      dataField,
-    );
     const checkEdit = agenda.find(
       (x: any) =>
         x.uuid === dataField.id && String(x.step) === String(dataField.step),
-    );
-    console.log(
-      `🚀 ~ file: MeetingEdit.tsx:103 ~ setDataAgendaField ~ dataMap`,
-      dataMap,
     );
     let resultData = [];
     if (checkEdit) {
@@ -120,16 +112,8 @@ export const EditMeeting: React.FC = () => {
         (z: any) =>
           z.uuid === dataField.id && String(z.step) != String(dataField.step),
       );
-      console.log(
-        `🚀 ~ file: MeetingEdit.tsx:119 ~ setDataAgendaField ~ oldData`,
-        JSON.stringify(oldData),
-      );
       resultData = oldData;
       resultData.push(newState);
-      console.log(
-        `🚀 ~ file: MeetingEdit.tsx:125 ~ setDataAgendaField ~ resultData`,
-        resultData,
-      );
       setAgenda(resultData);
     }
 
