@@ -34,6 +34,7 @@ import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import generatePicker from 'antd/es/date-picker/generatePicker';
 import 'antd/es/date-picker/style';
 import TextArea from 'antd/lib/input/TextArea';
+import { DatamanagementService } from '../../../stores/meeting-store';
 const DatePicker = generatePicker(dayjsGenerateConfig);
 let buddhistEra = require('dayjs/plugin/buddhistEra');
 dayjs.extend(buddhistEra);
@@ -108,66 +109,84 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
   const [getOther, setOther] = useState<string>('');
 
   const onFinish = (e: any) => {
-    const data = {
-      data: {
-        uuid: uuidv4(),
-        status: getStatus,
-        title: getTitle,
-        namelastname: getNameLastName,
-        idcard: getIdCard,
-        dob: getDOB,
-        age: getAge,
-        phonenumber: getPhoneNumber,
-        email: getEmail,
-        course: getCourse,
-        course1: getCourse1,
-        generation: getGeneration,
-        position: getPosition,
-        housenumber: getHouseNumber,
-        roomnumber: getRoomNumber,
-        village: getVillage,
-        group: getGroup,
-        alley: getAlley,
-        road: getRoad,
-        subdistrict: getSubDistrict,
-        district: getDistrict,
-        province: getProvince,
-        postalcode: getPostalCode,
-        passnumber: getPassNumber,
-        imppassnumber: getImpPassNumber,
-        workdocument: getWorkDocument,
-        career: getCareer,
-        positioncareer: getPositionCareer,
-        salary: getSalary,
-        office: getOffice,
-        housenumberoffice: getHouseNumberOffice,
-        groupoffice: getGroupOffice,
-        alleyoffice: getAlleyOffice,
-        roadoffice: getRoadOffice,
-        subdistrictoffice: getSubDistrictOffice,
-        districtoffice: getDistrictOffice,
-        provinceoffice: getProvinceOffice,
-        postalcodeoffice: getPostalCodeOffice,
-        phonenumberoffice: getPhoneNumberOffice,
-        detail1: getDetail1,
-        detail2: getDetail2,
-        detail3: getDetail3,
-        applyposition: getApplyPosition,
-        association: getAssociaton,
-        other: getOther,
-        uploadfile: fileList,
-        esignature: imageURLone,
-      },
-    };
-    console.log(data);
+    // const data = {
+    //   data: {
+    //     uuid: uuidv4(),
+    //     status: getStatus,
+    //     title: getTitle,
+    //     namelastname: getNameLastName,
+    //     idcard: getIdCard,
+    //     dob: getDOB,
+    //     age: getAge,
+    //     phonenumber: getPhoneNumber,
+    //     email: getEmail,
+    //     course: getCourse,
+    //     course1: getCourse1,
+    //     generation: getGeneration,
+    //     position: getPosition,
+    //     housenumber: getHouseNumber,
+    //     roomnumber: getRoomNumber,
+    //     village: getVillage,
+    //     group: getGroup,
+    //     alley: getAlley,
+    //     road: getRoad,
+    //     subdistrict: getSubDistrict,
+    //     district: getDistrict,
+    //     province: getProvince,
+    //     postalcode: getPostalCode,
+    //     passnumber: getPassNumber,
+    //     imppassnumber: getImpPassNumber,
+    //     workdocument: getWorkDocument,
+    //     career: getCareer,
+    //     positioncareer: getPositionCareer,
+    //     salary: getSalary,
+    //     office: getOffice,
+    //     housenumberoffice: getHouseNumberOffice,
+    //     groupoffice: getGroupOffice,
+    //     alleyoffice: getAlleyOffice,
+    //     roadoffice: getRoadOffice,
+    //     subdistrictoffice: getSubDistrictOffice,
+    //     districtoffice: getDistrictOffice,
+    //     provinceoffice: getProvinceOffice,
+    //     postalcodeoffice: getPostalCodeOffice,
+    //     phonenumberoffice: getPhoneNumberOffice,
+    //     detail1: getDetail1,
+    //     detail2: getDetail2,
+    //     detail3: getDetail3,
+    //     applyposition: getApplyPosition,
+    //     association: getAssociaton,
+    //     other: getOther,
+    //     uploadfile: fileList,
+    //     esignature: imageURLone,
+    //   },
+    // };
+
     Modal.confirm({
       title: 'ยืนยันการสมัครเป็นสมาชิก',
       icon: <ExclamationCircleOutlined />,
       content: 'โปรดตรวจสอบข้อมูลให้แน่ใจก่อนกดยืนยัน',
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
-      onOk: () => {
-        console.log('OK');
+      onOk: async () => {
+        const dataTest: any = {
+          // type: "member",
+          uuid: uuidv4(),
+          prefix: getTitle,
+          username: getNameLastName,
+          idcard: getIdCard,
+          phonenumber: getPhoneNumber,
+          email: getEmail,
+          course: getCourse,
+          course1: getCourse1,
+          model: getGeneration,
+          position: getPosition,
+          // bridday: getDOB,
+        };
+        await DatamanagementService()
+          .importuser(dataTest)
+          .then(e => {
+            message.success('Import User Success !!');
+          });
       },
       onCancel: () => {
         console.log('Cancel');
@@ -250,7 +269,7 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
             </Row>
           </div>
         }
-        visible={open}
+        open={open}
         style={{ width: '500px', height: '500px' }}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -323,10 +342,10 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                       setTitle(e);
                     }}
                   >
-                    <Option value={'m'}>นาย</Option>
-                    <Option value={'f'}>นาง</Option>
-                    <Option value={'g'}>นางสาว</Option>
-                    <Option value={'dr'}>ดร.</Option>
+                    <Option value={'นาย'}>นาย</Option>
+                    <Option value={'นาง'}>นาง</Option>
+                    <Option value={'นางสาว'}>นางสาว</Option>
+                    <Option value={'ดร.'}>ดร.</Option>
                   </Select>
                 </Form.Item>
               </Col>

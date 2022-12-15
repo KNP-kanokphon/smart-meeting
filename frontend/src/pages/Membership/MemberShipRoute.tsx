@@ -17,6 +17,7 @@ import {
   Upload,
   Tabs,
   Divider,
+  message,
 } from 'antd';
 import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
 // import { TableMemberShip } from './components/TableMemberShip';
@@ -48,17 +49,17 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             uuid: e[0] === null ? undefined : e[0],
             prefix: e[1] === null ? undefined : e[1],
             username: e[2] === null ? undefined : e[2],
-            idcard: e[3] === null ? undefined : e[3],
-            bridday: e[4] === null ? undefined : e[4],
-            phonenumber: e[5] === null ? undefined : e[5],
-            email: e[6] === null ? undefined : e[6],
-            course: e[7] === null ? undefined : e[7],
-            course1: e[8] === null ? undefined : e[8],
-            model: e[9] === null ? undefined : e[9],
-            position: e[10] === null ? undefined : e[10],
-            studentid: e[11] === null ? undefined : e[11],
-            username_eng: e[12] === null ? undefined : e[12],
-            line: e[12] === null ? undefined : e[13],
+            idcard: e[4] === null ? undefined : e[4],
+            bridday: e[5] === null ? undefined : e[5],
+            phonenumber: e[6] === null ? undefined : e[6],
+            email: e[7] === null ? undefined : e[7],
+            course: e[8] === null ? undefined : e[8],
+            course1: e[9] === null ? undefined : e[9],
+            model: e[10] === null ? undefined : e[10],
+            position: e[11] === null ? undefined : e[11],
+            studentid: e[12] === null ? undefined : e[12],
+            username_eng: e[3] === null ? undefined : e[3],
+            line: e[13] === null ? undefined : e[13],
           });
         }
       });
@@ -66,6 +67,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         .importuser(newData)
         .then(e => {
           console.log(e);
+          message.success('Import User Success !!');
         });
 
       // const resualuploadpartymeeting = await DatamanagementService()
@@ -159,7 +161,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
   };
 
   const onChange = (key: string) => {
-    console.log(key);
+    // console.log(key);
   };
 
   return (
