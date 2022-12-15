@@ -56,10 +56,10 @@ export const DetailPage: React.FC<Props> = ({
   useEffect(() => {}, [itemFiled]);
   useEffect(() => {
     getData();
-    const newfileAgenda: any = [];
+    // const newfileAgenda: any = [];
     nameFilesummary?.map((x: any, y: any) => {
       if (x.type === 'fileAgenda') {
-        setNewfileAgenda({ ...x, name: x.namefile, uid: y });
+        setNewfileAgenda([{ ...x, name: x.namefile, uid: y }]);
       }
     });
     // if (agenda) {
@@ -92,17 +92,20 @@ export const DetailPage: React.FC<Props> = ({
 
     //   setItems(oldItems);
     // }
-    createItems(agenda).then((xs: any) => {
-      console.log(
-        `🚀 ~ file: detailsPage.tsx:101 ~ createItems ~ agenda`,
-        agenda,
-      );
-      console.log(`🚀 ~ file: detailsPage.tsx:96 ~ createItems ~ xs`, xs);
-      setItems(xs);
-    });
+    if (agenda) {
+      createItems(agenda).then((xs: any) => {
+        console.log(
+          `🚀 ~ file: detailsPage.tsx:101 ~ createItems ~ agenda`,
+          agenda,
+        );
+        console.log(`🚀 ~ file: detailsPage.tsx:96 ~ createItems ~ xs`, xs);
+        setItems(xs);
+      });
+    }
   }, [nameFilesummary, agenda]);
 
   const createItems = (agenda: any) => {
+    console.log(newfileAgenda);
     return new Promise(async (resolve, reject) => {
       Promise.all(
         agenda

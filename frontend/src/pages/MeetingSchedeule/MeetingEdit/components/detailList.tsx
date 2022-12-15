@@ -111,7 +111,7 @@ export const DetailList: React.FC<Props> = ({
             agendas: item.agendes,
             detail: item.detailagendes,
             detailAgendes: resultDetailagenda.map((x: any) => {
-              x.detail;
+              return { detail: x.detail };
             }),
           }}
           onValuesChange={onChangeFormTrue}
