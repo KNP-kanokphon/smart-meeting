@@ -174,7 +174,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     <Logogold />
                   </Col>
                 </Row>
-                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                <Row gutter={16}>
                   <Col span={2}>
                     <Image
                       src={leam}
@@ -254,7 +254,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     </Row>
                   </Col>
                 </Row>
-                <br></br>
+
                 <Row>
                   <Col
                     xs={24}
