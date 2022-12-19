@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Card,
   Col,
@@ -108,59 +108,41 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
   const [getApplyPosition, setApplyPosition] = useState<string>('');
   const [getOther, setOther] = useState<string>('');
 
-  const onFinish = (e: any) => {
-    // const data = {
-    //   data: {
-    //     uuid: uuidv4(),
-    //     status: getStatus,
-    //     title: getTitle,
-    //     namelastname: getNameLastName,
-    //     idcard: getIdCard,
-    //     dob: getDOB,
-    //     age: getAge,
-    //     phonenumber: getPhoneNumber,
-    //     email: getEmail,
-    //     course: getCourse,
-    //     course1: getCourse1,
-    //     generation: getGeneration,
-    //     position: getPosition,
-    //     housenumber: getHouseNumber,
-    //     roomnumber: getRoomNumber,
-    //     village: getVillage,
-    //     group: getGroup,
-    //     alley: getAlley,
-    //     road: getRoad,
-    //     subdistrict: getSubDistrict,
-    //     district: getDistrict,
-    //     province: getProvince,
-    //     postalcode: getPostalCode,
-    //     passnumber: getPassNumber,
-    //     imppassnumber: getImpPassNumber,
-    //     workdocument: getWorkDocument,
-    //     career: getCareer,
-    //     positioncareer: getPositionCareer,
-    //     salary: getSalary,
-    //     office: getOffice,
-    //     housenumberoffice: getHouseNumberOffice,
-    //     groupoffice: getGroupOffice,
-    //     alleyoffice: getAlleyOffice,
-    //     roadoffice: getRoadOffice,
-    //     subdistrictoffice: getSubDistrictOffice,
-    //     districtoffice: getDistrictOffice,
-    //     provinceoffice: getProvinceOffice,
-    //     postalcodeoffice: getPostalCodeOffice,
-    //     phonenumberoffice: getPhoneNumberOffice,
-    //     detail1: getDetail1,
-    //     detail2: getDetail2,
-    //     detail3: getDetail3,
-    //     applyposition: getApplyPosition,
-    //     association: getAssociaton,
-    //     other: getOther,
-    //     uploadfile: fileList,
-    //     esignature: imageURLone,
-    //   },
-    // };
+  const [getPositionAll, setPositionAll] = useState<any>([]);
+  const [getCourseAll, setCourseAll] = useState<any>([]);
 
+  useEffect(() => {
+    dataPosition();
+    getListCourse();
+  }, []);
+
+  const dataPosition = async () => {
+    const resultDataPosiotion = await DatamanagementService().getPositionall();
+    // console.log(resultDataPosiotion);
+    const data = (await resultDataPosiotion.map((e: any, row: any) => {
+      const mapData = {
+        uuid: e.uuid,
+        position: e.nameposition,
+      };
+      return mapData;
+    })) as any;
+    setPositionAll(data);
+  };
+
+  const getListCourse = async () => {
+    const result = await DatamanagementService().getCourseall();
+
+    const dataCourse = (await result.map((e: any, i: number) => {
+      const mapData = {
+        uuid: e.uuid,
+        course: e.namecourse,
+      };
+      return mapData;
+    })) as any;
+    setCourseAll(dataCourse);
+  };
+
+  const onFinish = (e: any) => {
     Modal.confirm({
       title: 'ยืนยันการสมัครเป็นสมาชิก',
       icon: <ExclamationCircleOutlined />,
@@ -168,8 +150,8 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        const dataTest: any = {
-          // type: "member",
+        const data: any = {
+          type: 'member',
           uuid: uuidv4(),
           prefix: getTitle,
           username: getNameLastName,
@@ -180,10 +162,43 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
           course1: getCourse1,
           model: getGeneration,
           position: getPosition,
-          // bridday: getDOB,
+          bridday: getDOB,
+          number: getHouseNumber,
+          roomnumber: getRoomNumber,
+          villageno: getGroup,
+          bldg: getVillage,
+          alley: getAlley,
+          road: getRoad,
+          subdistrict: getSubDistrict,
+          district: getDistrict,
+          province: getProvince,
+          postalcode: getPostalCode,
+          active: getStatus,
+          passport: getPassNumber,
+          certificate: getImpPassNumber,
+          workpermit: getWorkDocument,
+          work: getCareer,
+          job_position: getPositionCareer,
+          salary: getSalary,
+          work_station: getOffice,
+          work_number: getHouseNumberOffice,
+          work_villageno: getGroupOffice,
+          work_alley: getAlleyOffice,
+          work_road: getRoadOffice,
+          work_sub_district: getSubDistrictOffice,
+          work_district: getDistrictOffice,
+          work_province: getProvinceOffice,
+          work_postal_code: getPostalCodeOffice,
+          phone_office: String(getPhoneNumberOffice),
+          all_assets: getDetail1,
+          previous_job: getDetail2,
+          criminalcase: getDetail3,
+          position_guild: getApplyPosition,
+          guild: getAssociaton,
+          others: getOther,
         };
         await DatamanagementService()
-          .importuser(dataTest)
+          .importuser(data)
           .then(e => {
             message.success('Import User Success !!');
           });
@@ -199,7 +214,6 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
     headers: {
       authorization: 'authorization-text',
     },
-
     onChange(info) {
       if (info.file.status !== 'uploading') {
       }
@@ -208,14 +222,12 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
       } else if (info.file.status === 'error') {
       }
     },
-
     onRemove: (file: any) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
-
     beforeUpload: (file: any) => {
       const PDFFile = file.type === 'application/pdf';
       if (file.type === 'application/pdf') {
@@ -418,26 +430,64 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'หลักสูตร'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setCourse(e);
                     }}
                   >
-                    <Option value={'1'}>หลักสูตร A</Option>
-                    <Option value={'2'}>หลักสูตร B</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getCourseAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.uuid}>
+                          {e.course}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร 1'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setCourse1(e);
                     }}
                   >
-                    <Option value={'1'}>หลักสูตร A</Option>
-                    <Option value={'2'}>หลักสูตร B</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getCourseAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.uuid}>
+                          {e.course}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
@@ -455,14 +505,32 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setPosition(e);
                     }}
                   >
-                    <Option value={'1'}>ประธานรุ่น</Option>
-                    <Option value={'2'}>ผู้ประสานงาน</Option>
-                    <Option value={'3'}>สมาชิกทั่วไป</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getPositionAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.position}>
+                          {e.position}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
@@ -745,7 +813,7 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                 <Form.Item label={'โทรศัพท์สถานที่ประกอบอาชีพ'}>
                   <InputNumber
                     onChange={(e: any) => {
-                      setPhoneNumberOffice(e);
+                      setPhoneNumberOffice(e.target.value);
                     }}
                     style={{ width: '100%' }}
                     type="phone"
@@ -809,15 +877,33 @@ export const AddMemberUser: React.FC = (): React.ReactElement => {
                   label={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
                 >
                   <Select
+                    placeholder={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     onChange={(e: any) => {
                       setApplyPosition(e);
                     }}
                     style={{ width: '100%' }}
-                    placeholder={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
                   >
-                    <Option value={1}>ตำแหน่ง 1</Option>
-                    <Option value={2}>ตำแหน่ง 2</Option>
-                    <Option value={3}>ตำแหน่ง 3</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getPositionAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.position}>
+                          {e.position}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>

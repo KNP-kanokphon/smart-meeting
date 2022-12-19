@@ -254,16 +254,33 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   deletePosition: async (data: any) => {
-    console.log(data.uuid);
     const newData = {
       data: data,
     };
-    console.log(newData);
     const result = await httpClient.delete(
       `userattendees/delete/position/${data.uuid}`,
       newData,
     );
     return result?.data;
+  },
+
+  deleteUser: async (data: any) => {
+    const newData = {
+      data: data,
+    };
+    const result = await httpClient.delete(
+      `user/delete/user/${data.uuid}`,
+      newData,
+    );
+    return result?.data;
+  },
+  updateUser: async (uuid: any, data: any) => {
+    console.log(uuid);
+    const newData = {
+      data: data,
+    };
+    const result = await httpClient.put(`user/updateuser/${uuid}`, newData);
+    return result.data;
   },
   getPathFilePdf: async (roomid: any) => {
     const result = await httpClient.get(`/meeting/getPathFilePdf/${roomid}`);
@@ -373,6 +390,8 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   importuser: async (data: string[]) => {
+    console.log(data);
+
     const result = await httpClient.post(`/user/importuser`, data);
     return result.data;
   },

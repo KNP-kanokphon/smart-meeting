@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Card,
   Col,
@@ -85,35 +85,65 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [getProvince, setProvince] = useState<string>('');
   const [getPostalCode, setPostalCode] = useState<string>('');
 
+  const [getPositionAll, setPositionAll] = useState<any>([]);
+  const [getCourseAll, setCourseAll] = useState<any>([]);
+
+  useEffect(() => {
+    dataPosition();
+    getListCourse();
+  }, []);
+
+  const dataPosition = async () => {
+    const resultDataPosiotion = await DatamanagementService().getPositionall();
+    // console.log(resultDataPosiotion);
+    const dataPosition = (await resultDataPosiotion.map((e: any, row: any) => {
+      const mapData = {
+        uuid: e.uuid,
+        position: e.nameposition,
+      };
+      return mapData;
+    })) as any;
+    setPositionAll(dataPosition);
+  };
+
+  const getListCourse = async () => {
+    const result = await DatamanagementService().getCourseall();
+
+    const dataCourse = (await result.map((e: any, i: number) => {
+      const mapData = {
+        uuid: e.uuid,
+        course: e.namecourse,
+      };
+      return mapData;
+    })) as any;
+    setCourseAll(dataCourse);
+  };
+
   const onFinish = (e: any) => {
-    // const data = {
-    //   data: {
-    //     uuid: uuidv4(),
-    //     status: getStatus,
-    //     title: getTitle,
-    //     namelastname: getNameLastName,
-    //     idcard: getIdCard,
-    //     phonenumber: getPhoneNumber,
-    //     email: getEmail,
-    //     course: getCourse,
-    //     course1: getCourse1,
-    //     generation: getGeneration,
-    //     position: getPosition,
-    //     housenumber: getHouseNumber,
-    //     roomnumber: getRoomNumber,
-    //     village: getVillage,
-    //     group: getGroup,
-    //     alley: getAlley,
-    //     road: getRoad,
-    //     subdistrict: getSubDistrict,
-    //     district: getDistrict,
-    //     province: getProvince,
-    //     postalcode: getPostalCode,
-    //     uploadfile: fileList,
-    //     esignature: imageURLone,
-    //   },
-    // };
-    // console.log(data);
+    const data = {
+      type: 'normal',
+      uuid: uuidv4(),
+      prefix: getTitle,
+      username: getNameLastName,
+      idcard: getIdCard,
+      phonenumber: getPhoneNumber,
+      email: getEmail,
+      course: getCourse,
+      course1: getCourse1,
+      model: getGeneration,
+      position: getPosition,
+      number: getHouseNumber,
+      roomnumber: getRoomNumber,
+      villageno: getGroup,
+      bldg: getVillage,
+      alley: getAlley,
+      road: getRoad,
+      subdistrict: getSubDistrict,
+      district: getDistrict,
+      province: getProvince,
+      postalcode: getPostalCode,
+      active: getStatus,
+    } as any;
 
     Modal.confirm({
       title: 'ยืนยันการสมัครเป็นสมาชิก',
@@ -122,37 +152,16 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        const dataTest: any = {
-          type: 'normal',
-          uuid: uuidv4(),
-          prefix: getTitle,
-          username: getNameLastName,
-          idcard: getIdCard,
-          phonenumber: getPhoneNumber,
-          email: getEmail,
-          course: getCourse,
-          course1: getCourse1,
-          model: getGeneration,
-          position: getPosition,
-          active: getStatus,
-        };
         await DatamanagementService()
-          .importuser(dataTest)
-          .then(e => {
+          .importuser(data)
+          .then((e: any) => {
             message.success('Import User Success !!');
-            setTitle('');
-            setNameLastName('');
-            setIdCard('');
-            setPhoneNumber('');
-            setEmail('');
-            setCourse('');
-            setCourse1('');
-            setGeneration('');
-            setPosition('');
-            setStatus('');
             form.resetFields();
+          })
+          .catch((e: any) => {
+            message.error('error');
+            console.log(e);
           });
-        console.log('OK');
       },
       onCancel: () => {
         console.log('Cancel');
@@ -323,10 +332,10 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                       setTitle(e);
                     }}
                   >
-                    <Option value={'m'}>นาย</Option>
-                    <Option value={'f'}>นาง</Option>
-                    <Option value={'g'}>นางสาว</Option>
-                    <Option value={'dr'}>ดร.</Option>
+                    <Option value={'นาย'}>นาย</Option>
+                    <Option value={'นาง'}>นาง</Option>
+                    <Option value={'นางสาว'}>นางสาว</Option>
+                    <Option value={'ดร.'}>ดร.</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -376,26 +385,63 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'หลักสูตร'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setCourse(e);
                     }}
                   >
-                    <Option value={'1'}>หลักสูตร A</Option>
-                    <Option value={'2'}>หลักสูตร B</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getCourseAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.uuid}>
+                          {e.course}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร 1'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setCourse1(e);
                     }}
                   >
-                    <Option value={'1'}>หลักสูตร A</Option>
-                    <Option value={'2'}>หลักสูตร B</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getCourseAll.map((e: any, row: any) => {
+                      return (
+                        <Option key={e.uuid} value={e.uuid}>
+                          {e.course}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
@@ -413,14 +459,32 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'}>
                   <Select
+                    mode="multiple"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     placeholder={'กรุณาเลือก'}
                     onChange={(e: string) => {
                       setPosition(e);
                     }}
                   >
-                    <Option value={'1'}>ประธานรุ่น</Option>
-                    <Option value={'2'}>ผู้ประสานงาน</Option>
-                    <Option value={'3'}>สมาชิกทั่วไป</Option>
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getPositionAll.map((e: any, row: any) => {
+                      // console.log(e.position);
+                      return (
+                        <Option key={e.uuid} value={e.uuid}>
+                          {e.position}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
