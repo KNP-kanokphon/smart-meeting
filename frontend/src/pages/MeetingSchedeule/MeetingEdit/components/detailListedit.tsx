@@ -14,12 +14,13 @@ const { TextArea } = Input;
 type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
-  Pagestep: number;
+  Pagestep: string;
   field?: any[];
   onChangeSetItemFiled: (filedList: any) => void;
   item?: any;
   resultDetailagenda?: any;
   file?: string[];
+  idmeeting?: string;
 };
 
 export const DetailListedit: React.FC<Props> = ({
@@ -31,6 +32,7 @@ export const DetailListedit: React.FC<Props> = ({
   resultDetailagenda,
   file,
   onChangeSetItemFiled,
+  idmeeting,
 }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
@@ -56,12 +58,16 @@ export const DetailListedit: React.FC<Props> = ({
   }, [fileList, agendas, detail, detailAgendes]);
 
   const onFinish = async () => {
-    const formData = new FormData();
-    fileList.map((e: any) => {
-      formData.append('file', e);
-    });
+    // const formData = new FormData();
+    // fileList.map((e: any) => {
+    //   formData.append('file', e);
+    // });
     await form.validateFields().then(async values => {
-      // onChangeSetItemFiled({ values, files: formData });
+      onChangeSetItemFiled({
+        values,
+        // files: fileList,
+        step: Pagestep,
+      });
     });
     // console.log('Received values of form:', values);
   };
@@ -87,12 +93,7 @@ export const DetailListedit: React.FC<Props> = ({
             tooltip="This is a required field"
             name="agendas"
           >
-            <Input
-              placeholder="เรื่องประธานแจ้งที่ประชุมทราบ"
-              // onChange={e =>
-              //   onChangeSetItemFiled({ id: Pagestep, agendas: e.target.value })
-              // }
-            />
+            <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
           </Form.Item>
           <Form.Item
             label="รายละเอียดการประชุม"
@@ -102,11 +103,7 @@ export const DetailListedit: React.FC<Props> = ({
             }}
             name="detail"
           >
-            <TextArea
-            // onChange={e =>
-            //   onChangeSetItemFiled({ id: Pagestep, detail: e.target.value })
-            // }
-            />
+            <TextArea />
           </Form.Item>
           <Row>
             <Col span={2}>เรื่องที่</Col>
@@ -123,13 +120,7 @@ export const DetailListedit: React.FC<Props> = ({
                         <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
                       </Col>
                       <Col span={18}>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'detail']}
-                          // rules={[
-                          //   { required: true, message: 'Missing detail' },
-                          // ]}
-                        >
+                        <Form.Item {...restField} name={[name, 'detail']}>
                           <Input />
                         </Form.Item>
                       </Col>

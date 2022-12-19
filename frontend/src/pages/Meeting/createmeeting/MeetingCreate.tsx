@@ -149,7 +149,7 @@ export const CreateMeeting: React.FC = () => {
           DatamanagementService().saveagenda(e.values, id, i);
         });
         dataDetail.map((e: any, i: string) => {
-          DatamanagementService().savefileagendas(e.files, id, i);
+          DatamanagementService().savefileagendas(e.files, id, i, false);
         });
         navigate('/meeting/meeting-schedule');
       },

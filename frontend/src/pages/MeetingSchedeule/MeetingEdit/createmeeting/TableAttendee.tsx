@@ -7,7 +7,7 @@ type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
   onChangeSetItemFiledAtt: (filedList: any) => void;
-  user?:any;
+  user?: any;
 };
 const { Option } = Select;
 
@@ -15,13 +15,13 @@ export const TableAttendee: React.FC<Props> = ({
   children,
   extra,
   onChangeSetItemFiledAtt,
-  user
+  user,
 }) => {
   const [dataSourceAttendee, setDataSourceAttendee] = useState<any>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any>();
   const [username, setUsername] = useState<any>([]);
-  const [defaultUser,setDefaultUser] = useState<any>([]);
+  const [defaultUser, setDefaultUser] = useState<any>([]);
   useEffect(() => {
     // const newData = user.map((e: any, i: number) => {
     //   if(e.type === 'userBoard'){
@@ -31,19 +31,18 @@ export const TableAttendee: React.FC<Props> = ({
     //   };}
     // });
 
-    const newData = user.reduce((newData:any, thing:any) => {
+    const newData = user.reduce((newData: any, thing: any) => {
       if (thing.type === 'userAttendee') {
         newData.push(thing);
       }
       return newData;
     }, []);
 
-
     // console.log(newData,'newdata');
-    
-    setDefaultUser(newData)
-    setDataSourceAttendee(newData)
-  },[user]);
+
+    setDefaultUser(newData);
+    setDataSourceAttendee(newData);
+  }, [user]);
 
   useEffect(() => {
     onChangeSetItemFiledAtt(dataSourceAttendee);
@@ -139,7 +138,6 @@ export const TableAttendee: React.FC<Props> = ({
           <Col span={2}>
             <Button
               onClick={handleAdd}
-              type="primary"
               style={{
                 marginBottom: 16,
                 color: 'white',

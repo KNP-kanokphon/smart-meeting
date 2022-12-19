@@ -34,10 +34,30 @@ export const AgendaPage: React.FC<IProp> = ({
   useEffect(() => {
     // setFileList(nameFilesummary)
     // console.log(nameFilesummary,'nameFilesummary');
-    const newNameFilesummary = nameFilesummary.map((x: any, y: any) => {
-      return { ...x, name: x.namefile, uid: y };
+    // const newNameFilesummary = nameFilesummary.map((x: any, y: any) => {
+    //   console.log(x.type);
+
+    //   if ((x.type = 'fileOverviwe')) return { ...x, name: x.namefile, uid: y };
+    // });
+    // const newNameFilesummary = nameFilesummary.filter(
+    //   (x: any) => x.type === 'fileOverviwe',
+    // );
+    const file: any = [];
+    nameFilesummary.filter((c: any, index: number) => {
+      if (c.type === 'fileOverviwe') {
+        file.push({
+          id: 30,
+          idmeeting: c.idmeeting,
+          namefile: c.namefile,
+          pathfile: c.pathfile,
+          type: 'fileAgenda',
+          step: '0',
+          name: c.namefile,
+          uid: index,
+        });
+      }
     });
-    setFileList(newNameFilesummary);
+    setFileList(file);
     const oldanswer = {
       title: dataAgenda?.title,
       room: dataAgenda?.room,

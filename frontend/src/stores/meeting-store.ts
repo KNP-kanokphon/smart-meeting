@@ -182,17 +182,35 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/meeting/agenda`, newData);
     return result.data;
   },
-  savefileagendas: async (file: any, id: string, step: string) => {
+  savefileagendas: async (
+    file: any,
+    id: string,
+    step: string,
+    update: boolean,
+  ) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
     const result = await httpClient.post(
       `/meeting/agendafile/${id}/${step}`,
-      file,
+      update === true ? formData : file,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       },
     );
-    return result.data;
+    return result;
+  },
+  deletefileagendas: async (
+    idmeeting: string,
+    step: string,
+    namefile: string,
+  ) => {
+    const result = await httpClient.delete(
+      `/meeting/agendafile/${idmeeting}/${step}/${namefile}`,
+    );
+    return result;
   },
   getagendaByid: async (idroom: any) => {
     const result = await httpClient.get(`meeting/agenda/${idroom}`);
@@ -367,6 +385,20 @@ export const DatamanagementService = () => ({
       data: data,
       usersatd: userAttendee,
       userboard: userBoard,
+    });
+    return result.data;
+  },
+  updatemeeting: async (
+    id: any,
+    dataAgenda: any,
+    getLastdata: any,
+    dataFood: any,
+  ) => {
+    const result = await httpClient.post(`/meeting/updatemeeting`, {
+      id: id,
+      dataAgenda: dataAgenda,
+      getLastdata: getLastdata,
+      dataFood: dataFood,
     });
     return result.data;
   },

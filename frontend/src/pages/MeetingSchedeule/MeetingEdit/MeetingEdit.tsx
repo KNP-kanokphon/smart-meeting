@@ -28,6 +28,7 @@ export const EditMeeting: React.FC = () => {
   const [agenda, setAgenda] = useState<any>();
   const [dataMap, setDataMap] = useState<any>([]);
   const [food, setFood] = useState<any>([]);
+  const [getLastdata, setLastdata] = useState([]);
 
   useEffect(() => {
     const getListmeeting = async () => {
@@ -48,10 +49,7 @@ export const EditMeeting: React.FC = () => {
               return data;
             });
         });
-
-      const resultnamefilesummary =
-        await DatamanagementService().getnamefileSummary(state);
-      setNamefilesummary(resultnamefilesummary);
+      updateDataFile();
       const resultAgenda = await DatamanagementService().getagendaByid(state);
       setAgenda(resultAgenda);
       setDataMap(resultAgenda);
@@ -72,6 +70,12 @@ export const EditMeeting: React.FC = () => {
 
     getListmeeting().catch(console.error);
   }, []);
+
+  const updateDataFile = async () => {
+    const resultnamefilesummary =
+      await DatamanagementService().getnamefileSummary(state);
+    setNamefilesummary(resultnamefilesummary);
+  };
 
   const onChangeCurrentStep = (step: number) => {
     setCurrentStep(step);
@@ -94,58 +98,60 @@ export const EditMeeting: React.FC = () => {
       setCurrentStep(step);
     }
   };
-
-  const setDataAgendaField = (dataField: any) => {
-    const checkEdit = agenda.find(
-      (x: any) =>
-        x.uuid === dataField.id && String(x.step) === String(dataField.step),
-    );
+  const setDataFieldNew = (dataField: any) => {
+    const newState = {
+      id: 2,
+      ...dataField.values,
+      uuid: dataField.id,
+      step: dataField.step,
+    };
     let resultData = [];
-    if (checkEdit) {
-      const newState = {
-        id: 2,
-        ...dataField.values,
-        uuid: dataField.id,
-        step: dataField.step,
-      };
-      const oldData = agenda.filter(
-        (z: any) =>
-          z.uuid === dataField.id && String(z.step) != String(dataField.step),
-      );
-      resultData = oldData;
-      resultData.push(newState);
-      setAgenda(resultData);
-    }
-
-    // setDataDetail([newData, dataField.values]);
-    // console.log(oldState);
-    // console.log(newState);
-
-    //
-    // const dataOld = dataMap?.filter((pane: any) => {
-    //   return (
-    //     pane.uuid === dataField.id &&
-    //     String(pane.step) !== String(dataField.step)
-    //   );
-    // });
-    // const newDataagenda = {
-    //   ...dataField.values,
-    //   uuid: dataField.id,
-    //   step: dataField.step,
-    // };
-    // dataOld.push(newDataagenda);
-    // console.log(dataOld);
-    // setDataDetail(dataOld)
-
-    // setAgenda(dataOld);
-    // setAgenda(dataField);
-    // setDataDetail(dataField);
-
-    // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
-
-    // setDataDetail([ ...dataDetail, ...dataField ]);
+    const oldData = agenda.filter(
+      (z: any) => String(z.step) !== String(dataField.step),
+    );
+    resultData = oldData;
+    resultData.push(newState);
+    setAgenda(resultData);
   };
 
+  const setDataAgendaField = (dataField: any) => {
+    setDataDetail(dataField);
+    let resultData = [];
+    const newState = {
+      id: 2,
+      ...dataField.values,
+      uuid: dataField.id,
+      step: dataField.step,
+    };
+    const oldData = agenda.filter(
+      (z: any) => String(z.step) !== String(dataField.step),
+    );
+    resultData = oldData;
+    resultData.push(newState);
+    setAgenda(resultData);
+  };
+  const updateFile = async (data: any) => {
+    if (data) {
+      await updateDataFile();
+    }
+  };
+
+  const lastDataAgenda = (dataField: any) => {
+    // console.log(dataField);
+    const data: any = [];
+    dataField.map((x: any) => {
+      data.push({
+        id: 2,
+        agendas: x?.children?.props.item.agendes,
+        detail: x?.children?.props.item.detailagendes,
+        detailAgendes: x?.children?.props?.resultDetailagenda,
+        uuid: x?.children?.props.item.uuid,
+        step: x?.children?.props.item.step,
+        detailAgendesNew: x?.children?.props.item?.detailAgendes,
+      });
+    });
+    setLastdata(data);
+  };
   const setDataFoodField = (dataField: any) => {
     setDataFood((pre: any) => ({ ...pre, ...dataField }));
   };
@@ -155,10 +161,6 @@ export const EditMeeting: React.FC = () => {
   };
 
   const checkSubmitForm = () => {
-    // console.log(dataAgenda, 'dataAgenda');
-    // console.log(dataDetail, 'dataDetail');
-    // console.log(dataFood, 'dataFood');
-
     if (dataFood.length === 0) {
       message.error('0 length');
       return;
@@ -220,9 +222,6 @@ export const EditMeeting: React.FC = () => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        // console.log(dataAgenda);
-        // console.log(newDatauserBoard);
-        // console.log(dataDetail);
         const dataRoom: IDataroom = {
           roomid: state,
           title: dataAgenda.title,
@@ -235,9 +234,15 @@ export const EditMeeting: React.FC = () => {
           timeEnd: dataAgenda.timeEnd,
           detailMeeting: dataAgenda.detailMeeting,
         };
-        // console.log(dataAgenda);
+
+        console.log(dataAgenda);
+        console.log(getLastdata);
+        console.log(dataFood);
+        await DatamanagementService()
+          .updatemeeting(id, dataAgenda, getLastdata, dataFood)
+          .then((data: any) => {});
         // console.log(newDatauserBoard);
-        console.log(agenda);
+        // console.log(agenda);
 
         // dataDetail?.map((data: any) => {
         //   console.log(data.children.props);
@@ -303,10 +308,13 @@ export const EditMeeting: React.FC = () => {
       content: (
         <DetailPage
           setDataField={setDataAgendaField}
+          lastDataAgenda={lastDataAgenda}
           data={dataIntable}
           agenda={agenda}
           nameFilesummary={nameFilesummary}
           id={state}
+          setDataFieldNew={setDataFieldNew}
+          updateFile={updateFile}
         />
       ),
     },
