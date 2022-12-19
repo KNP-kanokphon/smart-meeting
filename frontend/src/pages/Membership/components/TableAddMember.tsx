@@ -128,25 +128,20 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   };
 
   const showModal = (e: any) => {
-    console.log(e);
-    // const timeout: any = setTimeout(() => {
-    // setnameeng(e.username_eng);
-    // setdatainModal(e);
-    // // }, 250);
-    // setIsModalOpen(true);
-    // FormAdd.resetFields();
-    // return () => clearTimeout(timeout);
-    // return new Promise(async (resolve, reject) => {
-    Promise.all(e).then((xxx: any) => {
-      console.log(xxx);
-    });
-    // });
+    // console.log(e);
+    // setnameeng([]);
+    setnameeng(e.username_eng);
+    // setdatainModal([]);
+    setdatainModal(e);
+
+    setIsModalOpen(true);
+    FormAdd.resetFields();
   };
 
   const handleCancel = () => {
+    setIsModalOpen(false);
     // setnameeng([]);
     // setdatainModal([]);
-    setIsModalOpen(false);
     FormAdd.resetFields();
   };
 
@@ -577,9 +572,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       >
         <ConfigProvider locale={configuredLocale}>
           <Form
+            form={FormAdd}
             layout="vertical"
             onFinish={handleUpdate}
-            initialValues={{ username_eng: getnameeng }}
+            fields={[{ name: ['username_eng'], value: getnameeng }]}
           >
             <Row gutter={16}>
               <Col span={24} style={{ textAlign: 'left' }}>
@@ -590,7 +586,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     id={'getStatus'}
                     placeholder={'สถานะ'}
                     style={{ width: '20%', textAlign: 'left' }}
-                    onChange={(e: string) => {}}
+                    // onChange={(e: string) => {}}
                   >
                     <Option value="active">
                       <Badge color="green" text="Active" />
