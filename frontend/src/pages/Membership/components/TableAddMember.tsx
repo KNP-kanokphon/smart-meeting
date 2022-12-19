@@ -9,34 +9,25 @@ import {
   Typography,
   message,
   Card,
-  // Col,
   Divider,
   Form,
   Input,
-  // Row,
   Select,
-  // Typography,
   ConfigProvider,
   InputNumber,
-  // Button,
-  Space,
-  Upload,
-  // message,
-  // Modal,
-  // Badge,
 } from 'antd';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
-import { MenuOutlined } from '@ant-design/icons';
+// import { MenuOutlined } from '@ant-design/icons';
 import { DatamanagementService } from '../../../stores/meeting-store';
-import {
-  EditOutlined,
-  UploadOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import SignatureCanvas from 'react-signature-canvas';
-import { v4 as uuidv4 } from 'uuid';
+// import {
+//   EditOutlined,
+//   UploadOutlined,
+//   ExclamationCircleOutlined,
+// } from '@ant-design/icons';
+// import type { UploadProps } from 'antd';
+// import SignatureCanvas from 'react-signature-canvas';
+// import { v4 as uuidv4 } from 'uuid';
 
 // datepicker local thialand
 import dayjs from 'dayjs';
@@ -73,13 +64,13 @@ export interface Props {
 
 export const TableAddMember: React.FC = (): React.ReactElement => {
   const [FormAdd] = Form.useForm();
-  const [open, setOpen] = useState(false);
   const [getuserAll, setUserAll] = useState<any>([]);
   const [getPositionAll, setPositionAll] = useState<any>([]);
   const [getCourseAll, setCourseAll] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [getdataModal, setdatainModal] = useState<any>([]);
+  const [getnameeng, setnameeng] = useState<any>([]);
 
   const { Option } = Select;
 
@@ -87,11 +78,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
     dataAll();
     dataPosition();
     getListCourse();
+    // showModal()
   }, []);
 
   const dataPosition = async () => {
     const resultDataPosiotion = await DatamanagementService().getPositionall();
-    // console.log(resultDataPosiotion);
     const dataPosition = (await resultDataPosiotion.map((e: any, row: any) => {
       const mapData = {
         uuid: e.uuid,
@@ -117,7 +108,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const handleDel = (e: any) => {
     if (e) {
       Modal.confirm({
-        // title: 'ต้องการลบข้อมูลนี้ ใช่ หรือ ไม่ ?',
         title: 'ยืนยันการเปลี่ยนแปลง',
         content: 'คุณต้องการลบข้อมูล ใช่ หรือ ไม่ ?',
         okText: 'ใช่',
@@ -127,11 +117,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
           if (res) {
             message.success('ลบข้อมูลสำเร็จ');
             dataAll();
-            // FormAdd.resetFields();
+            FormAdd.resetFields();
           }
         },
         onCancel: () => {
-          // FormAdd.resetFields();
+          FormAdd.resetFields();
         },
       });
     }
@@ -139,13 +129,25 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
 
   const showModal = (e: any) => {
     console.log(e);
-
-    setdatainModal(e);
-    setIsModalOpen(true);
+    // const timeout: any = setTimeout(() => {
+    // setnameeng(e.username_eng);
+    // setdatainModal(e);
+    // // }, 250);
+    // setIsModalOpen(true);
+    // FormAdd.resetFields();
+    // return () => clearTimeout(timeout);
+    // return new Promise(async (resolve, reject) => {
+    Promise.all(e).then((xxx: any) => {
+      console.log(xxx);
+    });
+    // });
   };
 
   const handleCancel = () => {
+    // setnameeng([]);
+    // setdatainModal([]);
     setIsModalOpen(false);
+    FormAdd.resetFields();
   };
 
   const handleUpdate = (e: any) => {
@@ -207,11 +209,13 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
             message.success('อัพเดต');
             dataAll();
             setIsModalOpen(false);
+            setdatainModal([]);
             FormAdd.resetFields();
           }
         },
         onCancel: () => {
-          // FormAdd.resetFields();
+          setdatainModal([]);
+          FormAdd.resetFields();
         },
       });
     }
@@ -220,7 +224,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const dataAll = async () => {
     const dataAll = await DatamanagementService().findAll();
     const dataSource: any = await dataAll.map((x: any, row: any) => {
-      // console.log(row);
       const mapData = {
         no: row + 1,
         active: x.active,
@@ -250,21 +253,13 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         district: x.district,
         province: x.province,
         postalcode: x.postalcode,
+        prefixtitleeng: x.prefixtitleeng,
       };
       return mapData;
     });
-    // console.log(dataAll);
     setUserAll(dataSource);
   };
 
-  // const navigate = useNavigate();
-  // const hide = () => {
-  //   setOpen(false);
-  // };
-
-  // const handleOpenChange = (newOpen: boolean) => {
-  //   setOpen(newOpen);
-  // };
   const columnsTable: any = [
     {
       key: 'no',
@@ -347,10 +342,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     (event: any) => event?.uuid === data,
                   ) as any;
                   if (data?.length < 2) {
-                    return countTypes?.course1;
+                    return countTypes?.course;
                   } else {
                     let nameposition: string = '';
-                    nameposition += ' ' + countTypes?.course1;
+                    nameposition += ' ' + countTypes?.course;
                     let splittt = nameposition;
                     return (
                       <>
@@ -540,8 +535,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '6%',
       dataIndex: 'uuid',
       render: (e: any, row: any) => {
-        // console.log(row);
-
         if (e) {
           return (
             <div style={{ textAlign: 'center' }}>
@@ -561,7 +554,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     danger
                     onClick={() => handleDel(row)}
                   >
-                    Del
+                    Delete
                   </Button>
                 </Col>
               </Row>
@@ -578,16 +571,22 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         width={1500}
         title="Edit User"
         open={isModalOpen}
-        onOk={handleUpdate}
         onCancel={handleCancel}
         footer={false}
+        // closable={false}
       >
         <ConfigProvider locale={configuredLocale}>
-          <Form layout="vertical" onFinish={handleUpdate}>
+          <Form
+            layout="vertical"
+            onFinish={handleUpdate}
+            initialValues={{ username_eng: getnameeng }}
+          >
             <Row gutter={16}>
               <Col span={24} style={{ textAlign: 'left' }}>
                 <Form.Item label={'Active'} name={'getStatus'}>
                   <Select
+                    defaultValue={getdataModal?.active}
+                    value={getdataModal?.active}
                     id={'getStatus'}
                     placeholder={'สถานะ'}
                     style={{ width: '20%', textAlign: 'left' }}
@@ -608,81 +607,116 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'คำนำหน้า'} name={'getTitle'}>
                   <Select
+                    defaultValue={getdataModal?.prefix}
+                    value={getdataModal?.prefix}
                     id={'getTitle'}
-                    //  name={'username'}
                     placeholder={'เลือกคำนำหน้า'}
-                    onChange={(e: string) => {
-                      // setTitle(e);
-                    }}
                   >
                     <Option value={'นาย'}>นาย</Option>
                     <Option value={'นาง'}>นาง</Option>
                     <Option value={'นางสาว'}>นางสาว</Option>
                     <Option value={'ดร.'}>ดร.</Option>
+                    <Option value={'ผศ.ดร.'}>ผศ.ดร.</Option>
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ชื่อ-นามสกุล'} name={'getNameLastName'}>
                   <Input
+                    defaultValue={getdataModal?.username}
+                    value={getdataModal?.username}
                     id={'getNameLastName'}
                     name={'getNameLastName'}
                     placeholder="ชื่อ สกุล"
-                    onChange={(e: any) => {
-                      // setNameLastName(e.target.value);
-                    }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={2}>
+                <Form.Item label={'คำนำหน้า'} name={'title_eng'} required>
+                  <Select
+                    defaultValue={getdataModal?.prefixtitleeng}
+                    value={getdataModal?.prefixtitleeng}
+                    id={'title_eng'}
+                    placeholder={'เลือกคำนำหน้า'}
+                  >
+                    <Option value={'Mr.'}>Mr.</Option>
+                    <Option value={'Miss'}>Miss</Option>
+                    <Option value={'Mrs.'}>Mrs.</Option>
+                    <Option value={'Dr.'}>Dr.</Option>
+                    <Option value={'Asst.Prof.Dr'}>Asst.Prof.Dr</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  label={'ชื่อ-นามสกุล (ภาษาอังกฤษ)'}
+                  name={'username_eng'}
+                  required
+                >
+                  <Input
+                    defaultValue={getnameeng}
+                    // value={getdataModal?.username_eng}
+                    id={'username_eng'}
+                    name={'username_eng'}
+                    placeholder="ชื่อ สกุล"
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'เลขบัตรประชาชน'} name={'getIdCard'}>
                   <Input
+                    defaultValue={getdataModal?.idcard}
+                    value={getdataModal?.idcard}
                     id={'getIdCard'}
                     name={'getIdCard'}
                     placeholder="เลขบัตรประชาชน"
-                    onChange={(e: any) => {
-                      // setIdCard(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
-              <Col span={6}>
-                <Form.Item label={'วัน-เดือน-ปี'} name={'getDOB'}>
-                  <DatePicker
-                    name={'getDOB'}
-                    id={'getDOB'}
-                    format={'DD-MM-BBBB'}
-                    style={{ width: '100%' }}
-                    onChange={(e: any) => {
-                      let date: any = 0;
-                      date = dayjs(e).format('YYYY-MM-DD');
-                      // setDOB(date);
-                    }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={2}>
-                <Form.Item label={'อายุ'} name={'getDOB'}>
-                  <Input
-                    name={'username'}
-                    id={'username'}
-                    placeholder="อายุ"
-                    onChange={(e: any) => {
-                      // setAge(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-              </Col>
+              {getdataModal?.type === 'member' ? (
+                <Col span={6}>
+                  <Form.Item label={'วัน-เดือน-ปี'} name={'getDOB'}>
+                    <DatePicker
+                      defaultValue={dayjs(getdataModal?.bridday)}
+                      value={dayjs(getdataModal?.bridday)}
+                      name={'getDOB'}
+                      id={'getDOB'}
+                      format={'DD-MM-BBBB'}
+                      style={{ width: '100%' }}
+                      // onChange={(e: any) => {
+                      //   let date: any = 0;
+                      //   date = dayjs(e).format('YYYY-MM-DD');
+                      //   // setDOB(date);
+                      // }}
+                    />
+                  </Form.Item>
+                </Col>
+              ) : (
+                <></>
+              )}
+              {getdataModal?.type === 'member' ? (
+                <Col span={2}>
+                  <Form.Item label={'อายุ'} name={'getage'}>
+                    <Input
+                      defaultValue={getdataModal?.age}
+                      value={getdataModal?.age}
+                      name={'getage'}
+                      id={'getage'}
+                      placeholder="อายุ"
+                    />
+                  </Form.Item>
+                </Col>
+              ) : (
+                <></>
+              )}
               <Col span={8}>
                 <Form.Item label={'หมายเลขโทรศัพท์'} name={'getPhoneNumber'}>
                   <Input
+                    defaultValue={getdataModal?.phonenumber}
+                    // value={getdataModal?.phonenumber}
                     name={'getPhoneNumber'}
                     id={'getPhoneNumber'}
-                    onChange={(e: any) => {
-                      // setPhoneNumber(e.target.value);
-                    }}
                     type="phone"
-                    // maxLength={10}
                     placeholder="หมายเลขโทรศัพท์"
                     style={{ width: '100%' }}
                   />
@@ -691,19 +725,19 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'อีเมลล์'} name={'getEmail'}>
                   <Input
+                    defaultValue={getdataModal?.email}
+                    // value={getdataModal?.email}
                     name={'getEmail'}
                     id={'getEmail'}
                     placeholder="อีเมลล์"
-                    onChange={(e: any) => {
-                      // setEmail(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'หลักสูตร'} name={'getCourse'}>
                   <Select
-                    // name={'username'}
+                    defaultValue={getdataModal?.course}
+                    value={getdataModal?.course}
                     id={'getCourse'}
                     mode="multiple"
                     allowClear
@@ -716,15 +750,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      // setCourse(e);
-                    }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
                     </Option>
                     {getCourseAll.map((e: any, row: any) => {
-                      // console.log(e.position);
                       return (
                         <Option key={e.uuid} value={e.uuid}>
                           {e.course}
@@ -737,7 +767,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'หลักสูตร 1'} name={'getCourse1'}>
                   <Select
-                    // name={'username'}
+                    defaultValue={getdataModal?.course1}
+                    value={getdataModal?.course1}
                     id={'getCourse1'}
                     mode="multiple"
                     allowClear
@@ -750,15 +781,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      // setCourse1(e);
-                    }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
                     </Option>
                     {getCourseAll.map((e: any, row: any) => {
-                      // console.log(e.position);
                       return (
                         <Option key={e.uuid} value={e.uuid}>
                           {e.course}
@@ -771,20 +798,20 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={2}>
                 <Form.Item label={'รุ่น'} name={'getGeneration'}>
                   <Input
+                    defaultValue={getdataModal?.model}
+                    value={getdataModal?.model}
                     name={'getGeneration'}
                     id={'getGeneration'}
                     type="number"
                     placeholder="#1"
-                    onChange={(e: any) => {
-                      // setGeneration(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'} name={'getPosition'}>
                   <Select
-                    // name={'username'}
+                    defaultValue={getdataModal?.position}
+                    value={getdataModal?.position}
                     id={'getPosition'}
                     mode="multiple"
                     allowClear
@@ -797,15 +824,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      // setPosition(e);
-                    }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
                     </Option>
                     {getPositionAll.map((e: any, row: any) => {
-                      // console.log(e.position);
                       return (
                         <Option key={e.uuid} value={e.position}>
                           {e.position}
@@ -821,121 +844,111 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={2}>
                 <Form.Item label={'บ้านเลขที่'} name={'getHouseNumber'}>
                   <Input
+                    defaultValue={getdataModal?.number}
+                    value={getdataModal?.number}
                     name={'getHouseNumber'}
                     id={'getHouseNumber'}
                     placeholder="บ้านเลขที่"
-                    onChange={(e: any) => {
-                      // setHouseNumber(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'เลขที่ห้อง'} name={'getRoomNumber'}>
                   <Input
+                    defaultValue={getdataModal?.roomnumber}
+                    value={getdataModal?.roomnumber}
                     name={'getRoomNumber'}
                     id={'getRoomNumber'}
                     placeholder="เลขที่ห้อง"
-                    onChange={(e: any) => {
-                      // setRoomNumber(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อาคาร / หมู่บ้าน'} name={'getVillage'}>
                   <Input
+                    defaultValue={getdataModal?.bldg}
+                    value={getdataModal?.bldg}
                     name={'getVillage'}
                     id={'getVillage'}
                     placeholder="อาคาร / หมู่บ้าน"
-                    onChange={(e: any) => {
-                      // setVillage(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={2}>
                 <Form.Item label={'หมู่ที่'} name={'getGroup'}>
                   <Input
+                    defaultValue={getdataModal?.villageno}
+                    value={getdataModal?.villageno}
                     name={'getGroup'}
                     id={'getGroup'}
                     placeholder="#1"
-                    onChange={(e: any) => {
-                      // setGroup(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item label={'ตรอก / ซอย'} name={'getAlley'}>
                   <Input
+                    defaultValue={getdataModal?.alley}
+                    value={getdataModal?.alley}
                     name={'getAlley'}
                     id={'getAlley'}
                     placeholder="ตรอก / ซอย"
-                    onChange={(e: any) => {
-                      // setAlley(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ถนน'} name={'getRoad'}>
                   <Input
+                    defaultValue={getdataModal?.road}
+                    value={getdataModal?.road}
                     name={'getRoad'}
                     id={'getRoad'}
                     placeholder="ถนน"
-                    onChange={(e: any) => {
-                      // setRoad(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'} name={'getSubDistrict'}>
                   <Input
+                    defaultValue={getdataModal?.subdistrict}
+                    value={getdataModal?.subdistrict}
                     name={'getSubDistrict'}
                     id={'getSubDistrict'}
                     placeholder="ตำบล / แขวง"
-                    onChange={(e: any) => {
-                      // setSubDistrict(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อำเภอ / เขต'} name={'getDistrict'}>
                   <Input
+                    defaultValue={getdataModal?.district}
+                    value={getdataModal?.district}
                     name={'getDistrict'}
                     id={'getDistrict'}
                     placeholder="อำเภอ / เขต"
-                    onChange={(e: any) => {
-                      // setDistrict(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'จังหวัด'} name={'getProvince'}>
                   <Input
+                    defaultValue={getdataModal?.province}
+                    value={getdataModal?.province}
                     name={'getProvince'}
                     id={'getProvince'}
                     placeholder="จังหวัด"
-                    onChange={(e: any) => {
-                      // setProvince(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'รหัสไปรษณีย์'} name={'getPostalCode'}>
                   <Input
+                    defaultValue={getdataModal?.postalcode}
+                    value={getdataModal?.postalcode}
                     name={'getPostalCode'}
                     id={'getPostalCode'}
                     type="number"
                     placeholder="รหัสไปรษณีย์"
-                    onChange={(e: any) => {
-                      // setPostalCode(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
@@ -948,12 +961,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getPassNumber'}
                 >
                   <Input
+                    defaultValue={getdataModal?.passport}
+                    value={getdataModal?.passport}
                     name={'getPassNumber'}
                     id={'getPassNumber'}
                     placeholder="กรอกข้อมูล"
-                    onChange={(e: any) => {
-                      // setPassNumber(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
@@ -965,12 +977,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getImpPassNumber'}
                 >
                   <Input
+                    defaultValue={getdataModal?.certificate}
+                    value={getdataModal?.certificate}
                     name={'getImpPassNumber'}
                     id={'getImpPassNumber'}
                     placeholder="กรอกข้อมูล"
-                    onChange={(e: any) => {
-                      // setImpPassNumber(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
@@ -980,12 +991,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getWorkDocument'}
                 >
                   <Input
+                    defaultValue={getdataModal?.workpermit}
+                    value={getdataModal?.workpermit}
                     name={'getWorkDocument'}
                     id={'getWorkDocument'}
                     placeholder="กรอกข้อมูล"
-                    onChange={(e: any) => {
-                      // setWorkDocument(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
@@ -995,30 +1005,30 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'ข้าพเจ้าประกอบอาชีพ'} name={'getCareer'}>
                   <Input
+                    defaultValue={getdataModal?.work}
+                    value={getdataModal?.work}
                     name={'getCareer'}
                     id={'getCareer'}
                     placeholder="ข้าพเจ้าประกอบอาชีพ"
-                    onChange={(e: any) => {
-                      // setCareer(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำแหน่ง'} name={'getPositionCareer'}>
                   <Input
+                    defaultValue={getdataModal?.job_position}
+                    value={getdataModal?.job_position}
                     name={'getPositionCareer'}
                     id={'getPositionCareer'}
                     placeholder="ตำแหน่ง"
-                    onChange={(e: any) => {
-                      // setPositionCareer(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'รายได้เฉลี่ยเดือนละ'} name={'getSalary'}>
                   <InputNumber
+                    defaultValue={getdataModal?.salary}
+                    value={getdataModal?.salary}
                     name={'getSalary'}
                     id={'getSalary'}
                     style={{ width: '100%' }}
@@ -1026,103 +1036,94 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                       `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     }
                     stringMode
-                    // step="0.01"
                     parser={(value: any) => value!.replace(/\$\s?|(,*)/g, '')}
                     placeholder="รายได้เฉลี่ยเดือนละ"
                     addonAfter="บาท"
-                    onChange={(e: any) => {
-                      // setSalary(e);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'สถานที่ประกอบอาชีพ'} name={'getOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_station}
+                    value={getdataModal?.work_station}
                     name={'getOffice'}
                     id={'getOffice'}
                     placeholder="สถานที่ประกอบอาชีพ"
-                    onChange={(e: any) => {
-                      // setOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={4}>
                 <Form.Item label={'เลขที่'} name={'getHouseNumberOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_number}
+                    value={getdataModal?.work_number}
                     name={'getHouseNumberOffice'}
                     id={'getHouseNumberOffice'}
                     placeholder="เลขที่"
-                    onChange={(e: any) => {
-                      // setHouseNumberOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={4}>
                 <Form.Item label={'หมู่ที่'} name={'getGroupOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_villageno}
+                    value={getdataModal?.work_villageno}
                     name={'getGroupOffice'}
                     id={'getGroupOffice'}
                     placeholder="#1"
-                    onChange={(e: any) => {
-                      // setGroupOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตรอก / ซอย'} name={'getAlleyOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_alley}
+                    value={getdataModal?.work_alley}
                     name={'getAlleyOffice'}
                     id={'getAlleyOffice'}
                     placeholder="ตรอก / ซอย"
-                    onChange={(e: any) => {
-                      // setAlleyOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ถนน'} name={'getRoadOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_road}
+                    value={getdataModal?.work_road}
                     name={'getRoadOffice'}
                     id={'getRoadOffice'}
                     placeholder="ถนน"
-                    onChange={(e: any) => {
-                      // setRoadOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'ตำบล / แขวง'} name={'getSubDistrictOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_sub_district}
+                    value={getdataModal?.work_sub_district}
                     name={'getSubDistrictOffice'}
                     id={'getSubDistrictOffice'}
                     placeholder="ตำบล / แขวง"
-                    onChange={(e: any) => {
-                      // setSubDistrictOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'อำเภอ / เขต'} name={'getDistrictOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_district}
+                    value={getdataModal?.work_district}
                     name={'getDistrictOffice'}
                     id={'getDistrictOffice'}
                     placeholder="อำเภอ / เขต"
-                    onChange={(e: any) => {
-                      // setDistrictOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
                 <Form.Item label={'จังหวัด'} name={'getProvinceOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_province}
+                    value={getdataModal?.work_province}
                     name={'getProvinceOffice'}
                     id={'getProvinceOffice'}
                     placeholder="จังหวัด"
@@ -1135,13 +1136,12 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'รหัสไปรษณีย์'} name={'getPostalCodeOffice'}>
                   <Input
+                    defaultValue={getdataModal?.work_postal_code}
+                    value={getdataModal?.work_postal_code}
                     name={'getPostalCodeOffice'}
                     id={'getPostalCodeOffice'}
                     type="number"
                     placeholder="รหัสไปรษณีย์"
-                    onChange={(e: any) => {
-                      // setPostalCodeOffice(e.target.value);
-                    }}
                   />
                 </Form.Item>
               </Col>
@@ -1151,11 +1151,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getPhoneNumberOffice'}
                 >
                   <InputNumber
+                    defaultValue={getdataModal?.phone_office}
+                    value={getdataModal?.phone_office}
                     name={'getPhoneNumberOffice'}
                     id={'getPhoneNumberOffice'}
-                    onChange={(e: any) => {
-                      // setPhoneNumberOffice(e.target.value);
-                    }}
                     style={{ width: '100%' }}
                     type="phone"
                     maxLength={10}
@@ -1172,12 +1171,11 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getDetail1'}
                 >
                   <TextArea
+                    defaultValue={getdataModal?.all_assets}
+                    value={getdataModal?.all_assets}
                     name={'getDetail1'}
                     id={'getDetail1'}
                     showCount
-                    onChange={(e: any) => {
-                      // setDetail1(e.target.value);
-                    }}
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
                   />
@@ -1191,11 +1189,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getDetail2'}
                 >
                   <TextArea
+                    defaultValue={getdataModal?.previous_job}
+                    value={getdataModal?.previous_job}
                     name={'getDetail2'}
                     id={'getDetail2'}
-                    onChange={(e: any) => {
-                      // setDetail2(e.target.value);
-                    }}
                     showCount
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
@@ -1210,11 +1207,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getDetail3'}
                 >
                   <TextArea
+                    defaultValue={getdataModal?.criminalcase}
+                    value={getdataModal?.criminalcase}
                     name={'getDetail3'}
                     id={'getDetail3'}
-                    onChange={(e: any) => {
-                      // setDetail3(e.target.value);
-                    }}
                     showCount
                     maxLength={250}
                     placeholder="กรอกข้อมูล"
@@ -1230,6 +1226,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   name={'getApplyPosition'}
                 >
                   <Select
+                    defaultValue={getdataModal?.position_guild}
+                    value={getdataModal?.position_guild}
                     // name={'username'}
                     id={'getApplyPosition'}
                     placeholder={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
@@ -1265,6 +1263,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={12}>
                 <Form.Item label={'ของสมาคม'} name={'getAssociaton'}>
                   <Input
+                    defaultValue={getdataModal?.guild}
+                    value={getdataModal?.guild}
                     name={'getAssociaton'}
                     id={'getAssociaton'}
                     placeholder="กรอกข้อมูล"
@@ -1277,6 +1277,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={24}>
                 <Form.Item label={'ข้อความเพิ่มเติม (ถ้ามี)'} name={'getOther'}>
                   <TextArea
+                    defaultValue={getdataModal?.others}
+                    value={getdataModal?.others}
                     name={'getOther'}
                     id={'getOther'}
                     onChange={(e: any) => {
