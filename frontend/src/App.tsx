@@ -24,32 +24,7 @@ import { PartyQRcodeCheckin } from './components/MainLayoutParty/PartyQRcodeChec
 import { PartyConfirm } from './components/MainLayoutParty/PartyConfirm';
 import { PartyQRcodeCheckout } from './components/MainLayoutParty/PartyQRcodeCheckout';
 
-// const routeMapper = (x: MenuItem): React.ReactNode => (
-//   <Route
-//     key={x.key}
-//     path={x.path}
-//     element={
-//       x.roles ? (
-//         <RequireAuth allowedRoles={x.roles}>{x.component}</RequireAuth>
-//       ) : (
-//         x.component
-//       )
-//     }
-//   >
-//     {x.children?.length && (
-//       <>
-//         <Route index element={<Navigate to={x.children[0].path} replace />} />
-//         {x.children.map(routeMapper)}
-//       </>
-//     )}
-//   </Route>
-// );
-
 const App = () => {
-  const id24Config = {
-    refreshTokenIntervalInSeconds: 60,
-    resourceApiBaseUrl: 'http://localhost:4000',
-  };
   return (
     <>
       <BrowserRouter basename={'/party'}>
@@ -145,9 +120,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <BrowserRouter basename={'/meeting'}>
-        <Id24Provider config={id24Config}>
-          <AuthProvider>
-            {/* <Routes>
+        {/* <Routes>
               <Route path="/" element={<MainLayout />}>
                 <Route
                   index
@@ -161,19 +134,17 @@ const App = () => {
               </Route>
               <Route path="*" element={<Navigate to={defaultPath} replace />} />
             </Routes> */}
-            <Routes>
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<Navigate to="meeting" replace />} />
-                {menuItems.map(x => (
-                  <Route key={x.key} path={x.path} element={<Outlet />}>
-                    {x.component}
-                  </Route>
-                ))}
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Navigate to="meeting" replace />} />
+            {menuItems.map(x => (
+              <Route key={x.key} path={x.path} element={<Outlet />}>
+                {x.component}
               </Route>
-              <Route path="*" element={<Navigate to={defaultPath} replace />} />
-            </Routes>
-          </AuthProvider>
-        </Id24Provider>
+            ))}
+          </Route>
+          <Route path="*" element={<Navigate to={defaultPath} replace />} />
+        </Routes>
       </BrowserRouter>
       <BrowserRouter basename={'/'}>
         <Routes>

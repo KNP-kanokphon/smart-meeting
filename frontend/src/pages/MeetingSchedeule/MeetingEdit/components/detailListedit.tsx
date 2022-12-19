@@ -36,9 +36,9 @@ export const DetailListedit: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
-  const agendas = Form.useWatch('agendas', form);
+  const agendas = Form.useWatch('agendes', form);
   const detail = Form.useWatch('detail', form);
-  const detailAgendes = Form.useWatch('detailAgendes', form);
+  const detailAgendes = Form.useWatch('detailagendes', form);
   const props = {
     onRemove: async (file: any) => {
       const index = fileList.indexOf(file);
@@ -91,7 +91,7 @@ export const DetailListedit: React.FC<Props> = ({
             label={`ระเบียบวาระที่ ${Pagestep}`}
             required
             tooltip="This is a required field"
-            name="agendas"
+            name="agendes"
           >
             <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
           </Form.Item>
@@ -110,7 +110,7 @@ export const DetailListedit: React.FC<Props> = ({
             <Col span={18}>รายละเอียด</Col>
             <Col offset={1} span={3}></Col>
           </Row>
-          <Form.List name="detailAgendes" initialValue={[{}]}>
+          <Form.List name="detailagendes" initialValue={[{}]}>
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => {
@@ -120,7 +120,10 @@ export const DetailListedit: React.FC<Props> = ({
                         <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
                       </Col>
                       <Col span={18}>
-                        <Form.Item {...restField} name={[name, 'detail']}>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'detailagendes']}
+                        >
                           <Input />
                         </Form.Item>
                       </Col>

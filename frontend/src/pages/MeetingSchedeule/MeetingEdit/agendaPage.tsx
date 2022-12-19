@@ -68,6 +68,7 @@ export const AgendaPage: React.FC<IProp> = ({
       timeStart: dataAgenda?.starttime,
       timeEnd: dataAgenda?.endtime,
       detailMeeting: dataAgenda?.detail,
+      fileOverview: file,
     };
     setDataField(oldanswer);
   }, [nameFilesummary]);

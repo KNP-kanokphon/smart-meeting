@@ -412,13 +412,28 @@ export const DatamanagementService = () => ({
     dataAgenda: any,
     getLastdata: any,
     dataFood: any,
+    oldFileupdate: any,
   ) => {
     const result = await httpClient.post(`/meeting/updatemeeting`, {
       id: id,
       dataAgenda: dataAgenda,
       getLastdata: getLastdata,
       dataFood: dataFood,
+      oldFileupdate: oldFileupdate,
     });
+    return result.data;
+  },
+  updatefileOverviwe: async (roomid: any, files: any) => {
+    const result = await httpClient.post(
+      `/meeting/updatefileoverviwe/${roomid}`,
+      files,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      },
+    );
     return result.data;
   },
 });

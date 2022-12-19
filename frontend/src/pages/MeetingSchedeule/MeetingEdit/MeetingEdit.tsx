@@ -13,6 +13,7 @@ import { IDataroom } from '../../common/type';
 const { Step } = Steps;
 
 export const EditMeeting: React.FC = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   const [dataDetail, setDataDetail] = useState<any>([]);
@@ -51,8 +52,18 @@ export const EditMeeting: React.FC = () => {
         });
       updateDataFile();
       const resultAgenda = await DatamanagementService().getagendaByid(state);
-      setAgenda(resultAgenda);
-      setDataMap(resultAgenda);
+      const newData: any = [];
+      resultAgenda?.map((x: any) => {
+        newData.push({
+          uuid: x.uuid,
+          agendes: x.agendes,
+          detail: x.detailagendes,
+          step: x.detailagendes,
+        });
+      });
+
+      setAgenda(newData);
+      setDataMap(newData);
       const food = await DatamanagementService().getDetailfood(state);
 
       const fooddetail: any[] = [];
@@ -137,13 +148,12 @@ export const EditMeeting: React.FC = () => {
   };
 
   const lastDataAgenda = (dataField: any) => {
-    // console.log(dataField);
     const data: any = [];
     dataField.map((x: any) => {
       data.push({
         id: 2,
         agendas: x?.children?.props.item.agendes,
-        detail: x?.children?.props.item.detailagendes,
+        detail: x?.children?.props.item.detail,
         detailAgendes: x?.children?.props?.resultDetailagenda,
         uuid: x?.children?.props.item.uuid,
         step: x?.children?.props.item.step,
@@ -214,7 +224,6 @@ export const EditMeeting: React.FC = () => {
         position: e.position,
       });
     });
-    const id = uuidv4();
     Modal.confirm({
       title: 'Confirm Create this meeting',
       icon: <ExclamationCircleOutlined />,
@@ -222,70 +231,29 @@ export const EditMeeting: React.FC = () => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        const dataRoom: IDataroom = {
-          roomid: state,
-          title: dataAgenda.title,
-          room: dataAgenda.room,
-          floor: dataAgenda.floor,
-          building: dataAgenda.building,
-          meetingPlace: dataAgenda.meetingPlace,
-          date: dataAgenda.date,
-          timeStart: dataAgenda.timeStart,
-          timeEnd: dataAgenda.timeEnd,
-          detailMeeting: dataAgenda.detailMeeting,
-        };
-
-        console.log(dataAgenda);
-        console.log(getLastdata);
-        console.log(dataFood);
+        const newFile = dataAgenda?.fileOverview.filter(
+          (x: any) => x?.pathfile === undefined || x?.idmeeting === undefined,
+        );
+        const oldFileupdate = dataAgenda?.fileOverview.filter(
+          (x: any) => x?.pathfile !== undefined || x?.idmeeting !== undefined,
+        );
+        const result = await DatamanagementService()
+          .updatemeeting(
+            state,
+            dataAgenda,
+            getLastdata,
+            dataFood,
+            oldFileupdate,
+          )
+          .then(async (data: any) => {});
+        const formData = new FormData();
+        newFile.map((e: any) => {
+          formData.append('file', e);
+        });
         await DatamanagementService()
-          .updatemeeting(id, dataAgenda, getLastdata, dataFood)
+          .updatefileOverviwe(state, formData)
           .then((data: any) => {});
-        // console.log(newDatauserBoard);
-        // console.log(agenda);
-
-        // dataDetail?.map((data: any) => {
-        //   console.log(data.children.props);
-        // });
-        // await DatamanagementService().updateroom(
-        //   dataRoom,
-        //   dataAgenda.userAttendee,
-        //   dataAgenda.userBoard,
-        // );
-
-        // if (dataAgenda.fileOverview !== undefined) {
-        //   const formData = new FormData();
-        //   dataAgenda.fileOverview.map((e: any) => {
-        //     formData.append('file', e);
-        //   });
-        //   await DatamanagementService().import(formData, id);
-        // }
-        // await DatamanagementService()
-        //   .createmeeting(
-        //     dataAgenda.detailMeeting,
-        //     dataAgenda.title,
-        //     dataAgenda.room,
-        //     dataAgenda.floor,
-        //     dataAgenda.building,
-        //     dataAgenda.meetingplace,
-        //     dataAgenda.date,
-        //     dataAgenda.timeStart,
-        //     dataAgenda.timeEnd,
-        //     id,
-        //     dataFood.fooddetail,
-        //   )
-        //   .then(data => {});
-
-        // await DatamanagementService()
-        //   .saveusermeetingall(newDatauserBoard, newDatauserAgenda, id)
-        //   .then(data => {});
-        // dataDetail.map((e: any, i: string) => {
-        //   DatamanagementService().saveagenda(e.values, id, i);
-        // });
-        // dataDetail.map((e: any, i: string) => {
-        //   DatamanagementService().savefileagendas(e.files, id, i);
-        // });
-        // navigate('/meeting/meeting-schedule');
+        navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });

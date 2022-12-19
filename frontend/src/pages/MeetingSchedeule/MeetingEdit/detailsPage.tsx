@@ -50,9 +50,8 @@ export const DetailPage: React.FC<Props> = ({
       }
     });
     if (agenda) {
+      setNewTabIndex(agenda.length);
       createItems(agenda).then((xs: any) => {
-        console.log(xs);
-
         // console.log(
         //   `🚀 ~ file: detailsPage.tsx:101 ~ createItems ~ agenda`,
         //   agenda,

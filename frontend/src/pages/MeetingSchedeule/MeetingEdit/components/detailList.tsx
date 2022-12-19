@@ -41,9 +41,9 @@ export const DetailList: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
-  const agendas = Form.useWatch('agendas', form);
+  const agendas = Form.useWatch('agendes', form);
   const detail = Form.useWatch('detail', form);
-  const detailAgendes = Form.useWatch('detailAgendes', form);
+  const detailAgendes = Form.useWatch('detailagendes', form);
   const [checkFormChange, setCheckFormChange] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
@@ -122,9 +122,9 @@ export const DetailList: React.FC<Props> = ({
           //  onValuesChange={onFinish}
           // layout="vertical"
           initialValues={{
-            agendas: item.agendes,
-            detail: item.detailagendes,
-            detailAgendes: resultDetailagenda.map((x: any) => {
+            agendes: item.agendes,
+            detail: item.detail,
+            detailagendes: resultDetailagenda.map((x: any) => {
               return { detail: x.detail };
             }),
           }}
@@ -135,7 +135,7 @@ export const DetailList: React.FC<Props> = ({
               label={`ระเบียบวาระที่ ${Pagestep}`}
               required
               tooltip="This is a required field"
-              name="agendas"
+              name="agendes"
             >
               <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
             </Form.Item>
@@ -155,7 +155,7 @@ export const DetailList: React.FC<Props> = ({
               <Col offset={1} span={3}></Col>
             </Row>
             <Form.List
-              name="detailAgendes"
+              name="detailagendes"
 
               // initialValue={Detailagenda}
             >
@@ -169,7 +169,10 @@ export const DetailList: React.FC<Props> = ({
                             <Form.Item>{`${Pagestep}.${name + 1}`}</Form.Item>
                           </Col>
                           <Col span={18}>
-                            <Form.Item {...restField} name={[name, 'detail']}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, 'detailagendes']}
+                            >
                               <Input />
                             </Form.Item>
                           </Col>
