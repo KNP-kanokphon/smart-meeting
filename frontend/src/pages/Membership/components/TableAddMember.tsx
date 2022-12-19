@@ -575,7 +575,83 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
             form={FormAdd}
             layout="vertical"
             onFinish={handleUpdate}
-            fields={[{ name: ['username_eng'], value: getnameeng }]}
+            fields={[
+              { name: ['getTitle'], value: getdataModal?.prefix },
+              { name: ['getStatus'], value: getdataModal?.active },
+              { name: ['getNameLastName'], value: getdataModal?.username },
+              { name: ['title_eng'], value: getdataModal?.prefixtitleeng },
+              { name: ['username_eng'], value: getnameeng },
+              { name: ['getIdCard'], value: getdataModal?.idcard },
+              { name: ['getDOB'], value: getdataModal?.bridday },
+              { name: ['getage'], value: getdataModal?.age },
+              { name: ['getPhoneNumber'], value: getdataModal?.phonenumber },
+              { name: ['getEmail'], value: getdataModal?.email },
+              { name: ['getCourse'], value: getdataModal?.course },
+              { name: ['getCourse1'], value: getdataModal?.course1 },
+              { name: ['getGeneration'], value: getdataModal?.model },
+              { name: ['getPosition'], value: getdataModal?.position },
+              { name: ['getHouseNumber'], value: getdataModal?.number },
+              { name: ['getRoomNumber'], value: getdataModal?.roomnumber },
+              { name: ['getVillage'], value: getdataModal?.bldg },
+              { name: ['getGroup'], value: getdataModal?.villageno },
+              { name: ['getAlley'], value: getdataModal?.alley },
+              { name: ['getRoad'], value: getdataModal?.road },
+              { name: ['getSubDistrict'], value: getdataModal?.subdistrict },
+              { name: ['getDistrict'], value: getdataModal?.district },
+              { name: ['getProvince'], value: getdataModal?.province },
+              { name: ['getPostalCode'], value: getdataModal?.postalcode },
+              { name: ['getPassNumber'], value: getdataModal?.passport },
+              { name: ['getImpPassNumber'], value: getdataModal?.certificate },
+              { name: ['getWorkDocument'], value: getdataModal?.workpermit },
+              { name: ['getCareer'], value: getdataModal?.work },
+              {
+                name: ['getPositionCareer'],
+                value: getdataModal?.job_position,
+              },
+              { name: ['getSalary'], value: getdataModal?.salary },
+              { name: ['getOffice'], value: getdataModal?.work_station },
+              {
+                name: ['getHouseNumberOffice'],
+                value: getdataModal?.work_number,
+              },
+              { name: ['getGroupOffice'], value: getdataModal?.work_villageno },
+              { name: ['getAlleyOffice'], value: getdataModal?.work_alley },
+              { name: ['getRoadOffice'], value: getdataModal?.work_road },
+              {
+                name: ['getSubDistrictOffice'],
+                value: getdataModal?.work_sub_district,
+              },
+              {
+                name: ['getDistrictOffice'],
+                value: getdataModal?.work_district,
+              },
+              {
+                name: ['getProvinceOffice'],
+                value: getdataModal?.work_province,
+              },
+              {
+                name: ['getPostalCodeOffice'],
+                value: getdataModal?.work_postal_code,
+              },
+              {
+                name: ['getPhoneNumberOffice'],
+                value: getdataModal?.phone_office,
+              },
+              { name: ['getDetail1'], value: getdataModal?.all_assets },
+              { name: ['getDetail2'], value: getdataModal?.previous_job },
+              { name: ['getDetail3'], value: getdataModal?.criminalcase },
+              {
+                name: ['getApplyPosition'],
+                value: getdataModal?.position_guild,
+              },
+              { name: ['getAssociaton'], value: getdataModal?.guild },
+              { name: ['getOther'], value: getdataModal?.others },
+              // { name: ['username_eng'], value: getdataModal?.age },
+              // { name: ['username_eng'], value: getdataModal?.age },
+              // { name: ['username_eng'], value: getdataModal?.age },
+              // { name: ['username_eng'], value: getdataModal?.age },
+              // { name: ['username_eng'], value: getdataModal?.age },
+            ]}
           >
             <Row gutter={16}>
               <Col span={24} style={{ textAlign: 'left' }}>
