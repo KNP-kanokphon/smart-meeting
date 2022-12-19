@@ -1,14 +1,4 @@
-import {
-  Layout,
-  Button,
-  // Menu,
-  Row,
-  Col,
-  Card,
-  Typography,
-  // Space,
-  Image,
-} from 'antd';
+import { Layout, Button, Row, Col, Card, Typography, Image } from 'antd';
 import {
   PhoneOutlined,
   MailOutlined,
@@ -17,9 +7,6 @@ import {
 } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
-// import { useAuth } from '../../utils/auth';
-// import { useId24 } from '../../drivers/id24/Id24Provider';
-// import styles from './MainLayout.module.scss';
 import { Logo, Logogold } from './Logo';
 import Background2 from '../../assets/images/BG_2.jpg';
 import { DatamanagementService } from '../../stores/meeting-store';
@@ -49,81 +36,98 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
   const [getuserAlls, setUserAlls] = useState<any>([]);
   const [getdataPosition, setdataPosition] = useState<any>([]);
   useEffect(() => {
+    const dataAll = async () => {
+      const dataall = await DatamanagementService().findAll();
+      const newData: any = [];
+      dataall.map((e: any, row: any) => {
+        newData.push({
+          data: {
+            uuid:
+              e.uuid === null || e.uuid === undefined || e.uuid === ''
+                ? ''
+                : e.uuid,
+            email:
+              e.email === null || e.email === undefined || e.email === ''
+                ? ''
+                : e.email,
+            phonenumber:
+              e.phonenumber === null ||
+              e.phonenumber === undefined ||
+              e.phonenumber === ''
+                ? ''
+                : e.phonenumber,
+            prefix:
+              e.prefix === null || e.prefix === undefined || e.prefix === ''
+                ? ''
+                : e.prefix,
+            prefixtitleeng:
+              e.prefixtitleeng === null ||
+              e.prefixtitleeng === undefined ||
+              e.prefixtitleeng === ''
+                ? ''
+                : e.prefixtitleeng,
+            username:
+              e.username === null ||
+              e.username === undefined ||
+              e.username === ''
+                ? ''
+                : e.username,
+            username_eng:
+              e.username_eng === null ||
+              e.username_eng === undefined ||
+              e.username_eng === ''
+                ? ''
+                : e.username_eng,
+            position:
+              e.position === null ||
+              e.position === undefined ||
+              e.position === ''
+                ? ''
+                : e.position,
+          },
+        });
+        setUserAll(newData);
+      });
+    };
+    const getDataProfile = async () => {
+      const resultProfile = await DatamanagementService().getProfileByid(
+        roomid,
+        userid,
+      );
+      const newData: any = [];
+
+      resultProfile.map((x: any, row: any) => {
+        newData.push({
+          uuidprofile: x.uuidprofile,
+          idmeeting: x.idmeeting,
+          username: x.username,
+        });
+        setUserprofile(newData);
+      });
+    };
+
+    const getDataPosition = async () => {
+      const resultDataPosiotion =
+        await DatamanagementService().getPositionall();
+      const newData: any = [];
+      resultDataPosiotion.map((x: any, row: any) => {
+        newData.push({
+          // data: {
+          nameposition: x.nameposition,
+          uuid: x.uuid,
+          // },
+        });
+        setdataPosition(newData);
+      });
+    };
+
     getDataProfile();
     getDataPosition();
     onCheckin();
     dataAll();
-  }, [getuserAll, userprofile]);
+  }, []);
 
-  const dataAll = async () => {
-    const dataAll = await DatamanagementService().findAll();
-    setUserAll(dataAll);
-  };
-
-  const getDataProfile = async () => {
-    const resultProfile = await DatamanagementService().getProfileByid(
-      roomid,
-      userid,
-    );
-    resultProfile.map((x: any, row: any, number: any) => {
-      const matchuser = getuserAll.find(
-        (event: any) => event.uuid === x.uuidprofile,
-      );
-      const data = {
-        position:
-          matchuser?.position === null ||
-          matchuser?.position === '' ||
-          matchuser?.position === undefined
-            ? 'N/A'
-            : matchuser?.position,
-        username:
-          matchuser?.username === null ||
-          matchuser?.username === '' ||
-          matchuser?.username === undefined
-            ? 'N/A'
-            : matchuser?.username,
-        uuidprofile:
-          matchuser?.uuidprofile === null ||
-          matchuser?.uuidprofile === '' ||
-          matchuser?.uuidprofile === undefined
-            ? 'N/A'
-            : matchuser?.uuidprofile,
-        username_eng:
-          matchuser?.username_eng === null ||
-          matchuser?.username_eng === '' ||
-          matchuser?.username_eng === undefined
-            ? 'N/A'
-            : matchuser?.username_eng.toUpperCase(),
-        email:
-          matchuser?.email === null ||
-          matchuser?.email === '' ||
-          matchuser?.email === undefined
-            ? 'N/A'
-            : matchuser?.email,
-        phone:
-          matchuser?.phonenumber === null ||
-          matchuser?.phonenumber === '' ||
-          matchuser?.phonenumber === undefined
-            ? 'N/A'
-            : matchuser?.phonenumber,
-      };
-      setUserprofile(data);
-    });
-  };
-
-  // const dataUserAllss
-
-  const getDataPosition = async () => {
-    const resultDataPosiotion = await DatamanagementService().getPositionall();
-
-    resultDataPosiotion.map((x: any, row: any) => {
-      const data = {
-        nameposition: x.nameposition,
-        uuid: x.uuid,
-      };
-      setdataPosition(resultDataPosiotion);
-    });
-  };
+  // console.log(getuserAll);
 
   const onCheckin = async () => {
     const status = true;
@@ -174,6 +178,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     <Logogold />
                   </Col>
                 </Row>
+
                 <Row gutter={16}>
                   <Col span={2}>
                     <Image
@@ -195,7 +200,18 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile?.username}
+                          {userprofile.map((e: any, row: any) => {
+                            const dataresult = getuserAll?.find(
+                              (x: any) => x?.data?.uuid === e.uuidprofile,
+                            ) as any;
+                            // console.log(dataresult?.data?.prefix);
+
+                            return (
+                              dataresult?.data?.prefix +
+                              ' ' +
+                              dataresult?.data?.username
+                            );
+                          })}
                         </Typography>
                       </Col>
                       <Col span={24}>
@@ -208,7 +224,24 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile?.username_eng}
+                          {userprofile.map((e: any, row: any) => {
+                            const dataresult = getuserAll?.find(
+                              (x: any) => x?.data?.uuid === e?.uuidprofile,
+                            );
+                            // console.log(dataresult?.data?.prefixtitleeng);
+                            let prefix_eng: any = '';
+                            if (dataresult?.data?.prefixtitleeng === null) {
+                              prefix_eng = '';
+                            } else {
+                              prefix_eng =
+                                dataresult?.data?.prefixtitleeng.toUpperCase();
+                            }
+                            return (
+                              prefix_eng +
+                              ' ' +
+                              dataresult?.data?.username_eng.toUpperCase()
+                            );
+                          })}
                         </Typography>
                       </Col>
                       <Col span={24}>
@@ -219,7 +252,37 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile?.position}
+                          {userprofile.map((e: any, row: any) => {
+                            const dataresult = getuserAll?.find(
+                              (x: any) => x?.data?.uuid === e?.uuidprofile,
+                            );
+                            // console.log(typeof dataresult?.data?.position);
+                            if (
+                              typeof dataresult?.data?.position === 'string'
+                            ) {
+                              return dataresult?.data?.position;
+                            } else {
+                              let datanamePosition: any = '';
+                              dataresult?.data?.position.map(
+                                (e: any, row: any) => {
+                                  const dataresult = getdataPosition.filter(
+                                    (x: any) => x?.uuid === e,
+                                  );
+                                  dataresult.map((e: any) => {
+                                    datanamePosition += ' ' + e?.nameposition;
+                                  });
+                                },
+                              );
+                              let splittt = datanamePosition;
+                              return (
+                                <>
+                                  <div style={{ whiteSpace: 'pre-line' }}>
+                                    {splittt}
+                                  </div>
+                                </>
+                              );
+                            }
+                          })}
                         </Typography>
                       </Col>
                     </Row>
@@ -233,12 +296,19 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                         <MobileOutlined />
                       </Col>
                       <Col span={22} style={{ textDecoration: 'underline' }}>
-                        <a
-                          href={`tel:${userprofile?.phone}`}
-                          style={{ color: '#58585A' }}
-                        >
-                          {userprofile?.phone}
-                        </a>
+                        {userprofile.map((e: any, row: any) => {
+                          const dataresult = getuserAll?.find(
+                            (x: any) => x?.data?.uuid === e?.uuidprofile,
+                          );
+                          return (
+                            <a
+                              href={`tel:${dataresult?.data?.phonenumber}`}
+                              style={{ color: '#58585A' }}
+                            >
+                              {dataresult?.data?.phonenumber}
+                            </a>
+                          );
+                        })}
                       </Col>
                     </Row>
                   </Col>
@@ -250,7 +320,14 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                       <Col span={2}>
                         <MailOutlined />
                       </Col>
-                      <Col span={22}> {userprofile?.email}</Col>
+                      <Col span={22}>
+                        {userprofile.map((e: any, row: any) => {
+                          const dataresult = getuserAll?.find(
+                            (x: any) => x?.data?.uuid === e?.uuidprofile,
+                          );
+                          return dataresult?.data?.email;
+                        })}
+                      </Col>
                     </Row>
                   </Col>
                 </Row>
@@ -289,10 +366,7 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     lg={24}
                     style={{ textAlign: 'center' }}
                   >
-                    <Row
-                      // gutter={3}
-                      style={{ marginBottom: '10px', textAlign: 'center' }}
-                    >
+                    <Row style={{ marginBottom: '10px', textAlign: 'center' }}>
                       <Col
                         span={8}
                         style={{
@@ -359,21 +433,6 @@ export const MainLayoutProfileDetail: React.FC<Props> = ({ baseURL }) => {
                     </Row>
                   </Col>
                 </Row>
-                {/* <Row>
-                  <Col span={24} style={{ marginTop: '15px' }}>
-                    <Button
-                      style={{
-                        width: 'auto',
-                        backgroundColor: '#1F4E3A',
-                        color: '#ffffff',
-                        borderRadius: '10px',
-                      }}
-                      onClick={onCheckin}
-                    >
-                      Check-in
-                    </Button>
-                  </Col>
-                </Row> */}
               </Card>
             </Col>
             <Col span={24} style={{ marginTop: '10%' }}>

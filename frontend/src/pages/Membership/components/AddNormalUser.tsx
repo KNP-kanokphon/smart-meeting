@@ -9,7 +9,7 @@ import {
   Select,
   Typography,
   ConfigProvider,
-  InputNumber,
+  // InputNumber,
   Button,
   Space,
   Upload,
@@ -34,7 +34,7 @@ import 'dayjs/locale/th';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import generatePicker from 'antd/es/date-picker/generatePicker';
 import 'antd/es/date-picker/style';
-import TextArea from 'antd/lib/input/TextArea';
+// import TextArea from 'antd/lib/input/TextArea';
 const DatePicker = generatePicker(dayjsGenerateConfig);
 let buddhistEra = require('dayjs/plugin/buddhistEra');
 dayjs.extend(buddhistEra);
@@ -63,27 +63,47 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   const [fileList, setFileList] = useState<any>([]);
   const [form] = Form.useForm();
 
+  //  ref check value null
+  const refStatus = useRef<any>(null);
+  const refTitle = useRef<any>(null);
+  const refUsername = useRef<any>(null);
+  const refTitle_eng = useRef<any>(null);
+  const refUsername_eng = useRef<any>(null);
+  const refIdcard = useRef<any>(null);
+  const refPhonenumber = useRef<any>(null);
+  const refEmail = useRef<any>(null);
+  const refCourse = useRef<any>(null);
+  const refGeneration = useRef<any>(null);
+  const refPosition = useRef<any>(null);
+  const refHousenumber = useRef<any>(null);
+  const refSubdistrict = useRef<any>(null);
+  const refDistrict = useRef<any>(null);
+  const refProvince = useRef<any>(null);
+  const refPostalcode = useRef<any>(null);
+  const refVillageNo = useRef<any>(null);
+  //  end ref check value null
+
   //   state collect data
-  const [getStatus, setStatus] = useState<string>('');
-  const [getTitle, setTitle] = useState<string>('');
-  const [getNameLastName, setNameLastName] = useState<string>('');
-  const [getIdCard, setIdCard] = useState<string>('');
-  const [getPhoneNumber, setPhoneNumber] = useState<string>('');
-  const [getEmail, setEmail] = useState<string>('');
-  const [getCourse, setCourse] = useState<string>('');
-  const [getCourse1, setCourse1] = useState<string>('');
-  const [getGeneration, setGeneration] = useState<string>('');
-  const [getPosition, setPosition] = useState<string>('');
-  const [getHouseNumber, setHouseNumber] = useState<string>('');
-  const [getRoomNumber, setRoomNumber] = useState<string>('');
-  const [getVillage, setVillage] = useState<string>('');
-  const [getGroup, setGroup] = useState<string>('');
-  const [getAlley, setAlley] = useState<string>('');
-  const [getRoad, setRoad] = useState<string>('');
-  const [getSubDistrict, setSubDistrict] = useState<string>('');
-  const [getDistrict, setDistrict] = useState<string>('');
-  const [getProvince, setProvince] = useState<string>('');
-  const [getPostalCode, setPostalCode] = useState<string>('');
+  // const [getStatus, setStatus] = useState<string>('');
+  // const [getTitle, setTitle] = useState<string>('');
+  // const [getNameLastName, setNameLastName] = useState<string>('');
+  // const [getIdCard, setIdCard] = useState<string>('');
+  // const [getPhoneNumber, setPhoneNumber] = useState<string>('');
+  // const [getEmail, setEmail] = useState<string>('');
+  // const [getCourse, setCourse] = useState<string>('');
+  // const [getCourse1, setCourse1] = useState<string>('');
+  // const [getGeneration, setGeneration] = useState<string>('');
+  // const [getPosition, setPosition] = useState<string>('');
+  // const [getHouseNumber, setHouseNumber] = useState<string>('');
+  // const [getRoomNumber, setRoomNumber] = useState<string>('');
+  // const [getVillage, setVillage] = useState<string>('');
+  // const [getGroup, setGroup] = useState<string>('');
+  // const [getAlley, setAlley] = useState<string>('');
+  // const [getRoad, setRoad] = useState<string>('');
+  // const [getSubDistrict, setSubDistrict] = useState<string>('');
+  // const [getDistrict, setDistrict] = useState<string>('');
+  // const [getProvince, setProvince] = useState<string>('');
+  // const [getPostalCode, setPostalCode] = useState<string>('');
 
   const [getPositionAll, setPositionAll] = useState<any>([]);
   const [getCourseAll, setCourseAll] = useState<any>([]);
@@ -120,29 +140,119 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   };
 
   const onFinish = (e: any) => {
+    console.log(e);
+
+    if (e.status === undefined || e.status === '') {
+      message.warning('กรุณาเลือก Status !!');
+      refStatus.current.focus();
+      return false;
+    }
+    if (e.title === undefined || e.title === '') {
+      message.warning('กรุณาเลือก คำนำหน้า !!');
+      refTitle.current.focus();
+      return false;
+    }
+    if (e.username === undefined || e.username === '') {
+      message.warning('กรุณากรอกชื่อ - สกุล !!');
+      refUsername.current.focus();
+      return false;
+    }
+    if (e.title_eng === undefined || e.title_eng === '') {
+      message.warning('กรุณาเลือก คำนำหน้า !!');
+      refTitle_eng.current.focus();
+      return false;
+    }
+    if (e.username_eng === undefined || e.username_eng === '') {
+      message.warning('กรุณากรอกชื่อ - สกุล !!');
+      refUsername_eng.current.focus();
+      return false;
+    }
+    if (e.idcard === undefined || e.idcard === '') {
+      message.warning('กรุณากรอกเลขบัตรประชาชน !!');
+      refIdcard.current.focus();
+      return false;
+    }
+    if (e.phonenumber === undefined || e.phonenumber === '') {
+      message.warning('กรุณากรอกเบอร์โทรศัพท์ !!');
+      refPhonenumber.current.focus();
+      return false;
+    }
+    if (e.email === undefined || e.email === '') {
+      message.warning('กรุณากรอกอีเมลล์ !!');
+      refEmail.current.focus();
+      return false;
+    }
+    if (e.course === undefined || e.course === '') {
+      message.warning('กรุณาเลือก หลักสูตร !!');
+      refCourse.current.focus();
+      return false;
+    }
+    if (e.generation === undefined || e.generation === '') {
+      message.warning('กรุณาเลือกรุ่น !!');
+      refGeneration.current.focus();
+      return false;
+    }
+    if (e.position === undefined || e.position === '') {
+      message.warning('กรุณาเลือกตำแหน่ง !!');
+      refPosition.current.focus();
+      return false;
+    }
+    if (e.housenumber === undefined || e.housenumber === '') {
+      message.warning('กรุณากรอกบ้านเลขที่ !!');
+      refHousenumber.current.focus();
+      return false;
+    }
+    if (e.villageno === undefined || e.villageno === '') {
+      message.warning('กรุณากรอกหมู่ !!');
+      refVillageNo.current.focus();
+      return false;
+    }
+    if (e.subdistrict === undefined || e.subdistrict === '') {
+      message.warning('กรุณาหรอกตำบล !!');
+      refSubdistrict.current.focus();
+      return false;
+    }
+    if (e.district === undefined || e.district === '') {
+      message.warning('กรุณากรอกอำเภอ !!');
+      refDistrict.current.focus();
+      return false;
+    }
+    if (e.province === undefined || e.province === '') {
+      message.warning('กรุณากรอกจังหวัด !!');
+      refProvince.current.focus();
+      return false;
+    }
+    if (e.postalcode === undefined || e.postalcode === '') {
+      message.warning('กรุณากรอกรหัสไปรษณีย์ !!');
+      refPostalcode.current.focus();
+      return false;
+    }
+
     const data = {
       type: 'normal',
       uuid: uuidv4(),
-      prefix: getTitle,
-      username: getNameLastName,
-      idcard: getIdCard,
-      phonenumber: getPhoneNumber,
-      email: getEmail,
-      course: getCourse,
-      course1: getCourse1,
-      model: getGeneration,
-      position: getPosition,
-      number: getHouseNumber,
-      roomnumber: getRoomNumber,
-      villageno: getGroup,
-      bldg: getVillage,
-      alley: getAlley,
-      road: getRoad,
-      subdistrict: getSubDistrict,
-      district: getDistrict,
-      province: getProvince,
-      postalcode: getPostalCode,
-      active: getStatus,
+      prefix: e.title !== undefined ? e.title : '',
+      username: e.username !== undefined ? e.username : '',
+      idcard: e.idcard !== undefined ? e.idcard : '',
+      username_eng: e.username_eng !== undefined ? e.username_eng : '',
+      prefixtitleeng: e.title_eng !== undefined ? e.title_eng : '',
+      phonenumber: e.phonenumber !== undefined ? e.phonenumber : '',
+      email: e.email !== undefined ? e.email : '',
+      course: e.course !== undefined ? e.course : '',
+      course1: e.course1 !== undefined ? e.course1 : '',
+      model: e.generation !== undefined ? e.generation : '',
+      position: e.position !== undefined ? e.position : '',
+      number: e.housenumber !== undefined ? e.housenumber : '',
+      roomnumber: e.roomnumber !== undefined ? e.roomnumber : '',
+      villageno: e.villageno !== undefined ? e.villageno : '',
+      bldg: e.village !== undefined ? e.village : '',
+      alley: e.alley !== undefined ? e.alley : '',
+      road: e.road !== undefined ? e.road : '',
+      subdistrict: e.subdistrict !== undefined ? e.subdistrict : '',
+      district: e.district !== undefined ? e.district : '',
+      province: e.province !== undefined ? e.province : '',
+      postalcode: e.postalcode !== undefined ? e.postalcode : '',
+      active: e.status !== undefined ? e.status : '',
     } as any;
 
     Modal.confirm({
@@ -290,81 +400,143 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
           </Col> */}
         </Row>
       </Modal>
-      <Card
-        style={{ width: '100%' }}
-        title={
-          <>
-            <Row>
-              <Col span={12} style={{ textAlign: 'left' }}>
-                <Typography>แบบฟอร์มสมัครสมาชิกสมาคมทั่วไป</Typography>
-              </Col>
-              <Col span={12} style={{ textAlign: 'right' }}>
-                <Select
-                  placeholder={'สถานะ'}
-                  style={{ width: '20%', textAlign: 'left' }}
-                  onChange={(e: string) => {
-                    setStatus(e);
-                  }}
-                >
-                  <Option value="active">
-                    <Badge color="green" text="Active" />
-                  </Option>
-                  <Option value="close">
-                    <Badge color="red" text="Close" />
-                  </Option>
-                  <Option value="died">
-                    <Badge status="default" text="Died" />
-                  </Option>
-                </Select>
-              </Col>
-            </Row>
-          </>
-        }
-      >
-        <ConfigProvider locale={configuredLocale}>
-          <Form form={form} layout="vertical" autoComplete="off">
+      <ConfigProvider locale={configuredLocale}>
+        <Form
+          form={form}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onFinish}
+        >
+          <Card
+            style={{ width: '100%' }}
+            title={
+              <>
+                <Row>
+                  <Col span={12} style={{ textAlign: 'left' }}>
+                    <Typography>แบบฟอร์มสมัครสมาชิกสมาคมทั่วไป</Typography>
+                  </Col>
+                  <Col span={12} style={{ textAlign: 'right' }}>
+                    <Form.Item name={'status'} required>
+                      <Select
+                        ref={refStatus}
+                        id={'status'}
+                        placeholder={'สถานะ'}
+                        style={{ width: '20%', textAlign: 'left' }}
+                        // onChange={(e: string) => {
+                        //   setStatus(e);
+                        // }}
+                      >
+                        <Option value="active">
+                          <Badge color="green" text="Active" />
+                        </Option>
+                        <Option value="close">
+                          <Badge color="red" text="Close" />
+                        </Option>
+                        <Option value="died">
+                          <Badge status="default" text="Died" />
+                        </Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </>
+            }
+          >
             <Row gutter={16}>
-              <Col span={8}>
-                <Form.Item label={'คำนำหน้า'}>
+              <Col span={2}>
+                <Form.Item label={'คำนำหน้า'} name={'title'} required>
                   <Select
+                    id={'title'}
+                    ref={refTitle}
                     placeholder={'เลือกคำนำหน้า'}
-                    onChange={(e: string) => {
-                      setTitle(e);
-                    }}
                   >
                     <Option value={'นาย'}>นาย</Option>
                     <Option value={'นาง'}>นาง</Option>
                     <Option value={'นางสาว'}>นางสาว</Option>
                     <Option value={'ดร.'}>ดร.</Option>
+                    <Option value={'ผศ.ดร.'}>ผศ.ดร.</Option>
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}>
-                <Form.Item label={'ชื่อ-นามสกุล'}>
+              <Col span={6}>
+                <Form.Item
+                  label={'ชื่อ-นามสกุล (ภาษาไทย)'}
+                  name={'username'}
+                  required
+                >
                   <Input
+                    ref={refUsername}
+                    id={'username'}
+                    name={'username'}
                     placeholder="ชื่อ สกุล"
-                    onChange={(e: any) => {
-                      setNameLastName(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setNameLastName(e.target.value);
+                    // }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={2}>
+                <Form.Item label={'คำนำหน้า'} name={'title_eng'} required>
+                  <Select
+                    id={'title_eng'}
+                    ref={refTitle}
+                    // name={"title"}
+                    placeholder={'เลือกคำนำหน้า'}
+                    // onChange={(e: string) => {
+                    //   setTitle(e);
+                    // }}
+                  >
+                    <Option value={'Mr.'}>Mr.</Option>
+                    <Option value={'Miss'}>Miss</Option>
+                    <Option value={'Mrs.'}>Mrs.</Option>
+                    <Option value={'Dr.'}>Dr.</Option>
+                    <Option value={'Asst.Prof.Dr'}>Asst.Prof.Dr</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  label={'ชื่อ-นามสกุล (ภาษาอังกฤษ)'}
+                  name={'username_eng'}
+                  required
+                >
+                  <Input
+                    ref={refUsername}
+                    id={'username_eng'}
+                    name={'username_eng'}
+                    placeholder="ชื่อ สกุล"
+                    // onChange={(e: any) => {
+                    //   setNameLastName(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'เลขบัตรประชาชน'}>
+                <Form.Item label={'เลขบัตรประชาชน'} name={'idcard'} required>
                   <Input
+                    ref={refIdcard}
+                    id={'idcard'}
+                    name={'idcard'}
                     placeholder="เลขบัตรประชาชน"
-                    onChange={(e: any) => {
-                      setIdCard(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setIdCard(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'หมายเลขโทรศัพท์'}>
+                <Form.Item
+                  label={'หมายเลขโทรศัพท์'}
+                  name={'phonenumber'}
+                  required
+                >
                   <Input
-                    onChange={(e: any) => {
-                      setPhoneNumber(e.target.value);
-                    }}
+                    ref={refPhonenumber}
+                    name={'phonenumber'}
+                    id={'phonenumber'}
+                    // onChange={(e: any) => {
+                    //   setPhoneNumber(e.target.value);
+                    // }}
                     type="phone"
                     // maxLength={10}
                     placeholder="หมายเลขโทรศัพท์"
@@ -373,18 +545,23 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'อีเมลล์'}>
+                <Form.Item label={'อีเมลล์'} name={'email'} required>
                   <Input
+                    ref={refEmail}
+                    name={'email'}
+                    id={'email'}
                     placeholder="อีเมลล์"
-                    onChange={(e: any) => {
-                      setEmail(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setEmail(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'หลักสูตร'}>
+                <Form.Item label={'หลักสูตร'} name={'course'} required>
                   <Select
+                    ref={refCourse}
+                    id={'course'}
                     mode="multiple"
                     allowClear
                     showSearch
@@ -396,9 +573,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      setCourse(e);
-                    }}
+                    // onChange={(e: string) => {
+                    //   setCourse(e);
+                    // }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
@@ -415,8 +592,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'หลักสูตร 1'}>
+                <Form.Item label={'หลักสูตร 1'} name={'course1'}>
                   <Select
+                    id={'course1'}
                     mode="multiple"
                     allowClear
                     showSearch
@@ -428,9 +606,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      setCourse1(e);
-                    }}
+                    // onChange={(e: string) => {
+                    //   setCourse1(e);
+                    // }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
@@ -446,19 +624,24 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={2}>
-                <Form.Item label={'รุ่น'}>
+                <Form.Item label={'รุ่น'} name={'generation'} required>
                   <Input
+                    ref={refGeneration}
+                    name={'generation'}
+                    id={'generation'}
                     type="number"
                     placeholder="#1"
-                    onChange={(e: any) => {
-                      setGeneration(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setGeneration(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item label={'ตำแหน่งสมาคม'}>
+                <Form.Item label={'ตำแหน่งสมาคม'} name={'position'} required>
                   <Select
+                    ref={refPosition}
+                    id={'position'}
                     mode="multiple"
                     allowClear
                     showSearch
@@ -470,9 +653,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                         .includes(input.toLowerCase())
                     }
                     placeholder={'กรุณาเลือก'}
-                    onChange={(e: string) => {
-                      setPosition(e);
-                    }}
+                    // onChange={(e: string) => {
+                    //   setPosition(e);
+                    // }}
                   >
                     <Option key={''} value={''} disabled>
                       Select
@@ -492,103 +675,128 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
             <Divider />
             <Row gutter={16}>
               <Col span={2}>
-                <Form.Item label={'บ้านเลขที่'}>
+                <Form.Item label={'บ้านเลขที่'} name={'housenumber'} required>
                   <Input
+                    ref={refHousenumber}
+                    name={'housenumber'}
+                    id={'housenumber'}
                     placeholder="บ้านเลขที่"
-                    onChange={(e: any) => {
-                      setHouseNumber(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setHouseNumber(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item label={'เลขที่ห้อง'}>
+                <Form.Item label={'เลขที่ห้อง'} name={'roomenumber'}>
                   <Input
+                    name={'roomnumber'}
+                    id={'housenumber'}
                     placeholder="เลขที่ห้อง"
-                    onChange={(e: any) => {
-                      setRoomNumber(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setRoomNumber(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'อาคาร / หมู่บ้าน'}>
+                <Form.Item label={'อาคาร / หมู่บ้าน'} name={'village'}>
                   <Input
+                    name={'village'}
+                    id={'village'}
                     placeholder="อาคาร / หมู่บ้าน"
-                    onChange={(e: any) => {
-                      setVillage(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setVillage(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={2}>
-                <Form.Item label={'หมู่ที่'}>
+                <Form.Item label={'หมู่ที่'} name={'villageno'} required>
                   <Input
+                    name={'villageno'}
+                    id={'villageno'}
                     placeholder="#1"
-                    onChange={(e: any) => {
-                      setGroup(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setGroup(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item label={'ตรอก / ซอย'}>
+                <Form.Item label={'ตรอก / ซอย'} name={'alley'}>
                   <Input
+                    name={'alley'}
+                    id={'alley'}
                     placeholder="ตรอก / ซอย"
-                    onChange={(e: any) => {
-                      setAlley(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setAlley(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'ถนน'}>
+                <Form.Item label={'ถนน'} name={'road'}>
                   <Input
+                    name={'road'}
+                    id={'road'}
                     placeholder="ถนน"
-                    onChange={(e: any) => {
-                      setRoad(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setRoad(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'ตำบล / แขวง'}>
+                <Form.Item label={'ตำบล / แขวง'} name={'subdistrict'} required>
                   <Input
+                    ref={refSubdistrict}
+                    name={'subdistrict'}
+                    id={'subdistrict'}
                     placeholder="ตำบล / แขวง"
-                    onChange={(e: any) => {
-                      setSubDistrict(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setSubDistrict(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'อำเภอ / เขต'}>
+                <Form.Item label={'อำเภอ / เขต'} name={'district'} required>
                   <Input
+                    ref={refDistrict}
+                    name={'district'}
+                    id={'district'}
                     placeholder="อำเภอ / เขต"
-                    onChange={(e: any) => {
-                      setDistrict(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setDistrict(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'จังหวัด'}>
+                <Form.Item label={'จังหวัด'} name={'province'} required>
                   <Input
+                    ref={refProvince}
+                    name={'province'}
+                    id={'province'}
                     placeholder="จังหวัด"
-                    onChange={(e: any) => {
-                      setProvince(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setProvince(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'รหัสไปรษณีย์'}>
+                <Form.Item label={'รหัสไปรษณีย์'} name={'postalcode'} required>
                   <Input
+                    ref={refPostalcode}
+                    name={'postalcode'}
+                    id={'postalcode'}
                     type="number"
                     placeholder="รหัสไปรษณีย์"
-                    onChange={(e: any) => {
-                      setPostalCode(e.target.value);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setPostalCode(e.target.value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
@@ -628,20 +836,23 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
               style={{ justifyContent: 'center', display: 'flex' }}
             >
               <Col>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: '#1E6541' }}
-                  onClick={(e: any) => {
-                    onFinish(e);
-                  }}
-                >
-                  ยืนยัน
-                </Button>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ backgroundColor: '#1E6541' }}
+                    // onClick={(e: any) => {
+                    //   onFinish(e);
+                    // }}
+                  >
+                    ยืนยัน
+                  </Button>
+                </Form.Item>
               </Col>
             </Row>
-          </Form>
-        </ConfigProvider>
-      </Card>
+          </Card>
+        </Form>
+      </ConfigProvider>
     </>
   );
 };
