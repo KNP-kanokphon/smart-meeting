@@ -348,7 +348,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           style={{
                             fontWeight: 'bold',
                             color: '#1F4E3A',
-                            fontSize: '22px',
+                            fontSize: '16px',
                             marginBottom: '5px',
                             fontFamily: 'kanit',
                           }}
@@ -377,7 +377,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           style={{
                             fontWeight: 'bold',
                             color: '#C6A970',
-                            fontSize: '22px',
+                            fontSize: '16px',
                             marginBottom: '5px',
                             fontFamily: 'kanit',
                           }}
