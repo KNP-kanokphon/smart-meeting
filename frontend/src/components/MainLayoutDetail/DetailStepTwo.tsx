@@ -123,7 +123,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
     const result = await DatamanagementService()
       .getCourseall()
       .then(async data => {
-        console.log(data);
+        // console.log(data);
 
         const newData = await data.map((e: any, i: number) => {
           return {

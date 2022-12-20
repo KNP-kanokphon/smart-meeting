@@ -81,7 +81,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
           });
       });
     } else {
-      console.log(typefile);
+      // console.log(typefile);
 
       // หลักสูตร
       readXlsxFile(fileList[0]).then(async (rows: any) => {

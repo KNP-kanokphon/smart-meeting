@@ -54,9 +54,9 @@ export const CreateMeeting: React.FC = () => {
   };
 
   const checkSubmitForm = () => {
-    console.log(dataAgenda, 'dataAgenda');
-    console.log(dataDetail, 'dataDetail');
-    console.log(dataFood, 'dataFood');
+    // console.log(dataAgenda, 'dataAgenda');
+    // console.log(dataDetail, 'dataDetail');
+    // console.log(dataFood, 'dataFood');
     if (dataFood.length === 0) {
       message.error('0 length');
       return;

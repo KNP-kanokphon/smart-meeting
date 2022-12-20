@@ -64,7 +64,7 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
     navigate(`/meeting/agendas`);
   };
   const onclickSubmit = () => {
-    console.log('1');
+    // console.log('1');
   };
   return (
     <>

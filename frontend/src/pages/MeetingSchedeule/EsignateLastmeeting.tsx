@@ -99,7 +99,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
 
   const showModal = (e: any) => {
     setnameUser(e);
-    console.log(e.username);
+    // console.log(e.username);
     setIsModalOpen(true);
   };
 
@@ -112,7 +112,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   };
 
   const showModal2 = (e: any) => {
-    console.log(e);
+    // console.log(e);
     setnameUser2(e.username);
     setnameuuid(e.uuidprofile);
     setIsModalOpen2(true);
@@ -166,7 +166,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       key: 'signature',
       width: '5%',
       render: (text: any, row: any) => {
-        console.log(text);
+        // console.log(text);
 
         return text != null ? (
           <Tag color="lime">

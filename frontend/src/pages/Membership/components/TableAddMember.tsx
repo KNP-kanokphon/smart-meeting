@@ -71,7 +71,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
 
   const [getdataModal, setdatainModal] = useState<any>('');
   const [getnameeng, setnameeng] = useState<any>('');
-  console.log(isModalOpen);
+  // console.log(isModalOpen);
 
   const { Option } = Select;
 
@@ -132,7 +132,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   };
 
   const showModal = (e: any) => {
-    console.log(e);
+    // console.log(e);
     if (e) {
       // setnameeng(e.username_eng);
       // setMovies(prevMovies => ([...prevMovies, ...result]));
@@ -148,7 +148,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   };
 
   const handleUpdate = (e: any) => {
-    console.log(e);
+    // console.log(e);
 
     const uuid = getdataModal.uuid;
     const data = {
@@ -413,7 +413,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       okType: 'danger',
       onOk: async () => {
         // console.log(uuid);
-        console.log(data);
+        // console.log(data);
 
         const res: any = await DatamanagementService().updateUser(uuid, data);
         if (res) {
@@ -465,6 +465,28 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         province: x.province,
         postalcode: x.postalcode,
         prefixtitleeng: x.prefixtitleeng,
+        passport: x.passport,
+        certificate: x.certificate,
+        workpermit: x.workpermit,
+        work: x.work,
+        job_position: x.job_position,
+        salary: x.salary,
+        work_station: x.work_station,
+        work_number: x.work_number,
+        work_villageno: x.work_villageno,
+        work_alley: x.work_alley,
+        work_road: x.work_road,
+        work_sub_district: x.work_sub_district,
+        work_district: x.work_district,
+        work_province: x.work_province,
+        work_postal_code: x.work_postal_code,
+        phone_office: x.phone_office,
+        all_assets: x.all_assets,
+        previous_job: x.previous_job,
+        criminalcase: x.criminalcase,
+        position_guild: x.position_guild,
+        guild: x.guild,
+        others: x.others,
       } as any;
       return mapData;
     });
@@ -802,7 +824,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               { name: ['title_eng'], value: getdataModal?.prefixtitleeng },
               { name: ['username_eng'], value: getdataModal?.username_eng },
               { name: ['getIdCard'], value: getdataModal?.idcard },
-              { name: ['getDOB'], value: getdataModal?.bridday },
+              { name: ['getDOB'], value: dayjs(getdataModal?.bridday) },
               { name: ['getage'], value: getdataModal?.age },
               { name: ['getPhoneNumber'], value: getdataModal?.phonenumber },
               { name: ['getEmail'], value: getdataModal?.email },
@@ -1239,344 +1261,363 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
             </Row>
-            <Divider />
-            <Row gutter={16}>
-              <Col span={8}>
-                <Form.Item
-                  label={'กรณีเป็นบุคคลต่างด้าว ถือหนังสือเดินทางเลขที่'}
-                  name={'getPassNumber'}
-                >
-                  <Input
-                    defaultValue={getdataModal?.passport}
-                    value={getdataModal?.passport}
-                    name={'getPassNumber'}
-                    id={'getPassNumber'}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label={
-                    'ใบสำคัญถิ่นที่อยู่/ใบสาคัญประจาตัวคนต่างด้าวเลขที่ (ถ้ามี)'
-                  }
-                  name={'getImpPassNumber'}
-                >
-                  <Input
-                    defaultValue={getdataModal?.certificate}
-                    value={getdataModal?.certificate}
-                    name={'getImpPassNumber'}
-                    id={'getImpPassNumber'}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label={'ใบอนุญาตทำงานเลขที่ (ถ้ามี)'}
-                  name={'getWorkDocument'}
-                >
-                  <Input
-                    defaultValue={getdataModal?.workpermit}
-                    value={getdataModal?.workpermit}
-                    name={'getWorkDocument'}
-                    id={'getWorkDocument'}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Divider />
-            <Row gutter={16}>
-              <Col span={8}>
-                <Form.Item label={'ข้าพเจ้าประกอบอาชีพ'} name={'getCareer'}>
-                  <Input
-                    defaultValue={getdataModal?.work}
-                    value={getdataModal?.work}
-                    name={'getCareer'}
-                    id={'getCareer'}
-                    placeholder="ข้าพเจ้าประกอบอาชีพ"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'ตำแหน่ง'} name={'getPositionCareer'}>
-                  <Input
-                    defaultValue={getdataModal?.job_position}
-                    value={getdataModal?.job_position}
-                    name={'getPositionCareer'}
-                    id={'getPositionCareer'}
-                    placeholder="ตำแหน่ง"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'รายได้เฉลี่ยเดือนละ'} name={'getSalary'}>
-                  <InputNumber
-                    defaultValue={Number(getdataModal?.salary)}
-                    value={Number(getdataModal?.salary)}
-                    name={'getSalary'}
-                    id={'getSalary'}
-                    style={{ width: '100%' }}
-                    formatter={(value: any) =>
-                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    }
-                    stringMode
-                    parser={(value: any) => value!.replace(/\$\s?|(,*)/g, '')}
-                    placeholder="รายได้เฉลี่ยเดือนละ"
-                    addonAfter="บาท"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'สถานที่ประกอบอาชีพ'} name={'getOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_station}
-                    value={getdataModal?.work_station}
-                    name={'getOffice'}
-                    id={'getOffice'}
-                    placeholder="สถานที่ประกอบอาชีพ"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item label={'เลขที่'} name={'getHouseNumberOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_number}
-                    value={getdataModal?.work_number}
-                    name={'getHouseNumberOffice'}
-                    id={'getHouseNumberOffice'}
-                    placeholder="เลขที่"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item label={'หมู่ที่'} name={'getGroupOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_villageno}
-                    value={getdataModal?.work_villageno}
-                    name={'getGroupOffice'}
-                    id={'getGroupOffice'}
-                    placeholder="#1"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'ตรอก / ซอย'} name={'getAlleyOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_alley}
-                    value={getdataModal?.work_alley}
-                    name={'getAlleyOffice'}
-                    id={'getAlleyOffice'}
-                    placeholder="ตรอก / ซอย"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'ถนน'} name={'getRoadOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_road}
-                    value={getdataModal?.work_road}
-                    name={'getRoadOffice'}
-                    id={'getRoadOffice'}
-                    placeholder="ถนน"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'ตำบล / แขวง'} name={'getSubDistrictOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_sub_district}
-                    value={getdataModal?.work_sub_district}
-                    name={'getSubDistrictOffice'}
-                    id={'getSubDistrictOffice'}
-                    placeholder="ตำบล / แขวง"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'อำเภอ / เขต'} name={'getDistrictOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_district}
-                    value={getdataModal?.work_district}
-                    name={'getDistrictOffice'}
-                    id={'getDistrictOffice'}
-                    placeholder="อำเภอ / เขต"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'จังหวัด'} name={'getProvinceOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_province}
-                    value={getdataModal?.work_province}
-                    name={'getProvinceOffice'}
-                    id={'getProvinceOffice'}
-                    placeholder="จังหวัด"
-                    onChange={(e: any) => {
-                      // setProvinceOffice(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item label={'รหัสไปรษณีย์'} name={'getPostalCodeOffice'}>
-                  <Input
-                    defaultValue={getdataModal?.work_postal_code}
-                    value={getdataModal?.work_postal_code}
-                    name={'getPostalCodeOffice'}
-                    id={'getPostalCodeOffice'}
-                    type="number"
-                    placeholder="รหัสไปรษณีย์"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label={'โทรศัพท์สถานที่ประกอบอาชีพ'}
-                  name={'getPhoneNumberOffice'}
-                >
-                  <InputNumber
-                    defaultValue={getdataModal?.phone_office}
-                    value={getdataModal?.phone_office}
-                    name={'getPhoneNumberOffice'}
-                    id={'getPhoneNumberOffice'}
-                    style={{ width: '100%' }}
-                    type="phone"
-                    maxLength={10}
-                    placeholder="โทรศัพท์สถานที่ประกอบอาชีพ"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Divider />
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  label={'ปัจจุบันข้าพเจ้ามีทรัพย์สิน ดังต่อไปนี้'}
-                  name={'getDetail1'}
-                >
-                  <TextArea
-                    defaultValue={getdataModal?.all_assets}
-                    value={getdataModal?.all_assets}
-                    name={'getDetail1'}
-                    id={'getDetail1'}
-                    showCount
-                    maxLength={250}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  label={
-                    'ข้าพเจ้าเคยทำงานในสมาคมหรือองค์กรอื่นๆ มาก่อน ดังนี้ (ระบุชื่อองค์กรและตำแหน่ง)'
-                  }
-                  name={'getDetail2'}
-                >
-                  <TextArea
-                    defaultValue={getdataModal?.previous_job}
-                    value={getdataModal?.previous_job}
-                    name={'getDetail2'}
-                    id={'getDetail2'}
-                    showCount
-                    maxLength={250}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  label={
-                    'ข้าพเจ้าเคยต้องหาในคดีอาญาหรือคดีแพ่งโดยศาลมีคาพิพากษาถึงที่สุดแล้ว ดังต่อไปนี้'
-                  }
-                  name={'getDetail3'}
-                >
-                  <TextArea
-                    defaultValue={getdataModal?.criminalcase}
-                    value={getdataModal?.criminalcase}
-                    name={'getDetail3'}
-                    id={'getDetail3'}
-                    showCount
-                    maxLength={250}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Divider />
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  label={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
-                  name={'getApplyPosition'}
-                >
-                  <Select
-                    defaultValue={getdataModal?.position_guild}
-                    value={getdataModal?.position_guild}
-                    // name={'username'}
-                    id={'getApplyPosition'}
-                    placeholder={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
-                    mode="multiple"
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input: any, option: any) =>
-                      option.children
-                        .toString()
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    onChange={(e: any) => {
-                      // setApplyPosition(e);
-                    }}
-                    style={{ width: '100%' }}
-                  >
-                    <Option key={''} value={''} disabled>
-                      Select
-                    </Option>
-                    {getPositionAll.map((e: any, row: any) => {
-                      // console.log(e.position);
-                      return (
-                        <Option key={e.uuid} value={e.position}>
-                          {e.position}
+            {getdataModal?.type === 'member' ? (
+              <>
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <Form.Item
+                      label={'กรณีเป็นบุคคลต่างด้าว ถือหนังสือเดินทางเลขที่'}
+                      name={'getPassNumber'}
+                    >
+                      <Input
+                        defaultValue={getdataModal?.passport}
+                        value={getdataModal?.passport}
+                        name={'getPassNumber'}
+                        id={'getPassNumber'}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      label={
+                        'ใบสำคัญถิ่นที่อยู่/ใบสาคัญประจาตัวคนต่างด้าวเลขที่ (ถ้ามี)'
+                      }
+                      name={'getImpPassNumber'}
+                    >
+                      <Input
+                        defaultValue={getdataModal?.certificate}
+                        value={getdataModal?.certificate}
+                        name={'getImpPassNumber'}
+                        id={'getImpPassNumber'}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      label={'ใบอนุญาตทำงานเลขที่ (ถ้ามี)'}
+                      name={'getWorkDocument'}
+                    >
+                      <Input
+                        defaultValue={getdataModal?.workpermit}
+                        value={getdataModal?.workpermit}
+                        name={'getWorkDocument'}
+                        id={'getWorkDocument'}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <Form.Item label={'ข้าพเจ้าประกอบอาชีพ'} name={'getCareer'}>
+                      <Input
+                        defaultValue={getdataModal?.work}
+                        value={getdataModal?.work}
+                        name={'getCareer'}
+                        id={'getCareer'}
+                        placeholder="ข้าพเจ้าประกอบอาชีพ"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'ตำแหน่ง'} name={'getPositionCareer'}>
+                      <Input
+                        defaultValue={getdataModal?.job_position}
+                        value={getdataModal?.job_position}
+                        name={'getPositionCareer'}
+                        id={'getPositionCareer'}
+                        placeholder="ตำแหน่ง"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'รายได้เฉลี่ยเดือนละ'} name={'getSalary'}>
+                      <InputNumber
+                        defaultValue={Number(getdataModal?.salary)}
+                        value={Number(getdataModal?.salary)}
+                        name={'getSalary'}
+                        id={'getSalary'}
+                        style={{ width: '100%' }}
+                        formatter={(value: any) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        }
+                        stringMode
+                        parser={(value: any) =>
+                          value!.replace(/\$\s?|(,*)/g, '')
+                        }
+                        placeholder="รายได้เฉลี่ยเดือนละ"
+                        addonAfter="บาท"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'สถานที่ประกอบอาชีพ'} name={'getOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_station}
+                        value={getdataModal?.work_station}
+                        name={'getOffice'}
+                        id={'getOffice'}
+                        placeholder="สถานที่ประกอบอาชีพ"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item label={'เลขที่'} name={'getHouseNumberOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_number}
+                        value={getdataModal?.work_number}
+                        name={'getHouseNumberOffice'}
+                        id={'getHouseNumberOffice'}
+                        placeholder="เลขที่"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item label={'หมู่ที่'} name={'getGroupOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_villageno}
+                        value={getdataModal?.work_villageno}
+                        name={'getGroupOffice'}
+                        id={'getGroupOffice'}
+                        placeholder="#1"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'ตรอก / ซอย'} name={'getAlleyOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_alley}
+                        value={getdataModal?.work_alley}
+                        name={'getAlleyOffice'}
+                        id={'getAlleyOffice'}
+                        placeholder="ตรอก / ซอย"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'ถนน'} name={'getRoadOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_road}
+                        value={getdataModal?.work_road}
+                        name={'getRoadOffice'}
+                        id={'getRoadOffice'}
+                        placeholder="ถนน"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      label={'ตำบล / แขวง'}
+                      name={'getSubDistrictOffice'}
+                    >
+                      <Input
+                        defaultValue={getdataModal?.work_sub_district}
+                        value={getdataModal?.work_sub_district}
+                        name={'getSubDistrictOffice'}
+                        id={'getSubDistrictOffice'}
+                        placeholder="ตำบล / แขวง"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'อำเภอ / เขต'} name={'getDistrictOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_district}
+                        value={getdataModal?.work_district}
+                        name={'getDistrictOffice'}
+                        id={'getDistrictOffice'}
+                        placeholder="อำเภอ / เขต"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label={'จังหวัด'} name={'getProvinceOffice'}>
+                      <Input
+                        defaultValue={getdataModal?.work_province}
+                        value={getdataModal?.work_province}
+                        name={'getProvinceOffice'}
+                        id={'getProvinceOffice'}
+                        placeholder="จังหวัด"
+                        onChange={(e: any) => {
+                          // setProvinceOffice(e.target.value);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      label={'รหัสไปรษณีย์'}
+                      name={'getPostalCodeOffice'}
+                    >
+                      <Input
+                        defaultValue={getdataModal?.work_postal_code}
+                        value={getdataModal?.work_postal_code}
+                        name={'getPostalCodeOffice'}
+                        id={'getPostalCodeOffice'}
+                        type="number"
+                        placeholder="รหัสไปรษณีย์"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      label={'โทรศัพท์สถานที่ประกอบอาชีพ'}
+                      name={'getPhoneNumberOffice'}
+                    >
+                      <InputNumber
+                        defaultValue={getdataModal?.phone_office}
+                        value={getdataModal?.phone_office}
+                        name={'getPhoneNumberOffice'}
+                        id={'getPhoneNumberOffice'}
+                        style={{ width: '100%' }}
+                        type="phone"
+                        maxLength={10}
+                        placeholder="โทรศัพท์สถานที่ประกอบอาชีพ"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={24}>
+                    <Form.Item
+                      label={'ปัจจุบันข้าพเจ้ามีทรัพย์สิน ดังต่อไปนี้'}
+                      name={'getDetail1'}
+                    >
+                      <TextArea
+                        defaultValue={getdataModal?.all_assets}
+                        value={getdataModal?.all_assets}
+                        name={'getDetail1'}
+                        id={'getDetail1'}
+                        showCount
+                        maxLength={250}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      label={
+                        'ข้าพเจ้าเคยทำงานในสมาคมหรือองค์กรอื่นๆ มาก่อน ดังนี้ (ระบุชื่อองค์กรและตำแหน่ง)'
+                      }
+                      name={'getDetail2'}
+                    >
+                      <TextArea
+                        defaultValue={getdataModal?.previous_job}
+                        value={getdataModal?.previous_job}
+                        name={'getDetail2'}
+                        id={'getDetail2'}
+                        showCount
+                        maxLength={250}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      label={
+                        'ข้าพเจ้าเคยต้องหาในคดีอาญาหรือคดีแพ่งโดยศาลมีคาพิพากษาถึงที่สุดแล้ว ดังต่อไปนี้'
+                      }
+                      name={'getDetail3'}
+                    >
+                      <TextArea
+                        defaultValue={getdataModal?.criminalcase}
+                        value={getdataModal?.criminalcase}
+                        name={'getDetail3'}
+                        id={'getDetail3'}
+                        showCount
+                        maxLength={250}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label={'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'}
+                      name={'getApplyPosition'}
+                    >
+                      <Select
+                        defaultValue={getdataModal?.position_guild}
+                        value={getdataModal?.position_guild}
+                        // name={'username'}
+                        id={'getApplyPosition'}
+                        placeholder={
+                          'ข้าพเจ้ามีความประสงค์จะเป็น (ตำแหน่งในสมาคม)'
+                        }
+                        mode="multiple"
+                        allowClear
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input: any, option: any) =>
+                          option.children
+                            .toString()
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        onChange={(e: any) => {
+                          // setApplyPosition(e);
+                        }}
+                        style={{ width: '100%' }}
+                      >
+                        <Option key={''} value={''} disabled>
+                          Select
                         </Option>
-                      );
-                    })}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label={'ของสมาคม'} name={'getAssociaton'}>
-                  <Input
-                    defaultValue={getdataModal?.guild}
-                    value={getdataModal?.guild}
-                    name={'getAssociaton'}
-                    id={'getAssociaton'}
-                    placeholder="กรอกข้อมูล"
-                    onChange={(e: any) => {
-                      // setAssociaton(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item label={'ข้อความเพิ่มเติม (ถ้ามี)'} name={'getOther'}>
-                  <TextArea
-                    defaultValue={getdataModal?.others}
-                    value={getdataModal?.others}
-                    name={'getOther'}
-                    id={'getOther'}
-                    onChange={(e: any) => {
-                      // setOther(e.target.value);
-                    }}
-                    showCount
-                    maxLength={250}
-                    placeholder="กรอกข้อมูล"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+                        {getPositionAll.map((e: any, row: any) => {
+                          // console.log(e.position);
+                          return (
+                            <Option key={e.uuid} value={e.position}>
+                              {e.position}
+                            </Option>
+                          );
+                        })}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label={'ของสมาคม'} name={'getAssociaton'}>
+                      <Input
+                        defaultValue={getdataModal?.guild}
+                        value={getdataModal?.guild}
+                        name={'getAssociaton'}
+                        id={'getAssociaton'}
+                        placeholder="กรอกข้อมูล"
+                        onChange={(e: any) => {
+                          // setAssociaton(e.target.value);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      label={'ข้อความเพิ่มเติม (ถ้ามี)'}
+                      name={'getOther'}
+                    >
+                      <TextArea
+                        defaultValue={getdataModal?.others}
+                        value={getdataModal?.others}
+                        name={'getOther'}
+                        id={'getOther'}
+                        onChange={(e: any) => {
+                          // setOther(e.target.value);
+                        }}
+                        showCount
+                        maxLength={250}
+                        placeholder="กรอกข้อมูล"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <></>
+            )}
             <Divider />
             <Typography style={{ marginBottom: '10px' }}>
               ข้าพเจ้าขอรับรองว่าข้อความที่ได้ให้ไว้ข้างต้นเป็นความจริงทุกประการ

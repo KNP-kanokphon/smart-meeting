@@ -66,7 +66,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       await DatamanagementService()
         .importuser(newData)
         .then(e => {
-          console.log(e);
+          // console.log(e);
           message.success('Import User Success !!');
         });
 
@@ -153,7 +153,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       setFileList(newFileList);
     },
     beforeUpload: (file: any) => {
-      console.log(file);
+      // console.log(file);
       setFileList([...fileList, file]);
       return false;
     },

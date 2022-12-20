@@ -126,7 +126,7 @@ export const TableBoard: React.FC<Props> = ({
       title: 'Actions',
       width: '20%',
       render: (record: any) => {
-        console.log(record);
+        // console.log(record);
 
         return (
           <>
@@ -220,7 +220,7 @@ export const TableBoard: React.FC<Props> = ({
                   .includes(input.toLowerCase());
               }}
               onChange={(e: any, dataAll: any) => {
-                console.log(dataAll);
+                // console.log(dataAll);
 
                 const matchuser = username.find(
                   (x: any) => x.username === dataAll?.children?.props.children,

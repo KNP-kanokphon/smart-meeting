@@ -44,7 +44,7 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   createuser: async (data: any) => {
-    console.log(data);
+    // console.log(data);
     const result = await httpClient.post(`/userattendees/createuser`, data);
     return result.data;
   },
@@ -390,7 +390,7 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   importuser: async (data: string[]) => {
-    console.log(data);
+    // console.log(data);
 
     const result = await httpClient.post(`/user/importuser`, data);
     return result.data;

@@ -70,7 +70,7 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
     ]);
   };
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', values);
   };
   return (
     <Layout className="layout">

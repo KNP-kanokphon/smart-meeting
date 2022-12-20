@@ -22,13 +22,13 @@ interface IProp {
 export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
   const [fileList, setFileList] = useState<any>([]);
   const onChangeDate = (date: any) => {
-    console.log(date);
+    // console.log(date);
   };
   const onChangeStartTime = (time: any) => {
-    console.log(time);
+    // console.log(time);
   };
   const onChangeEndTime = (time: any) => {
-    console.log(time);
+    // console.log(time);
   };
   const onChangeSetItemFiled = async (filedList: any) => {
     setDataField({ userBoard: filedList });

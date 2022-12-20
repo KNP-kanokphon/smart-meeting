@@ -74,7 +74,7 @@ const app = async () => {
     );
     reportWebVitals();
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };
 

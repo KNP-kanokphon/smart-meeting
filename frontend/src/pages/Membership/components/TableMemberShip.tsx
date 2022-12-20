@@ -189,7 +189,7 @@ export const TableMemberShip: React.FC = (): React.ReactElement => {
         okText: 'ยืนยัน',
         cancelText: 'ยกเลิก',
         onOk: async () => {
-          console.log(e);
+          // console.log(e);
 
           // const data = {
           //   data: {

@@ -70,11 +70,11 @@ export const FoodPage: React.FC<Props> = ({
     navigate(`/meeting/agendas`);
   };
   const onclickSubmit = () => {
-    console.log('1');
+    // console.log('1');
   };
   const onFinish = (values: any) => {
     form.validateFields().then(values => {
-      console.log(values);
+      // console.log(values);
       setDataField(values);
     });
     // console.log('Received values of form:', values);

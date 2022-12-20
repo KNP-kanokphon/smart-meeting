@@ -140,7 +140,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
   };
 
   const onFinish = (e: any) => {
-    console.log(e);
+    // console.log(e);
 
     if (e.status === undefined || e.status === '') {
       message.warning('กรุณาเลือก Status !!');
@@ -270,7 +270,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
           })
           .catch((e: any) => {
             message.error('error');
-            console.log(e);
+            // console.log(e);
           });
       },
       onCancel: () => {

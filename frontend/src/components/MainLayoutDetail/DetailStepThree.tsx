@@ -24,8 +24,8 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
   useEffect(() => {
-    console.log(id);
-    console.log(userid);
+    // console.log(id);
+    // console.log(userid);
 
     getDataProfile();
   }, []);

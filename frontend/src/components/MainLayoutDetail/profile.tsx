@@ -187,9 +187,9 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
   const [getuserAll, setUserAll] = useState<any>([]);
   const [getuserAlls, setUserAlls] = useState<any>([]);
   const [getdataPosition, setdataPosition] = useState<any>([]);
-  console.log(userid);
+  // console.log(userid);
 
-  console.log(getuserAll);
+  // console.log(getuserAll);
 
   useEffect(() => {
     getDataProfile();
@@ -354,7 +354,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           }}
                         >
                           {getuserAll.map((e: any, row: any) => {
-                            console.log(e?.data?.uuid === userid);
+                            // console.log(e?.data?.uuid === userid);
                             if (e?.data?.uuid === userid) {
                               return e?.data?.prefix + ' ' + e?.data?.username;
                             }
@@ -402,7 +402,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           })} */}
 
                           {getuserAll.map((e: any, row: any) => {
-                            console.log(e?.data?.uuid === userid);
+                            // console.log(e?.data?.uuid === userid);
                             if (e?.data?.uuid === userid) {
                               return (
                                 e?.data?.prefixtitleeng.toUpperCase() +
@@ -433,7 +433,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           }}
                         >
                           {getuserAll.map((e: any, row: any) => {
-                            console.log(e?.data?.uuid === userid);
+                            // console.log(e?.data?.uuid === userid);
                             if (e?.data?.uuid === userid) {
                               // return e?.data?.prefix + ' ' + e?.data?.username;
                               if (typeof e?.data?.position === 'string') {
@@ -530,7 +530,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           );
                         })} */}
                         {getuserAll.map((e: any, row: any) => {
-                          console.log(e?.data?.uuid === userid);
+                          // console.log(e?.data?.uuid === userid);
                           if (e?.data?.uuid === userid) {
                             return (
                               <a
@@ -566,7 +566,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                       </Col>
                       <Col span={22}>
                         {/* {userprofile.map((e: any, row: any) => {
-                          console.log(e);
+                          // console.log(e);
 
                           const dataresult = getuserAll?.find(
                             (x: any) => x?.data?.uuid === e?.uuidprofile,

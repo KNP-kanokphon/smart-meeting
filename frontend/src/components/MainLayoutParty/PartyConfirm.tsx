@@ -35,7 +35,7 @@ export const PartyConfirm: React.FC<Props> = ({
   }, []);
   const getUserDetail = async () => {
     const result = await DatamanagementService().getUserInparty(userid);
-    console.log(result[0]);
+    // console.log(result[0]);
 
     setDetailuser(result[0]);
   };

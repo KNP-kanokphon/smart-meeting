@@ -67,7 +67,7 @@ export const SignConfirm: React.FC<Props> = ({
         // console.log(data);
 
         const newData = await data.map((e: any, i: number) => {
-          console.log(e);
+          // console.log(e);
 
           const pname = position.find(
             (name: {
@@ -93,7 +93,7 @@ export const SignConfirm: React.FC<Props> = ({
             signature: e.signature,
           };
         });
-        console.log(newData);
+        // console.log(newData);
 
         setDataUser(newData);
       });
@@ -185,7 +185,7 @@ export const SignConfirm: React.FC<Props> = ({
       align: 'center' as const,
       fixed: 'right',
       render: (e: any, record: any) => {
-        console.log(record);
+        // console.log(record);
 
         if (record.uuidprofile === userOwner) {
           if (record.signature === '') {

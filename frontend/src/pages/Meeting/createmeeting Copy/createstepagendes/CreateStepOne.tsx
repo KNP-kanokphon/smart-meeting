@@ -57,7 +57,7 @@ export const CreateStepOne: React.FC<Props> = ({
   const onclickNext = () => {
     form.validateFields().then(values => {
       settest([...test, values]);
-      console.log(test);
+      // console.log(test);
     });
 
     navigate(`agendasfood`);
