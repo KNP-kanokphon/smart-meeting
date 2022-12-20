@@ -69,41 +69,45 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const [getCourseAll, setCourseAll] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const [getdataModal, setdatainModal] = useState<any>([]);
-  const [getnameeng, setnameeng] = useState<any>([]);
+  const [getdataModal, setdatainModal] = useState<any>('');
+  const [getnameeng, setnameeng] = useState<any>('');
+  console.log(isModalOpen);
 
   const { Option } = Select;
 
   useEffect(() => {
+    const dataPosition = async () => {
+      const resultDataPosiotion =
+        await DatamanagementService().getPositionall();
+      const dataPosition = (await resultDataPosiotion.map(
+        (e: any, row: any) => {
+          const mapData = {
+            uuid: e.uuid,
+            position: e.nameposition,
+          };
+          return mapData;
+        },
+      )) as any;
+      setPositionAll(dataPosition);
+    };
+    const getListCourse = async () => {
+      const result = await DatamanagementService().getCourseall();
+
+      const dataCourse = (await result.map((e: any, i: number) => {
+        const mapData = {
+          uuid: e.uuid,
+          course: e.namecourse,
+        };
+        return mapData;
+      })) as any;
+      setCourseAll(dataCourse);
+    };
     dataAll();
     dataPosition();
     getListCourse();
-    // showModal()
   }, []);
 
-  const dataPosition = async () => {
-    const resultDataPosiotion = await DatamanagementService().getPositionall();
-    const dataPosition = (await resultDataPosiotion.map((e: any, row: any) => {
-      const mapData = {
-        uuid: e.uuid,
-        position: e.nameposition,
-      };
-      return mapData;
-    })) as any;
-    setPositionAll(dataPosition);
-  };
-  const getListCourse = async () => {
-    const result = await DatamanagementService().getCourseall();
-
-    const dataCourse = (await result.map((e: any, i: number) => {
-      const mapData = {
-        uuid: e.uuid,
-        course: e.namecourse,
-      };
-      return mapData;
-    })) as any;
-    setCourseAll(dataCourse);
-  };
+  useEffect(() => {}, [getdataModal]);
 
   const handleDel = (e: any) => {
     if (e) {
@@ -128,97 +132,309 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   };
 
   const showModal = (e: any) => {
-    // console.log(e);
-    // setnameeng([]);
-    setnameeng(e.username_eng);
-    // setdatainModal([]);
-    setdatainModal(e);
-
-    setIsModalOpen(true);
-    FormAdd.resetFields();
+    console.log(e);
+    if (e) {
+      // setnameeng(e.username_eng);
+      // setMovies(prevMovies => ([...prevMovies, ...result]));
+      setdatainModal((x: any) => e);
+      setIsModalOpen(true);
+      FormAdd.resetFields();
+    }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    // setnameeng([]);
-    // setdatainModal([]);
     FormAdd.resetFields();
   };
 
   const handleUpdate = (e: any) => {
+    console.log(e);
+
+    const uuid = getdataModal.uuid;
     const data = {
-      alley: e.getAlley,
-      work_alley: e.getAlleyOffice,
-      position_guild: e.getApplyPosition,
-      guild: e.getAssociaton,
-      work: e.getCareer,
-      course: e.getCourse,
-      course1: e.getCourse1,
-      bridday: e.getDOB,
-      all_assets: e.getDetail1,
-      previous_job: e.getDetail2,
-      criminalcase: e.getDetail3,
-      district: e.getDistrict,
-      work_district: e.getDistrictOffice,
-      email: e.getEmail,
-      model: e.getGeneration,
-      villageno: e.getGroup,
-      work_villageno: e.getGroupOffice,
-      number: e.getHouseNumber,
-      work_number: e.getHouseNumberOffice,
-      idcard: e.getIdCard,
-      certificate: e.getImpPassNumber,
-      username: e.getNameLastName,
-      work_station: e.getOffice,
-      others: e.getOther,
-      passport: e.getPassNumber,
-      phonenumber: e.getPhoneNumber,
-      phone_office: e.getPhoneNumberOffice,
-      position: e.getPosition,
-      job_position: e.getPositionCareer,
-      postalcode: e.getPostalCode,
-      work_postal_code: e.getPostalCodeOffice,
-      province: e.getProvince,
-      work_province: e.getProvinceOffice,
-      road: e.getRoad,
-      work_road: e.getRoadOffice,
-      roomnumber: e.getRoomNumber,
-      salary: e.getSalary,
-      active: e.getStatus,
-      subdistrict: e.getSubDistrict,
-      work_sub_district: e.getSubDistrictOffice,
-      prefix: e.getTitle,
-      bldg: e.getVillage,
-      workpermit: e.getWorkDocument,
+      data: {
+        alley:
+          e.getAlley === null || e.getAlley === undefined || e.getAlley === ''
+            ? ''
+            : e.getAlley,
+        work_alley:
+          e.getAlleyOffice === null ||
+          e.getAlleyOffice === undefined ||
+          e.getAlleyOffice === ''
+            ? ''
+            : e.getAlleyOffice,
+        position_guild:
+          e.getApplyPosition === null ||
+          e.getApplyPosition === undefined ||
+          e.getApplyPosition === ''
+            ? ''
+            : e.getApplyPosition,
+        guild:
+          e.getAssociaton === null ||
+          e.getAssociaton === undefined ||
+          e.getAssociaton === ''
+            ? ''
+            : e.getAssociaton,
+        work:
+          e.getCareer === null ||
+          e.getCareer === undefined ||
+          e.getCareer === ''
+            ? ''
+            : e.getCareer,
+        course:
+          e.getCourse === null ||
+          e.getCourse === undefined ||
+          e.getCourse === ''
+            ? ''
+            : e.getCourse,
+        course1:
+          e.getCourse1 === null ||
+          e.getCourse1 === undefined ||
+          e.getCourse1 === ''
+            ? ''
+            : e.getCourse1,
+        bridday:
+          e.getDOB === null || e.getDOB === undefined || e.getDOB === ''
+            ? ''
+            : e.getDOB,
+        all_assets:
+          e.getDetail1 === null ||
+          e.getDetail1 === undefined ||
+          e.getDetail1 === ''
+            ? ''
+            : e.getDetail1,
+        previous_job:
+          e.getDetail2 === null ||
+          e.getDetail2 === undefined ||
+          e.getDetail2 === ''
+            ? ''
+            : e.getDetail2,
+        criminalcase:
+          e.getDetail3 === null ||
+          e.getDetail3 === undefined ||
+          e.getDetail3 === ''
+            ? ''
+            : e.getDetail3,
+        district:
+          e.getDistrict === null ||
+          e.getDistrict === undefined ||
+          e.getDistrict === ''
+            ? ''
+            : e.getDistrict,
+        work_district:
+          e.getDistrictOffice === null ||
+          e.getDistrictOffice === undefined ||
+          e.getDistrictOffice === ''
+            ? ''
+            : e.getDistrictOffice,
+        email:
+          e.getEmail === null || e.getEmail === undefined || e.getEmail === ''
+            ? ''
+            : e.getEmail,
+        model:
+          e.getGeneration === null ||
+          e.getGeneration === undefined ||
+          e.getGeneration === ''
+            ? ''
+            : e.getGeneration,
+        villageno:
+          e.getGroup === null || e.getGroup === undefined || e.getGroup === ''
+            ? ''
+            : e.getGroup,
+        work_villageno:
+          e.getGroupOffice === null ||
+          e.getGroupOffice === undefined ||
+          e.getGroupOffice === ''
+            ? ''
+            : e.getGroupOffice,
+        number:
+          e.getHouseNumber === null ||
+          e.getHouseNumber === undefined ||
+          e.getHouseNumber === ''
+            ? ''
+            : e.getHouseNumber,
+        work_number:
+          e.getHouseNumberOffice === null ||
+          e.getHouseNumberOffice === undefined ||
+          e.getHouseNumberOffice === ''
+            ? ''
+            : e.getHouseNumberOffice,
+        idcard:
+          e.getIdCard === null ||
+          e.getIdCard === undefined ||
+          e.getIdCard === ''
+            ? ''
+            : e.getIdCard,
+        certificate:
+          e.getImpPassNumber === null ||
+          e.getImpPassNumber === undefined ||
+          e.getImpPassNumber === ''
+            ? ''
+            : e.getImpPassNumber,
+        username:
+          e.getNameLastName === null ||
+          e.getNameLastName === undefined ||
+          e.getNameLastName === ''
+            ? ''
+            : e.getNameLastName,
+        work_station:
+          e.getOffice === null ||
+          e.getOffice === undefined ||
+          e.getOffice === ''
+            ? ''
+            : e.getOffice,
+        others:
+          e.getOther === null || e.getOther === undefined || e.getOther === ''
+            ? ''
+            : e.getOther,
+        passport:
+          e.getPassNumber === null ||
+          e.getPassNumber === undefined ||
+          e.getPassNumber === ''
+            ? ''
+            : e.getPassNumber,
+        phonenumber:
+          e.getPhoneNumber === null ||
+          e.getPhoneNumber === undefined ||
+          e.getPhoneNumber === ''
+            ? ''
+            : e.getPhoneNumber,
+        phone_office:
+          e.getPhoneNumberOffice === null ||
+          e.getPhoneNumberOffice === undefined ||
+          e.getPhoneNumberOffice === ''
+            ? ''
+            : e.getPhoneNumberOffice,
+        position:
+          e.getPosition === null ||
+          e.getPosition === undefined ||
+          e.getPosition === ''
+            ? ''
+            : e.getPosition,
+        job_position:
+          e.getPositionCareer === null ||
+          e.getPositionCareer === undefined ||
+          e.getPositionCareer === ''
+            ? ''
+            : e.getPositionCareer,
+        postalcode:
+          e.getPostalCode === null ||
+          e.getPostalCode === undefined ||
+          e.getPostalCode === ''
+            ? ''
+            : e.getPostalCode,
+        work_postal_code:
+          e.getPostalCodeOffice === null ||
+          e.getPostalCodeOffice === undefined ||
+          e.getPostalCodeOffice === ''
+            ? ''
+            : e.getPostalCodeOffice,
+        province:
+          e.getProvince === null ||
+          e.getProvince === undefined ||
+          e.getProvince === ''
+            ? ''
+            : e.getProvince,
+        work_province:
+          e.getProvinceOffice === null ||
+          e.getProvinceOffice === undefined ||
+          e.getProvinceOffice === ''
+            ? ''
+            : e.getProvinceOffice,
+        road:
+          e.getRoad === null || e.getRoad === undefined || e.getRoad === ''
+            ? ''
+            : e.getRoad,
+        work_road:
+          e.getRoadOffice === null ||
+          e.getRoadOffice === undefined ||
+          e.getRoadOffice === ''
+            ? ''
+            : e.getRoadOffice,
+        roomnumber:
+          e.getRoomNumber === null ||
+          e.getRoomNumber === undefined ||
+          e.getRoomNumber === ''
+            ? ''
+            : e.getRoomNumber,
+        salary:
+          e.getSalary === null ||
+          e.getSalary === undefined ||
+          e.getSalary === ''
+            ? ''
+            : e.getSalary,
+        active:
+          e.getStatus === null ||
+          e.getStatus === undefined ||
+          e.getStatus === ''
+            ? ''
+            : e.getStatus,
+        subdistrict:
+          e.getSubDistrict === null ||
+          e.getSubDistrict === undefined ||
+          e.getSubDistrict === ''
+            ? ''
+            : e.getSubDistrict,
+        work_sub_district:
+          e.getSubDistrictOffice === null ||
+          e.getSubDistrictOffice === undefined ||
+          e.getSubDistrictOffice === ''
+            ? ''
+            : e.getSubDistrictOffice,
+        prefix:
+          e.getTitle === null || e.getTitle === undefined || e.getTitle === ''
+            ? ''
+            : e.getTitle,
+        bldg:
+          e.getVillage === null ||
+          e.getVillage === undefined ||
+          e.getVillage === ''
+            ? ''
+            : e.getVillage,
+        workpermit:
+          e.getWorkDocument === null ||
+          e.getWorkDocument === undefined ||
+          e.getWorkDocument === ''
+            ? ''
+            : e.getWorkDocument,
+        prefixtitleeng:
+          e.title_eng === null ||
+          e.title_eng === undefined ||
+          e.title_eng === ''
+            ? ''
+            : e.title_eng,
+      },
     } as any;
-    if (e) {
-      Modal.confirm({
-        title: 'ยืนยันการเปลี่ยนแปลง',
-        content: 'คุณต้องการ ใช่ หรือ ไม่ ?',
-        okText: 'ใช่',
-        okType: 'danger',
-        onOk: async () => {
-          let uuid = getdataModal.uuid;
-          const res: any = await DatamanagementService().updateUser(uuid, data);
-          if (res) {
-            message.success('อัพเดต');
-            dataAll();
-            setIsModalOpen(false);
-            setdatainModal([]);
-            FormAdd.resetFields();
-          }
-        },
-        onCancel: () => {
+    // if (e) {
+    Modal.confirm({
+      title: 'ยืนยันการเปลี่ยนแปลง',
+      content: 'คุณต้องการ ใช่ หรือ ไม่ ?',
+      okText: 'ใช่',
+      okType: 'danger',
+      onOk: async () => {
+        // console.log(uuid);
+        console.log(data);
+
+        const res: any = await DatamanagementService().updateUser(uuid, data);
+        if (res) {
+          message.success('อัพเดต');
+          dataAll();
+          setIsModalOpen(false);
           setdatainModal([]);
           FormAdd.resetFields();
-        },
-      });
-    }
+        }
+      },
+      onCancel: () => {
+        setdatainModal([]);
+        FormAdd.resetFields();
+      },
+    });
+    // }
   };
 
   const dataAll = async () => {
     const dataAll = await DatamanagementService().findAll();
-    const dataSource: any = await dataAll.map((x: any, row: any) => {
+    const dataSource = await dataAll.map((x: any, row: any) => {
       const mapData = {
         no: row + 1,
         active: x.active,
@@ -249,9 +465,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         province: x.province,
         postalcode: x.postalcode,
         prefixtitleeng: x.prefixtitleeng,
-      };
+      } as any;
       return mapData;
     });
+    setUserAll([]);
     setUserAll(dataSource);
   };
 
@@ -529,7 +746,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       fixed: 'right',
       width: '6%',
       dataIndex: 'uuid',
-      render: (e: any, row: any) => {
+      render: (e: any, row: any, index: number) => {
         if (e) {
           return (
             <div style={{ textAlign: 'center' }}>
@@ -572,6 +789,9 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       >
         <ConfigProvider locale={configuredLocale}>
           <Form
+            autoComplete="off"
+            //  layout="vertical"
+            name="FormAdd"
             form={FormAdd}
             layout="vertical"
             onFinish={handleUpdate}
@@ -580,7 +800,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               { name: ['getStatus'], value: getdataModal?.active },
               { name: ['getNameLastName'], value: getdataModal?.username },
               { name: ['title_eng'], value: getdataModal?.prefixtitleeng },
-              { name: ['username_eng'], value: getnameeng },
+              { name: ['username_eng'], value: getdataModal?.username_eng },
               { name: ['getIdCard'], value: getdataModal?.idcard },
               { name: ['getDOB'], value: getdataModal?.bridday },
               { name: ['getage'], value: getdataModal?.age },
@@ -646,11 +866,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               },
               { name: ['getAssociaton'], value: getdataModal?.guild },
               { name: ['getOther'], value: getdataModal?.others },
-              // { name: ['username_eng'], value: getdataModal?.age },
-              // { name: ['username_eng'], value: getdataModal?.age },
-              // { name: ['username_eng'], value: getdataModal?.age },
-              // { name: ['username_eng'], value: getdataModal?.age },
-              // { name: ['username_eng'], value: getdataModal?.age },
             ]}
           >
             <Row gutter={16}>
@@ -696,8 +911,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                 <Form.Item label={'ชื่อ-นามสกุล'} name={'getNameLastName'}>
                   <Input
                     defaultValue={getdataModal?.username}
-                    value={getdataModal?.username}
-                    id={'getNameLastName'}
+                    // value={getdataModal?.username}
+                    // id={'getNameLastName'}
                     name={'getNameLastName'}
                     placeholder="ชื่อ สกุล"
                   />
@@ -707,8 +922,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                 <Form.Item label={'คำนำหน้า'} name={'title_eng'} required>
                   <Select
                     defaultValue={getdataModal?.prefixtitleeng}
-                    value={getdataModal?.prefixtitleeng}
-                    id={'title_eng'}
+                    // value={getdataModal?.prefixtitleeng}
+                    // id={'title_eng'}
                     placeholder={'เลือกคำนำหน้า'}
                   >
                     <Option value={'Mr.'}>Mr.</Option>
@@ -726,9 +941,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   required
                 >
                   <Input
-                    defaultValue={getnameeng}
-                    // value={getdataModal?.username_eng}
-                    id={'username_eng'}
+                    defaultValue={getdataModal?.username_eng}
+                    value={getdataModal?.username_eng}
                     name={'username_eng'}
                     placeholder="ชื่อ สกุล"
                   />
@@ -1099,8 +1313,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={8}>
                 <Form.Item label={'รายได้เฉลี่ยเดือนละ'} name={'getSalary'}>
                   <InputNumber
-                    defaultValue={getdataModal?.salary}
-                    value={getdataModal?.salary}
+                    defaultValue={Number(getdataModal?.salary)}
+                    value={Number(getdataModal?.salary)}
                     name={'getSalary'}
                     id={'getSalary'}
                     style={{ width: '100%' }}

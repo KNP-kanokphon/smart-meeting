@@ -107,7 +107,7 @@ const App = () => {
         <Routes>
           <Route
             path="/kpi/:userid"
-            element={<MainLayoutProfileDetail baseURL={'/profileDetail'} />}
+            element={<MainLayoutProfile baseURL={'/profileDetail'} />}
           ></Route>
         </Routes>
       </BrowserRouter>

@@ -187,97 +187,98 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
   const [getuserAll, setUserAll] = useState<any>([]);
   const [getuserAlls, setUserAlls] = useState<any>([]);
   const [getdataPosition, setdataPosition] = useState<any>([]);
+  console.log(userid);
+
+  console.log(getuserAll);
+
   useEffect(() => {
-    const dataAll = async () => {
-      const dataall = await DatamanagementService().findAll();
-      const newData: any = [];
-      dataall.map((e: any, row: any) => {
-        newData.push({
-          data: {
-            uuid:
-              e.uuid === null || e.uuid === undefined || e.uuid === ''
-                ? ''
-                : e.uuid,
-            email:
-              e.email === null || e.email === undefined || e.email === ''
-                ? ''
-                : e.email,
-            phonenumber:
-              e.phonenumber === null ||
-              e.phonenumber === undefined ||
-              e.phonenumber === ''
-                ? ''
-                : e.phonenumber,
-            prefix:
-              e.prefix === null || e.prefix === undefined || e.prefix === ''
-                ? ''
-                : e.prefix,
-            prefixtitleeng:
-              e.prefixtitleeng === null ||
-              e.prefixtitleeng === undefined ||
-              e.prefixtitleeng === ''
-                ? ''
-                : e.prefixtitleeng,
-            username:
-              e.username === null ||
-              e.username === undefined ||
-              e.username === ''
-                ? ''
-                : e.username,
-            username_eng:
-              e.username_eng === null ||
-              e.username_eng === undefined ||
-              e.username_eng === ''
-                ? ''
-                : e.username_eng,
-            position:
-              e.position === null ||
-              e.position === undefined ||
-              e.position === ''
-                ? ''
-                : e.position,
-          },
-        });
-        setUserAll(newData);
-      });
-    };
-    const getDataProfile = async () => {
-      const resultProfile = await DatamanagementService().getProfileByid(
-        roomid,
-        userid,
-      );
-      const newData: any = [];
-
-      resultProfile.map((x: any, row: any) => {
-        newData.push({
-          uuidprofile: x.uuidprofile,
-          idmeeting: x.idmeeting,
-          username: x.username,
-        });
-        setUserprofile(newData);
-      });
-    };
-
-    const getDataPosition = async () => {
-      const resultDataPosiotion =
-        await DatamanagementService().getPositionall();
-      const newData: any = [];
-      resultDataPosiotion.map((x: any, row: any) => {
-        newData.push({
-          // data: {
-          nameposition: x.nameposition,
-          uuid: x.uuid,
-          // },
-        });
-        setdataPosition(newData);
-      });
-    };
-
     getDataProfile();
     getDataPosition();
     onCheckin();
     dataAll();
   }, []);
+
+  const dataAll = async () => {
+    const dataall = await DatamanagementService().findAll();
+    const newData: any = [];
+    dataall.map((e: any, row: any) => {
+      newData.push({
+        data: {
+          uuid:
+            e.uuid === null || e.uuid === undefined || e.uuid === ''
+              ? ''
+              : e.uuid,
+          email:
+            e.email === null || e.email === undefined || e.email === ''
+              ? ''
+              : e.email,
+          phonenumber:
+            e.phonenumber === null ||
+            e.phonenumber === undefined ||
+            e.phonenumber === ''
+              ? ''
+              : e.phonenumber,
+          prefix:
+            e.prefix === null || e.prefix === undefined || e.prefix === ''
+              ? ''
+              : e.prefix,
+          prefixtitleeng:
+            e.prefixtitleeng === null ||
+            e.prefixtitleeng === undefined ||
+            e.prefixtitleeng === ''
+              ? ''
+              : e.prefixtitleeng,
+          username:
+            e.username === null || e.username === undefined || e.username === ''
+              ? ''
+              : e.username,
+          username_eng:
+            e.username_eng === null ||
+            e.username_eng === undefined ||
+            e.username_eng === ''
+              ? ''
+              : e.username_eng,
+          position:
+            e.position === null || e.position === undefined || e.position === ''
+              ? ''
+              : e.position,
+        },
+      });
+      setUserAll(newData);
+    });
+  };
+  const getDataProfile = async () => {
+    const resultProfile = await DatamanagementService().getProfileByid(
+      roomid,
+      userid,
+    );
+    const newData: any = [];
+
+    resultProfile.map((x: any, row: any) => {
+      newData.push({
+        uuidprofile: x.uuidprofile,
+        idmeeting: x.idmeeting,
+        username: x.username,
+      });
+      setUserprofile(newData);
+    });
+  };
+
+  const getDataPosition = async () => {
+    const resultDataPosiotion = await DatamanagementService().getPositionall();
+    const newData: any = [];
+    resultDataPosiotion.map((x: any, row: any) => {
+      // console.log(x);
+
+      newData.push({
+        // data: {
+        nameposition: x.nameposition,
+        uuid: x.uuid,
+        // },
+      });
+      setdataPosition(newData);
+    });
+  };
 
   // console.log(getuserAll);
 
@@ -352,17 +353,22 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile.map((e: any, row: any) => {
-                            const dataresult = getuserAll?.find(
-                              (x: any) => x?.data?.uuid === e.uuidprofile,
-                            ) as any;
+                          {getuserAll.map((e: any, row: any) => {
+                            console.log(e?.data?.uuid === userid);
+                            if (e?.data?.uuid === userid) {
+                              return e?.data?.prefix + ' ' + e?.data?.username;
+                            }
+
+                            // const dataresult = getuserAll?.find(
+                            //   (x: any) => x?.data?.uuid === e.uuidprofile,
+                            // ) as any;
                             // console.log(dataresult?.data?.prefix);
 
-                            return (
-                              dataresult?.data?.prefix +
-                              ' ' +
-                              dataresult?.data?.username
-                            );
+                            // return (
+                            //   dataresult?.data?.prefix +
+                            //   ' ' +
+                            //   dataresult?.data?.username
+                            // );
                           })}
                         </Typography>
                       </Col>
@@ -376,7 +382,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile.map((e: any, row: any) => {
+                          {/* {userprofile.map((e: any, row: any) => {
                             const dataresult = getuserAll?.find(
                               (x: any) => x?.data?.uuid === e?.uuidprofile,
                             );
@@ -393,6 +399,28 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                               ' ' +
                               dataresult?.data?.username_eng.toUpperCase()
                             );
+                          })} */}
+
+                          {getuserAll.map((e: any, row: any) => {
+                            console.log(e?.data?.uuid === userid);
+                            if (e?.data?.uuid === userid) {
+                              return (
+                                e?.data?.prefixtitleeng.toUpperCase() +
+                                ' ' +
+                                e?.data?.username_eng.toUpperCase()
+                              );
+                            }
+
+                            // const dataresult = getuserAll?.find(
+                            //   (x: any) => x?.data?.uuid === e.uuidprofile,
+                            // ) as any;
+                            // console.log(dataresult?.data?.prefix);
+
+                            // return (
+                            //   dataresult?.data?.prefix +
+                            //   ' ' +
+                            //   dataresult?.data?.username
+                            // );
                           })}
                         </Typography>
                       </Col>
@@ -404,7 +432,47 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                             fontFamily: 'kanit',
                           }}
                         >
-                          {userprofile.map((e: any, row: any) => {
+                          {getuserAll.map((e: any, row: any) => {
+                            console.log(e?.data?.uuid === userid);
+                            if (e?.data?.uuid === userid) {
+                              // return e?.data?.prefix + ' ' + e?.data?.username;
+                              if (typeof e?.data?.position === 'string') {
+                                return e?.data?.position;
+                              } else {
+                                let datanamePosition: any = '';
+                                getuserAll?.data?.position.map(
+                                  (e: any, row: any) => {
+                                    const dataresult = getdataPosition.filter(
+                                      (x: any) => x?.uuid === e,
+                                    );
+                                    dataresult.map((e: any) => {
+                                      datanamePosition += ' ' + e?.nameposition;
+                                    });
+                                  },
+                                );
+                                let splittt = datanamePosition;
+                                return (
+                                  <>
+                                    <div style={{ whiteSpace: 'pre-line' }}>
+                                      {splittt}
+                                    </div>
+                                  </>
+                                );
+                              }
+                            }
+
+                            // const dataresult = getuserAll?.find(
+                            //   (x: any) => x?.data?.uuid === e.uuidprofile,
+                            // ) as any;
+                            // console.log(dataresult?.data?.prefix);
+
+                            // return (
+                            //   dataresult?.data?.prefix +
+                            //   ' ' +
+                            //   dataresult?.data?.username
+                            // );
+                          })}
+                          {/* {userprofile.map((e: any, row: any) => {
                             const dataresult = getuserAll?.find(
                               (x: any) => x?.data?.uuid === e?.uuidprofile,
                             );
@@ -434,7 +502,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                                 </>
                               );
                             }
-                          })}
+                          })} */}
                         </Typography>
                       </Col>
                     </Row>
@@ -448,7 +516,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                         <MobileOutlined />
                       </Col>
                       <Col span={22} style={{ textDecoration: 'underline' }}>
-                        {userprofile.map((e: any, row: any) => {
+                        {/* {userprofile.map((e: any, row: any) => {
                           const dataresult = getuserAll?.find(
                             (x: any) => x?.data?.uuid === e?.uuidprofile,
                           );
@@ -460,6 +528,30 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                               {dataresult?.data?.phonenumber}
                             </a>
                           );
+                        })} */}
+                        {getuserAll.map((e: any, row: any) => {
+                          console.log(e?.data?.uuid === userid);
+                          if (e?.data?.uuid === userid) {
+                            return (
+                              <a
+                                href={`tel:${e?.data?.phonenumber}`}
+                                style={{ color: '#58585A' }}
+                              >
+                                {e?.data?.phonenumber}
+                              </a>
+                            );
+                          }
+
+                          // const dataresult = getuserAll?.find(
+                          //   (x: any) => x?.data?.uuid === e.uuidprofile,
+                          // ) as any;
+                          // console.log(dataresult?.data?.prefix);
+
+                          // return (
+                          //   dataresult?.data?.prefix +
+                          //   ' ' +
+                          //   dataresult?.data?.username
+                          // );
                         })}
                       </Col>
                     </Row>
@@ -473,11 +565,32 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                         <MailOutlined />
                       </Col>
                       <Col span={22}>
-                        {userprofile.map((e: any, row: any) => {
+                        {/* {userprofile.map((e: any, row: any) => {
+                          console.log(e);
+
                           const dataresult = getuserAll?.find(
                             (x: any) => x?.data?.uuid === e?.uuidprofile,
                           );
                           return dataresult?.data?.email;
+                        })} */}
+                        {getuserAll.map((e: any, row: any) => {
+                          // console.log(e?.data?.uuid === userid);
+                          if (e?.data?.uuid === userid) {
+                            // return (
+                            return e?.data?.email;
+                            // );
+                          }
+
+                          // const dataresult = getuserAll?.find(
+                          //   (x: any) => x?.data?.uuid === e.uuidprofile,
+                          // ) as any;
+                          // console.log(dataresult?.data?.prefix);
+
+                          // return (
+                          //   dataresult?.data?.prefix +
+                          //   ' ' +
+                          //   dataresult?.data?.username
+                          // );
                         })}
                       </Col>
                     </Row>
