@@ -609,15 +609,18 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                       <Col style={{ textAlign: 'right' }}>
                         <a
                           style={{ color: '#1E6541' }}
-                          href="https://www.kpi.ac.th/"
+                          href="http://www.kpisociety.com"
                         >
                           <GlobalOutlined />
                         </a>
                       </Col>
                       <Col style={{ textAlign: 'left' }}>
                         <a
-                          style={{ color: '#1E6541' }}
-                          href="https://www.kpi.ac.th/"
+                          style={{
+                            color: '#1E6541',
+                            textDecoration: 'underline',
+                          }}
+                          href="http://www.kpisociety.com"
                         >
                           www.kpisociety.com
                         </a>
@@ -645,10 +648,10 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           </Col>
                           <Col style={{ textDecoration: 'underline' }}>
                             <a
-                              href="tel:021419772"
+                              href="tel:020966777"
                               style={{ color: '#C6A970' }}
                             >
-                              02-1419772
+                              02-0966777
                             </a>
                           </Col>
                         </Row>
@@ -668,10 +671,10 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                             }}
                           >
                             <a
-                              href="tel:020965777"
+                              href="tel:021419772"
                               style={{ color: '#C6A970' }}
                             >
-                              02-0965777
+                              02-1419772
                             </a>
                           </Col>
                         </Row>
