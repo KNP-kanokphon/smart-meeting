@@ -306,8 +306,36 @@ export const EditMeeting: React.FC = () => {
       <Card>
         <Row>
           <Col md={24}>
-            <Steps current={currentStep}>
-              <Step
+            <Steps
+              current={currentStep}
+              items={[
+                {
+                  title:
+                    currentStep === 1
+                      ? 'In Progress'
+                      : currentStep < 1
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+                {
+                  title:
+                    currentStep === 1
+                      ? 'In Progress'
+                      : currentStep < 1
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+                {
+                  title:
+                    currentStep === 2
+                      ? 'In Progress'
+                      : currentStep < 2
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+              ]}
+            >
+              {/* <Step
                 title={
                   currentStep === 0
                     ? 'In Progress'
@@ -333,7 +361,7 @@ export const EditMeeting: React.FC = () => {
                     ? 'Waiting'
                     : 'Finish'
                 }
-              />
+              /> */}
             </Steps>
           </Col>
         </Row>

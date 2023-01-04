@@ -333,7 +333,7 @@ export const SignConfirm: React.FC<Props> = ({
               </Row>
             </div>
           }
-          visible={open}
+          open={open}
           style={{ width: '500px', height: '500px' }}
           onOk={handleOk}
           onCancel={handleCancel}

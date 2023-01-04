@@ -163,7 +163,7 @@ export const TableAttendee: React.FC<Props> = ({
       </Col>
       <Modal
         title="แก้ใขข้อมูล"
-        visible={isEditing}
+        open={isEditing}
         okText="Save"
         onCancel={() => {
           resetEditing();

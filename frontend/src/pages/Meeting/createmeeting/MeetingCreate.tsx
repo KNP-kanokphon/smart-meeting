@@ -22,21 +22,22 @@ export const CreateMeeting: React.FC = () => {
     setCurrentStep(step);
   };
   const onChangeCurrentCheckStep = (step: number) => {
-    if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
-      message.error(`กรุณากรอกเรื่องของการประชุม`);
-      return;
-    } else if (dataAgenda.date === '' || !dataAgenda.date) {
-      message.error(`กรุณากรอกวันที่ของการประชุม`);
-      return;
-    } else if (dataAgenda.timeStart === '' || !dataAgenda.timeStart) {
-      message.error(`กรุณากรอกเวลาเริ่มของการประชุม`);
-      return;
-    } else if (dataAgenda.timeEnd === '' || !dataAgenda.timeEnd) {
-      message.error(`กรุณากรอกเวลาสิ้นสุดของการประชุม`);
-      return;
-    } else {
-      setCurrentStep(step);
-    }
+    // if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
+    //   message.error(`กรุณากรอกเรื่องของการประชุม`);
+    //   return;
+    // } else if (dataAgenda.date === '' || !dataAgenda.date) {
+    //   message.error(`กรุณากรอกวันที่ของการประชุม`);
+    //   return;
+    // } else if (dataAgenda.timeStart === '' || !dataAgenda.timeStart) {
+    //   message.error(`กรุณากรอกเวลาเริ่มของการประชุม`);
+    //   return;
+    // } else if (dataAgenda.timeEnd === '' || !dataAgenda.timeEnd) {
+    //   message.error(`กรุณากรอกเวลาสิ้นสุดของการประชุม`);
+    //   return;
+    // } else {
+    //   setCurrentStep(step);
+    // }
+    setCurrentStep(step);
   };
 
   const setDataAgendaField = (dataField: any) => {
@@ -183,8 +184,36 @@ export const CreateMeeting: React.FC = () => {
       <Card>
         <Row>
           <Col md={24}>
-            <Steps current={currentStep}>
-              <Step
+            <Steps
+              current={currentStep}
+              items={[
+                {
+                  title:
+                    currentStep === 0
+                      ? 'In Progress'
+                      : currentStep < 0
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+                {
+                  title:
+                    currentStep === 1
+                      ? 'In Progress'
+                      : currentStep < 1
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+                {
+                  title:
+                    currentStep === 2
+                      ? 'In Progress'
+                      : currentStep < 2
+                      ? 'Waiting'
+                      : 'Finish',
+                },
+              ]}
+            >
+              {/* <Step
                 title={
                   currentStep === 0
                     ? 'In Progress'
@@ -210,7 +239,7 @@ export const CreateMeeting: React.FC = () => {
                     ? 'Waiting'
                     : 'Finish'
                 }
-              />
+              /> */}
             </Steps>
           </Col>
         </Row>

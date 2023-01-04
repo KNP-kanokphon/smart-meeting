@@ -160,7 +160,7 @@ export const SettingPermissionPosition: React.FC<props> = ({
     <>
       <Modal
         title="เพิ่มตำแหน่ง"
-        visible={isModalOpen}
+        open={isModalOpen}
         // onOk={handleOk}
         onCancel={handleCancel}
         footer={false}

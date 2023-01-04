@@ -188,7 +188,7 @@ export const ListMeeting: React.FC<Props> = ({ children, extra }) => {
       <Modal
         title="รายชื่อผู้เข้าร่วม"
         centered
-        visible={showDetail}
+        open={showDetail}
         onOk={() => setShowDetail(false)}
         onCancel={() => setShowDetail(false)}
         width={1000}

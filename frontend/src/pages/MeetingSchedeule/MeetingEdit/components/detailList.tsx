@@ -1,4 +1,14 @@
-import { Button, Col, Form, Input, Row, Space, Spin, Upload } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Space,
+  Spin,
+  Switch,
+  Upload,
+} from 'antd';
 import {
   InfoCircleOutlined,
   PlusOutlined,
@@ -140,7 +150,7 @@ export const DetailList: React.FC<Props> = ({
               <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
             </Form.Item>
             <Form.Item
-              label="รายละเอียดการประชุม"
+              label="รายละเอียดการประชุม111"
               tooltip={{
                 title: 'Tooltip with customize icon',
                 icon: <InfoCircleOutlined />,
@@ -197,6 +207,13 @@ export const DetailList: React.FC<Props> = ({
                 );
               }}
             </Form.List>
+            <Row>
+              <Switch
+                checkedChildren="เปิด"
+                unCheckedChildren="ปิด"
+                defaultChecked
+              />
+            </Row>
             <Row>
               <Col xs={{ span: 24 }} lg={{ span: 24 }}>
                 <Upload {...props}>
