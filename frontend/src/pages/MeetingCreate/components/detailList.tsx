@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Space, Upload } from 'antd';
+import { Button, Col, Form, Input, Row, Space, Upload, message } from 'antd';
 import {
   InfoCircleOutlined,
   PlusOutlined,
@@ -40,8 +40,16 @@ export const DetailList: React.FC<Props> = ({
       setFileList(newFileList);
     },
     beforeUpload: async (file: any) => {
-      setFileList([...fileList, file]);
-      return false;
+      const isPDF = file.type === 'application/pdf';
+      if (!isPDF) {
+        message.error(`${file.name} is not a pdf file`);
+      } else {
+        setFileList([...fileList, file]);
+        // setDataField({ fileOverview: [...fileList, file] });
+        return false;
+      }
+      // setFileList([...fileList, file]);
+      // return false;
     },
     fileList,
   };
