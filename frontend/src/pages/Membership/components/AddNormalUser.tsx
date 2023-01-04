@@ -167,21 +167,21 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
       refUsername_eng.current.focus();
       return false;
     }
-    if (e.idcard === undefined || e.idcard === '') {
-      message.warning('กรุณากรอกเลขบัตรประชาชน !!');
-      refIdcard.current.focus();
-      return false;
-    }
-    if (e.phonenumber === undefined || e.phonenumber === '') {
-      message.warning('กรุณากรอกเบอร์โทรศัพท์ !!');
-      refPhonenumber.current.focus();
-      return false;
-    }
-    if (e.email === undefined || e.email === '') {
-      message.warning('กรุณากรอกอีเมลล์ !!');
-      refEmail.current.focus();
-      return false;
-    }
+    // if (e.idcard === undefined || e.idcard === '') {
+    //   message.warning('กรุณากรอกเลขบัตรประชาชน !!');
+    //   refIdcard.current.focus();
+    //   return false;
+    // }
+    // if (e.phonenumber === undefined || e.phonenumber === '') {
+    //   message.warning('กรุณากรอกเบอร์โทรศัพท์ !!');
+    //   refPhonenumber.current.focus();
+    //   return false;
+    // }
+    // if (e.email === undefined || e.email === '') {
+    //   message.warning('กรุณากรอกอีเมลล์ !!');
+    //   refEmail.current.focus();
+    //   return false;
+    // }
     if (e.course === undefined || e.course === '') {
       message.warning('กรุณาเลือก หลักสูตร !!');
       refCourse.current.focus();
@@ -432,9 +432,9 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                         <Option value="close">
                           <Badge color="red" text="Close" />
                         </Option>
-                        <Option value="died">
+                        {/* <Option value="died">
                           <Badge status="default" text="Died" />
-                        </Option>
+                        </Option> */}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -512,7 +512,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'เลขบัตรประชาชน'} name={'idcard'} required>
+                <Form.Item label={'เลขบัตรประชาชน'} name={'idcard'}>
                   <Input
                     ref={refIdcard}
                     id={'idcard'}
@@ -525,11 +525,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item
-                  label={'หมายเลขโทรศัพท์'}
-                  name={'phonenumber'}
-                  required
-                >
+                <Form.Item label={'หมายเลขโทรศัพท์'} name={'phonenumber'}>
                   <Input
                     ref={refPhonenumber}
                     name={'phonenumber'}
@@ -545,7 +541,7 @@ export const AddNormalUser: React.FC = (): React.ReactElement => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label={'อีเมลล์'} name={'email'} required>
+                <Form.Item label={'อีเมลล์'} name={'email'}>
                   <Input
                     ref={refEmail}
                     name={'email'}

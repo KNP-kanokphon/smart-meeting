@@ -70,6 +70,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [getdataModal, setdatainModal] = useState<any>('');
+  const [getdataPosition, setdataPosition] = useState<any>([]);
   const [getnameeng, setnameeng] = useState<any>('');
   // console.log(isModalOpen);
 
@@ -107,7 +108,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
     getListCourse();
   }, []);
 
-  useEffect(() => {}, [getdataModal]);
+  // useEffect(() => {}, [getdataModal]);
 
   const handleDel = (e: any) => {
     if (e) {
@@ -131,12 +132,39 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
     }
   };
 
+  // const checkSplittchar = (e: any) => {
+  //   let dataN: any = 0;
+  //   dataN += ' ' + e;
+  //   return (
+  //     <>
+  //       <div style={{ whiteSpace: 'pre-line' }}>{dataN}</div>
+  //     </>
+  //   );
+  // };
+
   const showModal = (e: any) => {
-    // console.log(e);
+    let datanamePosition: any = '';
+    console.log(e);
     if (e) {
-      // setnameeng(e.username_eng);
-      // setMovies(prevMovies => ([...prevMovies, ...result]));
-      setdatainModal((x: any) => e);
+      // if (typeof e.position === 'string') {
+      //   setdataPosition(e.position);
+      // } else if (typeof e.position === 'object') {
+      //   e.position.map((x: any) => {
+      //     const dataresult = getPositionAll.filter(
+      //       (event: any) => event?.uuid === x,
+      //     );
+      //     dataresult?.map((result: any) => {
+      //       // console.log(result);
+
+      //       datanamePosition += ',' + result?.position;
+      //     });
+      //     // console.log(checkSplittchar(datanamePosition));
+      //     // let split = checkSplittchar(datanamePosition);
+
+      //     setdataPosition(datanamePosition);
+      //   });
+      // }
+      setdatainModal(e);
       setIsModalOpen(true);
       FormAdd.resetFields();
     }
@@ -403,6 +431,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
           e.title_eng === ''
             ? ''
             : e.title_eng,
+        remark:
+          e.remark === null || e.remark === undefined || e.remark === ''
+            ? ''
+            : e.remark,
       },
     } as any;
     // if (e) {
@@ -487,6 +519,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         position_guild: x.position_guild,
         guild: x.guild,
         others: x.others,
+        remark: x.remark,
       } as any;
       return mapData;
     });
@@ -750,9 +783,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
             return <Badge color="orange" text="Close" />;
           } else if (e === 'active') {
             return <Badge color="green" text="Active" />;
-          } else if (e === 'died') {
-            return <Badge color="grey" text="Died" />;
           }
+          //  else if (e === 'died') {
+          //   return <Badge color="grey" text="Died" />;
+          // }
         }
       },
     },
@@ -888,6 +922,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               },
               { name: ['getAssociaton'], value: getdataModal?.guild },
               { name: ['getOther'], value: getdataModal?.others },
+              { name: ['remark'], value: getdataModal?.remark },
             ]}
           >
             <Row gutter={16}>
@@ -907,13 +942,13 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     <Option value="close">
                       <Badge color="red" text="Close" />
                     </Option>
-                    <Option value="died">
+                    {/* <Option value="died">
                       <Badge status="default" text="Died" />
-                    </Option>
+                    </Option> */}
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={2}>
                 <Form.Item label={'คำนำหน้า'} name={'getTitle'}>
                   <Select
                     defaultValue={getdataModal?.prefix}
@@ -929,7 +964,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item label={'ชื่อ-นามสกุล'} name={'getNameLastName'}>
                   <Input
                     defaultValue={getdataModal?.username}
@@ -1118,8 +1153,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               <Col span={6}>
                 <Form.Item label={'ตำแหน่งสมาคม'} name={'getPosition'}>
                   <Select
-                    defaultValue={getdataModal?.position}
-                    value={getdataModal?.position}
+                    // defaultValue={getdataPosition}
+                    // value={getdataPosition}
                     id={'getPosition'}
                     mode="multiple"
                     allowClear
@@ -1257,6 +1292,18 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     id={'getPostalCode'}
                     type="number"
                     placeholder="รหัสไปรษณีย์"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Form.Item label={'Remark'} name={'remark'}>
+                  <TextArea
+                    defaultValue={getdataModal?.remark}
+                    value={getdataModal?.remark}
+                    name={'remark'}
+                    id={'remark'}
+                    placeholder="Remark"
                   />
                 </Form.Item>
               </Col>
