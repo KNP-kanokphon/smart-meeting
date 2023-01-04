@@ -207,7 +207,9 @@ export const DetailVote: React.FC<Props> = ({
                     style={{ fontSize: '14px' }}
                   >
                     {' '}
-                    <Typography>ระเบียบวาระที่1</Typography>
+                    <Typography style={{ textAlign: 'left', color: 'gray' }}>
+                      ระเบียบวาระที่1
+                    </Typography>
                   </Col>
                   <Col
                     xs={24}
@@ -216,7 +218,15 @@ export const DetailVote: React.FC<Props> = ({
                     lg={24}
                     style={{ fontSize: '14px' }}
                   >
-                    <Typography>ประชุมมติการจัดตั้งคณะกรรมการสมาคม</Typography>
+                    <Typography
+                      style={{
+                        textAlign: 'left',
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                      }}
+                    >
+                      ประชุมมติการจัดตั้งคณะกรรมการสมาคม
+                    </Typography>
                   </Col>
                 </Row>
                 <br></br>
