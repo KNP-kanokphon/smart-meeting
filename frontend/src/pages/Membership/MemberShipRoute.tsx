@@ -202,7 +202,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         /> */}
       </Card>
       <Card style={{ width: '100%' }}>
-        <Row gutter={16}>
+        <Row gutter={16} hidden>
           <Col span={10}>
             <Row gutter={16}>
               <Col
