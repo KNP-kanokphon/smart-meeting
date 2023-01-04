@@ -437,4 +437,8 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  getGroup: async () => {
+    const result = await httpClient.get(`user/groupall`);
+    return result.data;
+  },
 });
