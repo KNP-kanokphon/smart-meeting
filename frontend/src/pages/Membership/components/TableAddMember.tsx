@@ -627,43 +627,43 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         // console.log(row);
         // if (e) {
         //   if (typeof e !== 'string') {
-        //     return (
-        //       <>
-        //         {row?.position.map((data: any, row: any, index: number) => {
-        //           console.log(row);
-        //           const countTypes = getPositionAll.find(
-        //             (event: any) => event?.uuid === data,
-        //           ) as any;
-        //           if (data?.length < 2) {
-        //             return countTypes?.position;
-        //           } else {
-        //             let nameposition: string = '';
-        //             nameposition += ' ' + countTypes?.position;
-        //             let splittt = nameposition;
-        //             return (
-        //               <>
-        //                 <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-        //               </>
-        //             );
-        //           }
-        //         })}
-        //       </>
-        //     );
+        return (
+          <>
+            {row?.position.map((data: any, row: any, index: number) => {
+              console.log(row);
+              const countTypes = getPositionAll.find(
+                (event: any) => event?.uuid === data,
+              ) as any;
+              if (data?.length < 2) {
+                return countTypes?.position;
+              } else {
+                let nameposition: string = '';
+                nameposition += ' ' + countTypes?.position;
+                let splittt = nameposition;
+                return (
+                  <>
+                    <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
+                  </>
+                );
+              }
+            })}
+          </>
+        );
         //   } else {
-        if (e?.length < 2) {
-          // console.log(e);
-          return e;
-        } else {
-          // console.log(e);
-          let nameposition: string = '';
-          nameposition += ',' + e;
-          let splittt = nameposition.split(',');
-          return (
-            <>
-              <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-            </>
-          );
-        }
+        // if (e?.length < 2) {
+        //   // console.log(e);
+        //   return e;
+        // } else {
+        //   // console.log(e);
+        //   let nameposition: string = '';
+        //   nameposition += ',' + e;
+        //   let splittt = nameposition.split(',');
+        //   return (
+        //     <>
+        //       <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
+        //     </>
+        //   );
+        // }
         //   }
         // }
       },
@@ -1155,7 +1155,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                     </Option>
                     {getPositionAll.map((e: any, row: any) => {
                       return (
-                        <Option key={e.uuid} value={e.position}>
+                        <Option key={e.uuid} value={e.uuid}>
                           {e.position}
                         </Option>
                       );
@@ -1629,7 +1629,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                         {getPositionAll.map((e: any, row: any) => {
                           // console.log(e.position);
                           return (
-                            <Option key={e.uuid} value={e.position}>
+                            <Option key={e.uuid} value={e.uuid}>
                               {e.position}
                             </Option>
                           );
