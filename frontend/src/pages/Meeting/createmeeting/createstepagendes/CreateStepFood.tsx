@@ -12,7 +12,7 @@ import {
   Typography,
 } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../css/style.css'
+import '../css/style.css';
 import {
   InfoCircleOutlined,
   MinusCircleOutlined,

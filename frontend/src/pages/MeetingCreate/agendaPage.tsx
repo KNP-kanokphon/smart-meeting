@@ -47,14 +47,14 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
     },
     beforeUpload: (file: any) => {
       console.log(file);
-      const isPDF = file.type === 'application/pdf';
-      if (!isPDF) {
-        message.error(`${file.name} is not a pdf file`);
-      } else {
-        setFileList([...fileList, file]);
-        setDataField({ fileOverview: [...fileList, file] });
-        return false;
-      }
+      // const isPDF = file.type === 'application/pdf';
+      // if (!isPDF) {
+      //   message.error(`${file.name} is not a pdf file`);
+      // } else {
+      setFileList([...fileList, file]);
+      setDataField({ fileOverview: [...fileList, file] });
+      return false;
+      // }
     },
     fileList,
   };

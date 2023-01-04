@@ -26,6 +26,7 @@ export const DatamanagementService = () => ({
     endtime: string,
     uuid: string,
     dataFood: any,
+    gift: boolean,
   ) => {
     const data = {
       detail: detail,
@@ -39,7 +40,10 @@ export const DatamanagementService = () => ({
       endtime: endtime,
       uuid: uuid,
       dataFood: dataFood,
+      gift: gift,
     };
+    console.log(data);
+
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
@@ -133,15 +137,12 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   getFilesoverview: async (roomid: any, namefile: string) => {
-    const result = await httpClient.get(
+    const result = await axios.get(
       `/meeting/getfileoverview/${roomid}/${namefile}`,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        responseType: 'arraybuffer',
-      },
     );
+    console.log(result);
+
+    return result.data;
   },
 
   getuserInroomAll: async () => {
@@ -150,11 +151,7 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   getFiles: async (roomid: any) => {
-    const result = await httpClient.get(`/meeting/filepdf/${roomid}`, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const result = await httpClient.get(`/meeting/filepdf/${roomid}`);
     return result.data;
   },
   upLoadfilecsv: async (data: any) => {

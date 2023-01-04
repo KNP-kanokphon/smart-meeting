@@ -9,6 +9,7 @@ import {
   Select,
   Space,
   Typography,
+  Checkbox,
 } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
@@ -56,11 +57,14 @@ export const FoodPage: React.FC<Props> = ({
       setDataField(values);
     });
     // console.log('Received values of form:', values);
-  
   };
   const onSelectChange = () => {
-    setDataField(form.getFieldsValue(true))
-  }
+    setDataField(form.getFieldsValue(true));
+  };
+  const reciveGift = (e: CheckboxChangeEvent) => {
+    // console.log(`checked = ${e.target.checked}`);
+    setDataField({ gift: e.target.checked });
+  };
   return (
     <>
       <Card style={{ width: '100%' }}>
@@ -74,7 +78,6 @@ export const FoodPage: React.FC<Props> = ({
           // requiredMark={requiredMark}
           // onFieldsChange={onFinish}
           onValuesChange={onSelectChange}
-          
         >
           <Row gutter={16}>
             <Col span={24}>
@@ -109,7 +112,11 @@ export const FoodPage: React.FC<Props> = ({
                           //   { required: true, message: 'Missing first name' },
                           // ]}
                         >
-                          <Select placeholder={'Please Select'} allowClear onChange={onSelectChange}>
+                          <Select
+                            placeholder={'Please Select'}
+                            allowClear
+                            onChange={onSelectChange}
+                          >
                             <Option key={'1'} value={'food'}>
                               อาหาร
                             </Option>
@@ -130,7 +137,7 @@ export const FoodPage: React.FC<Props> = ({
                           //   { required: true, message: 'Missing last name' },
                           // ]}
                         >
-                          <Input placeholder="Text" onChange={onSelectChange}/>
+                          <Input placeholder="Text" onChange={onSelectChange} />
                         </Form.Item>
                       </Col>
 
@@ -154,6 +161,10 @@ export const FoodPage: React.FC<Props> = ({
             )}
           </Form.List>
         </Form>
+        <Form.Item>
+          ของชำร่วย{'   '}
+          <Checkbox onChange={reciveGift}>รับ</Checkbox>
+        </Form.Item>
       </Card>
     </>
   );

@@ -118,6 +118,8 @@ export const CreateMeeting: React.FC = () => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
+        // console.log(dataFood);
+
         if (dataAgenda.fileOverview !== undefined) {
           const formData = new FormData();
           dataAgenda.fileOverview.map((e: any) => {
@@ -139,6 +141,7 @@ export const CreateMeeting: React.FC = () => {
             dataAgenda.timeEnd,
             id,
             dataFood.fooddetail,
+            dataFood.gift,
           )
           .then(data => {});
 

@@ -15,6 +15,7 @@ import styles from './MainLayout.module.scss';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
 
 const { Content, Sider, Header, Footer } = Layout;
 
@@ -41,6 +42,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     const result = await DatamanagementService().getMeetingByid(id);
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
+
     setPathfile(resultPathfile);
     setUserprofile(resultProfile[0]);
     setMeetingData(result[0]);
@@ -54,6 +56,16 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     );
     const blob = new Blob([data], { type: 'application/pdf' });
     saveAs(blob, `${namefile}`);
+  };
+  const getfileOverviwe = async (namefile: string) => {
+    const resultPathfile = await DatamanagementService().getFilesoverview(
+      id,
+      namefile,
+    );
+    const blob = new Blob([resultPathfile.data], { type: 'application/pdf' });
+    saveAs(blob, `${namefile}`);
+    // console.log(blob);
+    // console.log([resultPathfile]);
   };
   return (
     <Layout className="layout">
@@ -198,7 +210,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                         return (
                           <Button
                             type="link"
-                            onClick={() => getFiles(e.uuid, null, e.namefile)}
+                            onClick={() => getfileOverviwe(e.namefile)}
                             key={`${e.uuid}.${e.namefile}`}
                           >
                             {e.namefile}
