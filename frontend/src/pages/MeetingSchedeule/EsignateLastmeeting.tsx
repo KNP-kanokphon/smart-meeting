@@ -296,7 +296,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             </Row>
           </>
         }
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -342,7 +342,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             </Row>
           </>
         }
-        visible={isModalOpen2}
+        open={isModalOpen2}
         onOk={handleOk2}
         onCancel={handleCancel2}
         footer={[

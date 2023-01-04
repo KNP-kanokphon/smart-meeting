@@ -294,6 +294,41 @@ export const DatamanagementService = () => ({
     return result.data;
   },
 
+  GroupAlls: async () => {
+    const result = await httpClient.get(`userattendees/groupalls`);
+    console.log(result.data);
+
+    return result?.data;
+  },
+
+  CreateGroup: async (data: any) => {
+    const result = await httpClient.post(`userattendees/create/group`, data);
+    return result?.data;
+  },
+  // delete/group/:uuid
+  DeleteGroup: async (data: any) => {
+    const newData = {
+      data: data,
+    };
+
+    const result = await httpClient.delete(
+      `userattendees/delete/group/${data.uuidgroup}`,
+      newData,
+    );
+    return result?.data;
+  },
+
+  updateGroup: async (uuid: any, data: any) => {
+    const newData = {
+      data: data,
+    };
+    const result = await httpClient.put(
+      `/userattendees/updateGroup/${uuid}`,
+      newData,
+    );
+    return result?.data;
+  },
+
   getPathFileStep: async (roomid: any, step: any, namefile: string) => {
     const result = await httpClient.get(
       `/meeting/getfilestep/${roomid}/${step}/${namefile}`,

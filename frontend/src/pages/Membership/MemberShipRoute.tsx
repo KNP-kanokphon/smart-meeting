@@ -46,20 +46,23 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       rows.forEach((e: any, i: number) => {
         if (i > 0) {
           newData.push({
-            uuid: e[0] === null ? undefined : e[0],
-            prefix: e[1] === null ? undefined : e[1],
-            username: e[2] === null ? undefined : e[2],
-            idcard: e[4] === null ? undefined : e[4],
-            bridday: e[5] === null ? undefined : e[5],
-            phonenumber: e[6] === null ? undefined : e[6],
-            email: e[7] === null ? undefined : e[7],
-            course: e[8] === null ? undefined : e[8],
-            course1: e[9] === null ? undefined : e[9],
-            model: e[10] === null ? undefined : e[10],
-            position: e[11] === null ? undefined : e[11],
-            studentid: e[12] === null ? undefined : e[12],
-            username_eng: e[3] === null ? undefined : e[3],
-            line: e[13] === null ? undefined : e[13],
+            uuid: e[0] === null ? uuidv4() : e[0],
+            prefix: e[1] === null ? null : e[1],
+            username: e[2] === null ? null : e[2],
+            idcard: e[4] === null ? null : e[4],
+            bridday: e[5] === null ? null : e[5],
+            phonenumber: e[6] === null ? '' : e[6],
+            email: e[7] === null ? null : e[7],
+            // course: e[8] === null ? undefined : e[8],
+            // course1: e[9] === null ? undefined : e[9],
+            course: e[8] === null ? [] : [],
+            course1: e[9] === null ? [] : [],
+            model: e[10] === null ? null : e[10],
+            position: e[11] === null ? [] : [],
+            // position: e[11] === null ? undefined : e[11],
+            studentid: e[12] === null ? null : e[12],
+            username_eng: e[3] === null ? null : e[3],
+            line: e[13] === null ? null : e[13],
           });
         }
       });

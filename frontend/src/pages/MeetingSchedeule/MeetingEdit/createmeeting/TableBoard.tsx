@@ -44,7 +44,7 @@ type Props = {
   children?: React.ReactNode;
   extra?: React.ReactNode;
   onChangeSetItemFiled: (filedList: any) => void;
-  user?:any;
+  user?: any;
 };
 
 const { Step } = Steps;
@@ -61,7 +61,7 @@ export const TableBoard: React.FC<Props> = ({
   const [editingStudent, setEditingStudent] = useState<any>();
   const [username, setUsername] = useState<any>([]);
 
-  const [defaultUser,setDefaultUser] = useState<any>([]);
+  const [defaultUser, setDefaultUser] = useState<any>([]);
 
   useEffect(() => {
     // const newData = user.map((e: any, i: number) => {
@@ -72,32 +72,29 @@ export const TableBoard: React.FC<Props> = ({
     //   };}
     // });
 
-    const newData = user.reduce((newData:any, thing:any) => {
+    const newData = user.reduce((newData: any, thing: any) => {
       if (thing.type === 'userBoard') {
         newData.push(thing);
       }
       return newData;
     }, []);
 
-
     // console.log(newData,'newdata');
-    
-    setDefaultUser(newData)
-    setDataSourceBoard(newData)
-  },[user]);
+
+    setDefaultUser(newData);
+    setDataSourceBoard(newData);
+  }, [user]);
 
   useEffect(() => {
-      
     // console.log(dataSourceBoard,'dataSourceBoard');
-    
+
     onChangeSetItemFiled(dataSourceBoard);
-    setDefaultUser(dataSourceBoard)
+    setDefaultUser(dataSourceBoard);
   }, [dataSourceBoard]);
   // console.log(user);
-  
-  
+
   // const newData = user.map((e: any, i: number) => {
-    
+
   //   return {
   //     username: e.username,
   //     uuid: uuidv4(),
@@ -136,7 +133,7 @@ export const TableBoard: React.FC<Props> = ({
   };
   const onEditStudent = async (record: any) => {
     // console.log(record,'record');
-    
+
     const resual = await DatamanagementService().getUser();
     const newresult = resual.filter((e: any) => {
       if (e.type === '1') {
@@ -231,7 +228,7 @@ export const TableBoard: React.FC<Props> = ({
       </Col>
       <Modal
         title="แก้ใขข้อมูล"
-        visible={isEditing}
+        open={isEditing}
         okText="Save"
         onCancel={() => {
           resetEditing();

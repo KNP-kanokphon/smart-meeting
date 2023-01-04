@@ -12,7 +12,7 @@ import {
   Typography,
 } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../css/style.css'
+import '../css/style.css';
 import {
   InfoCircleOutlined,
   MinusCircleOutlined,
@@ -70,10 +70,18 @@ export const CreateStepFood: React.FC<Props> = ({ children, extra }) => {
     <>
       <Card title="Create Meeting" style={{ width: '100%' }}>
         <Row>
-          <Steps size="small" current={2}>
+          <Steps
+            size="small"
+            current={2}
+            items={[
+              { title: 'Finished' },
+              { title: 'Finished' },
+              { title: 'In Progress' },
+            ]}
+          >
+            {/* <Step title="Finished" />
             <Step title="Finished" />
-            <Step title="Finished" />
-            <Step title="In Progress" />
+            <Step title="In Progress" /> */}
           </Steps>
         </Row>
         <Form

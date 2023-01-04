@@ -173,7 +173,7 @@ export const TableBoard: React.FC<Props> = ({ children, extra }) => {
       </Col>
       <Modal
         title="แก้ใขข้อมูล"
-        visible={isEditing}
+        open={isEditing}
         okText="Save"
         onCancel={() => {
           resetEditing();
