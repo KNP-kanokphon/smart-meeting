@@ -66,6 +66,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const [FormAdd] = Form.useForm();
   const [getuserAll, setUserAll] = useState<any>([]);
   const [getPositionAll, setPositionAll] = useState<any>([]);
+  const [getGroupAll, setGroupAll] = useState<any>([]);
   const [getCourseAll, setCourseAll] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -77,6 +78,20 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const { Option } = Select;
 
   useEffect(() => {
+    // const dataGroup = async () => {
+    //   const resultDataGroup = await DatamanagementService().GroupAlls();
+    //   // console.log(resultDataGroup);
+
+    //   const dataGroup = (await resultDataGroup.map((e: any, row: any) => {
+    //     const mapData = {
+    //       uuidgroup: e.uuidgroup,
+    //       namegroup: e.namegroup,
+    //     };
+    //     return mapData;
+    //   })) as any;
+    //   setGroupAll(dataGroup);
+    // };
+
     const dataPosition = async () => {
       const resultDataPosiotion =
         await DatamanagementService().getPositionall();
@@ -89,6 +104,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
           return mapData;
         },
       )) as any;
+
       setPositionAll(dataPosition);
     };
     const getListCourse = async () => {
@@ -104,11 +120,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       setCourseAll(dataCourse);
     };
     dataAll();
+    // dataGroup();
     dataPosition();
     getListCourse();
   }, []);
-
-  // useEffect(() => {}, [getdataModal]);
 
   const handleDel = (e: any) => {
     if (e) {
@@ -116,7 +131,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         title: 'ยืนยันการเปลี่ยนแปลง',
         content: 'คุณต้องการลบข้อมูล ใช่ หรือ ไม่ ?',
         okText: 'ใช่',
-        okType: 'danger',
+        // okType: 'danger',
         onOk: async () => {
           const res: any = await DatamanagementService().deleteUser(e);
           if (res) {
@@ -131,42 +146,10 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       });
     }
   };
-
-  // const checkSplittchar = (e: any) => {
-  //   let dataN: any = 0;
-  //   dataN += ' ' + e;
-  //   return (
-  //     <>
-  //       <div style={{ whiteSpace: 'pre-line' }}>{dataN}</div>
-  //     </>
-  //   );
-  // };
-
   const showModal = (e: any) => {
-    let datanamePosition: any = '';
-    console.log(e);
     if (e) {
-      // if (typeof e.position === 'string') {
-      //   setdataPosition(e.position);
-      // } else if (typeof e.position === 'object') {
-      //   e.position.map((x: any) => {
-      //     const dataresult = getPositionAll.filter(
-      //       (event: any) => event?.uuid === x,
-      //     );
-      //     dataresult?.map((result: any) => {
-      //       // console.log(result);
-
-      //       datanamePosition += ',' + result?.position;
-      //     });
-      //     // console.log(checkSplittchar(datanamePosition));
-      //     // let split = checkSplittchar(datanamePosition);
-
-      //     setdataPosition(datanamePosition);
-      //   });
-      // }
       setdatainModal(e);
       setIsModalOpen(true);
-      FormAdd.resetFields();
     }
   };
 
@@ -176,277 +159,266 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   };
 
   const handleUpdate = (e: any) => {
-    // console.log(e);
-
     const uuid = getdataModal.uuid;
     const data = {
-      data: {
-        alley:
-          e.getAlley === null || e.getAlley === undefined || e.getAlley === ''
-            ? ''
-            : e.getAlley,
-        work_alley:
-          e.getAlleyOffice === null ||
-          e.getAlleyOffice === undefined ||
-          e.getAlleyOffice === ''
-            ? ''
-            : e.getAlleyOffice,
-        position_guild:
-          e.getApplyPosition === null ||
-          e.getApplyPosition === undefined ||
-          e.getApplyPosition === ''
-            ? ''
-            : e.getApplyPosition,
-        guild:
-          e.getAssociaton === null ||
-          e.getAssociaton === undefined ||
-          e.getAssociaton === ''
-            ? ''
-            : e.getAssociaton,
-        work:
-          e.getCareer === null ||
-          e.getCareer === undefined ||
-          e.getCareer === ''
-            ? ''
-            : e.getCareer,
-        course:
-          e.getCourse === null ||
-          e.getCourse === undefined ||
-          e.getCourse === ''
-            ? ''
-            : e.getCourse,
-        course1:
-          e.getCourse1 === null ||
-          e.getCourse1 === undefined ||
-          e.getCourse1 === ''
-            ? ''
-            : e.getCourse1,
-        bridday:
-          e.getDOB === null || e.getDOB === undefined || e.getDOB === ''
-            ? ''
-            : e.getDOB,
-        all_assets:
-          e.getDetail1 === null ||
-          e.getDetail1 === undefined ||
-          e.getDetail1 === ''
-            ? ''
-            : e.getDetail1,
-        previous_job:
-          e.getDetail2 === null ||
-          e.getDetail2 === undefined ||
-          e.getDetail2 === ''
-            ? ''
-            : e.getDetail2,
-        criminalcase:
-          e.getDetail3 === null ||
-          e.getDetail3 === undefined ||
-          e.getDetail3 === ''
-            ? ''
-            : e.getDetail3,
-        district:
-          e.getDistrict === null ||
-          e.getDistrict === undefined ||
-          e.getDistrict === ''
-            ? ''
-            : e.getDistrict,
-        work_district:
-          e.getDistrictOffice === null ||
-          e.getDistrictOffice === undefined ||
-          e.getDistrictOffice === ''
-            ? ''
-            : e.getDistrictOffice,
-        email:
-          e.getEmail === null || e.getEmail === undefined || e.getEmail === ''
-            ? ''
-            : e.getEmail,
-        model:
-          e.getGeneration === null ||
-          e.getGeneration === undefined ||
-          e.getGeneration === ''
-            ? ''
-            : e.getGeneration,
-        villageno:
-          e.getGroup === null || e.getGroup === undefined || e.getGroup === ''
-            ? ''
-            : e.getGroup,
-        work_villageno:
-          e.getGroupOffice === null ||
-          e.getGroupOffice === undefined ||
-          e.getGroupOffice === ''
-            ? ''
-            : e.getGroupOffice,
-        number:
-          e.getHouseNumber === null ||
-          e.getHouseNumber === undefined ||
-          e.getHouseNumber === ''
-            ? ''
-            : e.getHouseNumber,
-        work_number:
-          e.getHouseNumberOffice === null ||
-          e.getHouseNumberOffice === undefined ||
-          e.getHouseNumberOffice === ''
-            ? ''
-            : e.getHouseNumberOffice,
-        idcard:
-          e.getIdCard === null ||
-          e.getIdCard === undefined ||
-          e.getIdCard === ''
-            ? ''
-            : e.getIdCard,
-        certificate:
-          e.getImpPassNumber === null ||
-          e.getImpPassNumber === undefined ||
-          e.getImpPassNumber === ''
-            ? ''
-            : e.getImpPassNumber,
-        username:
-          e.getNameLastName === null ||
-          e.getNameLastName === undefined ||
-          e.getNameLastName === ''
-            ? ''
-            : e.getNameLastName,
-        work_station:
-          e.getOffice === null ||
-          e.getOffice === undefined ||
-          e.getOffice === ''
-            ? ''
-            : e.getOffice,
-        others:
-          e.getOther === null || e.getOther === undefined || e.getOther === ''
-            ? ''
-            : e.getOther,
-        passport:
-          e.getPassNumber === null ||
-          e.getPassNumber === undefined ||
-          e.getPassNumber === ''
-            ? ''
-            : e.getPassNumber,
-        phonenumber:
-          e.getPhoneNumber === null ||
-          e.getPhoneNumber === undefined ||
-          e.getPhoneNumber === ''
-            ? ''
-            : e.getPhoneNumber,
-        phone_office:
-          e.getPhoneNumberOffice === null ||
-          e.getPhoneNumberOffice === undefined ||
-          e.getPhoneNumberOffice === ''
-            ? ''
-            : e.getPhoneNumberOffice,
-        position:
-          e.getPosition === null ||
-          e.getPosition === undefined ||
-          e.getPosition === ''
-            ? ''
-            : e.getPosition,
-        job_position:
-          e.getPositionCareer === null ||
-          e.getPositionCareer === undefined ||
-          e.getPositionCareer === ''
-            ? ''
-            : e.getPositionCareer,
-        postalcode:
-          e.getPostalCode === null ||
-          e.getPostalCode === undefined ||
-          e.getPostalCode === ''
-            ? ''
-            : e.getPostalCode,
-        work_postal_code:
-          e.getPostalCodeOffice === null ||
-          e.getPostalCodeOffice === undefined ||
-          e.getPostalCodeOffice === ''
-            ? ''
-            : e.getPostalCodeOffice,
-        province:
-          e.getProvince === null ||
-          e.getProvince === undefined ||
-          e.getProvince === ''
-            ? ''
-            : e.getProvince,
-        work_province:
-          e.getProvinceOffice === null ||
-          e.getProvinceOffice === undefined ||
-          e.getProvinceOffice === ''
-            ? ''
-            : e.getProvinceOffice,
-        road:
-          e.getRoad === null || e.getRoad === undefined || e.getRoad === ''
-            ? ''
-            : e.getRoad,
-        work_road:
-          e.getRoadOffice === null ||
-          e.getRoadOffice === undefined ||
-          e.getRoadOffice === ''
-            ? ''
-            : e.getRoadOffice,
-        roomnumber:
-          e.getRoomNumber === null ||
-          e.getRoomNumber === undefined ||
-          e.getRoomNumber === ''
-            ? ''
-            : e.getRoomNumber,
-        salary:
-          e.getSalary === null ||
-          e.getSalary === undefined ||
-          e.getSalary === ''
-            ? ''
-            : e.getSalary,
-        active:
-          e.getStatus === null ||
-          e.getStatus === undefined ||
-          e.getStatus === ''
-            ? ''
-            : e.getStatus,
-        subdistrict:
-          e.getSubDistrict === null ||
-          e.getSubDistrict === undefined ||
-          e.getSubDistrict === ''
-            ? ''
-            : e.getSubDistrict,
-        work_sub_district:
-          e.getSubDistrictOffice === null ||
-          e.getSubDistrictOffice === undefined ||
-          e.getSubDistrictOffice === ''
-            ? ''
-            : e.getSubDistrictOffice,
-        prefix:
-          e.getTitle === null || e.getTitle === undefined || e.getTitle === ''
-            ? ''
-            : e.getTitle,
-        bldg:
-          e.getVillage === null ||
-          e.getVillage === undefined ||
-          e.getVillage === ''
-            ? ''
-            : e.getVillage,
-        workpermit:
-          e.getWorkDocument === null ||
-          e.getWorkDocument === undefined ||
-          e.getWorkDocument === ''
-            ? ''
-            : e.getWorkDocument,
-        prefixtitleeng:
-          e.title_eng === null ||
-          e.title_eng === undefined ||
-          e.title_eng === ''
-            ? ''
-            : e.title_eng,
-        remark:
-          e.remark === null || e.remark === undefined || e.remark === ''
-            ? ''
-            : e.remark,
-      },
+      alley:
+        e.getAlley === null || e.getAlley === undefined || e.getAlley === ''
+          ? null
+          : e.getAlley,
+      work_alley:
+        e.getAlleyOffice === null ||
+        e.getAlleyOffice === undefined ||
+        e.getAlleyOffice === ''
+          ? null
+          : e.getAlleyOffice,
+      position_guild:
+        e.getApplyPosition === null ||
+        e.getApplyPosition === undefined ||
+        e.getApplyPosition === ''
+          ? []
+          : e.getApplyPosition,
+      guild:
+        e.getAssociaton === null ||
+        e.getAssociaton === undefined ||
+        e.getAssociaton === ''
+          ? null
+          : e.getAssociaton,
+      work:
+        e.getCareer === null || e.getCareer === undefined || e.getCareer === ''
+          ? null
+          : e.getCareer,
+      course:
+        e.getCourse === null || e.getCourse === undefined || e.getCourse === ''
+          ? []
+          : e.getCourse,
+      course1:
+        e.getCourse1 === null ||
+        e.getCourse1 === undefined ||
+        e.getCourse1 === ''
+          ? []
+          : e.getCourse1,
+      bridday:
+        e.getDOB === null || e.getDOB === undefined || e.getDOB === ''
+          ? null
+          : e.getDOB,
+      all_assets:
+        e.getDetail1 === null ||
+        e.getDetail1 === undefined ||
+        e.getDetail1 === ''
+          ? null
+          : e.getDetail1,
+      previous_job:
+        e.getDetail2 === null ||
+        e.getDetail2 === undefined ||
+        e.getDetail2 === ''
+          ? null
+          : e.getDetail2,
+      criminalcase:
+        e.getDetail3 === null ||
+        e.getDetail3 === undefined ||
+        e.getDetail3 === ''
+          ? null
+          : e.getDetail3,
+      district:
+        e.getDistrict === null ||
+        e.getDistrict === undefined ||
+        e.getDistrict === ''
+          ? null
+          : e.getDistrict,
+      work_district:
+        e.getDistrictOffice === null ||
+        e.getDistrictOffice === undefined ||
+        e.getDistrictOffice === ''
+          ? null
+          : e.getDistrictOffice,
+      email:
+        e.getEmail === null || e.getEmail === undefined || e.getEmail === ''
+          ? null
+          : e.getEmail,
+      model:
+        e.getGeneration === null ||
+        e.getGeneration === undefined ||
+        e.getGeneration === ''
+          ? null
+          : e.getGeneration,
+      villageno:
+        e.getGroup === null || e.getGroup === undefined || e.getGroup === ''
+          ? null
+          : e.getGroup,
+      work_villageno:
+        e.getGroupOffice === null ||
+        e.getGroupOffice === undefined ||
+        e.getGroupOffice === ''
+          ? null
+          : e.getGroupOffice,
+      number:
+        e.getHouseNumber === null ||
+        e.getHouseNumber === undefined ||
+        e.getHouseNumber === ''
+          ? null
+          : e.getHouseNumber,
+      work_number:
+        e.getHouseNumberOffice === null ||
+        e.getHouseNumberOffice === undefined ||
+        e.getHouseNumberOffice === ''
+          ? null
+          : e.getHouseNumberOffice,
+      idcard:
+        e.getIdCard === null || e.getIdCard === undefined || e.getIdCard === ''
+          ? null
+          : e.getIdCard,
+      certificate:
+        e.getImpPassNumber === null ||
+        e.getImpPassNumber === undefined ||
+        e.getImpPassNumber === ''
+          ? null
+          : e.getImpPassNumber,
+      username:
+        e.getNameLastName === null ||
+        e.getNameLastName === undefined ||
+        e.getNameLastName === ''
+          ? null
+          : e.getNameLastName,
+      work_station:
+        e.getOffice === null || e.getOffice === undefined || e.getOffice === ''
+          ? null
+          : e.getOffice,
+      others:
+        e.getOther === null || e.getOther === undefined || e.getOther === ''
+          ? null
+          : e.getOther,
+      passport:
+        e.getPassNumber === null ||
+        e.getPassNumber === undefined ||
+        e.getPassNumber === ''
+          ? null
+          : e.getPassNumber,
+      phonenumber:
+        e.getPhoneNumber === null ||
+        e.getPhoneNumber === undefined ||
+        e.getPhoneNumber === ''
+          ? ''
+          : e.getPhoneNumber,
+      phone_office:
+        e.getPhoneNumberOffice === null ||
+        e.getPhoneNumberOffice === undefined ||
+        e.getPhoneNumberOffice === ''
+          ? null
+          : e.getPhoneNumberOffice,
+      position:
+        e.getPosition === null ||
+        e.getPosition === undefined ||
+        e.getPosition === ''
+          ? null
+          : e.getPosition,
+      job_position:
+        e.getPositionCareer === null ||
+        e.getPositionCareer === undefined ||
+        e.getPositionCareer === ''
+          ? null
+          : e.getPositionCareer,
+      postalcode:
+        e.getPostalCode === null ||
+        e.getPostalCode === undefined ||
+        e.getPostalCode === ''
+          ? null
+          : e.getPostalCode,
+      work_postal_code:
+        e.getPostalCodeOffice === null ||
+        e.getPostalCodeOffice === undefined ||
+        e.getPostalCodeOffice === ''
+          ? null
+          : e.getPostalCodeOffice,
+      province:
+        e.getProvince === null ||
+        e.getProvince === undefined ||
+        e.getProvince === ''
+          ? null
+          : e.getProvince,
+      work_province:
+        e.getProvinceOffice === null ||
+        e.getProvinceOffice === undefined ||
+        e.getProvinceOffice === ''
+          ? null
+          : e.getProvinceOffice,
+      road:
+        e.getRoad === null || e.getRoad === undefined || e.getRoad === ''
+          ? null
+          : e.getRoad,
+      work_road:
+        e.getRoadOffice === null ||
+        e.getRoadOffice === undefined ||
+        e.getRoadOffice === ''
+          ? ''
+          : e.getRoadOffice,
+      roomnumber:
+        e.getRoomNumber === null ||
+        e.getRoomNumber === undefined ||
+        e.getRoomNumber === ''
+          ? null
+          : e.getRoomNumber,
+      salary:
+        e.getSalary === null || e.getSalary === undefined || e.getSalary === ''
+          ? null
+          : e.getSalary,
+      active:
+        e.getStatus === null || e.getStatus === undefined || e.getStatus === ''
+          ? null
+          : e.getStatus,
+      subdistrict:
+        e.getSubDistrict === null ||
+        e.getSubDistrict === undefined ||
+        e.getSubDistrict === ''
+          ? null
+          : e.getSubDistrict,
+      work_sub_district:
+        e.getSubDistrictOffice === null ||
+        e.getSubDistrictOffice === undefined ||
+        e.getSubDistrictOffice === ''
+          ? null
+          : e.getSubDistrictOffice,
+      prefix:
+        e.getTitle === null || e.getTitle === undefined || e.getTitle === ''
+          ? null
+          : e.getTitle,
+      bldg:
+        e.getVillage === null ||
+        e.getVillage === undefined ||
+        e.getVillage === ''
+          ? null
+          : e.getVillage,
+      workpermit:
+        e.getWorkDocument === null ||
+        e.getWorkDocument === undefined ||
+        e.getWorkDocument === ''
+          ? null
+          : e.getWorkDocument,
+      prefixtitleeng:
+        e.title_eng === null || e.title_eng === undefined || e.title_eng === ''
+          ? null
+          : e.title_eng,
+      remark:
+        e.remark === null || e.remark === undefined || e.remark === ''
+          ? null
+          : e.remark,
+      username_eng:
+        e.username_eng === null ||
+        e.username_eng === undefined ||
+        e.username_eng === ''
+          ? null
+          : e.username_eng,
+      idgroup:
+        e.getgroups === null || e.getgroups === undefined || e.getgroups === ''
+          ? null
+          : e.getgroups,
     } as any;
     // if (e) {
     Modal.confirm({
       title: 'ยืนยันการเปลี่ยนแปลง',
       content: 'คุณต้องการ ใช่ หรือ ไม่ ?',
       okText: 'ใช่',
-      okType: 'danger',
+      // okType: 'danger',
       onOk: async () => {
-        // console.log(uuid);
-        // console.log(data);
-
         const res: any = await DatamanagementService().updateUser(uuid, data);
         if (res) {
           message.success('อัพเดต');
@@ -466,6 +438,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
 
   const dataAll = async () => {
     const dataAll = await DatamanagementService().findAll();
+    // console.log(dataAll);
+
     const dataSource = await dataAll.map((x: any, row: any) => {
       const mapData = {
         no: row + 1,
@@ -520,6 +494,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         guild: x.guild,
         others: x.others,
         remark: x.remark,
+        idgroup: x.idgroup,
       } as any;
       return mapData;
     });
@@ -647,45 +622,50 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '5%',
       dataIndex: 'position',
       render: (e: any, row: any, index: any) => {
-        if (e) {
-          if (typeof e !== 'string') {
-            return (
-              <>
-                {row?.position.map((data: any, row: any, index: number) => {
-                  const countTypes = getPositionAll.find(
-                    (event: any) => event?.uuid === data,
-                  ) as any;
-                  if (data?.length < 2) {
-                    return countTypes?.position;
-                  } else {
-                    let nameposition: string = '';
-                    nameposition += ' ' + countTypes?.position;
-                    let splittt = nameposition;
-                    return (
-                      <>
-                        <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-                      </>
-                    );
-                  }
-                })}
-              </>
-            );
-          } else {
-            if (e?.length < 2) {
-              return e;
-            } else {
-              let nameposition: string = '';
-              nameposition += ',' + e;
+        console.log(e);
 
-              let splittt = nameposition.split(',');
-              return (
-                <>
-                  <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-                </>
-              );
-            }
-          }
+        // console.log(row);
+        // if (e) {
+        //   if (typeof e !== 'string') {
+        //     return (
+        //       <>
+        //         {row?.position.map((data: any, row: any, index: number) => {
+        //           console.log(row);
+        //           const countTypes = getPositionAll.find(
+        //             (event: any) => event?.uuid === data,
+        //           ) as any;
+        //           if (data?.length < 2) {
+        //             return countTypes?.position;
+        //           } else {
+        //             let nameposition: string = '';
+        //             nameposition += ' ' + countTypes?.position;
+        //             let splittt = nameposition;
+        //             return (
+        //               <>
+        //                 <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
+        //               </>
+        //             );
+        //           }
+        //         })}
+        //       </>
+        //     );
+        //   } else {
+        if (e?.length < 2) {
+          // console.log(e);
+          return e;
+        } else {
+          // console.log(e);
+          let nameposition: string = '';
+          nameposition += ',' + e;
+          let splittt = nameposition.split(',');
+          return (
+            <>
+              <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
+            </>
+          );
         }
+        //   }
+        // }
       },
     },
     {
@@ -923,6 +903,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               { name: ['getAssociaton'], value: getdataModal?.guild },
               { name: ['getOther'], value: getdataModal?.others },
               { name: ['remark'], value: getdataModal?.remark },
+              { name: ['getgroups'], value: getdataModal?.idgroup },
             ]}
           >
             <Row gutter={16}>
@@ -998,6 +979,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                   required
                 >
                   <Input
+                    id={'username_eng'}
                     defaultValue={getdataModal?.username_eng}
                     value={getdataModal?.username_eng}
                     name={'username_eng'}
@@ -1175,6 +1157,34 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
                       return (
                         <Option key={e.uuid} value={e.position}>
                           {e.position}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item label={'กลุ่ม'} name={'getgroups'}>
+                  <Select
+                    id={'getgroups'}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    placeholder={'กรุณาเลือก'}
+                  >
+                    <Option key={''} value={''} disabled>
+                      Select
+                    </Option>
+                    {getGroupAll.map((e: any, row: any) => {
+                      return (
+                        <Option key={e.uuidgroup} value={e.namegroup}>
+                          {e.namegroup}
                         </Option>
                       );
                     })}
@@ -1708,16 +1718,18 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
               style={{ justifyContent: 'center', display: 'flex' }}
             >
               <Col>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ backgroundColor: '#1E6541' }}
-                  // onClick={(e: any) => {
-                  //   handleUpdate(e);
-                  // }}
-                >
-                  ยืนยัน
-                </Button>
+                <Form.Item>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    style={{ backgroundColor: '#1E6541' }}
+                    // onClick={(e: any) => {
+                    //   handleUpdate(e);
+                    // }}
+                  >
+                    ยืนยัน
+                  </Button>
+                </Form.Item>
               </Col>
             </Row>
           </Form>
