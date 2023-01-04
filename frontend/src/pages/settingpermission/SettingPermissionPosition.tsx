@@ -12,6 +12,7 @@ import {
   Col,
   Modal,
   message,
+  Tabs,
 } from 'antd';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +30,9 @@ export const SettingPermissionPosition: React.FC<props> = ({
 }): React.ReactElement => {
   // console.log(Props);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [dataSource, setDataSource] = useState<any>([]);
+  const [modelStatus, setModelStatus] = useState(false);
+  const [dataSourcePosition, setDataSourcePosition] = useState<any>([]);
+  const [dataSourceGroup, setDataSourceGroup] = useState<any>([]);
   const [namePosition, setDatanamePosition] = useState<string>('');
   const { Option } = Select;
   const [FormAdd] = Form.useForm();
@@ -40,8 +43,10 @@ export const SettingPermissionPosition: React.FC<props> = ({
   }, []);
 
   const getDataAll = async () => {
-    const result = (await DatamanagementService().getPositionall()) as any;
-    setDataSource(result);
+    const resultPosition = await DatamanagementService().getPositionall();
+    const resultGroup = await DatamanagementService().getGroup();
+    setDataSourcePosition(resultPosition);
+    setDataSourceGroup(resultGroup);
   };
 
   const handleDel = (e: any) => {
@@ -69,6 +74,9 @@ export const SettingPermissionPosition: React.FC<props> = ({
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+  const showModalGroup = async () => {
+    setModelStatus(true);
   };
   const handleOk = async (e: any) => {
     if (e.position === undefined || e.position === '') {
@@ -109,7 +117,12 @@ export const SettingPermissionPosition: React.FC<props> = ({
     setIsModalOpen(false);
     FormAdd.resetFields();
   };
-  const defaultColumns: any = [
+
+  const cancleModalGroup = () => {
+    setIsModalOpen(false);
+    FormAdd.resetFields();
+  };
+  const ColumnsPosition: any = [
     {
       title: 'ตำแหน่ง',
       dataIndex: 'uuid',
@@ -117,6 +130,49 @@ export const SettingPermissionPosition: React.FC<props> = ({
       render: (e: string, row: any, index: number) => {
         return <>{row?.nameposition}</>;
       },
+    },
+    {
+      title: 'วันที่เพิ่ม',
+      dataIndex: 'createdate',
+      width: '15%',
+      render: (e: string, row: any, index: number) => {
+        return <>{dayjs(e).add(543, 'year').format('DD-MM-YYYY HH:MM น.')}</>;
+      },
+    },
+    {
+      title: 'Action',
+      dataIndex: 'uuid',
+      width: '10%',
+      align: 'center',
+      render: (event: number, row: any, index: number) => {
+        // console.log(row);
+
+        return (
+          <>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Button
+                  type="default"
+                  style={{
+                    border: 'none',
+                    color: 'red',
+                  }}
+                  onClick={() => handleDel(row)}
+                >
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+  ];
+  const ColumnsGroup: any = [
+    {
+      title: 'ชื่อกลุ่ม',
+      dataIndex: 'uuid',
+      width: '75%',
     },
     {
       title: 'วันที่เพิ่ม',
@@ -197,23 +253,90 @@ export const SettingPermissionPosition: React.FC<props> = ({
           </Form>
         </>
       </Modal>
-      <Card
-        title={'ตำแหน่ง'}
-        style={{ borderRadius: '10px', marginTop: '20px' }}
+
+      <Modal
+        title="เพิ่มกลุ่ม"
+        visible={modelStatus}
+        // onOk={handleOk}
+        onCancel={cancleModalGroup}
+        footer={false}
       >
-        <div>
-          <Button
-            onClick={showModal}
-            type="primary"
-            style={{
-              marginBottom: 16,
-              backgroundColor: '#1E6541',
-            }}
+        <>
+          <Form
+            form={FormAdd}
+            layout={'vertical'}
+            // onFinish={submitGroup}
+            // onChange={cancelGroup}
           >
-            <Typography style={{ color: 'white' }}>{'เพิ่มตำแหน่ง'}</Typography>
-          </Button>
-          <Table bordered dataSource={dataSource} columns={defaultColumns} />
-        </div>
+            <Form.Item label={'กลุ่ม'} name="position">
+              <Input
+                ref={inputRef}
+                name="position"
+                id="position"
+                placeholder="Text"
+              />
+            </Form.Item>
+            <Form.Item>
+              <div style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{
+                    backgroundColor: '#1E6541',
+                    color: 'white',
+                  }}
+                >
+                  ยืนยัน
+                </Button>
+              </div>
+            </Form.Item>
+          </Form>
+        </>
+      </Modal>
+      <Card style={{ borderRadius: '10px', marginTop: '20px' }}>
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab="ตำแหน่ง" key="1">
+            <div>
+              <Button
+                onClick={showModal}
+                // type="primary"
+                style={{
+                  marginBottom: 16,
+                  backgroundColor: '#1E6541',
+                }}
+              >
+                <Typography style={{ color: 'white' }}>
+                  {'เพิ่มตำแหน่ง'}
+                </Typography>
+              </Button>
+              <Table
+                bordered
+                dataSource={dataSourcePosition}
+                columns={ColumnsPosition}
+              />
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="กลุ่ม" key="2">
+            <div>
+              <Button
+                onClick={showModalGroup}
+                style={{
+                  marginBottom: 16,
+                  backgroundColor: '#1E6541',
+                }}
+              >
+                <Typography style={{ color: 'white' }}>
+                  {'เพิ่มกลุ่ม'}
+                </Typography>
+              </Button>
+              <Table
+                bordered
+                dataSource={dataSourceGroup}
+                columns={ColumnsGroup}
+              />
+            </div>
+          </Tabs.TabPane>
+        </Tabs>
       </Card>
     </>
   );

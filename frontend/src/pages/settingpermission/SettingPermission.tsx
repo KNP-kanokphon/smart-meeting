@@ -172,9 +172,6 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
       </Card>
       <div style={{ width: '100%' }}>
         <Row gutter={16}>
-          {/* <Col span={12}>
-            <SettingPermissionCourse />
-          </Col> */}
           <Col span={24}>
             <SettingPermissionPosition Props={props} />
           </Col>
