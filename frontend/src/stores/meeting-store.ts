@@ -276,11 +276,12 @@ export const DatamanagementService = () => ({
   },
   updateUser: async (uuid: any, data: any) => {
     // console.log(uuid);
-    // const newData = {
-    //   data: data,
-    // };
-    const result = await httpClient.put(`user/updateuser/${uuid}`, data);
-    return result.data;
+    const newData = {
+      data: data,
+    };
+
+    const result = await httpClient.put(`user/updateuser/${uuid}`, newData);
+    return result?.data;
   },
   getPathFilePdf: async (roomid: any) => {
     const result = await httpClient.get(`/meeting/getPathFilePdf/${roomid}`);
