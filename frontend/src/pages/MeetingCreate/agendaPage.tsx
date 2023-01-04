@@ -7,6 +7,7 @@ import {
   Row,
   TimePicker,
   Upload,
+  message,
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/lib/input/TextArea';
@@ -45,9 +46,15 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
       setDataField({ fileOverview: newFileList });
     },
     beforeUpload: (file: any) => {
-      setFileList([...fileList, file]);
-      setDataField({ fileOverview: [...fileList, file] });
-      return false;
+      console.log(file);
+      const isPDF = file.type === 'application/pdf';
+      if (!isPDF) {
+        message.error(`${file.name} is not a pdf file`);
+      } else {
+        setFileList([...fileList, file]);
+        setDataField({ fileOverview: [...fileList, file] });
+        return false;
+      }
     },
     fileList,
   };
