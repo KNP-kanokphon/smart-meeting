@@ -138,7 +138,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginBottom: '5px',
                       }}
                     >
-                      {'เรียนคุณ : '}
+                      {'เรียนคุณ '}
                     </Typography>
                     {user?.username}
                   </Col>
@@ -182,6 +182,20 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     >
                       {'Title '}
                     </Typography>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
                     {meetingData?.title}
                   </Col>
                 </Row>
@@ -211,13 +225,87 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     >
                       {'Schedual '}
                     </Typography>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
                     วันที่ {meetingData?.day}
-                    <br></br>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
                     เวลา {meetingData?.starttime} ถึง {meetingData?.endtime}
-                    <br></br>ณ ห้อง {meetingData?.room}
-                    <br></br>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
+                    ณ ห้อง {meetingData?.room}
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
                     อาคาร {meetingData?.building}
-                    <br></br>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
                     รายละเอียด {meetingData?.detail}
                   </Col>
                 </Row>
@@ -244,9 +332,23 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'Agenda Item :'}
+                      {'Agenda Item '}
                     </Typography>
-
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={10}
+                    lg={10}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                    }}
+                  >
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>

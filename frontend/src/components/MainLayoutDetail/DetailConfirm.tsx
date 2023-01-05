@@ -236,7 +236,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       // justifyContent: 'center',
                     }}
                   >
-                    <b>{'Agenda Item :'}</b>
+                    <b>{'Agenda Item '}</b>
 
                     {agenda?.map((e: any, i: number) => {
                       return (
