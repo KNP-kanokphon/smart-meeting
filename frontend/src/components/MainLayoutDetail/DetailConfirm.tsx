@@ -54,18 +54,31 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
       step,
       namefile,
     );
-    const blob = new Blob([data], { type: 'application/pdf' });
-    saveAs(blob, `${namefile}`);
+
+    const url = window.URL.createObjectURL(
+      new Blob([new Uint8Array(data.data).buffer]),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${namefile}`);
+    document.body.appendChild(link);
+    link.click();
+    // const blob = new Blob([data], { type: 'application/pdf' });
+    // saveAs(blob, `${namefile}`);
   };
   const getfileOverviwe = async (namefile: string) => {
     const resultPathfile = await DatamanagementService().getFilesoverview(
       id,
       namefile,
     );
-    const blob = new Blob([resultPathfile.data], { type: 'application/pdf' });
-    saveAs(blob, `${namefile}`);
-    // console.log(blob);
-    // console.log([resultPathfile]);
+    const url = window.URL.createObjectURL(
+      new Blob([new Uint8Array(resultPathfile.data).buffer]),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${namefile}`);
+    document.body.appendChild(link);
+    link.click();
   };
   return (
     <Layout className="layout">
