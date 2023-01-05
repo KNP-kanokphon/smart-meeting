@@ -78,19 +78,19 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const { Option } = Select;
 
   useEffect(() => {
-    // const dataGroup = async () => {
-    //   const resultDataGroup = await DatamanagementService().GroupAlls();
-    //   // console.log(resultDataGroup);
+    const dataGroup = async () => {
+      const resultDataGroup = await DatamanagementService().GroupAlls();
+      // console.log(resultDataGroup);
 
-    //   const dataGroup = (await resultDataGroup.map((e: any, row: any) => {
-    //     const mapData = {
-    //       uuidgroup: e.uuidgroup,
-    //       namegroup: e.namegroup,
-    //     };
-    //     return mapData;
-    //   })) as any;
-    //   setGroupAll(dataGroup);
-    // };
+      const dataGroup = (await resultDataGroup.map((e: any, row: any) => {
+        const mapData = {
+          uuidgroup: e.uuidgroup,
+          namegroup: e.namegroup,
+        };
+        return mapData;
+      })) as any;
+      setGroupAll(dataGroup);
+    };
 
     const dataPosition = async () => {
       const resultDataPosiotion =
@@ -120,7 +120,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       setCourseAll(dataCourse);
     };
     dataAll();
-    // dataGroup();
+    dataGroup();
     dataPosition();
     getListCourse();
   }, []);

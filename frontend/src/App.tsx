@@ -23,6 +23,7 @@ import { MainLayoutProfile } from './components/MainLayoutDetail/profile';
 import { PartyQRcodeCheckin } from './components/MainLayoutParty/PartyQRcodeCheckin';
 import { PartyConfirm } from './components/MainLayoutParty/PartyConfirm';
 import { PartyQRcodeCheckout } from './components/MainLayoutParty/PartyQRcodeCheckout';
+import { DetailVote } from './components/MainLayoutDetail/DetailVote';
 
 const App = () => {
   return (
@@ -93,6 +94,20 @@ const App = () => {
             element={<DetailConfirm baseURL={'/detailconfirm'} />}
           ></Route>
         </Routes>
+      </BrowserRouter>
+      <BrowserRouter basename={'/detailvote'}>
+        {/* <Routes>
+          <Route
+            path="/:roomid/:userid"
+            element={<MainLayoutProfileDetail baseURL={'/profileDetail'} />}
+          ></Route> */}
+        <Routes>
+          <Route
+            path="/:id/:userid"
+            element={<DetailVote baseURL={'/detailvote'} />}
+          ></Route>
+        </Routes>
+        {/* </Routes> */}
       </BrowserRouter>
       <BrowserRouter basename={'/profileDetail'}>
         <Routes>
