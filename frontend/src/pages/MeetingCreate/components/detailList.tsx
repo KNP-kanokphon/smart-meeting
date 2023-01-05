@@ -89,7 +89,9 @@ export const DetailList: React.FC<Props> = ({
     });
     // console.log('Received values of form:', values);
   };
-
+  const onChangeSwtch = (checked: boolean) => {
+    onChangeSetItemFiled({ vote: checked });
+  };
   const downloadQRCode = () => {
     const canvas: any = document.getElementById('qrCode');
     const pngUrl = canvas
@@ -190,9 +192,14 @@ export const DetailList: React.FC<Props> = ({
               </>
             )}
           </Form.List>
-          <Row>
+          {/* <Row>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-              <Switch checkedChildren="เปิด" unCheckedChildren="ปิด" />
+              <Switch
+                defaultChecked={true}
+                checkedChildren="เปิด"
+                unCheckedChildren="ปิด"
+                onChange={onChangeSwtch}
+              />
               <Space>
                 {' '}
                 <Text strong style={{ fontSize: 16 }}>
@@ -200,8 +207,8 @@ export const DetailList: React.FC<Props> = ({
                 </Text>
               </Space>
             </Col>
-          </Row>
-          <Row>
+          </Row> */}
+          {/* <Row>
             <Col xs={{ span: 6 }} lg={{ span: 6 }}>
               <Input.Group compact>
                 <Input
@@ -234,7 +241,7 @@ export const DetailList: React.FC<Props> = ({
                 style={{ display: 'none' }}
               />
             </Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col xs={{ span: 24 }} lg={{ span: 24 }}>
               <Upload {...props}>

@@ -163,7 +163,9 @@ export const FoodPage: React.FC<Props> = ({
         </Form>
         <Form.Item>
           ของชำร่วย{'   '}
-          <Checkbox onChange={reciveGift}>รับ</Checkbox>
+          <Checkbox onChange={reciveGift} defaultChecked={false}>
+            รับ
+          </Checkbox>
         </Form.Item>
       </Card>
     </>

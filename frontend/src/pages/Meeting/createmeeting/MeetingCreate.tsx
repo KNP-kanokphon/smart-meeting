@@ -58,39 +58,39 @@ export const CreateMeeting: React.FC = () => {
     // console.log(dataAgenda, 'dataAgenda');
     // console.log(dataDetail, 'dataDetail');
     // console.log(dataFood, 'dataFood');
-    if (dataFood.length === 0) {
-      message.error('0 length');
-      return;
-    }
+    // if (dataFood.length === 0) {
+    //   return;
+    // }
 
-    const check = new Promise<void>((resolve, reject) => {
-      if (dataFood.fooddetail.length === 0) {
-        message.error('กรุณารายการอาหารและเครื่องดื่มอย่างน้อย1รายการ');
-        return;
-      }
-      dataFood.fooddetail.forEach(
-        (element: any, index: number, array: string | any[]) => {
-          if (!element) {
-            message.error('กรุณากรอกข้อมูลให้ครบถ้วน');
-            return;
-          }
-          if (!element.typefood) {
-            message.error(`กรุณากรอกประเภทอาหารและเครื่องดื่ม`);
-            return;
-          } else if (
-            !element.namefood ||
-            typeof element.namefood == 'undefined'
-          ) {
-            message.error(`กรุณากรอกชื่อรายการอาหารและเครื่องดื่ม`);
-            return;
-          }
+    // const check = new Promise<void>((resolve, reject) => {
+    //   if (dataFood.fooddetail.length === 0) {
+    //     message.error('กรุณารายการอาหารและเครื่องดื่มอย่างน้อย1รายการ');
+    //     return;
+    //   }
+    //   dataFood.fooddetail.forEach(
+    //     (element: any, index: number, array: string | any[]) => {
+    //       if (!element) {
+    //         message.error('กรุณากรอกข้อมูลให้ครบถ้วน');
+    //         return;
+    //       }
+    //       if (!element.typefood) {
+    //         message.error(`กรุณากรอกประเภทอาหารและเครื่องดื่ม`);
+    //         return;
+    //       } else if (
+    //         !element.namefood ||
+    //         typeof element.namefood == 'undefined'
+    //       ) {
+    //         message.error(`กรุณากรอกชื่อรายการอาหารและเครื่องดื่ม`);
+    //         return;
+    //       }
 
-          if (index === array.length - 1) resolve();
-        },
-      );
-    });
+    //       if (index === array.length - 1) resolve();
+    //     },
+    //   );
+    // });
 
-    check.then(() => submitForm());
+    // check.then(() => submitForm());
+    submitForm();
   };
   const submitForm = () => {
     const newDatauserBoard: any = [];

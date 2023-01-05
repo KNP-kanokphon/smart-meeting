@@ -46,9 +46,6 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
     } else if (!phone) {
       message.error('โปรดกรอก เบอรโทรศัพท์');
       return;
-    } else if (!email) {
-      message.error('โปรดกรอก อีเมล');
-      return;
     } else if (!model) {
       message.error('โปรดเลือก รุ่น');
       return;
