@@ -244,7 +244,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'สถานที่ / อาคาร :'}
+                      {'สถานที่ :'}
                     </Typography>
                   </Col>
                   <Col
