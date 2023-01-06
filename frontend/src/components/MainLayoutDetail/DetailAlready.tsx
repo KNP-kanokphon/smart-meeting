@@ -6,6 +6,7 @@ import { useId24 } from '../../drivers/id24/Id24Provider';
 import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
 import { DatamanagementService } from '../../stores/meeting-store';
+import dayjs from 'dayjs';
 
 const { Content, Sider, Header, Footer } = Layout;
 export interface Props {
@@ -32,6 +33,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   const [agenda, setAgenda] = useState<any>();
   const [user, setUser] = useState<any>();
   const [food, setFood] = useState<any>([]);
+  console.log(meetingData?.starttime.substring(0, 5));
+
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -73,7 +76,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
 
       <Content
         style={{
-          padding: '30px 30px',
+          padding: '10px 10px',
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
           // paddingBottom: '10px',
@@ -120,10 +123,10 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                 <br></br>
                 <Row>
                   <Col
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    lg={8}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
@@ -138,8 +141,22 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginBottom: '5px',
                       }}
                     >
-                      {'เรียนคุณ '}
+                      {'เรียนคุณ :'}
                     </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '2px',
+                    }}
+                  >
                     {user?.username}
                   </Col>
                 </Row>
@@ -147,8 +164,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                   <Col
                     xs={24}
                     sm={24}
-                    md={8}
-                    lg={8}
+                    md={{ span: 20, offset: 4 }}
+                    lg={{ span: 20, offset: 4 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
@@ -161,10 +178,10 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <Row>
                   <Col
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    lg={8}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
@@ -180,13 +197,12 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'Title '}
+                      {'หัวข้อ :'}
                     </Typography>
                   </Col>
-
                   <Col
-                    xs={24}
-                    sm={24}
+                    xs={16}
+                    sm={20}
                     md={8}
                     lg={8}
                     style={{
@@ -194,25 +210,23 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
+                      marginTop: '8px',
                     }}
                   >
                     {meetingData?.title}
                   </Col>
                 </Row>
-
                 <Row>
                   <Col
                     xs={24}
                     sm={24}
-                    md={10}
-                    lg={10}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
                     }}
                   >
                     <Typography
@@ -220,108 +234,134 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         fontWeight: 'bold',
                         fontSize: '16px',
                         marginBottom: '5px',
-                        marginTop: '5px',
+                        // marginTop: '5px',
                       }}
                     >
-                      {'Schedual '}
+                      {'กำหนดการ :'}
                     </Typography>
                   </Col>
                   <Col
                     xs={24}
                     sm={24}
-                    md={10}
-                    lg={10}
+                    md={18}
+                    lg={18}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
+                      // marginTop: '10px',
                     }}
                   >
-                    วันที่ {meetingData?.day}
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    เวลา {meetingData?.starttime} ถึง {meetingData?.endtime}
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    ณ ห้อง {meetingData?.room}
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    อาคาร {meetingData?.building}
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
-                    }}
-                  >
-                    รายละเอียด {meetingData?.detail}
+                    <Row>
+                      <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        style={{
+                          textAlign: 'left',
+                          fontSize: '100%',
+                        }}
+                      >
+                        วันที่ :{' '}
+                        {dayjs(meetingData?.day)
+                          .add(543, 'year')
+                          .format('DD/MM/YYYY')}
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        style={{
+                          textAlign: 'left',
+                          fontSize: '100%',
+                        }}
+                      >
+                        เวลา : {meetingData?.starttime.substring(0, 5)} ถึง{' '}
+                        {meetingData?.endtime.substring(0, 5)} น.
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        style={{
+                          textAlign: 'left',
+                          fontSize: '100%',
+                        }}
+                      >
+                        ณ ห้อง : {meetingData?.room}
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        style={{
+                          textAlign: 'left',
+                          fontSize: '100%',
+                        }}
+                      >
+                        อาคาร : {meetingData?.building}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
                 <Row>
                   <Col
                     xs={24}
                     sm={24}
-                    md={10}
-                    lg={10}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        // marginBottom: '5px',
+                        // marginTop: '5px',
+                        marginTop: '4px',
+                      }}
+                    >
+                      รายละเอียด :
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16 }}
+                    lg={{ span: 16 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '6px',
+                    }}
+                  >
+                    {meetingData?.detail}
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    xs={10}
+                    sm={10}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
                     <Typography
@@ -332,21 +372,20 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '5px',
                       }}
                     >
-                      {'Agenda Item '}
+                      {'วาระ :'}
                     </Typography>
                   </Col>
                   <Col
                     xs={24}
                     sm={24}
-                    md={10}
-                    lg={10}
+                    md={{ span: 16 }}
+                    lg={{ span: 16 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
-                      // display: 'flex',
-                      // justifyContent: 'center',
+                      marginTop: '8px',
                     }}
                   >
                     {agenda?.map((e: any, i: number) => {

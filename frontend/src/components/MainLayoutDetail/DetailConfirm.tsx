@@ -16,6 +16,7 @@ import { DatamanagementService } from '../../stores/meeting-store';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
+import dayjs from 'dayjs';
 
 const { Content, Sider, Header, Footer } = Layout;
 
@@ -31,6 +32,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
 
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
+  console.log(agenda);
+
   useEffect(() => {
     getDataAll();
   }, []);
@@ -138,86 +141,248 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     เช็คอินเรียบร้อย ท่านสามารถดาวน์โหลดเอกสารได้ที่หน้านี้
                   </Col>
                 </Row>
-                <Row gutter={16}>
+                <Row>
                   <Col
-                    span={24}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
                     style={{
-                      fontSize: '16px',
-                      marginTop: '15px',
                       textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
-                    <Space>
-                      <b>เรื่อง</b>
-                      {meetingData?.detail}
-                    </Space>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'หัวข้อ :'}
+                    </Typography>
                   </Col>
-                </Row>
-                <Row gutter={16}>
                   <Col
-                    span={24}
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
                     style={{
-                      fontSize: '16px',
-                      marginTop: '10px',
                       textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
                     }}
                   >
-                    <Space>
-                      <b>วันที่ :</b> {meetingData?.day}
-                    </Space>
+                    {meetingData?.title}
                   </Col>
                 </Row>
                 <Row>
                   <Col
-                    span={24}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
                     style={{
-                      fontSize: '16px',
-                      marginTop: '10px',
                       textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
-                    <Row gutter={16}>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          สถานที่/อาคาร :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>{meetingData?.building}</Typography>
-                      </Col>
-                    </Row>
-                    <Row gutter={16}>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          ชั้น :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography>{meetingData?.floor}</Typography>
-                      </Col>
-                    </Row>
-                    <Row gutter={16}>
-                      <Col>
-                        <Typography style={{ fontWeight: 'bold' }}>
-                          ห่้อง :
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography> {meetingData?.room}</Typography>
-                      </Col>
-                    </Row>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'วันที่ :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {dayjs(meetingData?.day)
+                      .add(543, 'year')
+                      .format('DD/MM/YYYY')}
                   </Col>
                 </Row>
                 <Row>
                   <Col
-                    span={24}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
                     style={{
-                      fontSize: '16px',
-                      marginTop: '10px',
                       textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
-                    <b> ดาวโหลดเอกสารเพิ่มเติม :</b>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'สถานที่ / อาคาร :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {meetingData?.building}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'ชั้น :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {meetingData?.floor}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'ห้อง :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {meetingData?.room}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'ดาวโหลดเอกสาร :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {pathfile.map((e: any) => {
                       if (e.type === 'fileOverviwe') {
                         return (
@@ -235,35 +400,31 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     })}
                   </Col>
                 </Row>
+
                 <Row>
                   <Col
-                    xs={24}
-                    sm={24}
-                    md={10}
-                    lg={10}
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
                     style={{
-                      fontSize: '16px',
-                      marginTop: '10px',
                       textAlign: 'left',
-                      // display: 'flex',
-                      // justifyContent: 'center',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
                     }}
                   >
                     <b>{'Agenda Item '}</b>
-
+                  </Col>
+                  <Col>
                     {agenda?.map((e: any, i: number) => {
                       return (
-                        <Row
-                          key={i}
-                          style={{
-                            fontSize: '14px',
-                            marginTop: '10px',
-                            textAlign: 'left',
-                          }}
-                        >
+                        <>
                           {e?.agendes} : {e?.detailagendes}
                           <br></br>
                           {pathfile.map((x: any) => {
+                            console.log(x);
+
                             if (x.type === 'fileAgenda' && x.step === e.step) {
                               return (
                                 <Button
@@ -276,9 +437,11 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                                   {x.namefile}
                                 </Button>
                               );
+                            } else {
+                              return <>-</>;
                             }
                           })}
-                        </Row>
+                        </>
                       );
                     })}
                   </Col>
