@@ -24,6 +24,7 @@ import { PartyQRcodeCheckin } from './components/MainLayoutParty/PartyQRcodeChec
 import { PartyConfirm } from './components/MainLayoutParty/PartyConfirm';
 import { PartyQRcodeCheckout } from './components/MainLayoutParty/PartyQRcodeCheckout';
 import { DetailVote } from './components/MainLayoutDetail/DetailVote';
+import { DetailCheckin } from './components/MainLayoutDetail/DetailCheckin';
 
 const App = () => {
   return (
@@ -94,7 +95,14 @@ const App = () => {
             element={<DetailConfirm baseURL={'/detailconfirm'} />}
           ></Route>
         </Routes>
+        <Routes>
+          <Route
+            path="/detailcheckin/:id/:userid"
+            element={<DetailCheckin baseURL={'/detailcheckin'} />}
+          ></Route>
+        </Routes>
       </BrowserRouter>
+      {/* DetailCheckin */}
       <BrowserRouter basename={'/detailvote'}>
         {/* <Routes>
           <Route

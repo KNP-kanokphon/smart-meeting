@@ -215,16 +215,17 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 <Row gutter={16} style={{ textAlign: 'left' }}>
                   <Col span={12}>
                     รุ่น *
-                    <Select
+                    <Input
                       style={{ width: '100%' }}
-                      onChange={e => selectModel(e)}
-                    >
-                      <Option value="1">1</Option>
+                      placeholder={'1'}
+                      onChange={e => selectModel(e.target.value)}
+                    />
+                    {/* <Option value="1">1</Option>
                       <Option value="2">2</Option>
                       <Option value="3">3</Option>
                       <Option value="4">4</Option>
                       <Option value="5">5</Option>
-                    </Select>
+                    </Input> */}
                   </Col>
                   <Col span={12}>
                     ตำแหน่งสมาคม*
