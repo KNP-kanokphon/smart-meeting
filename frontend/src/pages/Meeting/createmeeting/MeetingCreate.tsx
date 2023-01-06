@@ -19,6 +19,9 @@ export const CreateMeeting: React.FC = () => {
   const [dataFood, setDataFood] = useState<any>([]);
 
   const onChangeCurrentStep = (step: number) => {
+    if (step === 2) {
+      console.log(step);
+    }
     setCurrentStep(step);
   };
   const onChangeCurrentCheckStep = (step: number) => {
@@ -41,6 +44,8 @@ export const CreateMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
+    console.log(dataField);
+
     setDataDetail(dataField);
 
     // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
@@ -182,7 +187,7 @@ export const CreateMeeting: React.FC = () => {
   return (
     <>
       <>
-        <Card title="Create Meeting" style={{ width: '100%' }}></Card>
+        <Card title="สร้างวาระการประชุม" style={{ width: '100%' }}></Card>
       </>
       <Card>
         <Row>

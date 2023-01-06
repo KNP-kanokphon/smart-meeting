@@ -34,7 +34,7 @@ type MenuConfig = {
 const menuConfigs: MenuConfig[] = [
   {
     icon: <DiffOutlined />,
-    label: 'meeting',
+    label: 'สร้างวาระการประชุม',
     path: 'meeting',
     component: (
       <>
@@ -46,7 +46,7 @@ const menuConfigs: MenuConfig[] = [
   },
   {
     icon: <CalendarOutlined />,
-    label: 'Meeting Schedule',
+    label: 'แผนการประชุม',
     path: 'meeting-schedule',
     component: (
       <>
@@ -61,7 +61,7 @@ const menuConfigs: MenuConfig[] = [
 
   {
     icon: <TeamOutlined />,
-    label: 'Membership',
+    label: 'ระบบสมาชิก',
     path: 'membership',
     component: (
       <>
@@ -73,7 +73,7 @@ const menuConfigs: MenuConfig[] = [
     children: [
       {
         icon: <TeamOutlined />,
-        label: 'Membership',
+        label: 'แบบขึ้นทะเะบียนสมาชิก',
         path: 'membership',
 
         component: (
@@ -84,7 +84,7 @@ const menuConfigs: MenuConfig[] = [
       },
       {
         icon: <SettingOutlined />,
-        label: 'Add Position',
+        label: 'แบบระบุตำแหน่ง',
         path: 'settingprofile',
         component: (
           <>
@@ -94,16 +94,16 @@ const menuConfigs: MenuConfig[] = [
       },
     ],
   },
-  {
-    icon: <TableOutlined />,
-    label: 'Reserve Meet',
-    path: 'Reserve-Meet',
-    component: (
-      <>
-        <Route index element={<ReserveMeet />} />
-      </>
-    ),
-  },
+  // {
+  //   icon: <TableOutlined />,
+  //   label: 'Reserve Meet',
+  //   path: 'Reserve-Meet',
+  //   component: (
+  //     <>
+  //       <Route index element={<ReserveMeet />} />
+  //     </>
+  //   ),
+  // },
 ];
 
 export type MenuItem = MenuConfig & {

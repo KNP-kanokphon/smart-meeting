@@ -52,7 +52,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      width: '60%',
+      width: '40%',
       ellipsis: true,
       render: (data: string, dataAll: any) => {
         return (
@@ -78,7 +78,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Room',
       dataIndex: 'room',
       key: 'room',
-      width: '10%',
+      width: '20%',
       ellipsis: true,
       render: (data: any) => {
         return (
@@ -99,7 +99,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Checklist',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '15%',
+      width: '10%',
       render: (data: string) => {
         return (
           <>
@@ -108,7 +108,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
                 style={{ color: 'white', backgroundColor: '#1E6541' }}
                 onClick={() => navigate('detail/view', { state: data })}
               >
-                Check in Lists
+                รายละเอียด
               </Button>
             </Row>
           </>
@@ -119,19 +119,21 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       title: 'Edit',
       dataIndex: 'uuid',
       key: 'uuid',
-      width: '15%',
+      width: '10%',
       render: (text: any, row: any) => {
         if (text) {
           return (
             <div style={{ textAlign: 'center' }}>
-              <Tooltip title={'Edit'}>
-                <Button
-                  style={{ border: 'none' }}
-                  onClick={() => navigate('detail/edit', { state: text })}
-                >
-                  <MoreOutlined />
-                </Button>
-              </Tooltip>
+              {/* <Tooltip title={'Edit'}> */}
+              <Button
+                // style={{ border: 'none' }}
+
+                onClick={() => navigate('detail/edit', { state: text })}
+              >
+                แก้ใข
+                {/* <MoreOutlined /> */}
+              </Button>
+              {/* </Tooltip> */}
             </div>
           );
         }
@@ -151,7 +153,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
             color: 'grey',
           }}
         >
-          Up Comingmeeting
+          การประชุมครั้งถัดไป
         </Typography>
       }
     >

@@ -259,7 +259,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
             color: 'grey',
           }}
         >
-          Last Meeting
+          อยู่ระหว่างรับรองรายงานการประชุม
         </Typography>
       }
       // extra={filterSearch}

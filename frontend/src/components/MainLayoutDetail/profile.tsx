@@ -433,32 +433,27 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                           }}
                         >
                           {getuserAll.map((e: any, row: any) => {
-                            // console.log(e?.data?.uuid === userid);
                             if (e?.data?.uuid === userid) {
+                              // console.log(e?.data?.uuid === userid);
+                              console.log(e);
                               // return e?.data?.prefix + ' ' + e?.data?.username;
-                              if (typeof e?.data?.position === 'string') {
-                                return e?.data?.position;
-                              } else {
-                                let datanamePosition: any = '';
-                                getuserAll?.data?.position.map(
-                                  (e: any, row: any) => {
-                                    const dataresult = getdataPosition.filter(
-                                      (x: any) => x?.uuid === e,
-                                    );
-                                    dataresult.map((e: any) => {
-                                      datanamePosition += ' ' + e?.nameposition;
-                                    });
-                                  },
+                              let datanamePosition: any = '';
+                              e?.data?.position.map((e: any, row: any) => {
+                                const dataresult = getdataPosition.filter(
+                                  (x: any) => x?.uuid === e,
                                 );
-                                let splittt = datanamePosition;
-                                return (
-                                  <>
-                                    <div style={{ whiteSpace: 'pre-line' }}>
-                                      {splittt}
-                                    </div>
-                                  </>
-                                );
-                              }
+                                dataresult.map((e: any) => {
+                                  datanamePosition += ' ' + e?.nameposition;
+                                });
+                              });
+                              let splittt = datanamePosition;
+                              return (
+                                <>
+                                  <div style={{ whiteSpace: 'pre-line' }}>
+                                    {splittt}
+                                  </div>
+                                </>
+                              );
                             }
 
                             // const dataresult = getuserAll?.find(

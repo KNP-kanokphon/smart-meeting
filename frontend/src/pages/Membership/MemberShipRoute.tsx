@@ -176,7 +176,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     >
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}>
         <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
-          MEMBERSHIP
+          แบบขึ้นทะเะบียนสมาชิก
         </Title>
         {/* <Tabs
           type="card"

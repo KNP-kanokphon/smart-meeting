@@ -123,7 +123,7 @@ export const TableToday: React.FC = (): React.ReactElement => {
             color: 'grey',
           }}
         >
-          Today
+          วันนี้
         </Typography>
       }
     >

@@ -110,7 +110,8 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <br></br>
                 <Row>
                   <Col span={24} style={{ fontSize: '14px' }}>
-                    กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ก่อนเข้าห้องประชุม
+                    กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ <br></br>
+                    ก่อนเข้าห้องประชุม
                   </Col>
                 </Row>
                 <br></br>
@@ -126,7 +127,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                     <QRCode
                       id="qr-gen"
                       size={128}
-                      value={`${window.location.host}/profileDetail/${id}/${userid}`}
+                      value={`${window.location.host}/detail/detailconfirm/${id}/${userid}`}
                     />
                   </Col>
                 </Row>
@@ -149,7 +150,6 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                 <Row>
                   <Col span={24} style={{ fontSize: '80%' }}>
                     <Button
-                      type="primary"
                       onClick={nextPage}
                       style={{
                         textAlign: 'center',

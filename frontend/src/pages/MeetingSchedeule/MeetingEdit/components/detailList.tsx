@@ -150,7 +150,7 @@ export const DetailList: React.FC<Props> = ({
               <Input placeholder="เรื่องประธานแจ้งที่ประชุมทราบ" />
             </Form.Item>
             <Form.Item
-              label="รายละเอียดการประชุม111"
+              label="รายละเอียดการประชุม"
               tooltip={{
                 title: 'Tooltip with customize icon',
                 icon: <InfoCircleOutlined />,
@@ -207,13 +207,13 @@ export const DetailList: React.FC<Props> = ({
                 );
               }}
             </Form.List>
-            <Row>
+            {/* <Row>
               <Switch
                 checkedChildren="เปิด"
                 unCheckedChildren="ปิด"
                 defaultChecked
               />
-            </Row>
+            </Row> */}
             <Row>
               <Col xs={{ span: 24 }} lg={{ span: 24 }}>
                 <Upload {...props}>
