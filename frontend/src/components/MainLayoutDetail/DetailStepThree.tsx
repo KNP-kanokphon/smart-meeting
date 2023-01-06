@@ -142,7 +142,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                         marginTop: '10px',
                       }}
                     >
-                      Dowload QR-Code
+                      Download QR-Code
                       <VerticalAlignBottomOutlined />
                     </Button>
                   </Col>
@@ -159,7 +159,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                       }}
                     >
                       <Space>
-                        next <ArrowRightOutlined />
+                        รายละเอียด <ArrowRightOutlined />
                       </Space>
                     </Button>
                   </Col>

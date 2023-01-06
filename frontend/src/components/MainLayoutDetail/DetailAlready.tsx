@@ -412,7 +412,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onChange}
                     >
-                      Submit
+                      ยืนยัน
                     </Button>
                   </Col>
                 </Row>

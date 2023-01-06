@@ -181,7 +181,7 @@ export const DetailFood: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onChange}
                     >
-                      <ArrowRightOutlined /> Next
+                      <ArrowRightOutlined /> ต่อไป
                     </Button>
                   </Col>
                 </Row>
