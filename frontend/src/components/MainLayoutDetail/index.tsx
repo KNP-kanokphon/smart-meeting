@@ -28,12 +28,18 @@ interface MeetingInterface {
 
 export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
+  // const { room } = useParams<{ room: string }>();
+  // console.log(room);
+
   const [meetingData, setMeetingData] = useState<MeetingInterface>();
+  const [agenda, setAgenda] = useState<any>();
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
     const result = await DatamanagementService().getMeetingByid(id);
+    const resultAgenda = await DatamanagementService().getagendaByid(id);
+    setAgenda(resultAgenda);
     setMeetingData(result[0]);
   };
 
@@ -272,6 +278,56 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                     }}
                   >
                     {meetingData?.detail}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 2, offset: 4 }}
+                    lg={{ span: 2, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        // marginBottom: '5px',
+                        // marginTop: '5px',
+                        marginTop: '4px',
+                      }}
+                    >
+                      วาระ :
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16 }}
+                    lg={{ span: 16 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '6px',
+                    }}
+                  >
+                    {agenda?.map((e: any, i: number) => {
+                      return (
+                        <>
+                          <Row key={i}>
+                            {e?.agendes} : {e?.detailagendes}
+                            <br></br>
+                          </Row>
+                        </>
+                      );
+                    })}
                   </Col>
                 </Row>
 
