@@ -294,6 +294,13 @@ export const DatamanagementService = () => ({
     return result.data;
   },
 
+  // findbyidcontract: async (userid: any) => {
+  //   const result = await httpClient.get(`/user/findbyids/${userid}`);
+  //   console.log(result);
+
+  //   return result.data;
+  // },
+
   getPathFileStep: async (roomid: any, step: any, namefile: string) => {
     const result = await httpClient.get(
       `/meeting/getfilestep/${roomid}/${step}/${namefile}`,
@@ -365,10 +372,7 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
-  findbyid: async (userid: any) => {
-    const result = await httpClient.get(`/user/findbyid/${userid}/`);
-    return result.data;
-  },
+
   updatecheckinparty: async (userid: string) => {
     const result = await httpClient.put(`/userparty/userin/${userid}`);
     return result.data;

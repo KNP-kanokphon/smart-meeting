@@ -127,7 +127,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                     <QRCode
                       id="qr-gen"
                       size={128}
-                      value={`${window.location.host}/detail/detailconfirm/${id}/${userid}`}
+                      value={`${window.location.host}/detail/detailcheckin/${id}/${userid}`}
                     />
                   </Col>
                 </Row>

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Button,
@@ -8,12 +9,16 @@ import {
   Input,
   Space,
   Typography,
+  Divider,
 } from 'antd';
-import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { CheckCircleFilled } from '@ant-design/icons';
+import {
+  CheckCircleFilled,
+  UserOutlined,
+  FileDoneOutlined,
+} from '@ant-design/icons';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import dayjs from 'dayjs';
@@ -24,19 +29,22 @@ export interface Props {
   baseURL: string;
 }
 
-export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
+export const DetailCheckin: React.FC<Props> = ({
+  baseURL,
+}): React.ReactElement => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
   const [pathfile, setPathfile] = useState<any>([]);
+  const [position, setPosition] = useState<any>([]);
 
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
-  console.log(agenda);
 
   useEffect(() => {
     getDataAll();
   }, []);
+
   const getDataAll = async () => {
     const resultProfile = await DatamanagementService().getProfileByid(
       id,
@@ -45,12 +53,18 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     const result = await DatamanagementService().getMeetingByid(id);
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
+    const resultPosition = await DatamanagementService().getPositionall();
 
     setPathfile(resultPathfile);
     setUserprofile(resultProfile[0]);
     setMeetingData(result[0]);
     setAgenda(resultAgenda);
+    setPosition(resultPosition);
   };
+  // const getdatanameposiotion = async () => {
+
+  // };
+
   const getFiles = async (roomid: string, step: any, namefile: string) => {
     const data = await DatamanagementService().getPathFileStep(
       roomid,
@@ -130,17 +144,268 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
 
                 <Row gutter={16}>
                   <Col span={24} style={{ marginTop: '10px' }}>
-                    <b style={{ fontSize: '18px' }}>Confirm Meeting</b>
+                    <b style={{ fontSize: '18px' }}>Meeting Checkin</b>
                   </Col>
                 </Row>
-                {/* <Row gutter={16}>
+                <Row gutter={16}>
                   <Col
                     span={24}
                     style={{ fontSize: '14px', marginTop: '10px' }}
                   >
                     เช็คอินเรียบร้อย ท่านสามารถดาวน์โหลดเอกสารได้ที่หน้านี้
                   </Col>
-                </Row> */}
+                </Row>
+
+                <Row>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16, offset: 4 }}
+                    lg={{ span: 16, offset: 4 }}
+                    span={24}
+                    style={{
+                      fontSize: '18px',
+                      marginTop: '10px',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    <Divider />
+                    <Space>
+                      {' '}
+                      <UserOutlined />
+                      ข้อมูลส่วนตัว
+                    </Space>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'ชื่อ :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {userprofile.username}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'ตำแหน่ง :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {position.map((e: any) => {
+                      if (e.uuid === userprofile.position) {
+                        return e.nameposition;
+                      }
+                    })}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'อีเมลล์ :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {userprofile?.email}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'Line :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {userprofile?.line}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {'เบอร์โทรศัพท์ :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
+                    {userprofile?.phone}
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16, offset: 4 }}
+                    lg={{ span: 16, offset: 4 }}
+                    span={24}
+                    style={{
+                      fontSize: '18px',
+                      // marginTop: '10px',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    <Divider />
+                    <Space>
+                      {' '}
+                      <FileDoneOutlined />
+                      ข้อมูลการประชุม
+                    </Space>
+                  </Col>
+                </Row>
                 <Row>
                   <Col
                     xs={8}
@@ -181,6 +446,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     {meetingData?.title}
                   </Col>
                 </Row>
+
                 <Row>
                   <Col
                     xs={8}
@@ -370,8 +636,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                   <Col
                     xs={16}
                     sm={20}
-                    md={8}
-                    lg={8}
+                    md={16}
+                    lg={16}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
@@ -416,15 +682,25 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                   >
                     <b>{'Agenda Item '}</b>
                   </Col>
-                  <Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16 }}
+                    lg={{ span: 16 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                    }}
+                  >
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>
                           {e?.agendes} : {e?.detailagendes}
                           <br></br>
                           {pathfile.map((x: any) => {
-                            console.log(x);
-
                             if (x.type === 'fileAgenda' && x.step === e.step) {
                               return (
                                 <Button
