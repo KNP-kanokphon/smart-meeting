@@ -369,8 +369,6 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   importuser: async (data: string[]) => {
-    // console.log(data);
-
     const result = await httpClient.post(`/user/importuser`, data);
     return result.data;
   },

@@ -36,6 +36,72 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
   const [fileList, setFileList] = useState<any>([]);
   const [uploading, setUploading] = useState(false);
   const [typeImport, setTypeimport] = useState<string>('');
+  const dataPosition = [
+    {
+      id: '94a7a8dc-9ed2-4df2-aad7-e86f415434a3',
+      name: 'นายกสมาคม',
+    },
+    {
+      id: 'ba5f6bc3-2d0b-4c9c-93b1-62d5839997a0',
+      name: 'นายกกิตติมศักดิ์และประธานฝ่ายกิจกรรมสาธารณะประโยชน์',
+    },
+    {
+      id: 'bdf67ff2-e00f-4995-8d3f-e8fb49b00311',
+      name: 'นายกกิตติมศักดิ์',
+    },
+    {
+      id: '48ca5981-76ff-4eea-8043-0ebe49bfdce8',
+      name: 'อุปนายกฝ่ายกิจกรรมเทิดพระเกียรติและวารสาร',
+    },
+    {
+      id: 'fbc99348-7130-4dfc-a409-34fbcc0cea8b',
+      name: 'อุปนายกฝ่ายกิจกรรมพิเศษ',
+    },
+    {
+      id: '7efbc4c7-d65d-48c5-8e78-59cdd21f1c9d',
+      name: 'อุปนายกฝ่ายสมาชิกสัมพันธ์',
+    },
+    {
+      id: 'b4045110-8c94-4e45-aaf5-62203c7f4cdb',
+      name: 'อุปนายกฝ่ายสื่อสารองค์กร',
+    },
+    {
+      id: '901c357d-a7b0-448e-929c-d197f210884d',
+      name: 'อุปนายกฝ่ายวิชาการ',
+    },
+    {
+      id: '0ed8c77e-a450-4ff9-93a4-8b635bbbe762',
+      name: 'เลขาธิการ',
+    },
+    {
+      id: '017b1e37-c30d-4c06-ad4a-dce44b58ac65',
+      name: 'เหรัญญิก',
+    },
+    {
+      id: '59c95dc6-c787-49f6-81c0-79172c0b52d8',
+      name: 'ประธานฝ่ายประชาสัมพันธ์',
+    },
+    {
+      id: '782cf1f7-7d01-4b54-ad1f-b1f74776b7e3',
+      name: 'ประธานฝ่ายปฎิคม',
+    },
+    {
+      id: '5c5125a1-5b0e-4946-9080-994376c0a7fc',
+      name: 'ประธานฝ่ายทะเบียน',
+    },
+    {
+      id: '6e138e35-e808-4f44-b75e-2931dfef57d1',
+      name: 'ประธานฝ่ายเทคโนโลยีสารสนเทศ',
+    },
+    {
+      id: '08309b72-243d-40e3-be6b-67c22b772396',
+      name: 'รองเลขาธิการ',
+    },
+    {
+      id: 'd30e3fa6-bf4e-4635-9877-4077374ed7e7',
+      name: 'กรรมการบริหาร',
+    },
+  ];
 
   const handleUpload = async () => {
     setUploading(true);
@@ -44,6 +110,12 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     const newData: any = [];
     readXlsxFile(fileList[0]).then(async (rows: any) => {
       rows.forEach((e: any, i: number) => {
+        let positionid: any = [];
+        dataPosition.map(x => {
+          if (String(e[11]) === String(x.name)) {
+            positionid = [x.id];
+          }
+        });
         if (i > 0) {
           newData.push({
             uuid: e[0] === null ? uuidv4() : e[0],
@@ -63,6 +135,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             studentid: e[12] === null ? null : e[12],
             username_eng: e[3] === null ? null : e[3],
             line: e[13] === null ? null : e[13],
+            uuidposition: e[11] === null ? null : positionid,
           });
         }
       });
@@ -176,7 +249,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
     >
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}>
         <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
-          แบบขึ้นทะเะบียนสมาชิก
+          แบบขึ้นทะเบียนสมาชิก
         </Title>
         {/* <Tabs
           type="card"
@@ -205,7 +278,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
         /> */}
       </Card>
       <Card style={{ width: '100%' }}>
-        <Row gutter={16} hidden>
+        <Row gutter={16}>
           <Col span={10}>
             <Row gutter={16}>
               <Col

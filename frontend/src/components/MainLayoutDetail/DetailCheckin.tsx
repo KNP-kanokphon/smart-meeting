@@ -257,9 +257,9 @@ export const DetailCheckin: React.FC<Props> = ({
                     }}
                   >
                     {position.map((e: any) => {
-                      if (e.uuid === userprofile.position) {
-                        return e.nameposition;
-                      }
+                      return userprofile.position?.map((x: any) => {
+                        return x === e.uuid ? e.nameposition : '';
+                      });
                     })}
                   </Col>
                 </Row>

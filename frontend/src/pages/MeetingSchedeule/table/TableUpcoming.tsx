@@ -115,30 +115,23 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
         );
       },
     },
-    {
-      title: 'Edit',
-      dataIndex: 'uuid',
-      key: 'uuid',
-      width: '10%',
-      render: (text: any, row: any) => {
-        if (text) {
-          return (
-            <div style={{ textAlign: 'center' }}>
-              {/* <Tooltip title={'Edit'}> */}
-              <Button
-                // style={{ border: 'none' }}
-
-                onClick={() => navigate('detail/edit', { state: text })}
-              >
-                แก้ใข
-                {/* <MoreOutlined /> */}
-              </Button>
-              {/* </Tooltip> */}
-            </div>
-          );
-        }
-      },
-    },
+    // {
+    //   title: 'Edit',
+    //   dataIndex: 'uuid',
+    //   key: 'uuid',
+    //   width: '10%',
+    //   render: (text: any, row: any) => {
+    //     if (text) {
+    //       return (
+    //         <div style={{ textAlign: 'center' }}>
+    //           <Button onClick={() => navigate('detail/edit', { state: text })}>
+    //             แก้ใข
+    //           </Button>
+    //         </div>
+    //       );
+    //     }
+    //   },
+    // },
   ];
 
   return (

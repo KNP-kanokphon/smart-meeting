@@ -148,14 +148,16 @@ export const CreateMeeting: React.FC = () => {
               });
               await DatamanagementService().import(formData, id);
             }
-            dataDetail['agenda'].map((x: any) => {
-              if (x.file !== undefined) {
-                x.file.fileList.map((e: any, i: string) => {
-                  console.log(e);
-                  DatamanagementService().savefileagendas(e, id, i, false);
-                });
-              }
-            });
+            if (dataDetail['agenda'] !== undefined) {
+              dataDetail['agenda'].map((x: any) => {
+                if (x.file !== undefined) {
+                  x.file.fileList.map((e: any, i: string) => {
+                    console.log(e);
+                    DatamanagementService().savefileagendas(e, id, i, false);
+                  });
+                }
+              });
+            }
           });
         // const createMeetingText = await DatamanagementService().createmeeting();
         // if (dataAgenda.fileOverview !== undefined) {

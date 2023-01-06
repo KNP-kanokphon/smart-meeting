@@ -66,8 +66,8 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
         rows.forEach((e: any, i: number) => {
           if (i > 1) {
             newData.push({
-              uuid: uuidv4(),
-              nameposition: e[0],
+              uuid: e[0],
+              nameposition: e[1],
               createdate: new Date(),
             });
           }
@@ -107,7 +107,7 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
   return (
     <>
       <Card style={{ width: '100%' }}>
-        <Row gutter={16} hidden>
+        <Row gutter={16}>
           <Col span={10}>
             <Row gutter={16}>
               <Col

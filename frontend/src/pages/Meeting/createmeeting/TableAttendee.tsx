@@ -181,6 +181,7 @@ export const TableAttendee: React.FC<Props> = ({
               const matchuser = username.find(
                 (x: any) => x.username === dataAll.children,
               );
+              console.log(matchuser);
               setEditingStudent((pre: any) => {
                 return { ...pre, uuidprofile: dataAll.value };
               });
@@ -189,6 +190,9 @@ export const TableAttendee: React.FC<Props> = ({
               });
               setEditingStudent((pre: any) => {
                 return { ...pre, position: matchuser.position };
+              });
+              setEditingStudent((pre: any) => {
+                return { ...pre, uuidposition: matchuser.uuidposition };
               });
             }}
           >
