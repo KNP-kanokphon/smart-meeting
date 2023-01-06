@@ -37,7 +37,7 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
         const dataNew = data.filter((e: any) => {
           const dd = new Date(e.day);
           const dn = new Date();
-          if (dd >= dn) {
+          if (dd.getDate() > dn.getDate()) {
             return e;
           } else {
             return;

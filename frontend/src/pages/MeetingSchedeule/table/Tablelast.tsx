@@ -78,7 +78,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
           const dn = new Date();
           // console.log(dd < dn);
 
-          if (dd < dn) {
+          if (dd.getDate() < dn.getDate()) {
             return e;
           } else {
             return;

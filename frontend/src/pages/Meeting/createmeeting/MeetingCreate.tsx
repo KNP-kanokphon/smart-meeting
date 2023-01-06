@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Steps, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AgendaPage } from '../../MeetingCreate/agendaPage';
 import { DetailPage } from '../../MeetingCreate/detailsPage';
 import { FoodPage } from '../../MeetingCreate/foodPage';
@@ -17,11 +17,10 @@ export const CreateMeeting: React.FC = () => {
   const [dataAgenda, setDataAgenda] = useState<any>([]);
   const [dataDetail, setDataDetail] = useState<any>([]);
   const [dataFood, setDataFood] = useState<any>([]);
+  const [dataBaypass, setDataBaypass] = useState<any>([]);
+  const childRef = useRef<any>();
 
   const onChangeCurrentStep = (step: number) => {
-    if (step === 2) {
-      console.log(step);
-    }
     setCurrentStep(step);
   };
   const onChangeCurrentCheckStep = (step: number) => {
@@ -44,11 +43,9 @@ export const CreateMeeting: React.FC = () => {
   };
 
   const setDataAgendaField = (dataField: any) => {
-    console.log(dataField);
-
-    setDataDetail(dataField);
-
-    // setDataDetail((pre: any) => ({ ...pre, ...dataField }));
+    // console.log(dataField);
+    // setDataDetail(dataField);
+    setDataDetail((pre: any) => ({ ...pre, ...dataField }));
   };
 
   const setDataFoodField = (dataField: any) => {
@@ -98,24 +95,24 @@ export const CreateMeeting: React.FC = () => {
     submitForm();
   };
   const submitForm = () => {
-    const newDatauserBoard: any = [];
-    const newDatauserAgenda: any = [];
-    dataAgenda.userBoard.map((e: any) => {
-      newDatauserBoard.push({
-        username: e.username,
-        uuidprofile: e.uuidprofile,
-        type_user: e.type_user,
-        position: e.position,
-      });
-    });
-    dataAgenda.userAttendee.map((e: any) => {
-      newDatauserAgenda.push({
-        username: e.username,
-        uuidprofile: e.uuidprofile,
-        type_user: e.type_user,
-        position: e.position,
-      });
-    });
+    // const newDatauserBoard: any = [];
+    // const newDatauserAgenda: any = [];
+    // dataAgenda.userBoard.map((e: any) => {
+    //   newDatauserBoard.push({
+    //     username: e.username,
+    //     uuidprofile: e.uuidprofile,
+    //     type_user: e.type_user,
+    //     position: e.position,
+    //   });
+    // });
+    // dataAgenda.userAttendee.map((e: any) => {
+    //   newDatauserAgenda.push({
+    //     username: e.username,
+    //     uuidprofile: e.uuidprofile,
+    //     type_user: e.type_user,
+    //     position: e.position,
+    //   });
+    // });
     const id = uuidv4();
     Modal.confirm({
       title: 'Confirm Create this meeting',
@@ -124,42 +121,77 @@ export const CreateMeeting: React.FC = () => {
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
-        // console.log(dataFood);
-
-        if (dataAgenda.fileOverview !== undefined) {
-          const formData = new FormData();
-          dataAgenda.fileOverview.map((e: any) => {
-            formData.append('file', e);
-          });
-          // save fileStep1
-          await DatamanagementService().import(formData, id);
-        }
+        const newDataAgenda = {
+          title: dataAgenda.title,
+          room: dataAgenda.room,
+          floor: dataAgenda.floor,
+          building: dataAgenda.building,
+          meetingPlace: dataAgenda.meetingPlace,
+          date: dataAgenda.date,
+          timeStart: dataAgenda.timeStart,
+          timeEnd: dataAgenda.timeEnd,
+          detailMeeting: dataAgenda.detailMeeting,
+        };
         await DatamanagementService()
           .createmeeting(
-            dataAgenda.detailMeeting,
-            dataAgenda.title,
-            dataAgenda.room,
-            dataAgenda.floor,
-            dataAgenda.building,
-            dataAgenda.meetingPlace,
-            dataAgenda.date,
-            dataAgenda.timeStart,
-            dataAgenda.timeEnd,
             id,
-            dataFood.fooddetail,
-            dataFood.gift,
+            newDataAgenda,
+            dataAgenda.userAttendee,
+            dataDetail,
+            dataFood,
           )
-          .then(data => {});
+          .then(async data => {
+            if (dataAgenda.fileOverview !== undefined) {
+              const formData = new FormData();
+              dataAgenda.fileOverview.map((e: any) => {
+                formData.append('file', e);
+              });
+              await DatamanagementService().import(formData, id);
+            }
+            dataDetail['agenda'].map((x: any) => {
+              if (x.file !== undefined) {
+                x.file.fileList.map((e: any, i: string) => {
+                  console.log(e);
+                  DatamanagementService().savefileagendas(e, id, i, false);
+                });
+              }
+            });
+          });
+        // const createMeetingText = await DatamanagementService().createmeeting();
+        // if (dataAgenda.fileOverview !== undefined) {
+        //   const formData = new FormData();
+        //   dataAgenda.fileOverview.map((e: any) => {
+        //     formData.append('file', e);
+        //   });
+        //   // save fileStep1
+        //   await DatamanagementService().import(formData, id);
+        // }
+        // await DatamanagementService()
+        //   .createmeeting(
+        //     dataAgenda.detailMeeting,
+        //     dataAgenda.title,
+        //     dataAgenda.room,
+        //     dataAgenda.floor,
+        //     dataAgenda.building,
+        //     dataAgenda.meetingPlace,
+        //     dataAgenda.date,
+        //     dataAgenda.timeStart,
+        //     dataAgenda.timeEnd,
+        //     id,
+        //     dataFood.fooddetail,
+        //     dataFood.gift,
+        //   )
+        //   .then(data => {});
 
-        await DatamanagementService()
-          .saveusermeetingall(newDatauserBoard, newDatauserAgenda, id)
-          .then(data => {});
-        dataDetail.map((e: any, i: string) => {
-          DatamanagementService().saveagenda(e.values, id, i);
-        });
-        dataDetail.map((e: any, i: string) => {
-          DatamanagementService().savefileagendas(e.files, id, i, false);
-        });
+        // await DatamanagementService()
+        //   .saveusermeetingall(newDatauserBoard, newDatauserAgenda, id)
+        //   .then(data => {});
+        // dataDetail.map((e: any, i: string) => {
+        //   DatamanagementService().saveagenda(e.values, id, i);
+        // });
+        // dataDetail.map((e: any, i: string) => {
+        //   DatamanagementService().savefileagendas(e.files, id, i, false);
+        // });
         navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
@@ -186,11 +218,12 @@ export const CreateMeeting: React.FC = () => {
   ];
   return (
     <>
-      <>
+      {/* <>
         <Card title="สร้างวาระการประชุม" style={{ width: '100%' }}></Card>
-      </>
-      <Card>
-        <Row>
+      </> */}
+      <br></br>
+      <Card title="สร้างวาระการประชุม">
+        {/* <Row>
           <Col md={24}>
             <Steps
               current={currentStep}
@@ -221,36 +254,9 @@ export const CreateMeeting: React.FC = () => {
                 },
               ]}
             >
-              {/* <Step
-                title={
-                  currentStep === 0
-                    ? 'In Progress'
-                    : currentStep < 0
-                    ? 'Waiting'
-                    : 'Finish'
-                }
-              />
-              <Step
-                title={
-                  currentStep === 1
-                    ? 'In Progress'
-                    : currentStep < 1
-                    ? 'Waiting'
-                    : 'Finish'
-                }
-              />
-              <Step
-                title={
-                  currentStep === 2
-                    ? 'In Progress'
-                    : currentStep < 2
-                    ? 'Waiting'
-                    : 'Finish'
-                }
-              /> */}
             </Steps>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           {steps.map(({ title, content }, i) => (
             <Col

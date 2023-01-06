@@ -1,7 +1,18 @@
-import { Button, Card, Col, Form, Input, Row, Space, Steps, Tabs } from 'antd';
-import { DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  Row,
+  Space,
+  Steps,
+  Tabs,
+  Upload,
+} from 'antd';
+import { DeleteFilled, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import './styles.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { DetailList } from './components/detailList';
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -22,12 +33,19 @@ export const DetailPage: React.FC<Props> = ({
   const [newTabIndex, setNewTabIndex] = useState(initialIndexValue + 1);
   const [itemFiled, setItemFiled] = useState<any>([]);
 
+  // return form.validateFields().then(values => {
+  //   // console.log(values);
+  //   return values;
+  //   // setDataField(values);
+  // });
+
+  // alert('getAlert from Child');
   // const onChangeSetItemFiled = async (filedList: any) => {
   //   setItemFiled([...itemFiled, filedList]);
   //   setDataField([...itemFiled, filedList]);
   // };
 
-  useEffect(() => {}, [itemFiled]);
+  // useEffect(() => {}, [itemFiled]);
 
   // const defaultPanes = new Array(initialIndexValue)
   //   .fill(null)
@@ -93,9 +111,13 @@ export const DetailPage: React.FC<Props> = ({
   //     remove(e);
   //   }
   // };
-  const onFinish = (values: any) => {
-    console.log('Received values of form:', values);
-    setDataField(values);
+  const onChangeForm = (values: any, changvalue: any) => {
+    setDataField(changvalue);
+  };
+  const dummyRequest = ({ file, onSuccess }: any) => {
+    setTimeout(() => {
+      onSuccess('ok');
+    }, 0);
   };
   return (
     // <Card style={{ width: '100%' }}>
@@ -114,9 +136,15 @@ export const DetailPage: React.FC<Props> = ({
     //     items={items}
     //   />
     // </Card>
-
-    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
-      <Form.List name="agenda">
+    <Form
+      name="dynamic_form_nest_item"
+      onValuesChange={onChangeForm}
+      autoComplete="off"
+    >
+      <Form.List
+        name="agenda"
+        initialValue={[{ key: 0, name: 0, isListField: true, fieldKey: 0 }]}
+      >
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, ...restField }) => {
@@ -124,7 +152,7 @@ export const DetailPage: React.FC<Props> = ({
                 <Card style={{ width: '100%' }} key={key}>
                   <Row style={{ paddingBottom: 16, fontSize: 16 }}>
                     <Col span={6}>
-                      <b>ระเบียบวาระที่ {name + 1} :</b>
+                      <b>ระเบียบวาระที่ {name + 1} </b>
                     </Col>
                     <Col offset={16}>
                       <Button onClick={() => remove(name)} danger>
@@ -150,6 +178,15 @@ export const DetailPage: React.FC<Props> = ({
                       </Form.Item>
                     </Col>
                   </Row>
+                  <Row>
+                    <Form.Item {...restField} name={[name, 'file']}>
+                      <Upload customRequest={dummyRequest}>
+                        <Button icon={<UploadOutlined />}>
+                          Click To Upload
+                        </Button>
+                      </Upload>
+                    </Form.Item>
+                  </Row>
                 </Card>
               );
             })}
@@ -166,11 +203,6 @@ export const DetailPage: React.FC<Props> = ({
           </>
         )}
       </Form.List>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
     </Form>
   );
 };

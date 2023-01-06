@@ -39,8 +39,8 @@ export const TableAttendee: React.FC<Props> = ({
   };
   const onDeleteStudent = (record: any) => {
     Modal.confirm({
-      title: 'Are you sure, you want to delete this student record?',
-      okText: 'Yes',
+      title: 'คุณต้องการลบใช่หรือไม่?',
+      okText: 'ใช่',
       okType: 'danger',
       onOk: () => {
         setDataSourceAttendee((pre: any) => {
@@ -51,12 +51,7 @@ export const TableAttendee: React.FC<Props> = ({
   };
   const onEditStudent = async (record: any) => {
     const resual = await DatamanagementService().getUser();
-    const newresult = resual.filter((e: any) => {
-      if (e.type !== '1') {
-        return e;
-      }
-    });
-    setUsername(newresult);
+    setUsername(resual);
     setIsEditing(true);
     setEditingStudent({ ...record });
   };
@@ -67,26 +62,38 @@ export const TableAttendee: React.FC<Props> = ({
   const columnsAttendee = [
     {
       key: '1',
-      title: 'ชื่อ - นามสกุลผู้เข้าร่วมประชุม',
+      title: 'ชื่อ - นามสกุล ผู้เข้าร่วมประชุม',
       dataIndex: 'username',
       width: '80%',
     },
     {
-      key: '7',
-      title: 'Actions',
-      width: '20%',
-
+      key: '2',
+      title: 'แก้ใขข้อมูล ',
+      width: '10%',
       render: (record: any) => {
         return (
           <>
             <Row gutter={16}>
-              <Col span={12} style={{ textAlign: 'right' }}>
+              <Col span={12} style={{ textAlign: 'left' }}>
                 <EditOutlined
                   onClick={() => {
                     onEditStudent(record);
                   }}
                 />
               </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+    {
+      key: '3',
+      title: 'ลบข้อมูล',
+      width: '10%',
+      render: (record: any) => {
+        return (
+          <>
+            <Row gutter={16}>
               <Col span={12} style={{ textAlign: 'left' }}>
                 <DeleteOutlined
                   onClick={() => {
@@ -113,7 +120,6 @@ export const TableAttendee: React.FC<Props> = ({
           <Col span={2}>
             <Button
               onClick={handleAdd}
-              type="primary"
               style={{
                 marginBottom: 16,
                 color: 'white',
@@ -194,58 +200,6 @@ export const TableAttendee: React.FC<Props> = ({
               );
             })}
           </Select>
-          {/* <Row>
-            ชื่อ - นามสกุลผู้เข้าร่วมประชุม
-            <Input
-              value={editingStudent?.username}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, username: e.target.value };
-                });
-              }}
-            />
-            ตำแหน่งสมาคม
-            <Select
-              value={editingStudent?.position}
-              style={{ width: '100%' }}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, position: e };
-                });
-              }}
-            >
-              <Option value="กรรมการบริหาร">กรรมการบริหาร</Option>
-              <Option value="เลขาธิการสมาคม">เลขาธิการสมาคม</Option>
-              <Option value="รองสมาคม">รองสมาคม</Option>
-              <Option value="กรรมการสมาคม">กรรมการสมาคม</Option>
-              <Option value="สมาชิกสมาคม">สมาชิกสมาคม</Option>
-            </Select>
-            หลักสูตร
-            <Select
-              value={editingStudent?.course}
-              style={{ width: '100%' }}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, course: e };
-                });
-              }}
-            >
-              <Option value="1">1</Option>
-              <Option value="2">2</Option>
-              <Option value="3">3</Option>
-              <Option value="4">4</Option>
-              <Option value="5">5</Option>
-            </Select>
-            เบอร์โทรศัพท์
-            <Input
-              value={editingStudent?.phone}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, phone: e.target.value };
-                });
-              }}
-            />
-          </Row> */}
         </Col>
       </Modal>
     </>

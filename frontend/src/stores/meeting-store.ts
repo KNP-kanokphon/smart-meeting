@@ -15,35 +15,19 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   createmeeting: async (
-    detail: string,
-    title: string,
-    room: string,
-    floor: string,
-    building: string,
-    meetingplace: string,
-    day: string,
-    starttime: string,
-    endtime: string,
-    uuid: string,
+    id: string,
+    newDataAgenda: any,
+    newDataUser: any,
+    dataDetail: any,
     dataFood: any,
-    gift: boolean,
   ) => {
     const data = {
-      detail: detail,
-      title: title,
-      room: room,
-      floor: floor,
-      building: building,
-      meetingplace: meetingplace,
-      day: day,
-      starttime: starttime,
-      endtime: endtime,
-      uuid: uuid,
-      dataFood: dataFood,
-      gift: gift,
+      id,
+      newDataAgenda,
+      newDataUser,
+      dataDetail,
+      dataFood,
     };
-    console.log(data);
-
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
@@ -187,7 +171,6 @@ export const DatamanagementService = () => ({
   ) => {
     const formData = new FormData();
     formData.append('file', file);
-
     const result = await httpClient.post(
       `/meeting/agendafile/${id}/${step}`,
       update === true ? formData : file,

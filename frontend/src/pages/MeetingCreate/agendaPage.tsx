@@ -22,18 +22,6 @@ interface IProp {
 
 export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
   const [fileList, setFileList] = useState<any>([]);
-  const onChangeDate = (date: any) => {
-    // console.log(date);
-  };
-  const onChangeStartTime = (time: any) => {
-    // console.log(time);
-  };
-  const onChangeEndTime = (time: any) => {
-    // console.log(time);
-  };
-  const onChangeSetItemFiled = async (filedList: any) => {
-    setDataField({ userBoard: filedList });
-  };
   const onChangeSetItemFiledAtt = async (filedList: any) => {
     setDataField({ userAttendee: filedList });
   };
@@ -47,14 +35,14 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
     },
     beforeUpload: (file: any) => {
       console.log(file);
-      // const isPDF = file.type === 'application/pdf';
-      // if (!isPDF) {
-      //   message.error(`${file.name} is not a pdf file`);
-      // } else {
-      setFileList([...fileList, file]);
-      setDataField({ fileOverview: [...fileList, file] });
-      return false;
-      // }
+      const isPDF = file.type === 'application/pdf';
+      if (!isPDF) {
+        message.error(`${file.name} is not a pdf file`);
+      } else {
+        setFileList([...fileList, file]);
+        setDataField({ fileOverview: [...fileList, file] });
+        return false;
+      }
     },
     fileList,
   };
@@ -169,8 +157,8 @@ export const AgendaPage: React.FC<IProp> = ({ setDataField }) => {
           </Col>
         </Row>
       </Col>
-      <Divider />
-      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} />
+      {/* <Divider />
+      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} /> */}
       <Divider />
       <TableAttendee onChangeSetItemFiledAtt={onChangeSetItemFiledAtt} />
     </>

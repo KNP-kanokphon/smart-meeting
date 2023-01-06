@@ -34,50 +34,33 @@ export const FoodPage: React.FC<Props> = ({
 }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  // const [requiredMark, setRequiredMarkType] =
-  //   useState<RequiredMark>('optional');
-  // const [fileList, setFileList] = useState<any>([]);
-  // const onRequiredTypeChange = ({
-  //   requiredMarkValue,
-  // }: {
-  //   requiredMarkValue: RequiredMark;
-  // }) => {
-  //   setRequiredMarkType(requiredMarkValue);
+  // const onFinish = (values: any) => {
+  //   form.validateFields().then(values => {
+  //     setDataField(values);
+  //   });
   // };
-  const onclickBlack = () => {
-    navigate(`/meeting/agendas`);
-  };
-  const onclickSubmit = () => {
-    // console.log('1');
-  };
-  const onFinish = (values: any) => {
-    form.validateFields().then(values => {
-      // console.log(values);
-      setDataField(values);
-    });
-    // console.log('Received values of form:', values);
-  };
-  const onSelectChange = () => {
-    setDataField(form.getFieldsValue(true));
-  };
+  // const onSelectChange = () => {
+  //   setDataField(form.getFieldsValue(true));
+  // };
   const reciveGift = (e: CheckboxChangeEvent) => {
-    // console.log(`checked = ${e.target.checked}`);
     setDataField({ gift: e.target.checked });
+  };
+  const onChangeForm = (values: any, changvalue: any) => {
+    setDataField(changvalue);
   };
   return (
     <>
       <Card style={{ width: '100%' }}>
         <Form
           style={{ width: '100%' }}
-          form={form}
-          onChange={onFinish}
+          // form={form}
+          // onChange={onFinish}
           // layout="vertical"
           // initialValues={{ requiredMarkValue: requiredMark }}
           // onValuesChange={onRequiredTypeChange}
           // requiredMark={requiredMark}
           // onFieldsChange={onFinish}
-          onValuesChange={onSelectChange}
+          onValuesChange={onChangeForm}
         >
           <Row gutter={16}>
             <Col span={24}>
@@ -105,18 +88,8 @@ export const FoodPage: React.FC<Props> = ({
                   return (
                     <Row key={key} gutter={16}>
                       <Col span={4}>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'typefood']}
-                          // rules={[
-                          //   { required: true, message: 'Missing first name' },
-                          // ]}
-                        >
-                          <Select
-                            placeholder={'Please Select'}
-                            allowClear
-                            onChange={onSelectChange}
-                          >
+                        <Form.Item {...restField} name={[name, 'typefood']}>
+                          <Select placeholder={'Please Select'} allowClear>
                             <Option key={'1'} value={'food'}>
                               อาหาร
                             </Option>
@@ -137,7 +110,7 @@ export const FoodPage: React.FC<Props> = ({
                           //   { required: true, message: 'Missing last name' },
                           // ]}
                         >
-                          <Input placeholder="Text" onChange={onSelectChange} />
+                          <Input placeholder="Text" />
                         </Form.Item>
                       </Col>
 
@@ -154,7 +127,7 @@ export const FoodPage: React.FC<Props> = ({
                     block
                     icon={<PlusOutlined />}
                   >
-                    เพิ่มเรื่อง
+                    เพิ่มเมนู
                   </Button>
                 </Form.Item>
               </>

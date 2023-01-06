@@ -70,7 +70,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             (name: {
               id: string;
               uuid: string;
-              nameposition: string;
+              position: string;
               createdate: string;
             }) => name.uuid === e.position,
           );
@@ -81,11 +81,9 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
             username: e.username,
             statuscheckin: e.checkin,
             position:
-              e.position === null ||
-              e.position === '' ||
-              e.position === undefined
+              pname === null || pname === '' || pname === undefined
                 ? '-'
-                : pname.nameposition,
+                : pname.position,
             statusconfirm: e.confirm,
             signature: e.signature,
           };
