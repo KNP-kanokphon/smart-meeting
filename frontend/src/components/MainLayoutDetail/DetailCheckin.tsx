@@ -510,7 +510,7 @@ export const DetailCheckin: React.FC<Props> = ({
                         marginTop: '5px',
                       }}
                     >
-                      {'สถานที่ / อาคาร :'}
+                      {'สถานที่ :'}
                     </Typography>
                   </Col>
                   <Col
