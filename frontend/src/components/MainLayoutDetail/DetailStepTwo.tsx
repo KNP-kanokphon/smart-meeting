@@ -264,8 +264,8 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                           {food?.map((e: any, i: number) => {
                             return (
                               <Row gutter={16}>
-                                <Col span={12}>{e.namefood}</Col>
-                                <Col span={12}>
+                                <Col span={20}>{e.namefood}</Col>
+                                <Col span={4}>
                                   <Checkbox
                                     value={e.namefood}
                                     // onChange={x =>
