@@ -32,7 +32,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
 
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
-  console.log(agenda);
+  // console.log(meetingData);
 
   useEffect(() => {
     getDataAll();
@@ -149,7 +149,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '16px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -189,8 +189,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
-                        marginBottom: '5px',
+                        fontSize: '16px',
+                        // marginBottom: '5px',
                         marginTop: '5px',
                       }}
                     >
@@ -231,7 +231,48 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '16px',
+                        marginBottom: '5px',
+                        // marginTop: '5px',
+                      }}
+                    >
+                      {'เวลา :'}
+                    </Typography>
+                  </Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      // marginTop: '8px',
+                    }}
+                  >
+                    {meetingData?.starttime.substring(0, 5)} ถึง{' '}
+                    {meetingData?.endtime.substring(0, 5)} น.
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    xs={8}
+                    sm={4}
+                    md={{ span: 3, offset: 4 }}
+                    lg={{ span: 3, offset: 4 }}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '16px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -271,7 +312,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '16px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -311,7 +352,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '16px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -337,8 +378,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <Row>
                   <Col
-                    xs={8}
-                    sm={4}
+                    xs={24}
+                    sm={24}
                     md={{ span: 3, offset: 4 }}
                     lg={{ span: 3, offset: 4 }}
                     style={{
@@ -351,7 +392,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '16px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -360,8 +401,8 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     </Typography>
                   </Col>
                   <Col
-                    xs={16}
-                    sm={20}
+                    xs={24}
+                    sm={24}
                     md={8}
                     lg={8}
                     style={{
@@ -394,52 +435,78 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                           </>
                         );
                       }
-                      // else {
-                      //   return <Typography>{'-'}</Typography>;
-                      // }
                     })}
                   </Col>
                 </Row>
 
                 <Row>
                   <Col
-                    xs={8}
-                    sm={4}
+                    xs={24}
+                    sm={24}
                     md={{ span: 3, offset: 4 }}
                     lg={{ span: 3, offset: 4 }}
                     style={{
                       textAlign: 'left',
-                      fontSize: '100%',
+                      fontSize: '16px',
                       paddingLeft: '10px',
                       paddingRight: '10px',
                     }}
                   >
-                    <b>{'วาระ:'}</b>
+                    <b>{'วาระ :'}</b>
                   </Col>
                   <Col
-                    xs={16}
-                    sm={20}
-                    md={8}
-                    lg={8}
+                    xs={24}
+                    sm={24}
+                    md={{ span: 16 }}
+                    lg={{ span: 16 }}
                     style={{
                       textAlign: 'left',
                       fontSize: '100%',
                       paddingLeft: '10px',
                       paddingRight: '10px',
                       marginTop: '8px',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
+                      // whiteSpace: 'nowrap',
+                      // overflow: 'hidden',
+                      // textOverflow: 'ellipsis',
                     }}
                   >
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>
-                          <div style={{ textAlign: 'left' }}>
-                            {e?.agendes} : {e?.detailagendes}
+                          <div
+                            style={{ textAlign: 'left', marginBottom: '5px' }}
+                          >
+                            <Row>
+                              <Col
+                                xs={24}
+                                sm={6}
+                                md={{ span: 4 }}
+                                lg={{ span: 4 }}
+                                style={{
+                                  textAlign: 'left',
+                                  fontSize: '100%',
+                                  paddingLeft: '10px',
+                                  paddingRight: '10px',
+                                }}
+                              >
+                                {'-'} {e?.agendes} :
+                              </Col>
+                              <Col
+                                xs={24}
+                                sm={18}
+                                md={{ span: 20 }}
+                                lg={{ span: 20 }}
+                                style={{
+                                  textAlign: 'left',
+                                  fontSize: '100%',
+                                  paddingLeft: '10px',
+                                  paddingRight: '10px',
+                                }}
+                              >
+                                {e?.detailagendes}
+                              </Col>
+                            </Row>
                           </div>
-
-                          <br></br>
                           {pathfile.map((x: any) => {
                             if (x.type === 'fileAgenda' && x.step === e.step) {
                               return (
