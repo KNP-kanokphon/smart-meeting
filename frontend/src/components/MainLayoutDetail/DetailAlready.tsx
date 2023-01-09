@@ -33,7 +33,9 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   const [agenda, setAgenda] = useState<any>();
   const [user, setUser] = useState<any>();
   const [food, setFood] = useState<any>([]);
-  console.log(meetingData?.starttime.substring(0, 5));
+  // console.log(meetingData?.starttime.substring(0, 5));
+  const [userprofile, setUserprofile] = useState<any>([]);
+  const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
 
   useEffect(() => {
     getDataProfile();
@@ -45,11 +47,14 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
       roomid,
       userid,
     );
+    const resultProfiles = await DatamanagementService().FindUserByID(userid);
+
     const resultFood = await DatamanagementService().getDetailfood(roomid);
     setFood(resultFood);
     setAgenda(resultAgenda);
     setMeetingData(result[0]);
     setUser(resultUser[0]);
+    setUserprofileContracts(resultProfiles[0]);
   };
 
   const navigate = useNavigate();
@@ -157,7 +162,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       marginTop: '2px',
                     }}
                   >
-                    {user?.username}
+                    {UserProfileContract?.prefix}{' '}
+                    {UserProfileContract?.username}
                   </Col>
                 </Row>
                 <Row>

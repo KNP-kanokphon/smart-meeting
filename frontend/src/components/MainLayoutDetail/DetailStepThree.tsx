@@ -23,10 +23,9 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
-  useEffect(() => {
-    // console.log(id);
-    // console.log(userid);
+  const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
 
+  useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
@@ -35,7 +34,12 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
       userid,
     );
     setUserprofile(resultProfile[0]);
+
+    const resultProfiles = await DatamanagementService().FindUserByID(userid);
+    setUserprofileContracts(resultProfiles[0]);
   };
+
+
   const navigate = useNavigate();
   const onChange = () => {
     navigate(`${baseURL}/steptwo/${id}`);
@@ -58,6 +62,7 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   //   const blob = new Blob([data], { type: 'application/pdf' });
   //   saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
   // };
+
   const nextPage = () => {
     navigate(`/detailconfirm/${id}/${userid}`);
   };
@@ -69,16 +74,13 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
           padding: 0,
           borderBottom: '1px solid #F0F0F0',
         }}
-      >
-        {/* <div className="logo" /> */}
-      </Header>
+      />
 
       <Content
         style={{
           padding: '30px 30px',
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
-          // paddingBottom: '10px',
           height: '80vh',
           overflow: 'scroll',
         }}
@@ -118,7 +120,10 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
 
                 <Row>
                   <Col span={24} style={{ fontSize: '18px' }}>
-                    <b>{userprofile?.username}</b>
+                    <b>
+                      {UserProfileContract.prefix}{' '}
+                      {UserProfileContract.username}
+                    </b>
                   </Col>
                 </Row>
                 <br></br>

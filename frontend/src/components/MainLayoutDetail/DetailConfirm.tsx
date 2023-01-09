@@ -133,14 +133,6 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <b style={{ fontSize: '18px' }}>Confirm Meeting</b>
                   </Col>
                 </Row>
-                {/* <Row gutter={16}>
-                  <Col
-                    span={24}
-                    style={{ fontSize: '14px', marginTop: '10px' }}
-                  >
-                    เช็คอินเรียบร้อย ท่านสามารถดาวน์โหลดเอกสารได้ที่หน้านี้
-                  </Col>
-                </Row> */}
                 <Row>
                   <Col
                     xs={8}
@@ -443,7 +435,10 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>
-                          ระเบียบวาระที่ {e.step} {e?.agendes}
+                          <div style={{ textAlign: 'left' }}>
+                            {e?.agendes} : {e?.detailagendes}
+                          </div>
+
                           <br></br>
                           {pathfile.map((x: any) => {
                             if (x.type === 'fileAgenda' && x.step === e.step) {

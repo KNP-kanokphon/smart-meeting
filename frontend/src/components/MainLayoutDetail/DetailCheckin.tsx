@@ -40,6 +40,7 @@ export const DetailCheckin: React.FC<Props> = ({
 
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
+  const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
 
   useEffect(() => {
     getDataAll();
@@ -54,16 +55,16 @@ export const DetailCheckin: React.FC<Props> = ({
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
     const resultPosition = await DatamanagementService().getPositionall();
+    const resultProfiles = await DatamanagementService().FindUserByID(userid);
 
     setPathfile(resultPathfile);
     setUserprofile(resultProfile[0]);
     setMeetingData(result[0]);
     setAgenda(resultAgenda);
     setPosition(resultPosition);
+    setUserprofileContracts(resultProfiles[0]);
   };
-  // const getdatanameposiotion = async () => {
-
-  // };
+  console.log(UserProfileContract);
 
   const getFiles = async (roomid: string, step: any, namefile: string) => {
     const data = await DatamanagementService().getPathFileStep(
@@ -216,7 +217,8 @@ export const DetailCheckin: React.FC<Props> = ({
                       marginTop: '8px',
                     }}
                   >
-                    {userprofile.username}
+                    {UserProfileContract?.prefix}{' '}
+                    {UserProfileContract?.username}
                   </Col>
                 </Row>
                 <Row>
@@ -257,7 +259,7 @@ export const DetailCheckin: React.FC<Props> = ({
                     }}
                   >
                     {position.map((e: any) => {
-                      return userprofile.position?.map((x: any) => {
+                      return UserProfileContract.position?.map((x: any) => {
                         return x === e.uuid ? e.nameposition : '';
                       });
                     })}
@@ -300,7 +302,7 @@ export const DetailCheckin: React.FC<Props> = ({
                       marginTop: '8px',
                     }}
                   >
-                    {userprofile?.email}
+                    {UserProfileContract?.email}
                   </Col>
                 </Row>
                 <Row>
@@ -340,7 +342,7 @@ export const DetailCheckin: React.FC<Props> = ({
                       marginTop: '8px',
                     }}
                   >
-                    {userprofile?.line}
+                    {UserProfileContract?.line}
                   </Col>
                 </Row>
                 <Row>
@@ -380,7 +382,7 @@ export const DetailCheckin: React.FC<Props> = ({
                       marginTop: '8px',
                     }}
                   >
-                    {userprofile?.phone}
+                    {UserProfileContract?.phonenumber}
                   </Col>
                 </Row>
 
@@ -630,7 +632,7 @@ export const DetailCheckin: React.FC<Props> = ({
                         marginTop: '5px',
                       }}
                     >
-                      {'ดาวโหลดเอกสาร :'}
+                      {'ดาวน์โหลดเอกสาร :'}
                     </Typography>
                   </Col>
                   <Col
