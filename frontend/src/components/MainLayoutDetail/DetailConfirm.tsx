@@ -489,7 +489,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                                   paddingRight: '10px',
                                 }}
                               >
-                                {'-'} {e?.agendes} :
+                                ระเบียบวาระที่ {e.step} :
                               </Col>
                               <Col
                                 xs={24}
@@ -503,7 +503,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                                   paddingRight: '10px',
                                 }}
                               >
-                                {e?.detailagendes}
+                                {e?.agendes}
                               </Col>
                             </Row>
                           </div>
