@@ -108,9 +108,9 @@ export const DatamanagementService = () => ({
 
     return result.data;
   },
-  import: async (file: any, id: string, namefile: string) => {
+  import: async (file: any, id: string, namefile: string, idfile: number) => {
     const result = await httpClient.post(
-      `/meeting/import/${id}/${namefile}`,
+      `/meeting/import/${id}/${namefile}/${idfile}`,
       file,
       {
         headers: {
@@ -125,9 +125,11 @@ export const DatamanagementService = () => ({
     return result.data;
   },
   getFilesoverview: async (roomid: any, namefile: string) => {
-    const result = await axios.get(
-      `/meeting/getfileoverview/${roomid}/${namefile}`,
-    );
+    const data = {
+      roomid: roomid,
+      namefile: namefile,
+    };
+    const result = await httpClient.post(`/meeting/getfileoverview`, data);
     console.log(result);
 
     return result.data;

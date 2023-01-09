@@ -145,11 +145,11 @@ export const CreateMeeting: React.FC = () => {
             if (dataAgenda.fileOverview !== undefined) {
               // const formData = new FormData();
               let namefile = '';
-              dataAgenda.fileOverview.map(async (e: any) => {
+              dataAgenda.fileOverview.map(async (e: any, i: number) => {
                 const formData = new FormData();
                 formData.append('file', e);
                 // namefile = e.name;
-                await DatamanagementService().import(formData, id, e.name);
+                await DatamanagementService().import(formData, id, e.name, i);
               });
               console.log(namefile);
             }
@@ -164,42 +164,7 @@ export const CreateMeeting: React.FC = () => {
               });
             }
           });
-        // const createMeetingText = await DatamanagementService().createmeeting();
-        // if (dataAgenda.fileOverview !== undefined) {
-        //   const formData = new FormData();
-        //   dataAgenda.fileOverview.map((e: any) => {
-        //     formData.append('file', e);
-        //   });
-        //   // save fileStep1
-        //   await DatamanagementService().import(formData, id);
-        // }
-        // await DatamanagementService()
-        //   .createmeeting(
-        //     dataAgenda.detailMeeting,
-        //     dataAgenda.title,
-        //     dataAgenda.room,
-        //     dataAgenda.floor,
-        //     dataAgenda.building,
-        //     dataAgenda.meetingPlace,
-        //     dataAgenda.date,
-        //     dataAgenda.timeStart,
-        //     dataAgenda.timeEnd,
-        //     id,
-        //     dataFood.fooddetail,
-        //     dataFood.gift,
-        //   )
-        //   .then(data => {});
-
-        // await DatamanagementService()
-        //   .saveusermeetingall(newDatauserBoard, newDatauserAgenda, id)
-        //   .then(data => {});
-        // dataDetail.map((e: any, i: string) => {
-        //   DatamanagementService().saveagenda(e.values, id, i);
-        // });
-        // dataDetail.map((e: any, i: string) => {
-        //   DatamanagementService().savefileagendas(e.files, id, i, false);
-        // });
-        // navigate('/meeting/meeting-schedule');
+        navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });
