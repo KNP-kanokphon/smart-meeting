@@ -419,8 +419,12 @@ export const DatamanagementService = () => ({
   },
   GroupAlls: async () => {
     const result = await httpClient.get(`userattendees/groupalls`);
-    console.log(result.data);
+    return result?.data;
+  },
 
+  // finduserbyid/:userid
+  FindUserByID: async (userid: any) => {
+    const result = await httpClient.get(`user/finduserbyid/${userid}`);
     return result?.data;
   },
 
