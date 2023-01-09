@@ -132,6 +132,7 @@ export const CreateMeeting: React.FC = () => {
           timeEnd: dataAgenda.timeEnd,
           detailMeeting: dataAgenda.detailMeeting,
         };
+
         await DatamanagementService()
           .createmeeting(
             id,
@@ -142,11 +143,15 @@ export const CreateMeeting: React.FC = () => {
           )
           .then(async data => {
             if (dataAgenda.fileOverview !== undefined) {
-              const formData = new FormData();
-              dataAgenda.fileOverview.map((e: any) => {
+              // const formData = new FormData();
+              let namefile = '';
+              dataAgenda.fileOverview.map(async (e: any) => {
+                const formData = new FormData();
                 formData.append('file', e);
+                // namefile = e.name;
+                await DatamanagementService().import(formData, id, e.name);
               });
-              await DatamanagementService().import(formData, id);
+              console.log(namefile);
             }
             if (dataDetail['agenda'] !== undefined) {
               dataDetail['agenda'].map((x: any) => {
@@ -194,7 +199,7 @@ export const CreateMeeting: React.FC = () => {
         // dataDetail.map((e: any, i: string) => {
         //   DatamanagementService().savefileagendas(e.files, id, i, false);
         // });
-        navigate('/meeting/meeting-schedule');
+        // navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });

@@ -69,10 +69,10 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     // const blob = new Blob([data], { type: 'application/pdf' });
     // saveAs(blob, `${namefile}`);
   };
-  const getfileOverviwe = async (namefile: string) => {
+  const getfileOverviwe = async (idfile: string, namefile: string) => {
     const resultPathfile = await DatamanagementService().getFilesoverview(
       id,
-      namefile,
+      idfile,
     );
     const url = window.URL.createObjectURL(
       new Blob([new Uint8Array(resultPathfile.data).buffer]),
@@ -157,7 +157,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -197,7 +197,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -239,7 +239,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -279,7 +279,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -319,7 +319,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
@@ -359,12 +359,12 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     <Typography
                       style={{
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '12px',
                         marginBottom: '5px',
                         marginTop: '5px',
                       }}
                     >
-                      {'ดาวโหลดเอกสาร :'}
+                      {'ดาวน์โหลดเอกสาร :'}
                     </Typography>
                   </Col>
                   <Col
@@ -384,19 +384,27 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     }}
                   >
                     {pathfile.map((e: any) => {
+                      console.log(e);
+
                       if (e.type === 'fileOverviwe') {
                         return (
-                          <Button
-                            type="link"
-                            onClick={() => getfileOverviwe(e.namefile)}
-                            key={`${e.uuid}.${e.namefile}`}
-                          >
-                            {e.namefile}
-                          </Button>
+                          <>
+                            <Button
+                              type="link"
+                              onClick={() =>
+                                getfileOverviwe(e.idfile, e.namefile)
+                              }
+                              key={`${e.uuid}.${e.idfile}`}
+                            >
+                              {e.namefile}
+                            </Button>
+                            <br></br>
+                          </>
                         );
-                      } else {
-                        return <Typography>{'-'}</Typography>;
                       }
+                      // else {
+                      //   return <Typography>{'-'}</Typography>;
+                      // }
                     })}
                   </Col>
                 </Row>
@@ -414,17 +422,30 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       paddingRight: '10px',
                     }}
                   >
-                    <b>{'Agenda Item '}</b>
+                    <b>{'วาระ:'}</b>
                   </Col>
-                  <Col>
+                  <Col
+                    xs={16}
+                    sm={20}
+                    md={8}
+                    lg={8}
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '100%',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      marginTop: '8px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {agenda?.map((e: any, i: number) => {
                       return (
                         <>
-                          {e?.agendes} : {e?.detailagendes}
+                          ระเบียบวาระที่ {e.step} {e?.agendes}
                           <br></br>
                           {pathfile.map((x: any) => {
-                            console.log(x);
-
                             if (x.type === 'fileAgenda' && x.step === e.step) {
                               return (
                                 <Button
@@ -437,8 +458,6 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                                   {x.namefile}
                                 </Button>
                               );
-                            } else {
-                              return <>-</>;
                             }
                           })}
                         </>

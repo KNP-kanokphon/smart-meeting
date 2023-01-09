@@ -208,7 +208,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <Row gutter={16} style={{ textAlign: 'left' }}>
                   <Col span={24}>
-                    อีเมล *
+                    อีเมล
                     <Input onChange={e => setEmail(e.target.value)} />
                   </Col>
                 </Row>
@@ -244,7 +244,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <br></br>
-                <Form name="validate_other" form={form}>
+                {/* <Form name="validate_other" form={form}>
                   <Row>
                     <Col
                       xs={24}
@@ -283,7 +283,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       </Form.Item>
                     </Col>
                   </Row>
-                </Form>
+                </Form> */}
                 <Row>
                   <Col span={24}>
                     <Button

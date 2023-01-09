@@ -352,7 +352,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                 </Row>
 
                 <Row>
-                  <Col
+                  {/* <Col
                     xs={10}
                     sm={10}
                     md={{ span: 2, offset: 4 }}
@@ -374,8 +374,8 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                     >
                       {'วาระ :'}
                     </Typography>
-                  </Col>
-                  <Col
+                  </Col> */}
+                  {/* <Col
                     xs={24}
                     sm={24}
                     md={{ span: 16 }}
@@ -392,13 +392,13 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                       return (
                         <>
                           <Row key={i}>
-                            {e?.agendes} : {e?.detailagendes}
+                            ระเบียบวาระที่ {e.step} : {e?.detailagendes}
                             <br></br>
                           </Row>
                         </>
                       );
                     })}
-                  </Col>
+                  </Col> */}
                 </Row>
                 <br></br>
                 <Row>

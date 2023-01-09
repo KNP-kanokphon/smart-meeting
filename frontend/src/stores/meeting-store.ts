@@ -108,12 +108,16 @@ export const DatamanagementService = () => ({
 
     return result.data;
   },
-  import: async (file: any, id: string) => {
-    const result = await httpClient.post(`/meeting/import/${id}`, file, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+  import: async (file: any, id: string, namefile: string) => {
+    const result = await httpClient.post(
+      `/meeting/import/${id}/${namefile}`,
+      file,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
-    });
+    );
     return result.data;
   },
   getuserInroom: async (roomid: any) => {
