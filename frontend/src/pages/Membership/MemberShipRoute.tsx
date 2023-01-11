@@ -332,27 +332,27 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
           onChange={onChange}
           items={[
             {
-              label: `แบบฟอร์ม`,
-              key: '1',
-              children: (
-                <>
-                  <AddmemberRoute />
-                </>
-              ),
-            },
-            {
               label: `รายละเอียดผู้ใช้บริการ`,
-              key: '2',
+
+              key: '1',
               children: (
                 <>
                   <TableAddMember />
                 </>
               ),
             },
+            {
+              label: `แบบฟอร์ม`,
+              key: '2',
+              children: (
+                <>
+                  <AddmemberRoute />
+                </>
+              ),
+            },
           ]}
         />
       </Card>
-      {/* <TableMemberShip /> */}
     </Row>
   );
 };

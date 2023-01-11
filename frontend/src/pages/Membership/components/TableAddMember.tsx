@@ -15,6 +15,8 @@ import {
   Select,
   ConfigProvider,
   InputNumber,
+  Tag,
+  Space,
 } from 'antd';
 // import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
@@ -74,14 +76,14 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
   const [getdataPosition, setdataPosition] = useState<any>([]);
   const [getnameeng, setnameeng] = useState<any>('');
   // console.log(isModalOpen);
+  const [UsernameFilter, setUsernameFilter] = useState<any>([]);
+  const [Count, setCount] = useState<any>(0);
 
   const { Option } = Select;
 
   useEffect(() => {
     const dataGroup = async () => {
       const resultDataGroup = await DatamanagementService().GroupAlls();
-      // console.log(resultDataGroup);
-
       const dataGroup = (await resultDataGroup.map((e: any, row: any) => {
         const mapData = {
           uuidgroup: e.uuidgroup,
@@ -438,8 +440,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
 
   const dataAll = async () => {
     const dataAll = await DatamanagementService().findAll();
-    // console.log(dataAll);
-
     const dataSource = await dataAll.map((x: any, row: any) => {
       const mapData = {
         no: row + 1,
@@ -496,8 +496,26 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         remark: x.remark,
         idgroup: x.idgroup,
       } as any;
+      setCount(row + 1);
       return mapData;
     });
+    // console.log(dataSource);
+
+    // filter username
+    let Username = dataAll.filter(
+      (ele: any, ind: any) =>
+        ind ===
+        dataAll.findIndex((elem: any) => elem.username === ele.username),
+    );
+    let UsernameArray: any = [];
+    Username.map((data: any) => {
+      UsernameArray.push({
+        text: data.username != null ? data.username : '-',
+        value: data.username,
+      });
+    });
+    await setUsernameFilter(UsernameArray);
+
     setUserAll([]);
     setUserAll(dataSource);
   };
@@ -521,6 +539,9 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       title: 'ชื่อ-นามสกุล',
       width: '9%',
       dataIndex: 'username',
+      filters: UsernameFilter,
+      onFilter: (value: any, record: any) => record.username?.startsWith(value),
+      filterSearch: true,
     },
     {
       key: 'course',
@@ -622,8 +643,7 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '5%',
       dataIndex: 'position',
       render: (e: any, row: any, index: any) => {
-        console.log(e);
-
+        // console.log(e);
         // console.log(row);
         // if (e) {
         //   if (typeof e !== 'string') {
@@ -686,96 +706,96 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '5%',
       dataIndex: 'email',
     },
-    {
-      key: 'roomnumber',
-      title: 'เลขที่ห้อง',
-      width: '5%',
-      dataIndex: 'roomnumber',
-    },
-    {
-      key: 'number',
-      title: 'บ้านเลขที่',
-      width: '3%',
-      dataIndex: 'number',
-    },
-    {
-      key: 'bldg',
-      title: 'อาคาร/หมู่บ้าน',
-      width: '5%',
-      dataIndex: 'bldg',
-    },
-    {
-      key: '',
-      title: 'ชั้น',
-      width: '3%',
-      dataIndex: '',
-    },
-    {
-      key: 'alley',
-      title: 'ซอย',
-      width: '5%',
-      dataIndex: 'alley',
-    },
-    {
-      key: 'villageno',
-      title: 'หมู่ที่',
-      width: '5%',
-      dataIndex: 'villageno',
-    },
-    {
-      key: 'road',
-      title: 'ถนน',
-      width: '5%',
-      dataIndex: 'road',
-    },
-    {
-      key: 'subdistrict',
-      title: 'ตำบล/แขวง',
-      width: '5%',
-      dataIndex: 'subdistrict',
-    },
-    {
-      key: 'district',
-      title: 'อำเภอ/เขต',
-      width: '5%',
-      dataIndex: 'district',
-    },
-    {
-      key: 'province',
-      title: 'จังหวัด',
-      width: '5%',
-      dataIndex: 'province',
-    },
-    {
-      key: 'postalcode',
-      title: 'รหัสไปรษณีย์',
-      width: '5%',
-      dataIndex: 'postalcode',
-    },
-    {
-      key: 'active',
-      title: 'สถานะ',
-      width: '5%',
-      dataIndex: 'active',
-      render: (e: any, row: any, index: number) => {
-        if (e) {
-          if (e === 'close') {
-            return <Badge color="orange" text="Close" />;
-          } else if (e === 'active') {
-            return <Badge color="green" text="Active" />;
-          }
-          //  else if (e === 'died') {
-          //   return <Badge color="grey" text="Died" />;
-          // }
-        }
-      },
-    },
-    {
-      key: 'type',
-      title: 'Type',
-      width: '5%',
-      dataIndex: 'type',
-    },
+    // {
+    //   key: 'roomnumber',
+    //   title: 'เลขที่ห้อง',
+    //   width: '5%',
+    //   dataIndex: 'roomnumber',
+    // },
+    // {
+    //   key: 'number',
+    //   title: 'บ้านเลขที่',
+    //   width: '3%',
+    //   dataIndex: 'number',
+    // },
+    // {
+    //   key: 'bldg',
+    //   title: 'อาคาร/หมู่บ้าน',
+    //   width: '5%',
+    //   dataIndex: 'bldg',
+    // },
+    // {
+    //   key: '',
+    //   title: 'ชั้น',
+    //   width: '3%',
+    //   dataIndex: '',
+    // },
+    // {
+    //   key: 'alley',
+    //   title: 'ซอย',
+    //   width: '5%',
+    //   dataIndex: 'alley',
+    // },
+    // {
+    //   key: 'villageno',
+    //   title: 'หมู่ที่',
+    //   width: '5%',
+    //   dataIndex: 'villageno',
+    // },
+    // {
+    //   key: 'road',
+    //   title: 'ถนน',
+    //   width: '5%',
+    //   dataIndex: 'road',
+    // },
+    // {
+    //   key: 'subdistrict',
+    //   title: 'ตำบล/แขวง',
+    //   width: '5%',
+    //   dataIndex: 'subdistrict',
+    // },
+    // {
+    //   key: 'district',
+    //   title: 'อำเภอ/เขต',
+    //   width: '5%',
+    //   dataIndex: 'district',
+    // },
+    // {
+    //   key: 'province',
+    //   title: 'จังหวัด',
+    //   width: '5%',
+    //   dataIndex: 'province',
+    // },
+    // {
+    //   key: 'postalcode',
+    //   title: 'รหัสไปรษณีย์',
+    //   width: '5%',
+    //   dataIndex: 'postalcode',
+    // },
+    // {
+    //   key: 'active',
+    //   title: 'สถานะ',
+    //   width: '5%',
+    //   dataIndex: 'active',
+    //   render: (e: any, row: any, index: number) => {
+    //     if (e) {
+    //       if (e === 'close') {
+    //         return <Badge color="orange" text="Close" />;
+    //       } else if (e === 'active') {
+    //         return <Badge color="green" text="Active" />;
+    //       }
+    //       //  else if (e === 'died') {
+    //       //   return <Badge color="grey" text="Died" />;
+    //       // }
+    //     }
+    //   },
+    // },
+    // {
+    //   key: 'type',
+    //   title: 'Type',
+    //   width: '5%',
+    //   dataIndex: 'type',
+    // },
     {
       key: 'uuid',
       title: 'Action',
@@ -812,7 +832,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       },
     },
   ];
-
   return (
     <>
       <Modal
@@ -1735,11 +1754,19 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
           </Form>
         </ConfigProvider>
       </Modal>
+      <br></br>
+      <div>
+        <Space>
+          <Typography>จำนวนสมาชิกทั้งหมด :</Typography>
+          <Tag color="success">{Count}</Tag>
+        </Space>
+      </div>
+      <br></br>
       <Table
         rowKey={(record: any) => record.id}
         columns={columnsTable}
         dataSource={getuserAll}
-        scroll={{ x: 'calc(2500px + 50%)' }}
+        scroll={{ x: 'calc(1200px + 50%)' }}
       />
     </>
   );
