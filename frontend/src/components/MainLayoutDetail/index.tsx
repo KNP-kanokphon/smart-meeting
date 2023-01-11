@@ -343,7 +343,7 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onChange}
                     >
-                      Submit
+                      ต่อไป
                     </Button>
                   </Col>
                 </Row>

@@ -35,6 +35,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
   const [email, setEmail] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [position, setPosition] = useState<string>('');
+  const [Course, setCourse] = useState<string>('');
   const [food, setFood] = useState<any>();
   const [form] = Form.useForm();
 
@@ -46,13 +47,15 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
     } else if (!phone) {
       message.error('โปรดกรอก เบอรโทรศัพท์');
       return;
-    } else if (!model) {
-      message.error('โปรดเลือก รุ่น');
-      return;
-    } else if (!position) {
-      message.error('โปรดกรอก ตำแหน่งสมาคม');
-      return;
     }
+    //  else if (!model) {
+    //   message.error('โปรดเลือก รุ่น');
+    //   return;
+    // }
+    // else if (!position) {
+    //   message.error('โปรดกรอก ตำแหน่งสมาคม');
+    //   return;
+    // }
     // let statusfood;
     form.validateFields().then(async values => {
       const statusfood = values['food-detail'].length > 0 ? true : false;
@@ -68,6 +71,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
         checkin: boolean;
         type_user: string;
         foodstatus: boolean;
+        cousre: any;
       } = {
         username: username,
         phone: phone,
@@ -80,6 +84,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
         checkin: false,
         type_user: 'after',
         foodstatus: statusfood,
+        cousre: Course,
       };
 
       const save = await DatamanagementService().saveuserattendeesByuser(data);
@@ -141,18 +146,15 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
           padding: 0,
           borderBottom: '1px solid #F0F0F0',
         }}
-      >
-        {/* <div className="logo" /> */}
-      </Header>
+      ></Header>
 
       <Content
         style={{
           padding: '30px 30px',
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
-          // paddingBottom: '10px',
           height: '80vh',
-          overflow: 'scroll',
+          overflowY: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
@@ -214,22 +216,25 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                 </Row>
                 <Row gutter={16} style={{ textAlign: 'left' }}>
                   <Col span={12}>
-                    รุ่น *
-                    <Input
+                    หลักสูตร
+                    <Select
+                      placeholder={'Please Select'}
                       style={{ width: '100%' }}
-                      placeholder={'1'}
-                      onChange={e => selectModel(e.target.value)}
-                    />
-                    {/* <Option value="1">1</Option>
-                      <Option value="2">2</Option>
-                      <Option value="3">3</Option>
-                      <Option value="4">4</Option>
-                      <Option value="5">5</Option>
-                    </Input> */}
+                      onChange={e => setCourse(e)}
+                    >
+                      {dataCourse?.map((e: any, i: number) => {
+                        return (
+                          <Option key={i} value={e.uuid}>
+                            {e.namecourse}
+                          </Option>
+                        );
+                      })}
+                    </Select>
                   </Col>
                   <Col span={12}>
-                    ตำแหน่งสมาคม*
+                    ตำแหน่งสมาคม
                     <Select
+                      placeholder={'Please Select'}
                       style={{ width: '100%' }}
                       onChange={e => selectPosition(e)}
                     >
@@ -294,7 +299,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onSave}
                     >
-                      Submit
+                      ต่อไป
                     </Button>
                   </Col>
                 </Row>
