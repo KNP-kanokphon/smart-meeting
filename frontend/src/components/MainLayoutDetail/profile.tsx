@@ -150,7 +150,7 @@
 //   );
 // };
 
-import { Layout, Button, Row, Col, Card, Typography, Image, Space } from 'antd';
+import { Layout, Row, Col, Card, Typography, Image, Space } from 'antd';
 import {
   PhoneOutlined,
   MailOutlined,
@@ -158,27 +158,27 @@ import {
   GlobalOutlined,
 } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
-import { Outlet, useParams, useNavigate } from 'react-router-dom';
-import { Logo, Logogold } from './Logo';
+import { useParams } from 'react-router-dom';
+import { Logogold } from './Logo';
 import Background2 from '../../assets/images/BG_2.jpg';
 import { DatamanagementService } from '../../stores/meeting-store';
 import leam from '../../assets/images/4leam.png';
 
-const { Content, Sider, Header, Footer } = Layout;
+const { Content } = Layout;
 export interface Props {
   baseURL: string;
 }
-interface ProfileInterface {
-  id: number;
-  username: string;
-  phone: string;
-  email: string;
-  model: string;
-  position: string;
-  uuid: string;
-  idmeeting: string;
-  uuidprofile: string;
-}
+// interface ProfileInterface {
+//   id: number;
+//   username: string;
+//   phone: string;
+//   email: string;
+//   model: string;
+//   position: string;
+//   uuid: string;
+//   idmeeting: string;
+//   uuidprofile: string;
+// }
 
 export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
   const { roomid } = useParams<{ roomid: string }>();
@@ -187,6 +187,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
   const [userprofile, setUserprofile] = useState<any>([]);
   const [getuserAll, setUserAll] = useState<any>([]);
   const [getdataPosition, setdataPosition] = useState<any>([]);
+  // const PHONE_NUMBER = getuserAll?.phonenumber;
   useEffect(() => {
     getDataProfile();
     getDataPosition();
@@ -205,7 +206,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
     );
     const newData: any = [];
 
-    resultProfile.map((x: any, row: any) => {
+    resultProfile.map((x: any) => {
       newData.push({
         uuidprofile: x.uuidprofile,
         idmeeting: x.idmeeting,
@@ -218,7 +219,7 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
   const getDataPosition = async () => {
     const resultDataPosiotion = await DatamanagementService().getPositionall();
     const newData: any = [];
-    resultDataPosiotion.map((x: any, row: any) => {
+    resultDataPosiotion.map((x: any) => {
       newData.push({
         nameposition: x.nameposition,
         uuid: x.uuid,
@@ -364,7 +365,12 @@ export const MainLayoutProfile: React.FC<Props> = ({ baseURL }) => {
                         <MobileOutlined />
                       </Col>
                       <Col span={22} style={{ textDecoration: 'underline' }}>
-                        {getuserAll?.phonenumber}
+                        <a
+                          href={`${getuserAll?.phonenumber}`}
+                          style={{ color: '#C6A970' }}
+                        >
+                          {getuserAll?.phonenumber}
+                        </a>
                       </Col>
                     </Row>
                   </Col>

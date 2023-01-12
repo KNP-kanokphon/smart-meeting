@@ -27,6 +27,7 @@ import {
   LeftCircleOutlined,
   CheckCircleFilled,
   CloseCircleFilled,
+  InfoCircleOutlined,
 } from '@ant-design/icons';
 import QRCode from 'qrcode.react';
 import { DatamanagementService } from '../../stores/meeting-store';
@@ -220,16 +221,14 @@ export const CheckList: React.FC = (): React.ReactElement => {
               datas = event.nameposition;
             }
           } else {
-            let nameposition: string = '';
-            let splittt = nameposition;
-            return (
-              <>
-                <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-              </>
-            );
+            data.map((ex: any) => {
+              if (ex === event.uuid) {
+                datas += ' ' + event.nameposition;
+              }
+            });
           }
         });
-        return datas;
+        return <div style={{ whiteSpace: 'nowrap' }}>{datas}</div>;
       },
     },
     {
@@ -261,6 +260,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
             content={`${window.origin}/detail/detailalready/${state}/${data}`}
           >
             <a
+              style={{ color: 'rgb(30, 101, 65)' }}
               onClick={() =>
                 navigator.clipboard.writeText(
                   `${window.origin}/detail/detailalready/${state}/${data}`,
@@ -396,6 +396,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
                 />
               </Button>
             </Col>
+
             <Col>
               <Title
                 style={{
@@ -404,7 +405,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
                   fontWeight: 'bold',
                 }}
               >
-                CHECK IN LISTS
+                ตรวจสอบรายชื่อผู้เข้าร่วมประชุม
               </Title>
             </Col>
           </Row>
@@ -412,6 +413,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
             style={{
               textAlign: 'left',
               fontWeight: 'bold',
+              marginLeft: '15px',
+              fontSize: '16px',
             }}
           >
             {dataIntable[0]?.title}
@@ -421,8 +424,10 @@ export const CheckList: React.FC = (): React.ReactElement => {
               <Typography
                 style={{
                   textAlign: 'left',
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   color: 'grey',
+                  marginLeft: '15px',
+                  fontSize: '16px',
                 }}
               >
                 {`ลิ้งค์ห้องประชุม ${window.origin}/detail/${state}`}
@@ -430,6 +435,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
             </Col>
             <Col>
               <a
+                style={{ color: 'rgb(30, 101, 65)', fontSize: '16px' }}
                 onClick={() =>
                   navigator.clipboard.writeText(
                     `${window.origin}/detail/${state}`,
@@ -453,16 +459,19 @@ export const CheckList: React.FC = (): React.ReactElement => {
               <Card style={{ width: '100%' }}>
                 <Row>
                   <Col span={24}>
-                    <Typography
-                      style={{
-                        textAlign: 'left',
-                        fontWeight: 'bold',
-                        color: 'grey',
-                        fontSize: '20px',
-                      }}
-                    >
-                      รายชื่อที่เข้าร่วมการประชุมทั้งหมด
-                    </Typography>
+                    <Space>
+                      <Typography
+                        style={{
+                          textAlign: 'left',
+                          fontWeight: 'bold',
+                          color: 'grey',
+                          fontSize: '20px',
+                        }}
+                      >
+                        รายชื่อที่เข้าร่วมการประชุมทั้งหมด
+                      </Typography>
+                      <InfoCircleOutlined style={{ marginTop: '6px' }} />
+                    </Space>
                   </Col>
                   <Col span={24}>
                     <Typography style={{ fontSize: '32px' }}>
@@ -475,16 +484,20 @@ export const CheckList: React.FC = (): React.ReactElement => {
             <Col span={8}>
               <Card style={{ width: '100%' }}>
                 <Col span={24}>
-                  <Typography
-                    style={{
-                      fontSize: '20px',
-                      textAlign: 'left',
-                      fontWeight: 'bold',
-                      color: 'grey',
-                    }}
-                  >
-                    เช็คอินแล้ว
-                  </Typography>
+                  <Space>
+                    {' '}
+                    <Typography
+                      style={{
+                        fontSize: '20px',
+                        textAlign: 'left',
+                        fontWeight: 'bold',
+                        color: 'grey',
+                      }}
+                    >
+                      เช็คอินแล้ว
+                    </Typography>
+                    <InfoCircleOutlined style={{ marginTop: '6px' }} />
+                  </Space>
                 </Col>
                 <Row gutter={16}>
                   <Col span={4}>
@@ -507,19 +520,23 @@ export const CheckList: React.FC = (): React.ReactElement => {
             <Col span={8}>
               <Card style={{ width: '100%' }}>
                 <Col span={24}>
-                  <Typography
-                    style={{
-                      textAlign: 'left',
-                      fontWeight: 'bold',
-                      color: 'grey',
-                      fontSize: '20px',
-                    }}
-                  >
-                    ยังไม่ได้เช็คอิน
-                  </Typography>
+                  <Space>
+                    <Typography
+                      style={{
+                        textAlign: 'left',
+                        fontWeight: 'bold',
+                        color: 'grey',
+                        fontSize: '20px',
+                      }}
+                    >
+                      ยังไม่ได้เช็คอิน
+                    </Typography>
+                    <InfoCircleOutlined style={{ marginTop: '6px' }} />
+                  </Space>
                 </Col>
                 <Row gutter={16}>
                   <Col span={4}>
+                    {/* <Space></Space> */}
                     <CloseCircleFilled
                       style={{
                         fontSize: '32px',
@@ -546,12 +563,10 @@ export const CheckList: React.FC = (): React.ReactElement => {
               <Typography
                 style={{
                   textAlign: 'left',
-                  // fontSize: '30px',
                   fontWeight: 'bold',
-                  // color: 'grey',
                 }}
               >
-                Check-in Lists
+                ตรวจสอบรายชื่อผู้เข้าร่วมประชุม
               </Typography>
             </>
           }

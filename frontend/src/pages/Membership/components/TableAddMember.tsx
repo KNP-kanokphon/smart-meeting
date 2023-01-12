@@ -413,13 +413,17 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         e.getgroups === null || e.getgroups === undefined || e.getgroups === ''
           ? null
           : e.getgroups,
+      uuidposition:
+        e.getPosition === null ||
+        e.getPosition === undefined ||
+        e.getPosition === ''
+          ? null
+          : e.getPosition,
     } as any;
-    // if (e) {
     Modal.confirm({
       title: 'ยืนยันการเปลี่ยนแปลง',
       content: 'คุณต้องการ ใช่ หรือ ไม่ ?',
       okText: 'ใช่',
-      // okType: 'danger',
       onOk: async () => {
         const res: any = await DatamanagementService().updateUser(uuid, data);
         if (res) {
@@ -435,7 +439,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
         FormAdd.resetFields();
       },
     });
-    // }
   };
 
   const dataAll = async () => {
@@ -643,10 +646,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '5%',
       dataIndex: 'position',
       render: (e: any, row: any, index: any) => {
-        // console.log(e);
-        // console.log(row);
-        // if (e) {
-        //   if (typeof e !== 'string') {
         return (
           <>
             {row?.position.map((data: any, row: any, index: number) => {
@@ -669,23 +668,6 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
             })}
           </>
         );
-        //   } else {
-        // if (e?.length < 2) {
-        //   // console.log(e);
-        //   return e;
-        // } else {
-        //   // console.log(e);
-        //   let nameposition: string = '';
-        //   nameposition += ',' + e;
-        //   let splittt = nameposition.split(',');
-        //   return (
-        //     <>
-        //       <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-        //     </>
-        //   );
-        // }
-        //   }
-        // }
       },
     },
     {
