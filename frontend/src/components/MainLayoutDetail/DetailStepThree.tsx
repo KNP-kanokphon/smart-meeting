@@ -39,7 +39,6 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
     setUserprofileContracts(resultProfiles[0]);
   };
 
-
   const navigate = useNavigate();
   const onChange = () => {
     navigate(`${baseURL}/steptwo/${id}`);
@@ -81,78 +80,77 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
           padding: '30px 30px',
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
-          height: '80vh',
-          overflow: 'scroll',
+          height: '85vh',
+          overflowY: 'scroll',
         }}
       >
-        <div className="site-card-wrapper">
-          <Row
-            gutter={16}
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              textAlign: 'center',
-            }}
-          >
-            <Col xs={24} sm={24} md={18} lg={20}>
-              <Card style={{ textAlign: 'center' }}>
-                <Row>
-                  <Col span={24}>
-                    <Logo />
-                  </Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col span={24}>
-                    <b style={{ fontSize: '18px', color: 'red' }}>
-                      KPIS Society
-                    </b>
-                  </Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col span={24} style={{ fontSize: '14px' }}>
-                    กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ <br></br>
-                    ก่อนเข้าห้องประชุม
-                  </Col>
-                </Row>
-                <br></br>
+        {/* <div className="site-card-wrapper"> */}
+        <Row
+          gutter={16}
+          style={{
+            justifyContent: 'center',
+            display: 'flex',
+            textAlign: 'center',
+          }}
+        >
+          <Col xs={24} sm={24} md={18} lg={20}>
+            <Card style={{ textAlign: 'center' }}>
+              <Row>
+                <Col span={24}>
+                  <Logo />
+                </Col>
+              </Row>
+              <br></br>
+              <Row>
+                <Col span={24}>
+                  <b style={{ fontSize: '18px', color: 'red' }}>KPIS Society</b>
+                </Col>
+              </Row>
+              <br></br>
+              <Row>
+                <Col span={24} style={{ fontSize: '14px' }}>
+                  กรุณาแสดง QR code นี้ให้กับเจ้าหน้าที่ <br></br>
+                  ก่อนเข้าห้องประชุม
+                </Col>
+              </Row>
+              <br></br>
 
-                <Row>
-                  <Col span={24} style={{ fontSize: '18px' }}>
-                    <b>
-                      {UserProfileContract.prefix}{' '}
-                      {UserProfileContract.username}
-                    </b>
-                  </Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col span={24}>
+              <Row>
+                <Col span={24} style={{ fontSize: '18px' }}>
+                  <b>
+                    {UserProfileContract.prefix} {UserProfileContract.username}
+                  </b>
+                </Col>
+              </Row>
+              <br></br>
+              <Row style={{ justifyContent: 'center' }}>
+                <Col>
+                  <Card style={{ width: 'auto', backgroundColor: 'white' }}>
                     <QRCode
                       id="qr-gen"
                       size={128}
                       value={`${window.location.host}/detail/detailcheckin/${id}/${userid}`}
                     />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={24}>
-                    <Button
-                      type="link"
-                      onClick={downloadQRCode}
-                      style={{
-                        textAlign: 'center',
-                        marginBottom: '10px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      Download QR-Code
-                      <VerticalAlignBottomOutlined />
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Button
+                    type="link"
+                    onClick={downloadQRCode}
+                    style={{
+                      textAlign: 'center',
+                      marginBottom: '10px',
+                      marginTop: '10px',
+                    }}
+                  >
+                    Download QR-Code
+                    <VerticalAlignBottomOutlined />
+                  </Button>
+                </Col>
+              </Row>
+              {/* <Row>
                   <Col span={24} style={{ fontSize: '80%' }}>
                     <Button
                       onClick={nextPage}
@@ -169,11 +167,11 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                     </Button>
                   </Col>
                 </Row>
-                <br></br>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+                <br></br> */}
+            </Card>
+          </Col>
+        </Row>
+        {/* </div> */}
       </Content>
 
       <Footer style={{ textAlign: 'center', backgroundColor: '#F4FAF7' }}>

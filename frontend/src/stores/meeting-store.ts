@@ -206,7 +206,7 @@ export const DatamanagementService = () => ({
     const result = await httpClient.put(
       `userattendees/updatestatususer/${idroom}/${userId}`,
     );
-    return result.data;
+    return result?.data;
   },
   updateByid: async (uuid: any, data: any) => {
     const result = await httpClient.put(
@@ -308,11 +308,20 @@ export const DatamanagementService = () => ({
   },
   updateUserDetail: async (roomid: any, userid: any, data: any) => {
     const result = await httpClient.put(
-      `/userattendees/updateUserDetail/${roomid}/${userid}/`,
+      `/userattendees/updateUserDetail/${roomid}/${userid}`,
       data,
     );
-    return result.data;
+    return result?.data;
   },
+  updateUserNoomeet: async (roomid: any, userid: any, data: any) => {
+    const result = await httpClient.put(
+      `/userattendees/updateUserNoomeet/${roomid}/${userid}`,
+      data,
+    );
+    return result?.data;
+  },
+
+  // updateUserNoomeet
   getDetailagenda: async (roomid: string, step: string) => {
     const result = await httpClient.get(
       `/meeting/getDetailagendes/${roomid}/${step}`,
