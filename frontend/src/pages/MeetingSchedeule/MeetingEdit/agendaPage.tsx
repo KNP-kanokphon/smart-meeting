@@ -3,6 +3,7 @@ import {
   Col,
   DatePicker,
   Divider,
+  Form,
   Input,
   Row,
   TimePicker,
@@ -10,80 +11,78 @@ import {
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import TextArea from 'antd/lib/input/TextArea';
-import { props } from 'lodash/fp';
 import { TableBoard } from './createmeeting/TableBoard';
 import { TableAttendee } from './createmeeting/TableAttendee';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { type } from '@testing-library/user-event/dist/type';
 
 interface IProp {
   setDataField: (dataField: any) => void;
-  data?: any;
+  data: any;
   user?: any;
-  nameFilesummary?: any;
+  nameFileoverview: any;
 }
 
 export const AgendaPage: React.FC<IProp> = ({
   setDataField,
   data,
   user,
-  nameFilesummary,
+  nameFileoverview,
 }) => {
+  const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
-
+  const [dataAgenda, setDataAgenda] = useState<any>([]);
   useEffect(() => {
-    // setFileList(nameFilesummary)
-    // console.log(nameFilesummary,'nameFilesummary');
-    // const newNameFilesummary = nameFilesummary.map((x: any, y: any) => {
-    //   console.log(x.type);
-
-    //   if ((x.type = 'fileOverviwe')) return { ...x, name: x.namefile, uid: y };
-    // });
-    // const newNameFilesummary = nameFilesummary.filter(
-    //   (x: any) => x.type === 'fileOverviwe',
-    // );
-    const file: any = [];
-    nameFilesummary.filter((c: any, index: number) => {
-      if (c.type === 'fileOverviwe') {
-        file.push({
-          id: 30,
-          idmeeting: c.idmeeting,
-          namefile: c.namefile,
-          pathfile: c.pathfile,
-          type: 'fileAgenda',
-          step: '0',
-          name: c.namefile,
-          uid: index,
-        });
-      }
+    form.setFieldsValue({
+      title: data[0]?.title,
+      room: data[0]?.room,
+      floor: data[0]?.floor,
+      building: data[0]?.building,
+      meetingPlace: data[0]?.meetingplace,
+      date:
+        typeof data[0]?.day === 'string'
+          ? moment(data[0]?.day, 'YYYY:MM:DD')
+          : data[0]?.day,
+      timeStart:
+        typeof data[0]?.starttime === 'string'
+          ? moment(data[0]?.starttime, 'HH:mm:ss')
+          : data[0]?.starttime,
+      timeEnd:
+        typeof data[0]?.starttime === 'string'
+          ? moment(data[0]?.endtime, 'HH:mm:ss')
+          : data[0]?.endtime,
+      detail: data[0]?.detail,
+      files: nameFileoverview,
     });
-    setFileList(file);
-    const oldanswer = {
-      title: dataAgenda?.title,
-      room: dataAgenda?.room,
-      floor: dataAgenda?.floor,
-      building: dataAgenda?.building,
-      meetingPlace: dataAgenda?.meetingplace,
-      date: dataAgenda?.day,
-      timeStart: dataAgenda?.starttime,
-      timeEnd: dataAgenda?.endtime,
-      detailMeeting: dataAgenda?.detail,
-      fileOverview: file,
-    };
-    setDataField(oldanswer);
-  }, [nameFilesummary]);
-  const onChangeDate = (date: any) => {
-    // console.log(date);
-  };
-  const onChangeStartTime = (time: any) => {
-    // console.log(time);
-  };
-  const onChangeEndTime = (time: any) => {
-    // console.log(time);
-  };
+    setFileList(nameFileoverview);
+    setDataField({
+      title: data[0]?.title,
+      room: data[0]?.room,
+      floor: data[0]?.floor,
+      building: data[0]?.building,
+      meetingPlace: data[0]?.meetingplace,
+      date:
+        typeof data[0]?.day === 'string'
+          ? moment(data[0]?.day, 'YYYY:MM:DD')
+          : data[0]?.day,
+      timeStart:
+        typeof data[0]?.starttime === 'string'
+          ? moment(data[0]?.starttime, 'HH:mm:ss')
+          : data[0]?.starttime,
+      timeEnd:
+        typeof data[0]?.starttime === 'string'
+          ? moment(data[0]?.endtime, 'HH:mm:ss')
+          : data[0]?.endtime,
+      detail: data[0]?.detail,
+      files: nameFileoverview,
+    });
+  }, [data, nameFileoverview]);
+
   const onChangeSetItemFiled = async (filedList: any) => {
     setDataField({ userBoard: filedList });
   };
+
   const onChangeSetItemFiledAtt = async (filedList: any) => {
     setDataField({ userAttendee: filedList });
   };
@@ -98,7 +97,6 @@ export const AgendaPage: React.FC<IProp> = ({
     beforeUpload: (file: any) => {
       setFileList([...fileList, file]);
       setDataField({ fileOverview: [...fileList, file] });
-
       return false;
     },
     fileList,
@@ -106,167 +104,180 @@ export const AgendaPage: React.FC<IProp> = ({
   const setDataAgendaield = (dataField: any) => {
     setDataAgenda((pre: any) => ({ ...pre, ...dataField }));
   };
-  const [dataAgenda, setDataAgenda] = useState<any>([]);
-  useEffect(() => {
-    setDataAgendaield(data[0]);
-  }, [data]);
 
+  const onChangeForm = (values: any, changvalue: any) => {
+    setDataField(changvalue);
+  };
+
+  const dummyRequest = ({ file, onSuccess }: any) => {
+    setTimeout(() => {
+      onSuccess('ok');
+    }, 0);
+  };
   return (
     <>
-      <Col span={24} style={{ marginTop: '20px', marginBottom: '10px' }}>
-        <Row gutter={16}>
-          <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-            เรื่อง
-            <Input
-              value={dataAgenda?.title}
-              onChange={(e: any) => [
-                setDataField({ title: e.target.value }),
-                setDataAgendaield({ title: e.target.value }),
-              ]}
-            />
+      {data && nameFileoverview && (
+        <Form
+          form={form}
+          name="dynamic_form_nest_item"
+          onValuesChange={onChangeForm}
+          autoComplete="off"
+          layout="vertical"
+          // initialValues={{ title: dataAgenda?.title }}
+          // fields={[
+          //   {
+          //     name: ['title'],
+          //     value: dataAgenda?.title,
+          //   },
+          // ]}
+          style={{ marginTop: '20px', marginBottom: '10px' }}
+        >
+          <Col span={24}>
+            <Form.Item
+              label={'เรื่อง'}
+              name={'title'}
+              rules={[{ required: true, message: 'กรุณากรอกเรื่อง' }]}
+            >
+              <Input placeholder="เรื่อง" />
+            </Form.Item>
           </Col>
-        </Row>
-      </Col>
-      <Col span={24} style={{ marginBottom: '10px' }}>
-        <Row gutter={16}>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            ห้องประชุม
-            <Input
-              value={dataAgenda?.room}
-              onChange={(e: any) => [
-                setDataField({ room: e.target.value }),
-                setDataAgendaield({ room: e.target.value }),
-              ]}
-            />
+          <Col span={24}>
+            <Row gutter={16}>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'room'}
+                  label={'ห้อง'}
+                  rules={[{ required: true, message: 'กรุณากรอกห้องประชุม' }]}
+                >
+                  <Input placeholder="ห้องประชุม" />
+                </Form.Item>
+              </Col>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'floor'}
+                  label={'ชั้น'}
+                  rules={[{ required: true, message: 'กรุณากรอกชั้น' }]}
+                >
+                  <Input placeholder="ชั้น" />
+                </Form.Item>
+              </Col>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'building'}
+                  label={'อาคาร'}
+                  rules={[{ required: true, message: 'กรุณากรอกอาคาร' }]}
+                >
+                  <Input placeholder="อาคาร" />
+                </Form.Item>
+              </Col>
+            </Row>
           </Col>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            ชั้น
-            <Input
-              value={dataAgenda?.floor}
-              onChange={(e: any) => [
-                setDataField({ floor: e.target.value }),
-                setDataAgendaield({ floor: e.target.value }),
-              ]}
-            />
+          <Col span={24}>
+            <Row gutter={16}>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Form.Item
+                  name={'meetingPlace'}
+                  label={'สถานที่ประชุม'}
+                  rules={[
+                    { required: true, message: 'กรุณากรอกสถานที่ประชุม' },
+                  ]}
+                >
+                  <Input placeholder="สถานที่ประชุม" />
+                </Form.Item>
+              </Col>
+            </Row>
           </Col>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            อาคาร
-            <Input
-              value={dataAgenda?.building}
-              onChange={(e: any) => [
-                setDataField({ building: e.target.value }),
-                setDataAgendaield({ building: e.target.value }),
-              ]}
-            />
+          <Col span={24}>
+            <Row gutter={16}>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'date'}
+                  label={'วันที่'}
+                  rules={[{ required: true, message: 'กรุณากรอกวันที่' }]}
+                >
+                  <DatePicker style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'timeStart'}
+                  label={'เวลาเริ่ม'}
+                  rules={[{ required: true, message: 'กรุณากรอกเวลาเริ่ม' }]}
+                >
+                  <TimePicker style={{ width: '100%' }} />
+                </Form.Item>
+                {/* <TimePicker
+                  value={
+                    typeof dataAgenda?.starttime === 'string'
+                      ? moment(dataAgenda?.starttime, 'HH:mm:ss')
+                      : dataAgenda?.starttime
+                  }
+                  onChange={(date, dateString) => [
+                    setDataField({ timeStart: date?.format('HH:mm:ss') }),
+                    setDataAgendaield({ starttime: date?.format('HH:mm:ss') }),
+                  ]}
+                  style={{ width: '100%' }}
+                /> */}
+              </Col>
+              <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name={'timeEnd'}
+                  label={'เวลาสิ้นสุด'}
+                  rules={[{ required: true, message: 'กรุณากรอกเวลาสิ้นสุด' }]}
+                >
+                  <TimePicker style={{ width: '100%' }} />
+                </Form.Item>
+                {/* <TimePicker
+                  value={
+                    typeof dataAgenda?.endtime === 'string'
+                      ? moment(dataAgenda?.endtime, 'HH:mm:ss')
+                      : dataAgenda?.endtime
+                  }
+                  onChange={(date, dateString) => [
+                    setDataField({ timeEnd: date?.format('HH:mm:ss') }),
+                    setDataAgendaield({ endtime: date?.format('HH:mm:ss') }),
+                  ]}
+                  style={{ width: '100%' }}
+                /> */}
+              </Col>
+            </Row>
           </Col>
-        </Row>
-      </Col>
-      <Col span={24} style={{ marginBottom: '10px' }}>
-        <Row gutter={16}>
-          <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-            สถานที่ประชุม
-            <Input
-              value={dataAgenda?.meetingplace}
-              onChange={(e: any) => [
-                setDataField({ meetingPlace: e.target.value }),
-                setDataAgendaield({ meetingplace: e.target.value }),
-              ]}
-            />
+          <Col span={24} style={{ marginBottom: '10px' }}>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Form.Item
+                  name={'detail'}
+                  label={'รายละเอียดการประชุม'}
+                  // rules={[{ required: true, message: 'กรุณากรอกเวลาสิ้นสุด' }]}
+                >
+                  <TextArea maxLength={1000} rows={4} />
+                </Form.Item>
+              </Col>
+            </Row>
           </Col>
-        </Row>
-      </Col>
-      <Col span={24} style={{ marginBottom: '10px' }}>
-        <Row gutter={16}>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            วันที่
-            <DatePicker
-              value={
-                typeof dataAgenda?.day === 'string'
-                  ? moment(dataAgenda?.day)
-                  : dataAgenda?.day
-              }
-              onChange={(date, dateString) => [
-                setDataField({ date: dateString }),
-                setDataAgendaield({ day: dateString }),
-              ]}
-              style={{ width: '100%' }}
-            />
+          <Col span={24} style={{ marginBottom: '10px' }}>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Form.Item label={'เอกสารภาพประกอบการประชุม'} name={'files'}>
+                  <Upload {...props}>
+                    <Button
+                      // disabled={fileList.length === 1}
+                      icon={<UploadOutlined />}
+                    >
+                      Click To Upload
+                    </Button>
+                  </Upload>
+                </Form.Item>
+              </Col>
+            </Row>
           </Col>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            เวลาเริ่ม
-            <TimePicker
-              value={
-                typeof dataAgenda?.starttime === 'string'
-                  ? moment(dataAgenda?.starttime, 'HH:mm:ss')
-                  : dataAgenda?.starttime
-              }
-              onChange={(date, dateString) => [
-                setDataField({ timeStart: date?.format('HH:mm:ss') }),
-                setDataAgendaield({ starttime: date?.format('HH:mm:ss') }),
-              ]}
-              style={{ width: '100%' }}
-            />
-          </Col>
-          <Col xs={{ span: 8 }} lg={{ span: 8 }}>
-            เวลาสิ้นสุด
-            <TimePicker
-              value={
-                typeof dataAgenda?.endtime === 'string'
-                  ? moment(dataAgenda?.endtime, 'HH:mm:ss')
-                  : dataAgenda?.endtime
-              }
-              onChange={(date, dateString) => [
-                setDataField({ timeEnd: date?.format('HH:mm:ss') }),
-                setDataAgendaield({ endtime: date?.format('HH:mm:ss') }),
-              ]}
-              style={{ width: '100%' }}
-            />
-          </Col>
-        </Row>
-      </Col>
-      <Col span={24} style={{ marginBottom: '10px' }}>
-        <Row>
-          <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-            รายละเอียดการประชุม
-            <TextArea
-              rows={4}
-              value={dataAgenda?.detail}
-              onChange={(e: any) => [
-                setDataField({ detailMeeting: e.target.value }),
-                setDataAgendaield({ detail: e.target.value }),
-              ]}
-              showCount
-              maxLength={1000}
-            />
-          </Col>
-        </Row>
-      </Col>
-      <Col span={24} style={{ marginBottom: '10px' }}>
-        <Row>
-          <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-            เอกสารภาพประกอบการประชุม
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-            <Upload {...props}>
-              <Button
-                // disabled={fileList.length === 1}
-                icon={<UploadOutlined />}
-              >
-                Click To Upload
-              </Button>
-            </Upload>
-          </Col>
-        </Row>
-      </Col>
-      <Divider />
-      <TableBoard onChangeSetItemFiled={onChangeSetItemFiled} user={user} />
-      <Divider />
-      <TableAttendee
-        onChangeSetItemFiledAtt={onChangeSetItemFiledAtt}
-        user={user}
-      />
+          <Divider />
+          <TableAttendee
+            onChangeSetItemFiledAtt={onChangeSetItemFiledAtt}
+            user={user}
+          />
+        </Form>
+      )}
     </>
   );
 };

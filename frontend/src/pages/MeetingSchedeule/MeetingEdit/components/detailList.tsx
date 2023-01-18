@@ -80,18 +80,18 @@ export const DetailList: React.FC<Props> = ({
       setFileList(newFileList);
     },
     beforeUpload: async (file: any) => {
-      const resultFile = await DatamanagementService().savefileagendas(
-        file,
-        idmeeting,
-        String(step),
-        true,
-      );
+      // const resultFile = await DatamanagementService().savefileagendas(
+      //   file,
+      //   idmeeting,
+      //   String(step),
+      //   true,
+      // );
       setLoading(true);
       setTimeout(() => {
-        if (resultFile) {
-          updateFile(`updatefile`);
-          setLoading(false);
-        }
+        // if (resultFile) {
+        //   updateFile(`updatefile`);
+        //   setLoading(false);
+        // }
       }, 3000);
 
       return false;

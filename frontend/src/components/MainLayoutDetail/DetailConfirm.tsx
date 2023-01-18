@@ -70,7 +70,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     // saveAs(blob, `${namefile}`);
   };
   const getfileOverviwe = async (idfile: string, namefile: string) => {
-    const resultPathfile = await DatamanagementService().getFilesoverview(
+    const resultPathfile = await DatamanagementService().dowloadFileoverview(
       id,
       idfile,
     );

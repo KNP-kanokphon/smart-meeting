@@ -31,7 +31,6 @@ export const TableToday: React.FC = (): React.ReactElement => {
         const dataNew = data.filter((e: any) => {
           const dd = new Date(e.day);
           const dn = new Date();
-          console.log(dd.getDate() === dn.getDate());
 
           if (dd.getDate() === dn.getDate()) {
             return e;

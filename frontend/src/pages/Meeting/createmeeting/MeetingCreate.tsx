@@ -24,21 +24,21 @@ export const CreateMeeting: React.FC = () => {
     setCurrentStep(step);
   };
   const onChangeCurrentCheckStep = (step: number) => {
-    // if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
-    //   message.error(`กรุณากรอกเรื่องของการประชุม`);
-    //   return;
-    // } else if (dataAgenda.date === '' || !dataAgenda.date) {
-    //   message.error(`กรุณากรอกวันที่ของการประชุม`);
-    //   return;
-    // } else if (dataAgenda.timeStart === '' || !dataAgenda.timeStart) {
-    //   message.error(`กรุณากรอกเวลาเริ่มของการประชุม`);
-    //   return;
-    // } else if (dataAgenda.timeEnd === '' || !dataAgenda.timeEnd) {
-    //   message.error(`กรุณากรอกเวลาสิ้นสุดของการประชุม`);
-    //   return;
-    // } else {
-    //   setCurrentStep(step);
-    // }
+    if (dataAgenda.title === '' || typeof dataAgenda.title === 'undefined') {
+      message.error(`กรุณากรอกเรื่องของการประชุม`);
+      return;
+    } else if (dataAgenda.date === '' || !dataAgenda.date) {
+      message.error(`กรุณากรอกวันที่ของการประชุม`);
+      return;
+    } else if (dataAgenda.timeStart === '' || !dataAgenda.timeStart) {
+      message.error(`กรุณากรอกเวลาเริ่มของการประชุม`);
+      return;
+    } else if (dataAgenda.timeEnd === '' || !dataAgenda.timeEnd) {
+      message.error(`กรุณากรอกเวลาสิ้นสุดของการประชุม`);
+      return;
+    } else {
+      setCurrentStep(step);
+    }
     setCurrentStep(step);
   };
 
@@ -143,28 +143,38 @@ export const CreateMeeting: React.FC = () => {
           )
           .then(async data => {
             if (dataAgenda.fileOverview !== undefined) {
-              // const formData = new FormData();
               let namefile = '';
               dataAgenda.fileOverview.map(async (e: any, i: number) => {
                 const formData = new FormData();
                 formData.append('file', e);
-                // namefile = e.name;
-                await DatamanagementService().import(formData, id, e.name, i);
+                await DatamanagementService().uploadFileoverview(
+                  formData,
+                  id,
+                  e.name,
+                  i,
+                );
               });
-              console.log(namefile);
             }
             if (dataDetail['agenda'] !== undefined) {
-              dataDetail['agenda'].map((x: any) => {
+              dataDetail['agenda'].map((x: any, numberstep: number) => {
                 if (x.file !== undefined) {
-                  x.file.fileList.map((e: any, i: string) => {
-                    console.log(e);
-                    DatamanagementService().savefileagendas(e, id, i, false);
+                  x.file.fileList.map((e: any, i: number) => {
+                    const formData = new FormData();
+                    formData.append('file', e.originFileObj);
+                    console.log(e.originFileObj);
+                    DatamanagementService().uploadFileagendas(
+                      formData,
+                      id,
+                      e.name,
+                      i,
+                      numberstep,
+                    );
                   });
                 }
               });
             }
           });
-        navigate('/meeting/meeting-schedule');
+        // navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });

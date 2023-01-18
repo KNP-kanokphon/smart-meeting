@@ -31,6 +31,22 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
   },
+  updatemeeting: async (
+    idmeeting: any,
+    dataAgenda: any,
+    user: any,
+    dataDetail: any,
+    dataFood: any,
+  ) => {
+    const result = await httpClient.put(`/meeting/`, {
+      idmeeting: idmeeting,
+      dataAgenda: dataAgenda,
+      user: user,
+      dataDetail: dataDetail,
+      dataFood: dataFood,
+    });
+    return result.data;
+  },
   createuser: async (data: any) => {
     // console.log(data);
     const result = await httpClient.post(`/userattendees/createuser`, data);
@@ -46,30 +62,6 @@ export const DatamanagementService = () => ({
       userAttendee: userAttendee,
       idmeeting: idmeeting,
     };
-    // const newData: any = [];
-    // userAll.map(
-    //   (x: {
-    //     username: string;
-    //     phone: string;
-    //     email: string;
-    //     model: string;
-    //     position: string;
-    //     uuid: string;
-    //     idmeeting: string;
-    //     checkin: boolean;
-    //   }) => {
-    //     newData.push({
-    //       username: x.username,
-    //       email: x.email,
-    //       phone: x.phone,
-    //       model: x.model,
-    //       position: x.position,
-    //       uuid: x.uuid,
-    //       idmeeting: idmeeting,
-    //       checkin: false,
-    //     });
-    //   },
-    // );
 
     const result = await httpClient.post(`/userattendees/`, newData);
     return result.data;
@@ -108,9 +100,14 @@ export const DatamanagementService = () => ({
 
     return result.data;
   },
-  import: async (file: any, id: string, namefile: string, idfile: number) => {
+  uploadFileoverview: async (
+    file: any,
+    id: any,
+    namefile: string,
+    idfile: number,
+  ) => {
     const result = await httpClient.post(
-      `/meeting/import/${id}/${namefile}/${idfile}`,
+      `/meeting/uploadfileoverview/${id}/${namefile}/${idfile}`,
       file,
       {
         headers: {
@@ -120,18 +117,34 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
+  uploadFileagendas: async (
+    file: any,
+    idmeeting: any,
+    namefile: string,
+    filenumber: number,
+    numberstep: number,
+  ) => {
+    const result = await httpClient.post(
+      `/meeting/uploadfileagendas/${idmeeting}/${namefile}/${filenumber}/${numberstep}`,
+      file,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return result;
+  },
   getuserInroom: async (roomid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}`);
     return result.data;
   },
-  getFilesoverview: async (roomid: any, namefile: string) => {
+  dowloadFileoverview: async (roomid: any, namefile: string) => {
     const data = {
       roomid: roomid,
       namefile: namefile,
     };
-    const result = await httpClient.post(`/meeting/getfileoverview`, data);
-    console.log(result);
-
+    const result = await httpClient.post(`/meeting/dowloadfileoverview`, data);
     return result.data;
   },
 
@@ -169,25 +182,7 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/meeting/agenda`, newData);
     return result.data;
   },
-  savefileagendas: async (
-    file: any,
-    id: string,
-    step: string,
-    update: boolean,
-  ) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const result = await httpClient.post(
-      `/meeting/agendafile/${id}/${step}`,
-      update === true ? formData : file,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    );
-    return result;
-  },
+
   deletefileagendas: async (
     idmeeting: string,
     step: string,
@@ -215,12 +210,6 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
-  // getUserByid: async (userid: any) => {
-  //   const result = await httpClient.get(
-  //     `user/getuserbyid/${userid}`,
-  //   );
-  //   return result.data;
-  // },
   importPosition: async (data: any, type: any) => {
     const newData = {
       data: data,
@@ -390,34 +379,40 @@ export const DatamanagementService = () => ({
     });
     return result.data;
   },
-  updatemeeting: async (
-    id: any,
-    dataAgenda: any,
-    getLastdata: any,
-    dataFood: any,
-    oldFileupdate: any,
+  updateFileoverview: async (
+    file: any,
+    idmeeting: any,
+    namefile: string,
+    idfile: number,
   ) => {
-    const result = await httpClient.post(`/meeting/updatemeeting`, {
-      id: id,
-      dataAgenda: dataAgenda,
-      getLastdata: getLastdata,
-      dataFood: dataFood,
-      oldFileupdate: oldFileupdate,
-    });
-    return result.data;
-  },
-  updatefileOverviwe: async (roomid: any, files: any) => {
-    const result = await httpClient.post(
-      `/meeting/updatefileoverviwe/${roomid}`,
-      files,
+    const result = await httpClient.put(
+      `/meeting/import/${idmeeting}/${namefile}/${idfile}`,
+      file,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        responseType: 'arraybuffer',
       },
     );
     return result.data;
+  },
+  updateFileagendas: async (
+    file: any,
+    idmeeting: any,
+    namefile: string,
+    filenumber: number,
+    numberstep: number,
+  ) => {
+    const result = await httpClient.put(
+      `/meeting/updatefileagendas/${idmeeting}/${namefile}/${filenumber}/${numberstep}`,
+      file,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return result;
   },
   getGroup: async () => {
     const result = await httpClient.get(`user/groupall`);
@@ -458,6 +453,35 @@ export const DatamanagementService = () => ({
     const result = await httpClient.put(
       `/userattendees/updateGroup/${uuid}`,
       newData,
+    );
+    return result?.data;
+  },
+  /////////////////////// update
+  getFileoverview: async (idroom: any) => {
+    const result = await httpClient.get(`/meeting/getFileoverview/${idroom}`);
+    return result?.data;
+  },
+  getFileagenda: async (idroom: any) => {
+    const result = await httpClient.get(`/meeting/getFileagenda/${idroom}`);
+    return result?.data;
+  },
+  updateoldFileoverview: async (data: any) => {
+    const result = await httpClient.post(`meeting/updateoldFileoverview`, data);
+    return result?.data;
+  },
+  updateoldFileagenda: async (data: any) => {
+    const result = await httpClient.post(`meeting/updateoldFileagenda`, data);
+    return result?.data;
+  },
+  removeFileoverviewAll: async (idroom: any) => {
+    const result = await httpClient.delete(
+      `meeting/deletefileoverviewAll/${idroom}`,
+    );
+    return result?.data;
+  },
+  removeFileagendesAll: async (idroom: any, number: number) => {
+    const result = await httpClient.delete(
+      `meeting/deletefileagendesAll/${idroom}/${number}`,
     );
     return result?.data;
   },

@@ -1,4 +1,4 @@
-import { Button, Col, Input, Modal, Row, Select, Table } from 'antd';
+import { Button, Col, Divider, Input, Modal, Row, Select, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -115,22 +115,6 @@ export const TableAttendee: React.FC<Props> = ({
   return (
     <>
       <Col span={24}>
-        <Row>
-          {/* <Col style={{ textAlign: 'left' }} offset={2} span={20}></Col> */}
-          <Col span={2}>
-            <Button
-              onClick={handleAdd}
-              style={{
-                marginBottom: 16,
-                color: 'white',
-                background: '#1E6541',
-              }}
-            >
-              <PlusOutlined />
-              เพิ่มผู้เข้าร่วม
-            </Button>
-          </Col>
-        </Row>
         <Table
           rowClassName={() => 'editable-row'}
           bordered
@@ -143,6 +127,23 @@ export const TableAttendee: React.FC<Props> = ({
           <Col xs={{ span: 5, offset: 1 }} lg={{ span: 22, offset: 2 }}></Col>
         </Row>
       </Col>
+      <Divider />
+      <Row>
+        {/* <Col style={{ textAlign: 'left' }} offset={2} span={20}></Col> */}
+        <Col span={2}>
+          <Button
+            onClick={handleAdd}
+            style={{
+              marginBottom: 16,
+              color: 'white',
+              background: '#1E6541',
+            }}
+          >
+            <PlusOutlined />
+            เพิ่มผู้เข้าร่วม
+          </Button>
+        </Col>
+      </Row>
       <Modal
         title="แก้ใขข้อมูล"
         open={isEditing}

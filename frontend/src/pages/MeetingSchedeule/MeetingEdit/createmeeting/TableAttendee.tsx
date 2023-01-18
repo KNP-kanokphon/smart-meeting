@@ -1,4 +1,4 @@
-import { Button, Col, Input, Modal, Row, Select, Table } from 'antd';
+import { Button, Col, Divider, Input, Modal, Row, Select, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,6 +22,8 @@ export const TableAttendee: React.FC<Props> = ({
   const [editingStudent, setEditingStudent] = useState<any>();
   const [username, setUsername] = useState<any>([]);
   const [defaultUser, setDefaultUser] = useState<any>([]);
+  // console.log(user);
+
   useEffect(() => {
     // const newData = user.map((e: any, i: number) => {
     //   if(e.type === 'userBoard'){
@@ -31,17 +33,14 @@ export const TableAttendee: React.FC<Props> = ({
     //   };}
     // });
 
-    const newData = user.reduce((newData: any, thing: any) => {
-      if (thing.type === 'userAttendee') {
-        newData.push(thing);
-      }
-      return newData;
-    }, []);
-
-    // console.log(newData,'newdata');
-
-    setDefaultUser(newData);
-    setDataSourceAttendee(newData);
+    // const newData = user.reduce((newData: any, thing: any) => {
+    //   if (thing.type === 'userAttendee') {
+    //     newData.push(thing);
+    //   }
+    //   return newData;
+    // }, []);
+    setDefaultUser(user);
+    setDataSourceAttendee(user);
   }, [user]);
 
   useEffect(() => {
@@ -133,22 +132,6 @@ export const TableAttendee: React.FC<Props> = ({
   return (
     <>
       <Col span={24}>
-        <Row>
-          {/* <Col style={{ textAlign: 'left' }} offset={2} span={20}></Col> */}
-          <Col span={2}>
-            <Button
-              onClick={handleAdd}
-              style={{
-                marginBottom: 16,
-                color: 'white',
-                background: '#1E6541',
-              }}
-            >
-              <PlusOutlined />
-              เพิ่มผู้เข้าร่วม
-            </Button>
-          </Col>
-        </Row>
         <Table
           rowClassName={() => 'editable-row'}
           bordered
@@ -161,6 +144,22 @@ export const TableAttendee: React.FC<Props> = ({
           <Col xs={{ span: 5, offset: 1 }} lg={{ span: 22, offset: 2 }}></Col>
         </Row>
       </Col>
+      <Divider />
+      <Row>
+        <Col span={2}>
+          <Button
+            onClick={handleAdd}
+            style={{
+              marginBottom: 16,
+              color: 'white',
+              background: '#1E6541',
+            }}
+          >
+            <PlusOutlined />
+            เพิ่มผู้เข้าร่วม
+          </Button>
+        </Col>
+      </Row>
       <Modal
         title="แก้ใขข้อมูล"
         open={isEditing}
@@ -218,58 +217,6 @@ export const TableAttendee: React.FC<Props> = ({
               );
             })}
           </Select>
-          {/* <Row>
-            ชื่อ - นามสกุลผู้เข้าร่วมประชุม
-            <Input
-              value={editingStudent?.username}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, username: e.target.value };
-                });
-              }}
-            />
-            ตำแหน่งสมาคม
-            <Select
-              value={editingStudent?.position}
-              style={{ width: '100%' }}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, position: e };
-                });
-              }}
-            >
-              <Option value="กรรมการบริหาร">กรรมการบริหาร</Option>
-              <Option value="เลขาธิการสมาคม">เลขาธิการสมาคม</Option>
-              <Option value="รองสมาคม">รองสมาคม</Option>
-              <Option value="กรรมการสมาคม">กรรมการสมาคม</Option>
-              <Option value="สมาชิกสมาคม">สมาชิกสมาคม</Option>
-            </Select>
-            หลักสูตร
-            <Select
-              value={editingStudent?.course}
-              style={{ width: '100%' }}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, course: e };
-                });
-              }}
-            >
-              <Option value="1">1</Option>
-              <Option value="2">2</Option>
-              <Option value="3">3</Option>
-              <Option value="4">4</Option>
-              <Option value="5">5</Option>
-            </Select>
-            เบอร์โทรศัพท์
-            <Input
-              value={editingStudent?.phone}
-              onChange={e => {
-                setEditingStudent((pre: any) => {
-                  return { ...pre, phone: e.target.value };
-                });
-              }}
-            />
-          </Row> */}
         </Col>
       </Modal>
     </>

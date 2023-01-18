@@ -64,7 +64,7 @@ export const DetailCheckin: React.FC<Props> = ({
     setPosition(resultPosition);
     setUserprofileContracts(resultProfiles[0]);
   };
-  console.log(UserProfileContract);
+  // console.log(UserProfileContract);
 
   const getFiles = async (roomid: string, step: any, namefile: string) => {
     const data = await DatamanagementService().getPathFileStep(
@@ -85,7 +85,7 @@ export const DetailCheckin: React.FC<Props> = ({
     // saveAs(blob, `${namefile}`);
   };
   const getfileOverviwe = async (namefile: string) => {
-    const resultPathfile = await DatamanagementService().getFilesoverview(
+    const resultPathfile = await DatamanagementService().dowloadFileoverview(
       id,
       namefile,
     );
