@@ -58,7 +58,7 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   };
 
   const navigate = useNavigate();
-  const onChange = async () => {
+  const onChangeMeet = async () => {
     const resultUpdate = await DatamanagementService().updateStatusUser(
       roomid,
       userid,
@@ -69,6 +69,24 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
       navigate(`/stepthree/${roomid}/${userid}`);
     }
   };
+
+  const onChangeNoMeet = async () => {
+    const dataNomeet = {
+      data: {
+        confirm: false,
+        checkin: true,
+      },
+    };
+    const resultUpdate = await DatamanagementService().updateUserNoomeet(
+      roomid,
+      userid,
+      dataNomeet,
+    );
+    if (resultUpdate) {
+      navigate(`/detailnomeet/${roomid}/${userid}`);
+    }
+  };
+
   return (
     <Layout className="layout">
       <Header
@@ -77,16 +95,15 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
           padding: 0,
           borderBottom: '1px solid #F0F0F0',
         }}
-      ></Header>
+      />
 
       <Content
         style={{
           padding: '10px 10px',
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
-          // paddingBottom: '10px',
-          height: '80vh',
-          overflow: 'scroll',
+          height: '85vh',
+          overflowY: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
@@ -407,18 +424,31 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
                   </Col> */}
                 </Row>
                 <br></br>
-                <Row>
-                  <Col span={24}>
+                <Row gutter={16}>
+                  <Col span={12} style={{ textAlign: 'right' }}>
                     <Button
                       style={{
                         textAlign: 'center',
-                        width: 'auto',
+                        width: '100px',
                         backgroundColor: '#1E6541',
                         color: '#ffffff',
                       }}
-                      onClick={onChange}
+                      onClick={onChangeMeet}
                     >
-                      ยืนยัน
+                      เข้าร่วม
+                    </Button>
+                  </Col>
+                  <Col span={12} style={{ textAlign: 'left' }}>
+                    <Button
+                      style={{
+                        textAlign: 'center',
+                        width: '100px',
+                        backgroundColor: '#DB1F48',
+                        color: '#ffffff',
+                      }}
+                      onClick={onChangeNoMeet}
+                    >
+                      ไม่เข้าร่วม
                     </Button>
                   </Col>
                 </Row>

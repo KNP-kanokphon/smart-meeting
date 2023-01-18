@@ -130,7 +130,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             course: e[8] === null ? [] : [],
             course1: e[9] === null ? [] : [],
             model: e[10] === null ? null : e[10],
-            position: e[11] === null ? [] : [],
+            position: e[11] === null ? [] : positionid,
             // position: e[11] === null ? undefined : e[11],
             studentid: e[12] === null ? null : e[12],
             username_eng: e[3] === null ? null : e[3],
@@ -342,6 +342,7 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
             },
             {
               label: `รายละเอียดผู้ใช้บริการ`,
+
               key: '2',
               children: (
                 <>
@@ -352,7 +353,6 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
           ]}
         />
       </Card>
-      {/* <TableMemberShip /> */}
     </Row>
   );
 };

@@ -116,8 +116,8 @@ export const DetailCheckin: React.FC<Props> = ({
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
           // paddingBottom: '30px',
-          height: '80vh',
-          overflow: 'scroll',
+          height: '85vh',
+          overflowY: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
@@ -613,7 +613,7 @@ export const DetailCheckin: React.FC<Props> = ({
                 </Row>
                 <Row>
                   <Col
-                    xs={8}
+                    xs={24}
                     sm={4}
                     md={{ span: 3, offset: 4 }}
                     lg={{ span: 3, offset: 4 }}
@@ -632,11 +632,11 @@ export const DetailCheckin: React.FC<Props> = ({
                         marginTop: '5px',
                       }}
                     >
-                      {'ดาวน์โหลดเอกสาร :'}
+                      {'ดาวน์โหลดเอกสาร '}
                     </Typography>
                   </Col>
                   <Col
-                    xs={16}
+                    xs={24}
                     sm={20}
                     md={16}
                     lg={16}
@@ -671,7 +671,7 @@ export const DetailCheckin: React.FC<Props> = ({
 
                 <Row>
                   <Col
-                    xs={8}
+                    xs={12}
                     sm={4}
                     md={{ span: 3, offset: 4 }}
                     lg={{ span: 3, offset: 4 }}
@@ -682,7 +682,7 @@ export const DetailCheckin: React.FC<Props> = ({
                       paddingRight: '10px',
                     }}
                   >
-                    <b>{'Agenda Item '}</b>
+                    <b>{'วาระการประชุม'}</b>
                   </Col>
                   <Col
                     xs={24}

@@ -166,14 +166,6 @@ export const ListMeeting: React.FC<Props> = ({ children, extra }) => {
                 </Button>
               </Col>
             </Row>
-
-            {/* <Row>
-              <Col span={8}></Col>
-              <Col span={8}>
-                <Button onClick={downloadQRCode}>dowloads</Button>
-              </Col>
-              <Col span={8}></Col>
-            </Row> */}
           </>
         );
       },

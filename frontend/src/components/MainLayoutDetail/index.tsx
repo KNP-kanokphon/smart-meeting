@@ -65,8 +65,8 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
           // paddingBottom: '30px',
-          height: '80vh',
-          overflow: 'scroll',
+          height: '85vh',
+          overflowY: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
@@ -343,7 +343,7 @@ export const MainLayoutDetail: React.FC<Props> = ({ baseURL }) => {
                       }}
                       onClick={onChange}
                     >
-                      Submit
+                      ต่อไป
                     </Button>
                   </Col>
                 </Row>

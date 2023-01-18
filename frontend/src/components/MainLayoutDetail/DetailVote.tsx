@@ -157,8 +157,8 @@ export const DetailVote: React.FC<Props> = ({
           backgroundColor: '#F4FAF7',
           paddingTop: '20px',
           // paddingBottom: '10px',
-          height: '80vh',
-          overflow: 'scroll',
+          height: '85vh',
+          overflowY: 'scroll',
         }}
       >
         <div className="site-card-wrapper">
