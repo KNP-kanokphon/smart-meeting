@@ -26,6 +26,11 @@ import { PartyQRcodeCheckout } from './components/MainLayoutParty/PartyQRcodeChe
 import { DetailVote } from './components/MainLayoutDetail/DetailVote';
 import { DetailCheckin } from './components/MainLayoutDetail/DetailCheckin';
 import { DetailNoMeeting } from './components/MainLayoutDetail/DetailNoMeeting';
+import { Showqrcodevote } from './pages/voteagendes/showqrcodevote';
+import { Loginvoteadmin } from './pages/voteagendes/loginvoteadmin';
+import { Loginvote } from './pages/voteagendes/loginvote';
+import { Votedetail } from './pages/voteagendes/votestep/votedetail';
+import { Voteresolution } from './pages/voteagendes/votestep/vote';
 
 const App = () => {
   return (
@@ -109,7 +114,6 @@ const App = () => {
           ></Route>
         </Routes>
       </BrowserRouter>
-      {/* DetailCheckin */}
       <BrowserRouter basename={'/detailvote'}>
         <Routes>
           <Route
@@ -126,15 +130,6 @@ const App = () => {
           ></Route>
         </Routes>
       </BrowserRouter>
-      {/* <BrowserRouter basename={'/detailnomeet'}>
-        <Routes>
-          <Route
-            path="/:roomid/:userid"
-            element={<DetailNoMeeting baseURL={'/detailnomeet'} />}
-          ></Route>
-        </Routes>
-      </BrowserRouter> */}
-
       <BrowserRouter basename={'/profile'}>
         <Routes>
           <Route
@@ -152,20 +147,6 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <BrowserRouter basename={'/meeting'}>
-        {/* <Routes>
-              <Route path="/" element={<MainLayout />}>
-                <Route
-                  index
-                  element={<Navigate to={menuItems[0].path} replace />}
-                />
-                {menuItems.map(x => (
-                  <Route key={x.key} path={x.path} element={<Outlet />}>
-                    {x.component}
-                  </Route>
-                ))}
-              </Route>
-              <Route path="*" element={<Navigate to={defaultPath} replace />} />
-            </Routes> */}
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Navigate to="meeting" replace />} />
@@ -176,6 +157,27 @@ const App = () => {
             ))}
           </Route>
           <Route path="*" element={<Navigate to={defaultPath} replace />} />
+        </Routes>
+      </BrowserRouter>
+      <BrowserRouter basename={'/vote'}>
+        <Routes>
+          <Route path="/:roomid/:step" element={<Loginvoteadmin />}></Route>
+          <Route
+            path="/success/:roomid/:step"
+            element={<Showqrcodevote />}
+          ></Route>
+          <Route
+            path="/loginvote/:roomid/:step"
+            element={<Loginvote />}
+          ></Route>
+          <Route
+            path="/votedetail/:roomid/:step"
+            element={<Votedetail />}
+          ></Route>
+          <Route
+            path="/voteresolution/:roomid/:step"
+            element={<Voteresolution />}
+          ></Route>
         </Routes>
       </BrowserRouter>
       <BrowserRouter basename={'/'}>

@@ -33,13 +33,18 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
   const [agenda, setAgenda] = useState<any>();
   const [user, setUser] = useState<any>();
   const [food, setFood] = useState<any>([]);
-  // console.log(meetingData?.starttime.substring(0, 5));
   const [userprofile, setUserprofile] = useState<any>([]);
+  const [confirm, setConfirm] = useState<boolean>(false);
   const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
 
   useEffect(() => {
     getDataProfile();
   }, []);
+
+  const nextPage = () => {
+    navigate(`/stepthree/${roomid}/${userid}`);
+  };
+
   const getDataProfile = async () => {
     const result = await DatamanagementService().getMeetingByid(roomid);
     const resultAgenda = await DatamanagementService().getagendaByid(roomid);
@@ -54,6 +59,10 @@ export const DetailAlready: React.FC<Props> = ({ baseURL }) => {
     setAgenda(resultAgenda);
     setMeetingData(result[0]);
     setUser(resultUser[0]);
+    setConfirm(resultUser[0].confirm);
+    if (resultUser[0].confirm === true) {
+      nextPage();
+    }
     setUserprofileContracts(resultProfiles[0]);
   };
 

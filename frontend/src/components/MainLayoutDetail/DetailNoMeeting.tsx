@@ -77,26 +77,25 @@ export const DetailNoMeeting: React.FC<Props> = ({
     setUserprofileContracts(resultProfiles[0]);
   };
 
-  const getFiles = async (roomid: string, step: any, namefile: string) => {
-    const data = await DatamanagementService().getPathFileStep(
-      roomid,
-      step,
-      namefile,
-    );
+  // const getFiles = async (roomid: string, step: any, namefile: string) => {
+  //   const data = await DatamanagementService().getPathFileStep(
+  //     roomid,
+  //     step,
+  //     namefile,
+  //   );
 
-    const url = window.URL.createObjectURL(
-      new Blob([new Uint8Array(data.data).buffer]),
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${namefile}`);
-    document.body.appendChild(link);
-    link.click();
-    // const blob = new Blob([data], { type: 'application/pdf' });
-    // saveAs(blob, `${namefile}`);
-  };
+  //   const url = window.URL.createObjectURL(
+  //     new Blob([new Uint8Array(data.data).buffer]),
+  //   );
+  //   const link = document.createElement('a');
+  //   link.href = url;
+  //   link.setAttribute('download', `${namefile}`);
+  //   document.body.appendChild(link);
+  //   link.click();
+  // };
+
   const getfileOverviwe = async (namefile: string) => {
-    const resultPathfile = await DatamanagementService().getFilesoverview(
+    const resultPathfile = await DatamanagementService().dowloadFileoverview(
       id,
       namefile,
     );

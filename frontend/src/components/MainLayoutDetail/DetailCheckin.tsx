@@ -6,7 +6,7 @@ import {
   Row,
   Col,
   Card,
-  Input,
+  Modal,
   Space,
   Typography,
   Divider,
@@ -22,6 +22,7 @@ import {
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import dayjs from 'dayjs';
+import { Module } from 'module';
 
 const { Content, Sider, Header, Footer } = Layout;
 
@@ -64,23 +65,21 @@ export const DetailCheckin: React.FC<Props> = ({
     setPosition(resultPosition);
     setUserprofileContracts(resultProfiles[0]);
   };
-  // console.log(UserProfileContract);
 
   const getFiles = async (roomid: string, step: any, namefile: string) => {
-    const data = await DatamanagementService().getPathFileStep(
-      roomid,
-      step,
-      namefile,
-    );
-
-    const url = window.URL.createObjectURL(
-      new Blob([new Uint8Array(data.data).buffer]),
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${namefile}`);
-    document.body.appendChild(link);
-    link.click();
+    // const data = await DatamanagementService().getPathFileStep(
+    //   roomid,
+    //   step,
+    //   namefile,
+    // );
+    // const url = window.URL.createObjectURL(
+    //   new Blob([new Uint8Array(data.data).buffer]),
+    // );
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', `${namefile}`);
+    // document.body.appendChild(link);
+    // link.click();
     // const blob = new Blob([data], { type: 'application/pdf' });
     // saveAs(blob, `${namefile}`);
   };
@@ -97,6 +96,32 @@ export const DetailCheckin: React.FC<Props> = ({
     link.setAttribute('download', `${namefile}`);
     document.body.appendChild(link);
     link.click();
+  };
+
+  useEffect(() => {
+    countDown();
+  }, []);
+
+  const countDown = async () => {
+    await DatamanagementService().updateStatuscheckin(id, userid, true);
+    let secondsToGo = 3;
+
+    const modal = Modal.success({
+      title: 'เช็คอิน',
+      content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
+    });
+
+    const timer = setInterval(() => {
+      secondsToGo -= 1;
+      modal.update({
+        content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      modal.destroy();
+    }, secondsToGo * 1000);
   };
   return (
     <Layout className="layout">
@@ -669,7 +694,7 @@ export const DetailCheckin: React.FC<Props> = ({
                   </Col>
                 </Row>
 
-                <Row>
+                {/* <Row>
                   <Col
                     xs={12}
                     sm={4}
@@ -723,7 +748,7 @@ export const DetailCheckin: React.FC<Props> = ({
                       );
                     })}
                   </Col>
-                </Row>
+                </Row> */}
               </Card>
             </Col>
           </Row>

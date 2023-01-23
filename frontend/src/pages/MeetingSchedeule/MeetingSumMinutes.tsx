@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Col,
@@ -11,14 +12,9 @@ import {
   message,
   Space,
 } from 'antd';
-import type { TabsProps } from 'antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadOutlined, LeftCircleOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import type { RcFile, UploadFile } from 'antd/es/upload/interface';
-import { saveAs } from 'file-saver';
 
-import React, { useEffect, useState } from 'react';
 import { DatamanagementService } from '../../stores/meeting-store';
 import { DetailSumMinutes } from './table/detailSumMinutes';
 // import { Icon } from '@iconify/react';
@@ -82,13 +78,13 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
     );
   };
   const getFiles = async (namefile: string) => {
-    const data = await DatamanagementService().getPathFileStep(
-      state,
-      null,
-      namefile,
-    );
-    const blob = new Blob([data], { type: 'application/pdf' });
-    saveAs(blob, `${namefile}`);
+    // const data = await DatamanagementService().getPathFileStep(
+    //   state,
+    //   null,
+    //   namefile,
+    // );
+    // const blob = new Blob([data], { type: 'application/pdf' });
+    // saveAs(blob, `${namefile}`);
   };
   return (
     <React.Fragment>

@@ -279,20 +279,36 @@ export const DatamanagementService = () => ({
   //   return result.data;
   // },
 
-  getPathFileStep: async (roomid: any, step: any, namefile: string) => {
-    const result = await httpClient.get(
-      `/meeting/getfilestep/${roomid}/${step}/${namefile}`,
-    );
+  dowloadPathFileStep: async (
+    idfile: string,
+    roomid: any,
+    step: any,
+    namefile: string,
+  ) => {
+    const result = await httpClient.post(`/meeting/getfilestep`, {
+      idfile: idfile,
+      roomid: roomid,
+      step: step,
+      namefile: namefile,
+    });
     return result.data;
   },
   getDetailfood: async (roomid: any) => {
     const result = await httpClient.get(`/meeting/detailfood/${roomid}`);
     return result.data;
   },
-  updateStatusFood: async (roomid: any, userid: any, status: boolean) => {
-    const result = await httpClient.put(
-      `/userattendees/foodupdate/${roomid}/${userid}/${status}`,
-    );
+  updateStatusFood: async (
+    roomid: any,
+    userid: any,
+    statusfood: boolean,
+    statusgift: boolean,
+  ) => {
+    const result = await httpClient.post(`/userattendees/foodupdate`, {
+      roomid: roomid,
+      userid: userid,
+      statusfood: statusfood,
+      statusgift: statusgift,
+    });
     return result.data;
   },
   updateUserDetail: async (roomid: any, userid: any, data: any) => {
@@ -311,9 +327,9 @@ export const DatamanagementService = () => ({
   },
 
   // updateUserNoomeet
-  getDetailagenda: async (roomid: string, step: string) => {
+  findAagendesdetailbyid: async (roomid: any, step: any) => {
     const result = await httpClient.get(
-      `/meeting/getDetailagendes/${roomid}/${step}`,
+      `/meeting/findagendesdetailbyid/${roomid}/${step}`,
     );
     return result.data;
   },
@@ -492,6 +508,41 @@ export const DatamanagementService = () => ({
     const result = await httpClient.delete(
       `meeting/deletefileagendesAll/${idroom}/${number}`,
     );
+    return result?.data;
+  },
+  getStatusProfile: async (roomid: any, userid: any) => {
+    const result = await httpClient.post(`userattendees/getstatusprofile`, {
+      roomid: roomid,
+      userid: userid,
+    });
+    return result?.data;
+  },
+  updateStatuscheckin: async (
+    roomid: any,
+    userid: any,
+    statuschckin: boolean,
+  ) => {
+    const result = await httpClient.post(`userattendees/updatestatuscheckin`, {
+      roomid: roomid,
+      userid: userid,
+      statuschckin: statuschckin,
+    });
+    return result?.data;
+  },
+  loginbyphonenumber: async (idroom: any, phonenumber: string) => {
+    const result = await httpClient.post(`userattendees/loginbyphonenumber`, {
+      idroom: idroom,
+      phonenumber: phonenumber,
+    });
+    return result?.data;
+  },
+  vote: async (roomid: any, type: any, userid: any, step: any) => {
+    const result = await httpClient.post(`meeting/vote`, {
+      roomid: roomid,
+      type: type,
+      userid: userid,
+      step: step,
+    });
     return result?.data;
   },
 });

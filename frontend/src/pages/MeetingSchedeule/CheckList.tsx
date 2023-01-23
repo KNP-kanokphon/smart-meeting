@@ -19,8 +19,8 @@ import {
   // Divider,
 } from 'antd';
 import { Icon } from '@iconify/react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import {
   EditFilled,
   EllipsisOutlined,
@@ -28,6 +28,7 @@ import {
   CheckCircleFilled,
   CloseCircleFilled,
   InfoCircleOutlined,
+  CopyOutlined,
 } from '@ant-design/icons';
 import QRCode from 'qrcode.react';
 import { DatamanagementService } from '../../stores/meeting-store';
@@ -35,24 +36,20 @@ import { DatamanagementService } from '../../stores/meeting-store';
 export const CheckList: React.FC = (): React.ReactElement => {
   const { Title } = Typography;
   const { state } = useLocation();
-  const [dataIntable, setDataIntable] = useState<any>([]);
+  const navigate = useNavigate();
+  const [dataMeeing, setDatameeing] = useState<any>([]);
+  const [dataAgendes, setDataagendes] = useState<any>([]);
+
   const [dataUser, setDataUser] = useState<any>([]);
   const [Count, setCount] = useState<any>(0);
   const [CountPlus, setCountPlus] = useState<any>(0);
   const [CountDel, setCountDel] = useState<any>(0);
-
-  // console.log(dataUser);
-
-  const navigate = useNavigate();
-  // const [positionName, setPositionName] = useState<
-  //   [{ id: string; uuid: string; nameposition: string; createdate: string }]
-  // >([{ id: '', uuid: '', nameposition: '', createdate: '' }]);
-
   const [positionName, setPositionName] = useState<any>([]);
   const [UsernameFilter, setUsernameFilter] = useState<any>([]);
   const [PositionFilter, setPositionFilter] = useState<any>([]);
   const [CheckinFilter, setCheckinFilter] = useState<any>([]);
   const [MeetingFilter, setMeetFilter] = useState<any>([]);
+  const [peopleall, setPeopleall] = useState<any>([]);
 
   useEffect(() => {
     getListmeeting();
@@ -62,12 +59,22 @@ export const CheckList: React.FC = (): React.ReactElement => {
     await DatamanagementService()
       .getMeetingByid(state)
       .then(data => {
-        setDataIntable(data);
+        setDatameeing(data);
+      });
+
+    await DatamanagementService()
+      .getagendaByid(state)
+      .then(data => {
+        console.log(data);
+
+        setDataagendes(data);
       });
 
     await DatamanagementService()
       .getuserInroom(String(state))
       .then(async (data: any) => {
+        setPeopleall(data.length);
+
         const PositionAll = await DatamanagementService().getPositionall();
         setPositionName(PositionAll);
         // data meeting
@@ -81,6 +88,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
             statuscheckin: e.checkin,
             position: e.position,
             statusconfirm: e.confirm,
+            foodstatus: e.foodstatus,
+            gifstatus: e.gifstatus === null ? false : e.gifstatus,
           };
         });
         let plus = 0;
@@ -254,21 +263,20 @@ export const CheckList: React.FC = (): React.ReactElement => {
       dataIndex: 'uuidprofile',
       key: 'uuidprofile',
       width: '5%',
-      render: (data: any) => {
+      render: (index: any, data: any) => {
+        let link = '';
+        if (data.statuscheckin === false) {
+          link = `${window.origin}/detail/detailalready/${state}/${index}`;
+        } else {
+          link = `${window.origin}/detail/detailconfirm/${state}/${index}`;
+        }
+
         return (
-          <Popover
-            content={`${window.origin}/detail/detailalready/${state}/${data}`}
-          >
-            <a
-              style={{ color: 'rgb(30, 101, 65)' }}
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  `${window.origin}/detail/detailalready/${state}/${data}`,
-                )
-              }
-            >
-              Link
-            </a>
+          <Popover content={link}>
+            <Button
+              icon={<CopyOutlined />}
+              onClick={() => navigator.clipboard.writeText(link)}
+            />
           </Popover>
         );
       },
@@ -323,7 +331,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
     },
     {
       title: 'สถานะอาหารว่าง',
-      dataIndex: '',
+      dataIndex: 'foodstatus',
       key: '',
       width: '10%',
       render: (text: any) => {
@@ -346,7 +354,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
     },
     {
       title: 'สถานะรับของที่ระลึก',
-      dataIndex: '',
+      dataIndex: 'gifstatus',
       key: '',
       width: '10%',
       render: (text: any) => {
@@ -368,6 +376,89 @@ export const CheckList: React.FC = (): React.ReactElement => {
       },
     },
   ];
+
+  const columnsVoting: any = [
+    {
+      title: 'วาระที่',
+      dataIndex: 'step',
+      key: 'step',
+      width: '5%',
+      fixed: 'left',
+      align: 'center',
+    },
+    {
+      title: 'เรื่อง',
+      dataIndex: 'agendes',
+      key: 'agendes',
+      width: '40%',
+    },
+    {
+      title: 'link สำหรับโหวต',
+      dataIndex: 'step',
+      key: 'step',
+      width: '10%',
+      align: 'center',
+      render: (text: any) => {
+        return (
+          <Popover content={`${window.origin}/vote/${state}/${text}`}>
+            <Button
+              icon={<CopyOutlined />}
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  `${window.origin}/vote/${state}/${text}`,
+                )
+              }
+            />
+          </Popover>
+        );
+      },
+    },
+    {
+      title: 'เห็นชอบ',
+      dataIndex: 'votingagree',
+      key: 'votingagree',
+      width: '5%',
+      align: 'center',
+      render: (text: any) => (
+        <Badge
+          className="site-badge-count-109"
+          count={text}
+          style={{ backgroundColor: '#52c41a' }}
+        />
+      ),
+    },
+    {
+      title: 'ไม่เห็นชอบ',
+      dataIndex: 'votingdisagree',
+      key: 'votingdisagree',
+      width: '5%',
+      align: 'center',
+      render: (text: any) => <Badge count={text ? text : 0} />,
+    },
+    {
+      title: 'งดออกเสียง',
+      dataIndex: 'votingabstain',
+      key: 'votingabstain',
+      width: '5%',
+      align: 'center',
+      render: (text: any, data: any) => {
+        const resultsum =
+          Number(peopleall) -
+          Number(data.votingdisagree) -
+          Number(data.votingagree);
+        return <Badge count={resultsum} />;
+      },
+    },
+    {
+      title: 'จากทั้งหมด(คน)',
+      dataIndex: '',
+      key: '',
+      width: '10%',
+      align: 'center',
+      render: (text: string) => peopleall,
+    },
+  ];
+
   return (
     <>
       <Row
@@ -417,7 +508,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
               fontSize: '16px',
             }}
           >
-            {dataIntable[0]?.title}
+            {dataMeeing[0]?.title}
           </Typography>
           <Row gutter={16}>
             <Col>
@@ -430,20 +521,20 @@ export const CheckList: React.FC = (): React.ReactElement => {
                   fontSize: '16px',
                 }}
               >
-                {`ลิ้งค์ห้องประชุม ${window.origin}/detail/${state}`}
+                {`ลิ้งค์ห้องประชุม`}
               </Typography>
             </Col>
             <Col>
-              <a
-                style={{ color: 'rgb(30, 101, 65)', fontSize: '16px' }}
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `${window.origin}/detail/${state}`,
-                  )
-                }
-              >
-                Link
-              </a>
+              <Popover content={`${window.origin}/detail/${state}`}>
+                <Button
+                  icon={<CopyOutlined />}
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      `${window.origin}/detail/${state}`,
+                    )
+                  }
+                />
+              </Popover>
             </Col>
           </Row>
         </Card>
@@ -555,7 +646,6 @@ export const CheckList: React.FC = (): React.ReactElement => {
             </Col>
           </Row>
         </Card>
-
         <Card
           style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
           title={
@@ -566,7 +656,29 @@ export const CheckList: React.FC = (): React.ReactElement => {
                   fontWeight: 'bold',
                 }}
               >
-                ตรวจสอบรายชื่อผู้เข้าร่วมประชุม
+                การลงมติในที่ประชุม
+              </Typography>
+            </>
+          }
+        >
+          <Table
+            columns={columnsVoting}
+            dataSource={dataAgendes}
+            rowKey={'step'}
+            scroll={{ x: 'calc(1500px + 20%)' }}
+          />
+        </Card>
+        <Card
+          style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
+          title={
+            <>
+              <Typography
+                style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                }}
+              >
+                รายชื่อผู้เข้าร่วมประชุม
               </Typography>
             </>
           }
@@ -574,7 +686,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
           <Table
             columns={columns}
             dataSource={dataUser}
-            rowKey={'uuid'}
+            rowKey={'id'}
             scroll={{ x: 'calc(1500px + 50%)' }}
           />
         </Card>

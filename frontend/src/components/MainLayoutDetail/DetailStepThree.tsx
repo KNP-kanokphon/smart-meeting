@@ -1,4 +1,14 @@
-import { Layout, Button, Menu, Row, Col, Card, Input, Space } from 'antd';
+import {
+  Layout,
+  Button,
+  Menu,
+  Row,
+  Col,
+  Card,
+  Input,
+  Space,
+  Modal,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -10,9 +20,10 @@ import { DatamanagementService } from '../../stores/meeting-store';
 import {
   VerticalAlignBottomOutlined,
   ArrowRightOutlined,
+  CheckCircleFilled,
 } from '@ant-design/icons';
 import { saveAs } from 'file-saver';
-
+// const { confirm, success } = Modal;
 const { Content, Sider, Header, Footer } = Layout;
 
 export interface Props {
@@ -22,27 +33,73 @@ export interface Props {
 export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   const { id } = useParams<{ id: string }>();
   const { userid } = useParams<{ userid: string }>();
+  const navigate = useNavigate();
   const [userprofile, setUserprofile] = useState<any>([]);
   const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getDataProfile();
-  }, []);
+
+    const interval = setInterval(() => {
+      autoGetapiprofile();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [modalOpen]);
+
+  const autoGetapiprofile = async () => {
+    const resultProfile = await DatamanagementService().getProfileByid(
+      id,
+      userid,
+    );
+    setModalOpen(resultProfile[0].checkin);
+    if (resultProfile[0].checkin === true && modalOpen === false) {
+      showModal();
+      // nextPage();
+    }
+  };
+
   const getDataProfile = async () => {
     const resultProfile = await DatamanagementService().getProfileByid(
       id,
       userid,
     );
     setUserprofile(resultProfile[0]);
-
     const resultProfiles = await DatamanagementService().FindUserByID(userid);
     setUserprofileContracts(resultProfiles[0]);
   };
 
-  const navigate = useNavigate();
-  const onChange = () => {
-    navigate(`${baseURL}/steptwo/${id}`);
+  const nextPage = () => {
+    navigate(`/detailconfirm/${id}/${userid}`);
   };
+  const showModal = () => {
+    let secondsToGo = 3;
+
+    const modal = Modal.success({
+      title: 'ลงทะเบียนเสร็จสิ้น',
+      content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
+      okButtonProps: {
+        style: {
+          display: 'none',
+        },
+      },
+    });
+
+    const timer = setInterval(() => {
+      secondsToGo -= 1;
+      modal.update({
+        content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      nextPage();
+      modal.destroy();
+    }, secondsToGo * 1000);
+  };
+
   const downloadQRCode = () => {
     const canvas: any = document.getElementById('qr-gen');
     const pngUrl = canvas
@@ -62,9 +119,6 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
   //   saveAs(blob, 'เอกสารภาพประกอบการประชุม.pdf');
   // };
 
-  const nextPage = () => {
-    navigate(`/detailconfirm/${id}/${userid}`);
-  };
   return (
     <Layout className="layout">
       <Header
@@ -150,30 +204,10 @@ export const DetailStepThree: React.FC<Props> = ({ baseURL }) => {
                   </Button>
                 </Col>
               </Row>
-              {/* <Row>
-                  <Col span={24} style={{ fontSize: '80%' }}>
-                    <Button
-                      onClick={nextPage}
-                      style={{
-                        textAlign: 'center',
-                        width: 'auto',
-                        backgroundColor: '#1E6541',
-                        color: '#ffffff',
-                      }}
-                    >
-                      <Space>
-                        รายละเอียด <ArrowRightOutlined />
-                      </Space>
-                    </Button>
-                  </Col>
-                </Row>
-                <br></br> */}
             </Card>
           </Col>
         </Row>
-        {/* </div> */}
       </Content>
-
       <Footer style={{ textAlign: 'center', backgroundColor: '#F4FAF7' }}>
         ©2022 O S D Company Limited
       </Footer>

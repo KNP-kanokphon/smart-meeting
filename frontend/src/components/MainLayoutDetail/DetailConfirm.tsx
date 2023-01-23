@@ -51,8 +51,14 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     setMeetingData(result[0]);
     setAgenda(resultAgenda);
   };
-  const getFiles = async (roomid: string, step: any, namefile: string) => {
-    const data = await DatamanagementService().getPathFileStep(
+  const getFiles = async (
+    idfile: string,
+    roomid: string,
+    step: any,
+    namefile: string,
+  ) => {
+    const data = await DatamanagementService().dowloadPathFileStep(
+      idfile,
       roomid,
       step,
       namefile,
@@ -66,14 +72,14 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     link.setAttribute('download', `${namefile}`);
     document.body.appendChild(link);
     link.click();
-    // const blob = new Blob([data], { type: 'application/pdf' });
-    // saveAs(blob, `${namefile}`);
   };
+
   const getfileOverviwe = async (idfile: string, namefile: string) => {
     const resultPathfile = await DatamanagementService().dowloadFileoverview(
       id,
       idfile,
     );
+
     const url = window.URL.createObjectURL(
       new Blob([new Uint8Array(resultPathfile.data).buffer]),
     );
@@ -416,8 +422,6 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                     }}
                   >
                     {pathfile.map((e: any) => {
-                      console.log(e);
-
                       if (e.type === 'fileOverviwe') {
                         return (
                           <>
@@ -512,7 +516,12 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                                 <Button
                                   type="link"
                                   onClick={() =>
-                                    getFiles(e.uuid, e.step, x.namefile)
+                                    getFiles(
+                                      x.idfile,
+                                      e.uuid,
+                                      e.step,
+                                      x.namefile,
+                                    )
                                   }
                                   key={`${e.uuid}.${e.step}.${x.namefile}`}
                                 >
