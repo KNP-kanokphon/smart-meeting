@@ -128,16 +128,21 @@ export const CheckList: React.FC = (): React.ReactElement => {
         );
         let PositionArray: any = [];
         Position.map((event: any) => {
-          event.position.map((e: any) => {
-            PositionAll.map((x: any) => {
-              if (x.uuid === e) {
-                PositionArray.push({
-                  text: x.nameposition != null ? x.nameposition : '-',
-                  value: x.uuid,
-                });
-              }
+          console.log();
+          if (!event.position) {
+            PositionArray = [];
+          } else {
+            event.position.map((e: any) => {
+              PositionAll.map((x: any) => {
+                if (x.uuid === e) {
+                  PositionArray.push({
+                    text: x.nameposition != null ? x.nameposition : '-',
+                    value: x.uuid,
+                  });
+                }
+              });
             });
-          });
+          }
         });
         // console.log(PositionArray);
         setPositionFilter(PositionArray);
@@ -225,16 +230,20 @@ export const CheckList: React.FC = (): React.ReactElement => {
       render: (data: any, row: any) => {
         let datas: any = '';
         positionName.map((event: any) => {
-          if (data.length === 1) {
-            if (data[0] === event.uuid) {
-              datas = event.nameposition;
-            }
+          if (!data) {
+            datas += '';
           } else {
-            data.map((ex: any) => {
-              if (ex === event.uuid) {
-                datas += ' ' + event.nameposition;
+            if (data.length === 1) {
+              if (data[0] === event.uuid) {
+                datas = event.nameposition;
               }
-            });
+            } else {
+              data.map((ex: any) => {
+                if (ex === event.uuid) {
+                  datas += ' ' + event.nameposition;
+                }
+              });
+            }
           }
         });
         return <div style={{ whiteSpace: 'nowrap' }}>{datas}</div>;
@@ -442,10 +451,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
       width: '5%',
       align: 'center',
       render: (text: any, data: any) => {
-        const resultsum =
-          Number(peopleall) -
-          Number(data.votingdisagree) -
-          Number(data.votingagree);
+        const resultsum = Number(data.votingabstain);
         return <Badge count={resultsum} />;
       },
     },
@@ -468,43 +474,36 @@ export const CheckList: React.FC = (): React.ReactElement => {
         ]}
       >
         <Card style={{ width: '100%', textAlign: 'left' }}>
-          <Row gutter={16}>
-            <Col style={{ textAlign: 'left' }}>
-              <Button
+          <Row gutter={24}>
+            <Col span={8}>
+              <Typography
                 style={{
-                  border: 'none',
-                  width: 'auto',
                   textAlign: 'left',
-                }}
-                onClick={() => navigate(-1)}
-              >
-                <LeftCircleOutlined
-                  style={{
-                    color: '#1E6541',
-                    fontSize: '24px',
-                    fontWeight: 'bold',
-                  }}
-                />
-              </Button>
-            </Col>
-
-            <Col>
-              <Title
-                style={{
-                  color: 'black',
-                  fontSize: '24px',
                   fontWeight: 'bold',
+                  fontSize: '22px',
                 }}
               >
                 ตรวจสอบรายชื่อผู้เข้าร่วมประชุม
-              </Title>
+              </Typography>
+            </Col>
+
+            <Col offset={14}>
+              <Button
+                // type=""
+                style={{
+                  backgroundColor: '#1E6541',
+                  color: '#FFFFFF',
+                }}
+                onClick={() => navigate(-1)}
+              >
+                กลับ
+              </Button>
             </Col>
           </Row>
           <Typography
             style={{
               textAlign: 'left',
               fontWeight: 'bold',
-              marginLeft: '15px',
               fontSize: '16px',
             }}
           >
@@ -515,9 +514,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
               <Typography
                 style={{
                   textAlign: 'left',
-                  // fontWeight: 'bold',
                   color: 'grey',
-                  marginLeft: '15px',
                   fontSize: '16px',
                 }}
               >
@@ -537,15 +534,8 @@ export const CheckList: React.FC = (): React.ReactElement => {
               </Popover>
             </Col>
           </Row>
-        </Card>
-        <Card
-          style={{
-            width: '100%',
-            backgroundColor: 'rgba(0,0,0,0)',
-            padding: '0',
-          }}
-        >
-          <Row gutter={16}>
+
+          <Row gutter={16} style={{ paddingTop: '15px' }}>
             <Col span={8}>
               <Card style={{ width: '100%' }}>
                 <Row>
@@ -646,28 +636,7 @@ export const CheckList: React.FC = (): React.ReactElement => {
             </Col>
           </Row>
         </Card>
-        <Card
-          style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
-          title={
-            <>
-              <Typography
-                style={{
-                  textAlign: 'left',
-                  fontWeight: 'bold',
-                }}
-              >
-                การลงมติในที่ประชุม
-              </Typography>
-            </>
-          }
-        >
-          <Table
-            columns={columnsVoting}
-            dataSource={dataAgendes}
-            rowKey={'step'}
-            scroll={{ x: 'calc(1500px + 20%)' }}
-          />
-        </Card>
+
         <Card
           style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
           title={
@@ -688,6 +657,28 @@ export const CheckList: React.FC = (): React.ReactElement => {
             dataSource={dataUser}
             rowKey={'id'}
             scroll={{ x: 'calc(1500px + 50%)' }}
+          />
+        </Card>
+        <Card
+          style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}
+          title={
+            <>
+              <Typography
+                style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                }}
+              >
+                การลงมติในที่ประชุม
+              </Typography>
+            </>
+          }
+        >
+          <Table
+            columns={columnsVoting}
+            dataSource={dataAgendes}
+            rowKey={'step'}
+            scroll={{ x: 'calc(1500px + 20%)' }}
           />
         </Card>
       </Row>

@@ -168,25 +168,7 @@ export const TableLast: React.FC = (): React.ReactElement => {
                 </Typography>
               </Col>
               <Col span={24} style={{ color: 'grey' }}>
-                {countTypes.length} {/* count ผู้ร่วมประชุม */}
-                {/* {dataUuidMeet.map((event: any, row: any) => {
-                  if (event.length < 2) {
-                    return event.idmeeting == data ? event.username : <></>;
-                  } else {
-                    let nameusermeeting: string = '';
-                    if (event.idmeeting === data) {
-                      nameusermeeting += " " + event.username;
-                    } else {
-                      <></>;
-                    }
-                    let splittt = nameusermeeting;
-                    return (
-                      <>
-                        <div style={{ whiteSpace: 'pre-line' }}>{splittt}</div>
-                      </>
-                    );
-                  }
-                })} */}
+                {countTypes.length}
               </Col>
             </Row>
           </>
@@ -207,16 +189,28 @@ export const TableLast: React.FC = (): React.ReactElement => {
                 <Menu
                   onClick={onclickViwe}
                   items={[
-                    { key: `view`, label: 'View', title: dataAll.uuid },
-                    { key: 'signate', label: 'E-Signate', title: dataAll.uuid },
-                    { key: 'minutes', label: 'Minutes', title: dataAll.uuid },
+                    {
+                      key: `view`,
+                      label: 'ข้อมูลในการประชุม',
+                      title: dataAll.uuid,
+                    },
+                    {
+                      key: 'signate',
+                      label: 'ลายเซ็นผู้อนุมัติ',
+                      title: dataAll.uuid,
+                    },
+                    {
+                      key: 'minutes',
+                      label: 'สรุปการประชุม',
+                      title: dataAll.uuid,
+                    },
                   ]}
                 />
               }
             >
-              <a style={{ color: '#1E6541' }}>
-                More <DownOutlined />
-              </a>
+              <Button type="link" style={{ color: 'green' }}>
+                อืนๆ
+              </Button>
             </Dropdown>
           </>
         );

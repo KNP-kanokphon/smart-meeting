@@ -35,7 +35,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
   const [email, setEmail] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [position, setPosition] = useState<string>('');
-  const [Course, setCourse] = useState<string>('');
+  const [course, setCourse] = useState<string>('');
   const [food, setFood] = useState<any>();
   const [form] = Form.useForm();
 
@@ -48,58 +48,27 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
       message.error('โปรดกรอก เบอรโทรศัพท์');
       return;
     }
-    //  else if (!model) {
-    //   message.error('โปรดเลือก รุ่น');
-    //   return;
-    // }
-    // else if (!position) {
-    //   message.error('โปรดกรอก ตำแหน่งสมาคม');
-    //   return;
-    // }
-    // let statusfood;
-    form.validateFields().then(async values => {
-      const statusfood = values['food-detail'].length > 0 ? true : false;
-      const data: {
-        username: string;
-        phone: string;
-        email: string;
-        model: string;
-        position: string;
-        uuidprofile: string;
-        idmeeting: any;
-        confirm: boolean;
-        checkin: boolean;
-        type_user: string;
-        foodstatus: boolean;
-        cousre: any;
-      } = {
-        username: username,
-        phone: phone,
-        email: email,
-        model: model,
-        position: position,
-        uuidprofile: uuidv4(),
-        idmeeting: id,
-        confirm: true,
-        checkin: false,
-        type_user: 'after',
-        foodstatus: statusfood,
-        cousre: Course,
-      };
 
-      const save = await DatamanagementService().saveuserattendeesByuser(data);
-      if (save) {
-        navigate(`/stepthree/${id}/${data.uuidprofile}`);
-      }
-    });
+    const save = await DatamanagementService().submituserexternal(
+      id,
+      uuidv4(),
+      username,
+      phone,
+      email,
+      model,
+      course,
+      position,
+    );
+    if (save) {
+      navigate(`/detailalready/detailfood/${id}/${save[0].uuidprofile}`);
+      // navigate(`/stepthree/${id}/${save[0].uuidprofile}`);
+    }
   };
   useEffect(() => {
     getListPosition();
     getListCourse();
   }, []);
-  const selectModel = (e: any) => {
-    setModel(e);
-  };
+
   const selectPosition = (e: any) => {
     setPosition(e);
   };
@@ -209,9 +178,13 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <Row gutter={16} style={{ textAlign: 'left' }}>
-                  <Col span={24}>
+                  <Col span={12}>
                     อีเมล
                     <Input onChange={e => setEmail(e.target.value)} />
+                  </Col>
+                  <Col span={12}>
+                    รุ่นที่
+                    <Input onChange={e => setModel(e.target.value)} />
                   </Col>
                 </Row>
                 <Row gutter={16} style={{ textAlign: 'left' }}>
@@ -249,46 +222,7 @@ export const DetailStepTwo: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
                 <br></br>
-                {/* <Form name="validate_other" form={form}>
-                  <Row>
-                    <Col
-                      xs={24}
-                      sm={24}
-                      md={8}
-                      lg={8}
-                      style={{
-                        textAlign: 'left',
-                        fontSize: '100%',
-                        paddingLeft: '10px',
-                        paddingRight: '10px',
-                      }}
-                    >
-                      <b>{'อาหารและเครื่องดื่ม'}</b>
 
-                      <Form.Item name="food-detail">
-                        <Checkbox.Group>
-                          {food?.map((e: any, i: number) => {
-                            return (
-                              <Row gutter={16}>
-                                <Col span={20}>{e.namefood}</Col>
-                                <Col span={4}>
-                                  <Checkbox
-                                    value={e.namefood}
-                                    // onChange={x =>
-                                    //   receiveOrderfood(e.namefood, x, i)
-                                    // }
-                                  >
-                                    รับ
-                                  </Checkbox>
-                                </Col>
-                              </Row>
-                            );
-                          })}
-                        </Checkbox.Group>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form> */}
                 <Row>
                   <Col span={24}>
                     <Button

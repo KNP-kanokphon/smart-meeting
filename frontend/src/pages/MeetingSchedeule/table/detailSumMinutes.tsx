@@ -30,42 +30,10 @@ export const DetailSumMinutes: React.FC<Props> = ({
   idroom,
   idstep,
 }) => {
-  const [form] = Form.useForm();
-  const [meetingData, setMeetingData] = useState<any>();
-  const [agenda, setAgenda] = useState<any>();
-  const [agendaDetail, setAgendaDetail] = useState<any[]>([]);
-  const [pathfile, setPathfile] = useState<any>([]);
-  useEffect(() => {
-    getDataProfile();
-  }, []);
-  const getDataProfile = async () => {
-    const result = await DatamanagementService().getMeetingByid(idroom);
-    const resultAgenda = await DatamanagementService().getagendaByid(idroom);
-    const resultDetailagenda =
-      await DatamanagementService().findAagendesdetailbyid(idroom, idstep);
-    const resultPathfile = await DatamanagementService().getPathFilePdf(idroom);
-    setPathfile(resultPathfile);
-    setAgendaDetail(resultDetailagenda);
-    const resultFood = await DatamanagementService().getDetailfood(idroom);
-    setMeetingData(result[0]);
-    const filterDataAgenda = await resultAgenda?.filter(
-      (x: any) => String(x.step) === String(idstep),
-    );
-    setAgenda(filterDataAgenda[0]);
-  };
-  const getFiles = async (roomid: string, step: any, namefile: string) => {
-    // const data = await DatamanagementService().getPathFileStep(
-    //   roomid,
-    //   step,
-    //   namefile,
-    // );
-    // const blob = new Blob([data], { type: 'application/pdf' });
-    // saveAs(blob, `${namefile}`);
-  };
   return (
     <>
       <Row>
-        <Form
+        {/* <Form
           name="dynamic_form_nest_item"
           // onFinish={onFinish}
           autoComplete="off"
@@ -130,7 +98,7 @@ export const DetailSumMinutes: React.FC<Props> = ({
             }
           })}
           <br></br>
-        </Form>
+        </Form> */}
       </Row>
     </>
   );

@@ -5,7 +5,6 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-
 import { MainLayout } from './components/MainLayout';
 import { MainLayoutDetail } from './components/MainLayoutDetail';
 import { defaultPath, MenuItem, menuItems } from './configs/menus';
@@ -35,6 +34,41 @@ import { Voteresolution } from './pages/voteagendes/votestep/vote';
 const App = () => {
   return (
     <>
+      <BrowserRouter basename={'/'}>
+        <Id24Provider
+          config={{
+            refreshTokenIntervalInSeconds: 60,
+            resourceApiBaseUrl: 'http://localhost:4000',
+          }}
+        >
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Navigate to="meeting" replace />} />
+                {menuItems.map(x => (
+                  <Route key={x.key} path={x.path} element={<Outlet />}>
+                    {x.component}
+                  </Route>
+                ))}
+              </Route>
+              <Route path="*" element={<Navigate to={defaultPath} replace />} />
+            </Routes>
+          </AuthProvider>
+        </Id24Provider>
+      </BrowserRouter>
+      {/* <BrowserRouter basename={'/'}>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Navigate to="meeting" replace />} />
+            {menuItems.map(x => (
+              <Route key={x.key} path={x.path} element={<Outlet />}>
+                {x.component}
+              </Route>
+            ))}
+          </Route>
+          <Route path="*" element={<Navigate to={defaultPath} replace />} />
+        </Routes>
+      </BrowserRouter> */}
       <BrowserRouter basename={'/party'}>
         <Routes>
           <Route
@@ -146,19 +180,6 @@ const App = () => {
           ></Route>
         </Routes>
       </BrowserRouter>
-      <BrowserRouter basename={'/meeting'}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="meeting" replace />} />
-            {menuItems.map(x => (
-              <Route key={x.key} path={x.path} element={<Outlet />}>
-                {x.component}
-              </Route>
-            ))}
-          </Route>
-          <Route path="*" element={<Navigate to={defaultPath} replace />} />
-        </Routes>
-      </BrowserRouter>
       <BrowserRouter basename={'/vote'}>
         <Routes>
           <Route path="/:roomid/:step" element={<Loginvoteadmin />}></Route>
@@ -178,11 +199,6 @@ const App = () => {
             path="/voteresolution/:roomid/:step"
             element={<Voteresolution />}
           ></Route>
-        </Routes>
-      </BrowserRouter>
-      <BrowserRouter basename={'/'}>
-        <Routes>
-          <Route path="/" element={<Login baseURL={'/'} />}></Route>
         </Routes>
       </BrowserRouter>
     </>

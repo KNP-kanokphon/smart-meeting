@@ -1,4 +1,4 @@
-import { Button, Col, Dropdown, Layout, Menu, Row } from 'antd';
+import { Button, Col, Dropdown, Layout, Menu, Row, Avatar } from 'antd';
 import React from 'react';
 import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
@@ -25,14 +25,26 @@ export const MainHeader: React.FC<Props> = ({ onLogout }) => {
         background: '#1E6541',
       }}
     >
-      <Row>
-        {/* <Col style={{ marginRight: 20 }}>
-            <Dropdown overlay={menu}>
-              <Button type="link" onClick={e => e.preventDefault()}>
-                <CaretDownOutlined />
-              </Button>
-            </Dropdown>
-          </Col> */}
+      <Row
+        style={{
+          justifyContent: 'right',
+          paddingLeft: '50px',
+        }}
+      >
+        <Col style={{ marginRight: 20 }}>
+          <Avatar
+            style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }}
+            size="large"
+            gap={1}
+          >
+            admin
+          </Avatar>
+        </Col>
+        <Col style={{ marginRight: 20 }}>
+          <Dropdown overlay={menu}>
+            <CaretDownOutlined style={{ color: '#ffffff' }} />
+          </Dropdown>
+        </Col>
       </Row>
     </Layout.Header>
   );

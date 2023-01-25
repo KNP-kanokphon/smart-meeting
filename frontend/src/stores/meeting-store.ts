@@ -81,6 +81,28 @@ export const DatamanagementService = () => ({
     const result = await httpClient.post(`/userattendees/byuser`, userDetail);
     return result.data;
   },
+  submituserexternal: async (
+    roomid: any,
+    newuuid: string,
+    username: string,
+    phonenumber: string,
+    email: string,
+    model: string,
+    course: any,
+    position: any,
+  ) => {
+    const result = await httpClient.post(`/userattendees/submituserexternal`, {
+      roomid: roomid,
+      newuuid: newuuid,
+      username: username,
+      phonenumber: phonenumber,
+      email: email,
+      model: model,
+      course: course,
+      position: position,
+    });
+    return result.data;
+  },
   getProfileByid: async (roomid: any, userid: any) => {
     const result = await httpClient.get(`/userattendees/${roomid}/${userid}`);
     return result.data;
@@ -333,19 +355,6 @@ export const DatamanagementService = () => ({
     );
     return result.data;
   },
-  saveSummaryMeetingFile: async (roomid: any, files: any) => {
-    const result = await httpClient.post(
-      `/meeting/savesummarymeetingFile/${roomid}`,
-      files,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        responseType: 'arraybuffer',
-      },
-    );
-    return result.data;
-  },
   saveSummaryMeeting: async (roomid: any, detail: string) => {
     const newData = {
       data: detail,
@@ -544,5 +553,29 @@ export const DatamanagementService = () => ({
       step: step,
     });
     return result?.data;
+  },
+  submitsummarypage: async (roomid: any, detailsummary: string) => {
+    const result = await httpClient.post(`meeting/submitsummarypage`, {
+      roomid: roomid,
+      detailsummary: detailsummary,
+    });
+    return result?.data;
+  },
+  submitfilesummarypage: async (
+    roomid: any,
+    files: any,
+    numberfile: number,
+    namefile: string,
+  ) => {
+    const result = await httpClient.post(
+      `/meeting/submitfilesummarypage/${roomid}/${numberfile}/${namefile}`,
+      files,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return result.data;
   },
 });

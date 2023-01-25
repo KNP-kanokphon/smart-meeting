@@ -14,40 +14,43 @@ import {
 } from 'antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadOutlined, LeftCircleOutlined } from '@ant-design/icons';
-
 import { DatamanagementService } from '../../stores/meeting-store';
-import { DetailSumMinutes } from './table/detailSumMinutes';
-// import { Icon } from '@iconify/react';
 
+const { TextArea } = Input;
 export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
-  const initialIndexValue = 1;
   const navigate = useNavigate();
-  const { TextArea } = Input;
   const { state } = useLocation();
 
   const [meetingData, setMeetingData] = useState<any>();
-  const [agenda, setAgenda] = useState<any>();
-  const [detailsummary, setDetailsummary] = useState<string>('');
   const [fileList, setFileList] = useState<any>([]);
-  const [pathfile, setPathfile] = useState<any>([]);
-  const [nameFilesummary, setNamefilesummary] = useState<any>([]);
+  const [detailsummarymeeting, setdetailsummarymeeting] = useState<string>('');
+  const [nameFileoverview, setNameFileoverview] = useState<any>([]);
   useEffect(() => {
     getDataProfile();
   }, []);
   const getDataProfile = async () => {
-    const result = await DatamanagementService().getMeetingByid(state);
-    const resultAgenda = await DatamanagementService().getagendaByid(state);
-    const resultnamefilesummary =
-      await DatamanagementService().getnamefileSummary(state);
-    setMeetingData(result[0]);
-    setAgenda(resultAgenda);
-    setNamefilesummary(resultnamefilesummary);
-    // console.log(resultnamefilesummary);
-  };
+    await DatamanagementService()
+      .getMeetingByid(state)
+      .then(data => {
+        setMeetingData(data[0]);
+      });
+    await DatamanagementService()
+      .getFileoverview(state)
+      .then(async data => {
+        const datafile = await data.map((x: any) => {
+          return {
+            uid: x.idfile,
+            name: x.namefile,
+            status: 'done',
+            response: 'Server Error 500',
+            pathfile: x.pathfile,
+            step: x.step,
+          };
+        });
 
-  const [activeKey, setActiveKey] = useState<any>(1);
-  const onChange = (key: string) => {
-    setActiveKey(key);
+        setFileList(datafile);
+        setNameFileoverview(datafile);
+      });
   };
 
   const props = {
@@ -63,187 +66,216 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
     },
     fileList,
   };
-  const saveSummarymeeting = async () => {
-    const formData = new FormData();
-    fileList.map((e: any) => {
-      formData.append('file', e);
-    });
-    const result = await DatamanagementService().saveSummaryMeeting(
+
+  const submitpage = async () => {
+    await DatamanagementService().submitsummarypage(
       state,
-      detailsummary,
+      detailsummarymeeting,
     );
-    const resultfile = await DatamanagementService().saveSummaryMeetingFile(
-      state,
-      fileList,
-    );
+
+    if (fileList !== undefined) {
+      console.log(fileList);
+      fileList.map(async (x: any, i: number) => {
+        const numberfile = Number(i) + 1;
+        const formData = new FormData();
+        formData.append('file', x);
+        await DatamanagementService().submitfilesummarypage(
+          state,
+          formData,
+          numberfile,
+          x.name,
+        );
+      });
+    }
   };
-  const getFiles = async (namefile: string) => {
-    // const data = await DatamanagementService().getPathFileStep(
-    //   state,
-    //   null,
-    //   namefile,
-    // );
-    // const blob = new Blob([data], { type: 'application/pdf' });
-    // saveAs(blob, `${namefile}`);
-  };
-  return (
-    <React.Fragment>
-      <Row gutter={16}>
-        <Card style={{ width: '100%', marginBottom: '30px' }}>
-          <Row gutter={16}>
-            <Col>
+
+  if (meetingData?.summarychecklist) {
+    return (
+      <React.Fragment>
+        <Row
+          gutter={[
+            { xs: 8, sm: 16 },
+            { xs: 8, sm: 16 },
+          ]}
+        >
+          <Card style={{ width: '100%', textAlign: 'left' }}>
+            <Row gutter={24}>
+              <Col span={8}>
+                <Typography
+                  style={{
+                    textAlign: 'left',
+                    fontWeight: 'bold',
+                    fontSize: '22px',
+                  }}
+                >
+                  สรุปรายงานการประชุม
+                </Typography>
+              </Col>
+              <Col offset={14}>
+                <Button
+                  style={{
+                    backgroundColor: '#1E6541',
+                    color: '#FFFFFF',
+                  }}
+                  onClick={() => navigate(-1)}
+                >
+                  กลับ
+                </Button>
+              </Col>
+            </Row>
+
+            <Typography
+              style={{
+                textAlign: 'left',
+                fontWeight: 'bold',
+                fontSize: '16px',
+              }}
+            >
+              {meetingData?.title}
+            </Typography>
+          </Card>
+          <Card style={{ width: '100%' }} title={''}>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                สรุปรายงานการประชุม
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <TextArea
+                  maxLength={1000}
+                  disabled
+                  // onChange={e => {
+                  //   setdetailsummarymeeting(e.target.value);
+                  // }}
+                  value={meetingData?.summarymeeting}
+                />
+              </Col>
+            </Row>
+            <br></br>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                เอกสารภาพประกอบการประชุม
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Upload {...props} disabled>
+                  <Button icon={<UploadOutlined />} disabled>
+                    Click To Upload
+                  </Button>
+                </Upload>
+              </Col>
+            </Row>
+            <br></br>
+            <Row style={{ justifyContent: 'center' }}>
+              <Button>กลับ</Button>
+              {''}
               <Button
                 style={{
-                  border: 'none',
-                  width: 'auto',
+                  backgroundColor: '#1E6541',
+                  color: '#FFFFFF',
                 }}
-                onClick={() => navigate(-1)}
+                onClick={submitpage}
               >
-                <LeftCircleOutlined
+                ยืนยัน
+              </Button>
+            </Row>
+          </Card>
+        </Row>
+      </React.Fragment>
+    );
+  } else {
+    return (
+      <React.Fragment>
+        <Row
+          gutter={[
+            { xs: 8, sm: 16 },
+            { xs: 8, sm: 16 },
+          ]}
+        >
+          <Card style={{ width: '100%', textAlign: 'left' }}>
+            <Row gutter={24}>
+              <Col span={8}>
+                <Typography
                   style={{
-                    color: '#1E6541',
-                    fontSize: '24px',
+                    textAlign: 'left',
                     fontWeight: 'bold',
+                    fontSize: '22px',
+                  }}
+                >
+                  สรุปรายงานการประชุม
+                </Typography>
+              </Col>
+              <Col offset={14}>
+                <Button
+                  style={{
+                    backgroundColor: '#1E6541',
+                    color: '#FFFFFF',
+                  }}
+                  onClick={() => navigate(-1)}
+                >
+                  กลับ
+                </Button>
+              </Col>
+            </Row>
+
+            <Typography
+              style={{
+                textAlign: 'left',
+                fontWeight: 'bold',
+                fontSize: '16px',
+              }}
+            >
+              {meetingData?.title}
+            </Typography>
+          </Card>
+          <Card style={{ width: '100%' }} title={''}>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                สรุปรายงานการประชุม
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <TextArea
+                  maxLength={1000}
+                  onChange={e => {
+                    setdetailsummarymeeting(e.target.value);
                   }}
                 />
-              </Button>
-            </Col>
-            <Col style={{ marginBottom: '10px', textAlign: 'left' }}>
-              {/* <Icon/> */}
-              <Typography
-                style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}
+              </Col>
+            </Row>
+            <br></br>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                เอกสารภาพประกอบการประชุม
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ span: 24 }} lg={{ span: 24 }}>
+                <Upload {...props}>
+                  <Button icon={<UploadOutlined />}>Click To Upload</Button>
+                </Upload>
+              </Col>
+            </Row>
+            <br></br>
+            <Row style={{ justifyContent: 'center' }}>
+              <Button>กลับ</Button>
+              {''}
+              <Button
+                style={{
+                  backgroundColor: '#1E6541',
+                  color: '#FFFFFF',
+                }}
+                onClick={submitpage}
               >
-                Meeting Schedule
-              </Typography>
-            </Col>
-            <Col span={24}>
-              <p>{meetingData?.title}</p>
-            </Col>
-          </Row>
-        </Card>
-      </Row>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Card>
-            <Tabs
-              hideAdd
-              tabPosition="left"
-              onChange={onChange}
-              // activeKey={activeKey}
-              defaultActiveKey={activeKey}
-              // type="editable-card"
-              // onEdit={onEdit}
-
-              // items={agenda
-              //   ?.fill(null)
-              //   .map((_: any, index: string, data: any) => {
-              //     const id: any = String(index + 1);
-              //     return {
-              //       label: `ระเบียบวาระที่ ${id}`,
-              //       children: (
-              //         <DetailSumMinutes
-              //           Pagestep={id}
-              //           idstep={index}
-              //           idroom={state}
-              //         />
-              //       ),
-              //       key: id,
-              //       closable: false,
-              //     };
-              //   })}
-            >
-              {agenda?.fill(null).map((_: any, index: string, data: any) => {
-                const id: any = String(index + 1);
-                return (
-                  <Tabs.TabPane tab={`ระเบียบวาระที่ ${id}`} key={index}>
-                    <DetailSumMinutes
-                      Pagestep={id}
-                      idstep={index}
-                      idroom={state}
-                    />
-                  </Tabs.TabPane>
-                );
-              })}
-              <Tabs.TabPane tab="สรุปรายงานการประชุม" key="99">
-                <Form layout="vertical">
-                  <Form.Item label={'สรุปรายงานการประชุม'}>
-                    <TextArea
-                      disabled={
-                        meetingData?.summarychecklist === true ? true : false
-                      }
-                      placeholder="Text"
-                      showCount
-                      maxLength={255}
-                      value={
-                        meetingData?.summarychecklist === true
-                          ? meetingData?.summarymeeting
-                          : detailsummary
-                      }
-                      onChange={e => setDetailsummary(e.target.value)}
-                    />
-                  </Form.Item>
-                  <Row>
-                    <Col xs={{ span: 24 }} lg={{ span: 24 }}>
-                      <Upload {...props}>
-                        <Button
-                          disabled={
-                            meetingData?.summarychecklist === true
-                              ? true
-                              : false
-                          }
-                          icon={<UploadOutlined />}
-                        >
-                          Click To Upload
-                        </Button>
-                      </Upload>
-                    </Col>
-                  </Row>
-                  <br></br>
-                  ไฟลเอกสารสรุปรายงานการประชุม (ถ้ามี)
-                  <br></br>
-                  {nameFilesummary?.map((x: any) => {
-                    if (x.type === 'filesummary') {
-                      return (
-                        <>
-                          <Button
-                            type="link"
-                            onClick={() => getFiles(x.namefile)}
-                            key={`${x.namefile}`}
-                          >
-                            {x.namefile}
-                          </Button>
-                          <br></br>
-                        </>
-                      );
-                    }
-                  })}
-                  <Form.Item></Form.Item>
-                  <Form.Item style={{ textAlign: 'center' }}>
-                    <Space>
-                      <Button
-                        style={{ color: '#1E6541' }}
-                        onClick={() => navigate(-1)}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        htmlType="submit"
-                        style={{ color: 'white', background: '#1E6541' }}
-                        onClick={saveSummarymeeting}
-                        hidden={
-                          meetingData?.summarychecklist === true ? true : false
-                        }
-                      >
-                        Save
-                      </Button>
-                    </Space>
-                  </Form.Item>
-                </Form>
-              </Tabs.TabPane>
-            </Tabs>
+                ยืนยัน
+              </Button>
+            </Row>
           </Card>
-        </Col>
-      </Row>
-    </React.Fragment>
-  );
+        </Row>
+      </React.Fragment>
+    );
+  }
 };

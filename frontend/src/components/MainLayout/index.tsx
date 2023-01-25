@@ -1,11 +1,12 @@
-import { Layout, Button } from 'antd';
+import { Layout, Button, Result } from 'antd';
 import React, { useState } from 'react';
 import { MainHeader } from './MainHeader';
 import { MainPageHeader } from './MainPageHeader';
 import { MainMenu } from './MainMenu';
 import { Outlet } from 'react-router-dom';
-import { useAuth } from '../../utils/auth';
+import { Roules, useAuth } from '../../utils/auth';
 import { useId24 } from '../../drivers/id24/Id24Provider';
+import { toggleOnId24 } from '../../configs';
 
 const { Content, Sider, Footer } = Layout;
 
@@ -14,7 +15,25 @@ export const MainLayout: React.FC = () => {
   const { authenticated, login, logout } = useId24();
   const [userRequestedLogout, setUserRequestedLogout] = useState(false);
 
-  const toggleOnId24 = false;
+  function multipleInArray(arr: string[], values: Roules[]) {
+    return values.some(value => {
+      return arr.includes(value);
+    });
+  }
+
+  const auth = useId24();
+  const groupRoules: string[] = [];
+  if (auth) {
+    auth.tokenAccess?.userAccess.map(groupId => {
+      groupId.roles.forEach(function (value, i) {
+        groupRoules.push(value);
+      });
+    });
+  }
+  const uniqueNames = groupRoules.filter((val: any, id: any, array: any) => {
+    return array.indexOf(val) == id;
+  });
+
   if (!authenticated && toggleOnId24) {
     if (userRequestedLogout) {
       login(window.location.href, true);
@@ -24,6 +43,22 @@ export const MainLayout: React.FC = () => {
 
     return (
       <Button onClick={() => login(window.location.href, false)}>Login</Button>
+    );
+  }
+  console.log(auth);
+
+  if (!multipleInArray(uniqueNames, ['Meeting-create'])) {
+    return (
+      <Result
+        status="403"
+        title="403"
+        subTitle="ท่านยังไม่มีสิทธิ์ในการเข้าถึงระบบ กรุณาตรวจสอบสิทธิ์ในการเข้าถึงกับผู้ดูแลระบบ."
+        extra={
+          <Button onClick={() => login(window.location.href, false)}>
+            Login
+          </Button>
+        }
+      />
     );
   }
 

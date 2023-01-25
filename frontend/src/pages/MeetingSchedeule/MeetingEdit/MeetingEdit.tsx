@@ -386,7 +386,7 @@ export const EditMeeting: React.FC = () => {
                 style={{ marginLeft: 8 }}
                 onClick={() => onChangeCurrentStep(currentStep - 1)}
               >
-                Back
+                กลัับ
               </Button>
             )}
           </Col>
@@ -396,7 +396,7 @@ export const EditMeeting: React.FC = () => {
                 style={{ color: 'white', background: '#1E6541' }}
                 onClick={() => onChangeCurrentStep(currentStep + 1)}
               >
-                Next
+                ถัดไป
               </Button>
             )}
           </Col>
@@ -406,7 +406,7 @@ export const EditMeeting: React.FC = () => {
                 style={{ color: 'white', background: '#1E6541' }}
                 onClick={() => onChangeCurrentCheckStep(currentStep + 1)}
               >
-                Next
+                ถัดไป
               </Button>
             )}
           </Col>
@@ -418,7 +418,7 @@ export const EditMeeting: React.FC = () => {
                 htmlType="submit"
                 onClick={checkSubmitForm}
               >
-                Submit
+                ยืนยัน
               </Button>
             )}
           </Col>

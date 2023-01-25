@@ -11,11 +11,13 @@ import {
   Modal,
   Image,
   Divider,
+  Popover,
 } from 'antd';
 import { Icon } from '@iconify/react';
 import {
   ExclamationCircleOutlined,
   LeftCircleOutlined,
+  CopyOutlined,
 } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../stores/meeting-store';
@@ -25,7 +27,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [dataIntable, setDataIntable] = useState<any>([]);
+  const [dataMeeting, setDataMeeting] = useState<any>([]);
   const [dataUser, setDataUser] = useState<any>([]);
   const [dataUser2, setDataUser2] = useState<any>([]);
   const [getPositionName, setPositionName] = useState<any>([]);
@@ -36,11 +38,12 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
   useEffect(() => {
     getListmeeting();
   }, []);
+
   const getListmeeting = async () => {
     await DatamanagementService()
       .getMeetingByid(state)
       .then(data => {
-        setDataIntable(data);
+        setDataMeeting(data);
       });
     await DatamanagementService()
       .getuserInroom(String(state))
@@ -109,13 +112,6 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
     setIsModalOpen(false);
   };
 
-  const showModal2 = (e: any) => {
-    // console.log(e);
-    setnameUser2(e.username);
-    setnameuuid(e.uuidprofile);
-    setIsModalOpen2(true);
-  };
-
   const handleOk2 = () => {
     setIsModalOpen2(false);
   };
@@ -162,7 +158,7 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       title: 'สถานะ',
       dataIndex: 'signature',
       key: 'signature',
-      width: '5%',
+      width: '10%',
       render: (text: any, row: any) => {
         // console.log(text);
 
@@ -184,36 +180,34 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       },
     },
     {
-      title: 'Link',
+      title: 'ลิ้งค์เซ็นลายเซ็นดิจิตอล',
       dataIndex: 'uuidprofile',
       key: 'uuidprofile',
-      fixed: 'right',
-      width: '5%',
-      render: (text: any, row: any) => {
+      width: '10%',
+      align: 'center',
+      render: (text: any) => {
         return (
-          <>
-            <div style={{ textAlign: 'center' }}>
-              <Button
-                onClick={() => showModal2(row)}
-                style={{
-                  border: 'none',
-                  textAlign: 'center',
-                  background: 'none',
-                }}
-              >
-                Link
-              </Button>
-            </div>
-          </>
+          <Popover
+            content={`${window.location.host}/signconfirm/${state}/${text}`}
+          >
+            <Button
+              icon={<CopyOutlined />}
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  `${window.location.host}/signconfirm/${state}/${text}`,
+                )
+              }
+            />
+          </Popover>
         );
       },
     },
     {
-      title: '',
+      title: 'ลายเซ็นอนุมัติ',
       dataIndex: 'uuidprofile',
       key: 'uuidprofile',
       fixed: 'right',
-      width: '5%',
+      width: '10%',
       render: (text: any, row: any) => {
         return (
           <>
@@ -234,41 +228,6 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
       },
     },
   ];
-
-  // const close = () => {
-  //   console.log(
-  //     'Notification was closed. Either the close button was clicked or duration time elapsed.',
-  //   );
-  // };
-
-  // const openNotification = (e: any) => {
-  //   console.log(e);
-
-  //   confirm({
-  //     title: 'ลิ้งค์การประชุม',
-  //     icon: <ExclamationCircleOutlined />,
-  //     okText: 'ปิด',
-  //     content: (
-  //       <>
-  //         <Typography style={{ marginBottom: '20px' }}>
-  //           คัดลอกลิ้งค์การประชุมข้างล่าง
-  //         </Typography>
-  //         <Typography style={{ marginBottom: '20px' }}>
-  //           <a
-  //           // onClick={e => {
-  //           //   `${window.location.host}/profileDetail/`;
-  //           // }}
-  //           >
-  //             ลิ้งค์เซ็นลายเซ็นดิจิตอล
-  //           </a>
-  //         </Typography>
-  //       </>
-  //     ),
-  //     onOk() {
-  //       console.log('OK');
-  //     },
-  //   });
-  // };
 
   return (
     <Row
@@ -365,78 +324,60 @@ export const EsignateLastmeeting: React.FC = (): React.ReactElement => {
           <Typography>{`${window.location.host}/signconfirm/${state}/${getNameuuid}`}</Typography>
         </Typography>
       </Modal>
-      <Card style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}>
-        <Row>
-          <Col>
-            <Button
-              style={{
-                border: 'none',
-                width: 'auto',
-              }}
-              onClick={() => navigate(-1)}
-            >
-              <LeftCircleOutlined
-                style={{
-                  color: '#1E6541',
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                }}
-              />
-            </Button>
-          </Col>
-          <Col>
-            {' '}
-            <Title
-              style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}
-            >
-              CHECK IN LISTS
-            </Title>
-          </Col>
-        </Row>
-
-        <Typography>
-          ขอเชิญประชุมคณะกรรมการบริหารสมาคมแห่งสถาบันพระปกเกล้า ครั้งที่ 5/2565
-        </Typography>
-      </Card>
-      <div style={{ width: '100%', marginLeft: '10px', marginRight: '10px' }}>
-        <Card
-          style={{ width: '100%', textAlign: 'left', marginBottom: '30px' }}
-          title={
+      <Card style={{ width: '100%', textAlign: 'left' }}>
+        <Row gutter={24}>
+          <Col span={8}>
             <Typography
               style={{
                 textAlign: 'left',
-                // fontSize: '30px',
-                // fontWeight: 'bold',
-                color: 'grey',
+                fontWeight: 'bold',
+                fontSize: '22px',
               }}
             >
-              Check-in Lists
+              ลายเซ็นผู้อนุมัติ
             </Typography>
-          }
-          // extra={}
+          </Col>
+          <Col offset={14}>
+            <Button
+              style={{
+                backgroundColor: '#1E6541',
+                color: '#FFFFFF',
+              }}
+              onClick={() => navigate(-1)}
+            >
+              กลับ
+            </Button>
+          </Col>
+        </Row>
+
+        <Typography
+          style={{
+            textAlign: 'left',
+            fontWeight: 'bold',
+            fontSize: '16px',
+          }}
         >
-          <Table
-            columns={columns}
-            dataSource={dataUser2}
-            scroll={{ x: 'calc(500px + 50%)' }}
-          />
-          {/* <div style={{ textAlign: 'center' }}>
-            <Space>
-              <Button onClick={() => navigate(-1)}>{'Back'}</Button>
-              <Button style={{ color: 'white', background: '#1E6541' }}>
-                {'Save'}
-              </Button>
-              <Button
-                onClick={openNotification}
-                type="dashed"
-                style={{ color: '#1E6541', borderColor: '#1E6541' }}
-              >
-                {'Link for Approval E-Signature'}
-              </Button>
-            </Space>
-          </div> */}
-        </Card>
-      </div>
+          {dataMeeting[0]?.title}
+        </Typography>
+      </Card>
+      <Card
+        title={
+          <Typography
+            style={{
+              textAlign: 'left',
+              color: 'grey',
+            }}
+          >
+            รายชื่อ ลายเซ็นผู้อนุมัติ
+          </Typography>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={dataUser2}
+          scroll={{ x: 'calc(500px + 50%)' }}
+        />
+      </Card>
     </Row>
   );
 };

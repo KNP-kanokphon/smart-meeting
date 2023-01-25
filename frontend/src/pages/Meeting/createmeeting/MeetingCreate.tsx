@@ -205,40 +205,6 @@ export const CreateMeeting: React.FC = () => {
       </> */}
       <br></br>
       <Card title="สร้างวาระการประชุม">
-        {/* <Row>
-          <Col md={24}>
-            <Steps
-              current={currentStep}
-              items={[
-                {
-                  title:
-                    currentStep === 0
-                      ? 'In Progress'
-                      : currentStep < 0
-                      ? 'Waiting'
-                      : 'Finish',
-                },
-                {
-                  title:
-                    currentStep === 1
-                      ? 'In Progress'
-                      : currentStep < 1
-                      ? 'Waiting'
-                      : 'Finish',
-                },
-                {
-                  title:
-                    currentStep === 2
-                      ? 'In Progress'
-                      : currentStep < 2
-                      ? 'Waiting'
-                      : 'Finish',
-                },
-              ]}
-            >
-            </Steps>
-          </Col>
-        </Row> */}
         <Row>
           {steps.map(({ title, content }, i) => (
             <Col
@@ -258,7 +224,7 @@ export const CreateMeeting: React.FC = () => {
                 style={{ marginLeft: 8 }}
                 onClick={() => onChangeCurrentStep(currentStep - 1)}
               >
-                Back
+                กลัับ
               </Button>
             )}
           </Col>
@@ -268,7 +234,7 @@ export const CreateMeeting: React.FC = () => {
                 style={{ color: 'white', background: '#1E6541' }}
                 onClick={() => onChangeCurrentStep(currentStep + 1)}
               >
-                Next
+                ถัดไป
               </Button>
             )}
           </Col>
@@ -278,7 +244,7 @@ export const CreateMeeting: React.FC = () => {
                 style={{ color: 'white', background: '#1E6541' }}
                 onClick={() => onChangeCurrentCheckStep(currentStep + 1)}
               >
-                Next
+                ถัดไป
               </Button>
             )}
           </Col>
@@ -290,7 +256,7 @@ export const CreateMeeting: React.FC = () => {
                 htmlType="submit"
                 onClick={checkSubmitForm}
               >
-                Submit
+                ยืนยัน
               </Button>
             )}
           </Col>

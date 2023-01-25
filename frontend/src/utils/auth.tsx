@@ -5,6 +5,8 @@ import { defaultPath } from '../configs/menus';
 
 export type Role = 'admin' | 'oa' | 'bank';
 
+export type Roules = 'Meeting-create';
+
 type User = {
   id: string;
   roles: Role[];
