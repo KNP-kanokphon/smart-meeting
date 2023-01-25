@@ -41,23 +41,24 @@ export const Votedetail: React.FC<{}> = ({}): React.ReactElement => {
     <>
       <div
         style={{
-          height: '100vh',
-          padding: '40px',
+          height: '100%',
+          minHeight: '100vh',
+          padding: '30px',
           textAlign: 'center',
-          justifyContent: 'center',
-          display: 'flex',
+          // justifyContent: 'center',
+          // display: 'flex',
           backgroundColor: '#1E6541',
         }}
       >
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24}>
+        <Row gutter={16} style={{ justifyContent: 'center' }}>
+          <Col xs={24} sm={24} md={24} lg={12}>
             <Card
               style={{
                 width: 'auto',
                 height: 'auto',
                 borderRadius: '25px 25px 25px 25px',
                 border: 'none',
-                marginTop: '90px',
+                marginTop: '50px',
                 boxShadow: 'rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px',
               }}
             >

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Card,
   Row,
@@ -25,6 +25,10 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
   const { roomid } = useParams<{ roomid: string }>();
   const { step } = useParams<{ step: string }>();
   const { state } = useLocation() as any;
+
+  // useEffect(() => {
+  //   getDataAll();
+  // }, []);
   const vote = async (text: string) => {
     Modal.confirm({
       title: 'Confirm',
@@ -39,27 +43,45 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
       cancelText: 'ย้อนกลับ',
     });
   };
+
+  // const getDataAll = async () => {
+  //   const DataAll = await DatamanagementService().getListmeeting();
+  //   console.log(DataAll);
+  // };
   return (
     <>
       <div
         style={{
-          height: '100vh',
-          padding: '40px',
+          height: '100%',
+          padding: '10px',
           textAlign: 'center',
-          justifyContent: 'center',
-          display: 'flex',
+          // justifyContent: 'center',
+          // display: 'flex',
           backgroundColor: '#1E6541',
+          minHeight: '100vh',
         }}
       >
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24}>
+        <Row gutter={16} style={{ justifyContent: 'center' }}>
+          <Col
+            xs={24}
+            sm={24}
+            md={24}
+            lg={14}
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              height: '100%',
+              width: '100%',
+              marginTop: '80px',
+            }}
+          >
             <Card
               style={{
-                width: 'auto',
-                height: 'auto',
+                width: '80%',
+
                 borderRadius: '25px 25px 25px 25px',
                 border: 'none',
-                marginTop: '90px',
+
                 boxShadow: 'rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px',
               }}
             >
@@ -79,8 +101,9 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
                 >
                   <Button
                     type="primary"
-                    // shape="circle"
                     style={{
+                      width: '100px',
+                      height: '100px',
                       fontSize: '100%',
                       border: '2px none',
                       borderRadius: '100px',
@@ -100,8 +123,9 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
                 >
                   <Button
                     type="primary"
-                    // shape="circle"
                     style={{
+                      width: '100px',
+                      height: '100px',
                       fontSize: '100%',
                       border: '2px none',
                       borderRadius: '100px',
@@ -122,6 +146,8 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
                   <Button
                     type="primary"
                     style={{
+                      width: '100px',
+                      height: '100px',
                       fontSize: '100%',
                       border: '2px none',
                       borderRadius: '100px',
@@ -135,17 +161,16 @@ export const Voteresolution: React.FC<{}> = ({}): React.ReactElement => {
                 </Row>
               </Card>
             </Card>
-            <div>
-              <div
-                style={{
-                  marginTop: '80px',
-                  textAlign: 'center',
-                  color: 'white',
-                }}
-              >
-                ©2022 O S D Company Limited
-              </div>
-            </div>
+          </Col>
+          <Col
+            span={24}
+            style={{
+              marginTop: '80px',
+              textAlign: 'center',
+              color: 'white',
+            }}
+          >
+            ©2022 O S D Company Limited
           </Col>
         </Row>
       </div>
