@@ -1,0 +1,43 @@
+.header {
+  font-size: 24px;
+  font-weight: bold;
+}
+.headerDetail {
+  font-size: 18px;
+  color: grey;
+}
+
+.number {
+  font-size: 24px;
+}
+
+.icontrue {
+  color: green;
+  font-size: 28px;
+}
+.iconfalse {
+  color: red;
+  font-size: 28px;
+}
+.loga {
+  color: #1e6541;
+  text-decoration: underline;
+}
+.logaHeader {
+  font-size: larger;
+  color: #1e6541;
+  text-decoration: underline;
+}
+
+.rowdash {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  padding: 10px;
+}
+.ant-modal-header {
+  border-radius: 15px;
+}
+.ant-modal-content {
+  border-radius: 20px;
+}

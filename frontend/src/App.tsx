@@ -31,7 +31,10 @@ import { Loginvoteadmin } from './pages/voteagendes/loginvoteadmin';
 import { Loginvote } from './pages/voteagendes/loginvote';
 import { Votedetail } from './pages/voteagendes/votestep/votedetail';
 import { Voteresolution } from './pages/voteagendes/votestep/vote';
-
+import { GolfCheckin } from './pages/GolfMeeting/GolfCheckin';
+import { GolfDetail } from './pages/GolfMeeting/GolfDetail';
+import { GolfForm } from './pages/GolfMeeting/GolfForm';
+import { GolfQRcode } from './pages/GolfMeeting/GolfQRcode';
 const App = () => {
   return (
     <>
@@ -119,6 +122,32 @@ const App = () => {
           <Route
             path="/:id/:userid"
             element={<DetailVote baseURL={'/detailvote'} />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+      <BrowserRouter basename={'/golfmeet'}>
+        <Routes>
+          <Route
+            path="/detailform"
+            element={<GolfForm baseURL={'/detailform'} />}
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/golfdetail"
+            element={<GolfDetail baseURL={'/golfdetail'} />}
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/golfqrcode"
+            element={<GolfQRcode baseURL={'/golfqrcode'} />}
+          ></Route>
+        </Routes>
+        <Routes>
+          <Route
+            path="/golfcheckin"
+            element={<GolfCheckin baseURL={'/golfcheckin'} />}
           ></Route>
         </Routes>
       </BrowserRouter>
