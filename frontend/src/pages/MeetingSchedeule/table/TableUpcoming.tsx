@@ -12,15 +12,14 @@ import {
   Badge,
   Tooltip,
 } from 'antd';
-import { Icon } from '@iconify/react';
-import {
-  AlignRightOutlined,
-  MoreOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../../stores/meeting-store';
-// import { EditFilled, EllipsisOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
   const [dataIntable, setDataIntable] = useState([]);
@@ -35,9 +34,14 @@ export const TableUpcomingmeeting: React.FC = (): React.ReactElement => {
       .getListmeeting()
       .then(data => {
         const dataNew = data.filter((e: any) => {
-          const dd = new Date(e.day);
-          const dn = new Date();
-          if (dd.getDate() > dn.getDate()) {
+          const dateStr = dayjs(`${e.day} ${e.starttime}`)
+            .tz('Asia/Bangkok')
+            .format('YYYY-MM-DD');
+          const dateEnd = dayjs(`${new Date()}`)
+            .tz('Asia/Bangkok')
+            .format('YYYY-MM-DD');
+
+          if (dateStr > dateEnd) {
             return e;
           } else {
             return;

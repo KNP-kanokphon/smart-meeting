@@ -785,6 +785,8 @@ export const TableAddMember: React.FC = (): React.ReactElement => {
       width: '6%',
       dataIndex: 'uuid',
       render: (e: any, row: any, index: number) => {
+        console.log(row);
+
         if (e) {
           return (
             <div style={{ textAlign: 'center' }}>

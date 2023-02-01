@@ -6,15 +6,27 @@ import { menuItems, MenuItem } from '../../configs/menus';
 import { useAuth } from '../../utils/auth';
 import { Logo } from './Logo';
 import styles from './MainLayout.module.scss';
+import { useId24 } from '../../drivers/id24/Id24Provider';
 
 export const MainMenu = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const auth = useAuth();
-
+  const { tokenAccess, login, logout, id24Axios } = useId24();
+  const auth = useId24();
+  const groupRoules: string[] = [];
+  if (auth) {
+    auth.tokenAccess?.userAccess.map(groupId => {
+      groupId.roles.forEach(function (value, i) {
+        groupRoules.push(value);
+      });
+    });
+  }
+  const uniqueNames = groupRoules.filter((val: any, id: any, array: any) => {
+    return array.indexOf(val) == id;
+  });
   const items = useMemo(() => {
     const rolePredicate = (x: MenuItem) =>
-      x.roles ? intersection(auth.user?.roles, x.roles).length : true;
+      x.roles ? intersection(uniqueNames, x.roles).length : true;
 
     const itemMapper = (x: MenuItem): MenuItem & { onClick: () => void } => {
       return {
@@ -37,23 +49,21 @@ export const MainMenu = () => {
     };
     return menuItems.filter(rolePredicate).map(itemMapper);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.user?.roles]);
+  }, [uniqueNames]);
 
   const ks = pathname.slice(1).split('/');
 
   return (
     <>
-      {/* <Layout.Header
-        className={styles.siteLayoutBackground}
+      <div
         style={{
-          padding: 0,
-          borderBottom: '1px solid #F0F0F0',
+          backgroundColor: 'white',
+          paddingTop: '10px',
+          paddingBottom: '10px',
         }}
-      > */}
-        <div style={{backgroundColor:"white" ,paddingTop:"10px" ,paddingBottom:"10px"}}>
+      >
         <Logo />
-        </div>
-      {/* </Layout.Header> */}
+      </div>
       <Menu
         theme="light"
         mode="inline"

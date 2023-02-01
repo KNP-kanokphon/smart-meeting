@@ -248,34 +248,15 @@ export const MemberShipRoute: React.FC = (): React.ReactElement => {
       ]}
     >
       <Card style={{ width: '100%', textAlign: 'left', marginBottom: '10px' }}>
-        <Title style={{ color: 'black', fontSize: '24px', fontWeight: 'bold' }}>
+        <Typography
+          style={{
+            textAlign: 'left',
+            fontWeight: 'bold',
+            fontSize: '22px',
+          }}
+        >
           แบบขึ้นทะเบียนสมาชิก
-        </Title>
-        {/* <Tabs
-          type="card"
-          defaultActiveKey="1"
-          onChange={onChange}
-          items={[
-            {
-              label: `แบบฟอร์ม`,
-              key: '1',
-              children: (
-                <>
-                  <AddmemberRoute />
-                </>
-              ),
-            },
-            {
-              label: `รายละเอียดผู้ใช้บริการ`,
-              key: '2',
-              children: (
-                <>
-                  <TableAddMember />
-                </>
-              ),
-            },
-          ]}
-        /> */}
+        </Typography>
       </Card>
       <Card style={{ width: '100%' }}>
         <Row gutter={16}>

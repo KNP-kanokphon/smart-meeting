@@ -20,8 +20,8 @@ import { TableLast } from './table/Tablelast';
 import { TableToday } from './table/Tabletoday';
 import { TableUpcomingmeeting } from './table/TableUpcoming';
 
+const { Title } = Typography;
 export const MeetingScheduleRoute: React.FC = (): React.ReactElement => {
-  const { Title } = Typography;
   return (
     <Row
       gutter={[

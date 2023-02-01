@@ -5,7 +5,11 @@ import { defaultPath } from '../configs/menus';
 
 export type Role = 'admin' | 'oa' | 'bank';
 
-export type Roules = 'Meeting-create';
+export type Roules =
+  | 'Meeting-create'
+  | 'Meeting-plan'
+  | 'Membership-system'
+  | 'Activity-create';
 
 type User = {
   id: string;

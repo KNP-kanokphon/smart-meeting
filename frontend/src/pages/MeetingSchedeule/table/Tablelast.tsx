@@ -22,6 +22,11 @@ import { idText } from 'typescript';
 import { useNavigate } from 'react-router-dom';
 import { DatamanagementService } from '../../../stores/meeting-store';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const { Option } = Select;
 const { Search } = Input;
@@ -74,11 +79,14 @@ export const TableLast: React.FC = (): React.ReactElement => {
       .getListmeeting()
       .then(data => {
         const dataNew = data.filter((e: any) => {
-          const dd = new Date(e.day);
-          const dn = new Date();
-          // console.log(dd < dn);
+          const dateStr = dayjs(`${e.day} ${e.starttime}`)
+            .tz('Asia/Bangkok')
+            .format('YYYY-MM-DD');
 
-          if (dd.getDate() < dn.getDate()) {
+          const dateEnd = dayjs(`${new Date()}`)
+            .tz('Asia/Bangkok')
+            .format('YYYY-MM-DD');
+          if (dateStr < dateEnd) {
             return e;
           } else {
             return;

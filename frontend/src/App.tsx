@@ -34,7 +34,7 @@ import { Voteresolution } from './pages/voteagendes/votestep/vote';
 const App = () => {
   return (
     <>
-      <BrowserRouter basename={'/'}>
+      <BrowserRouter basename={'/admin'}>
         <Id24Provider
           config={{
             refreshTokenIntervalInSeconds: 60,
@@ -43,7 +43,7 @@ const App = () => {
         >
           <AuthProvider>
             <Routes>
-              <Route path="/" element={<MainLayout />}>
+              <Route path="/" element={<MainLayout basename={'meeting'} />}>
                 <Route index element={<Navigate to="meeting" replace />} />
                 {menuItems.map(x => (
                   <Route key={x.key} path={x.path} element={<Outlet />}>
@@ -56,19 +56,6 @@ const App = () => {
           </AuthProvider>
         </Id24Provider>
       </BrowserRouter>
-      {/* <BrowserRouter basename={'/'}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="meeting" replace />} />
-            {menuItems.map(x => (
-              <Route key={x.key} path={x.path} element={<Outlet />}>
-                {x.component}
-              </Route>
-            ))}
-          </Route>
-          <Route path="*" element={<Navigate to={defaultPath} replace />} />
-        </Routes>
-      </BrowserRouter> */}
       <BrowserRouter basename={'/party'}>
         <Routes>
           <Route
@@ -172,34 +159,46 @@ const App = () => {
           ></Route>
         </Routes>
       </BrowserRouter>
-      <BrowserRouter>
+      <BrowserRouter basename={'/signconfirm'}>
         <Routes>
           <Route
-            path="/signconfirm/:id/:userid"
+            path="/:id/:userid"
             element={<SignConfirm baseURL={'/signconfirm'} />}
           ></Route>
         </Routes>
       </BrowserRouter>
       <BrowserRouter basename={'/vote'}>
-        <Routes>
-          <Route path="/:roomid/:step" element={<Loginvoteadmin />}></Route>
-          <Route
-            path="/success/:roomid/:step"
-            element={<Showqrcodevote />}
-          ></Route>
-          <Route
-            path="/loginvote/:roomid/:step"
-            element={<Loginvote />}
-          ></Route>
-          <Route
-            path="/votedetail/:roomid/:step"
-            element={<Votedetail />}
-          ></Route>
-          <Route
-            path="/voteresolution/:roomid/:step"
-            element={<Voteresolution />}
-          ></Route>
-        </Routes>
+        <Id24Provider
+          config={{
+            refreshTokenIntervalInSeconds: 60,
+            resourceApiBaseUrl: 'http://localhost:4000',
+          }}
+        >
+          <AuthProvider>
+            <Routes>
+              <Route
+                path="/:roomid/:step"
+                element={<MainLayout basename={'vote'} />}
+              ></Route>
+              <Route
+                path="/showqrcode/:roomid/:step"
+                element={<Showqrcodevote />}
+              ></Route>
+              <Route
+                path="/loginvote/:roomid/:step"
+                element={<Loginvote />}
+              ></Route>
+              <Route
+                path="/votedetail/:roomid/:step"
+                element={<Votedetail />}
+              ></Route>
+              <Route
+                path="/voteresolution/:roomid/:step"
+                element={<Voteresolution />}
+              ></Route>
+            </Routes>
+          </AuthProvider>
+        </Id24Provider>
       </BrowserRouter>
     </>
   );

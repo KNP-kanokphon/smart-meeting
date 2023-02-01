@@ -1,16 +1,21 @@
-import { Button, Col, Dropdown, Layout, Menu, Row, Avatar } from 'antd';
-import React from 'react';
+import { Button, Col, Dropdown, Layout, Menu, Row, Avatar, Modal } from 'antd';
+import React, { useState } from 'react';
 import styles from './MainLayout.module.scss';
 import { Logo } from './Logo';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   onLogout: () => void;
 };
 
 export const MainHeader: React.FC<Props> = ({ onLogout }) => {
+  const navigate = useNavigate();
   const menu = (
     <Menu>
+      <Menu.Item key="profile" onClick={() => navigate('settingprofilekpi')}>
+        Profile
+      </Menu.Item>
       <Menu.Item key="logout" onClick={() => onLogout()}>
         Logout
       </Menu.Item>
@@ -33,11 +38,11 @@ export const MainHeader: React.FC<Props> = ({ onLogout }) => {
       >
         <Col style={{ marginRight: 20 }}>
           <Avatar
-            style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }}
+            style={{ backgroundColor: '#D9D9D9', verticalAlign: 'middle' }}
             size="large"
             gap={1}
           >
-            admin
+            <UserOutlined />
           </Avatar>
         </Col>
         <Col style={{ marginRight: 20 }}>

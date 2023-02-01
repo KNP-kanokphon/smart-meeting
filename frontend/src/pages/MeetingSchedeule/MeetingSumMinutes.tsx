@@ -11,12 +11,14 @@ import {
   Upload,
   message,
   Space,
+  Modal,
 } from 'antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { UploadOutlined, LeftCircleOutlined } from '@ant-design/icons';
+import { UploadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { DatamanagementService } from '../../stores/meeting-store';
 
 const { TextArea } = Input;
+const { confirm } = Modal;
 export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -68,23 +70,33 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
   };
 
   const submitpage = async () => {
-    await DatamanagementService().submitsummarypage(
-      state,
-      detailsummarymeeting,
-    );
+    if (!meetingData?.summarychecklist) {
+      confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: 'ยืนยีนสรุปรางานการประชุม',
+        onOk: async () => {
+          await DatamanagementService().submitsummarypage(
+            state,
+            detailsummarymeeting,
+          );
 
-    if (fileList !== undefined) {
-      console.log(fileList);
-      fileList.map(async (x: any, i: number) => {
-        const numberfile = Number(i) + 1;
-        const formData = new FormData();
-        formData.append('file', x);
-        await DatamanagementService().submitfilesummarypage(
-          state,
-          formData,
-          numberfile,
-          x.name,
-        );
+          if (fileList !== undefined) {
+            fileList.map(async (x: any, i: number) => {
+              const numberfile = Number(i) + 1;
+              const formData = new FormData();
+              formData.append('file', x);
+              await DatamanagementService().submitfilesummarypage(
+                state,
+                formData,
+                numberfile,
+                x.name,
+              );
+            });
+          }
+        },
+        onCancel() {
+          Modal.destroyAll();
+        },
       });
     }
   };
@@ -111,7 +123,7 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                   สรุปรายงานการประชุม
                 </Typography>
               </Col>
-              <Col offset={14}>
+              {/* <Col offset={14}>
                 <Button
                   style={{
                     backgroundColor: '#1E6541',
@@ -121,7 +133,7 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                 >
                   กลับ
                 </Button>
-              </Col>
+              </Col> */}
             </Row>
 
             <Typography
@@ -172,9 +184,11 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
               <Button>กลับ</Button>
               {''}
               <Button
+                disabled
                 style={{
                   backgroundColor: '#1E6541',
                   color: '#FFFFFF',
+                  border: 'none',
                 }}
                 onClick={submitpage}
               >
@@ -267,6 +281,7 @@ export const MeetingSumMinutes: React.FC = (): React.ReactElement => {
                 style={{
                   backgroundColor: '#1E6541',
                   color: '#FFFFFF',
+                  border: 'none',
                 }}
                 onClick={submitpage}
               >

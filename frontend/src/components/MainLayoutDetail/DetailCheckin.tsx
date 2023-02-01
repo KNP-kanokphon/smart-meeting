@@ -38,7 +38,6 @@ export const DetailCheckin: React.FC<Props> = ({
   const [userprofile, setUserprofile] = useState<any>([]);
   const [pathfile, setPathfile] = useState<any>([]);
   const [position, setPosition] = useState<any>([]);
-
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
   const [UserProfileContract, setUserprofileContracts] = useState<any>([]);
@@ -57,7 +56,6 @@ export const DetailCheckin: React.FC<Props> = ({
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
     const resultPosition = await DatamanagementService().getPositionall();
     const resultProfiles = await DatamanagementService().FindUserByID(userid);
-
     setPathfile(resultPathfile);
     setUserprofile(resultProfile[0]);
     setMeetingData(result[0]);
@@ -693,62 +691,6 @@ export const DetailCheckin: React.FC<Props> = ({
                     })}
                   </Col>
                 </Row>
-
-                {/* <Row>
-                  <Col
-                    xs={12}
-                    sm={4}
-                    md={{ span: 3, offset: 4 }}
-                    lg={{ span: 3, offset: 4 }}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                    }}
-                  >
-                    <b>{'วาระการประชุม'}</b>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={24}
-                    md={{ span: 16 }}
-                    lg={{ span: 16 }}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '100%',
-                      paddingLeft: '10px',
-                      paddingRight: '10px',
-                      marginTop: '8px',
-                    }}
-                  >
-                    {agenda?.map((e: any, i: number) => {
-                      return (
-                        <>
-                          {e?.agendes} : {e?.detailagendes}
-                          <br></br>
-                          {pathfile.map((x: any) => {
-                            if (x.type === 'fileAgenda' && x.step === e.step) {
-                              return (
-                                <Button
-                                  type="link"
-                                  onClick={() =>
-                                    getFiles(e.uuid, e.step, x.namefile)
-                                  }
-                                  key={`${e.uuid}.${e.step}.${x.namefile}`}
-                                >
-                                  {x.namefile}
-                                </Button>
-                              );
-                            } else {
-                              return <>-</>;
-                            }
-                          })}
-                        </>
-                      );
-                    })}
-                  </Col>
-                </Row> */}
               </Card>
             </Col>
           </Row>

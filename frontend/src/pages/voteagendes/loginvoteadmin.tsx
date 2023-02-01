@@ -32,7 +32,7 @@ export const Loginvoteadmin: React.FC<{}> = ({}): React.ReactElement => {
       if (getUsername === 'admin' && getPassword === 'P@ssw0rd') {
         return (
           message.warning('login success'),
-          (window.location.href = `/vote/success/${roomid}/${step}`)
+          (window.location.href = `/vote/showqrcode/${roomid}/${step}`)
         );
       } else {
         return (

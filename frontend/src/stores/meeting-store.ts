@@ -2,14 +2,7 @@ import axios from 'axios';
 import { IDataroom, IUsers } from '../pages/common/type';
 import { httpClient } from '../utils/http-client';
 
-// import { makeAutoObservable } from 'mobx';
-// import { getListmeeting, MeetingList } from './meeting-data.service';
-
-// export interface IDatamanagementService {
-//   getListmeeting: () => Promise<any>;
-// }
-
-export const DatamanagementService = () => ({
+export const DatamanagementService = (domain?: any) => ({
   getListmeeting: async () => {
     const result = await httpClient.get(`/meeting/`);
     return result.data;
@@ -20,6 +13,7 @@ export const DatamanagementService = () => ({
     newDataUser: any,
     dataDetail: any,
     dataFood: any,
+    statusagendes: boolean,
   ) => {
     const data = {
       id,
@@ -27,6 +21,7 @@ export const DatamanagementService = () => ({
       newDataUser,
       dataDetail,
       dataFood,
+      statusagendes,
     };
     const result = await httpClient.post(`/meeting/`, data);
     return result.data;
@@ -227,7 +222,7 @@ export const DatamanagementService = () => ({
   },
   updateByid: async (uuid: any, data: any) => {
     const result = await httpClient.put(
-      `userattendees/updateUserbyid/${uuid}`,
+      `userattendees/updateUser/${uuid}`,
       data,
     );
     return result.data;
@@ -456,6 +451,10 @@ export const DatamanagementService = () => ({
     const result = await httpClient.get(`userattendees/groupalls`);
     return result?.data;
   },
+  CourseAlls: async () => {
+    const result = await httpClient.get(`userattendees/courseall`);
+    return result?.data;
+  },
 
   // finduserbyid/:userid
   FindUserByID: async (userid: any) => {
@@ -577,5 +576,48 @@ export const DatamanagementService = () => ({
       },
     );
     return result.data;
+  },
+  updateprofile: async (name: string, email: string) => {
+    const result = await domain.post(`user/updateprofile`, {
+      name: name,
+      email: email,
+    });
+    return result?.data;
+  },
+  createcourse: async (data: any) => {
+    const result = await httpClient.post(`userattendees/createcourse`, data);
+    return result?.data;
+  },
+  updatecourse: async (data: any) => {
+    const result = await httpClient.post(`userattendees/updatecourse`, data);
+    return result?.data;
+  },
+  deletecourse: async (uuid: string) => {
+    const result = await httpClient.delete(
+      `userattendees/deletecourse/${uuid}`,
+    );
+    return result?.data;
+  },
+  createactivityplan: async (data: []) => {
+    const result = await httpClient.post(`meeting/activityplan`, data);
+    return result?.data;
+  },
+  getactivityallplan: async () => {
+    const result = await httpClient.get(
+      `meeting/activityplan/getactivityplanall`,
+    );
+    return result?.data;
+  },
+  createactivity: async (idativity: string, data: []) => {
+    const detail = {
+      idativity: idativity,
+      data: data,
+    };
+    const result = await httpClient.post(`meeting/activity`, detail);
+    return result?.data;
+  },
+  getactivityall: async (idactivity: any) => {
+    const result = await httpClient.get(`meeting/activity/getactivityall`);
+    return result?.data;
   },
 });

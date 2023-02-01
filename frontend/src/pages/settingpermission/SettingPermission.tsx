@@ -107,7 +107,23 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
   return (
     <>
       <Card style={{ width: '100%' }}>
+        <Typography
+          style={{
+            textAlign: 'left',
+            fontWeight: 'bold',
+            fontSize: '22px',
+          }}
+        >
+          แบบระบุตำแหน่ง
+        </Typography>
+      </Card>
+      <div style={{ width: '100%' }}>
         <Row gutter={16}>
+          <Col span={24}>
+            <SettingPermissionPosition Props={props} />
+          </Col>
+        </Row>
+        <Row gutter={16} hidden>
           <Col span={10}>
             <Row gutter={16}>
               <Col
@@ -167,13 +183,6 @@ export const SettingPermission: React.FC = (): React.ReactElement => {
             >
               {'Confirm Upload'}
             </Button>
-          </Col>
-        </Row>
-      </Card>
-      <div style={{ width: '100%' }}>
-        <Row gutter={16}>
-          <Col span={24}>
-            <SettingPermissionPosition Props={props} />
           </Col>
         </Row>
       </div>

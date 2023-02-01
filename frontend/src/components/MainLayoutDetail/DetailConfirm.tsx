@@ -29,6 +29,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
   const { userid } = useParams<{ userid: string }>();
   const [userprofile, setUserprofile] = useState<any>([]);
   const [pathfile, setPathfile] = useState<any>([]);
+  const [showadendes, setShowadendes] = useState<boolean>(false);
 
   const [meetingData, setMeetingData] = useState<any>();
   const [agenda, setAgenda] = useState<any>();
@@ -46,6 +47,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
     const resultAgenda = await DatamanagementService().getagendaByid(id);
     const resultPathfile = await DatamanagementService().getPathFilePdf(id);
 
+    setShowadendes(Object.keys(resultAgenda).length === 0 ? true : false);
     setPathfile(resultPathfile);
     setUserprofile(resultProfile[0]);
     setMeetingData(result[0]);
@@ -442,7 +444,7 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                   </Col>
                 </Row>
 
-                <Row>
+                <Row hidden={showadendes}>
                   <Col
                     xs={24}
                     sm={24}
@@ -468,9 +470,6 @@ export const DetailConfirm: React.FC<Props> = ({ baseURL }) => {
                       paddingLeft: '10px',
                       paddingRight: '10px',
                       marginTop: '8px',
-                      // whiteSpace: 'nowrap',
-                      // overflow: 'hidden',
-                      // textOverflow: 'ellipsis',
                     }}
                   >
                     {agenda?.map((e: any, i: number) => {

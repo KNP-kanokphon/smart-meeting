@@ -1,4 +1,13 @@
-import { Button, Card, Col, Row, Steps, Modal, message } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Row,
+  Steps,
+  Modal,
+  message,
+  Typography,
+} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useEffect, useRef, useState } from 'react';
 import { AgendaPage } from '../../MeetingCreate/agendaPage';
@@ -94,30 +103,12 @@ export const CreateMeeting: React.FC = () => {
     // check.then(() => submitForm());
     submitForm();
   };
+
   const submitForm = () => {
-    // const newDatauserBoard: any = [];
-    // const newDatauserAgenda: any = [];
-    // dataAgenda.userBoard.map((e: any) => {
-    //   newDatauserBoard.push({
-    //     username: e.username,
-    //     uuidprofile: e.uuidprofile,
-    //     type_user: e.type_user,
-    //     position: e.position,
-    //   });
-    // });
-    // dataAgenda.userAttendee.map((e: any) => {
-    //   newDatauserAgenda.push({
-    //     username: e.username,
-    //     uuidprofile: e.uuidprofile,
-    //     type_user: e.type_user,
-    //     position: e.position,
-    //   });
-    // });
     const id = uuidv4();
     Modal.confirm({
       title: 'Confirm Create this meeting',
       icon: <ExclamationCircleOutlined />,
-      // content: `Link... ${window.origin}/${id}`,
       okText: 'ยืนยัน',
       cancelText: 'ยกเลิก',
       onOk: async () => {
@@ -132,7 +123,19 @@ export const CreateMeeting: React.FC = () => {
           timeEnd: dataAgenda.timeEnd,
           detailMeeting: dataAgenda.detailMeeting,
         };
-
+        let statusagendes;
+        if (dataDetail.agenda !== undefined) {
+          if (
+            dataDetail.agenda.length === 0 ||
+            dataDetail.agenda[0].title === ''
+          ) {
+            statusagendes = false;
+          } else {
+            statusagendes = true;
+          }
+        } else {
+          statusagendes = false;
+        }
         await DatamanagementService()
           .createmeeting(
             id,
@@ -140,6 +143,7 @@ export const CreateMeeting: React.FC = () => {
             dataAgenda.userAttendee,
             dataDetail,
             dataFood,
+            statusagendes,
           )
           .then(async data => {
             if (dataAgenda.fileOverview !== undefined) {
@@ -155,34 +159,32 @@ export const CreateMeeting: React.FC = () => {
                 );
               });
             }
-            if (dataDetail['agenda'] !== undefined) {
-              dataDetail['agenda'].map((x: any, numberstep: number) => {
-                if (x.file !== undefined) {
-                  x.file.fileList.map((e: any, i: number) => {
-                    const formData = new FormData();
-                    formData.append('file', e.originFileObj);
-                    console.log(e.originFileObj);
-                    DatamanagementService().uploadFileagendas(
-                      formData,
-                      id,
-                      e.name,
-                      i,
-                      numberstep,
-                    );
-                  });
-                }
-              });
+            if (!dataDetail?.statusagendes === true) {
+              if (dataDetail['agenda'] !== undefined) {
+                dataDetail['agenda'].map((x: any, numberstep: number) => {
+                  if (x.file !== undefined) {
+                    x.file.fileList.map((e: any, i: number) => {
+                      const formData = new FormData();
+                      formData.append('file', e.originFileObj);
+                      console.log(e.originFileObj);
+                      DatamanagementService().uploadFileagendas(
+                        formData,
+                        id,
+                        e.name,
+                        i,
+                        numberstep,
+                      );
+                    });
+                  }
+                });
+              }
             }
           });
-        // navigate('/meeting/meeting-schedule');
+        navigate('/meeting/meeting-schedule');
       },
       onCancel: () => {},
     });
   };
-
-  // useEffect(() => {
-  //   console.log('useEffect ran. ', dataAgenda);
-  // }, [dataAgenda]);
 
   const steps = [
     {
@@ -200,11 +202,20 @@ export const CreateMeeting: React.FC = () => {
   ];
   return (
     <>
-      {/* <>
-        <Card title="สร้างวาระการประชุม" style={{ width: '100%' }}></Card>
-      </> */}
       <br></br>
-      <Card title="สร้างวาระการประชุม">
+      <Card
+        title={
+          <Typography
+            style={{
+              textAlign: 'left',
+              fontWeight: 'bold',
+              fontSize: '22px',
+            }}
+          >
+            สร้างวาระการประชุม
+          </Typography>
+        }
+      >
         <Row>
           {steps.map(({ title, content }, i) => (
             <Col
@@ -224,7 +235,7 @@ export const CreateMeeting: React.FC = () => {
                 style={{ marginLeft: 8 }}
                 onClick={() => onChangeCurrentStep(currentStep - 1)}
               >
-                กลัับ
+                กลับ
               </Button>
             )}
           </Col>

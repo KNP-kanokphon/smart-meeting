@@ -43,7 +43,7 @@ export const Loginvote: React.FC<{}> = ({}): React.ReactElement => {
   const getData = async () => {
     const resultDetailagenda =
       await DatamanagementService().findAagendesdetailbyid(roomid, step);
-    console.log(resultDetailagenda);
+    // console.log(resultDetailagenda);
     setDetailagenda(resultDetailagenda[0]);
   };
 
@@ -52,14 +52,16 @@ export const Loginvote: React.FC<{}> = ({}): React.ReactElement => {
       roomid,
       phoneNumber,
     );
-
-    if (Object.keys(result).length > 0) {
-      return navigate(`/votedetail/${roomid}/${step}`, { state: result });
-      //   (window.location.href = `/vote/votedetail/${roomid}/${step}`);
-    } else {
+    if (Object.keys(result).length === 0) {
       return message.warning(
         'เบอรโทรศัพท์ไม่ตรงตามระบบ ไม่มีรายชื่อในห้องประชุม โปรดแจ้งทางแอดมิน ',
       );
+    } else if (result === 'notroom') {
+      return message.warning('ไม่มีพบห้องประชุม ');
+    } else if (result === 'expride') {
+      return message.warning('การประชุมหมดอายุ');
+    } else {
+      return navigate(`/votedetail/${roomid}/${step}`, { state: result });
     }
   };
   return (

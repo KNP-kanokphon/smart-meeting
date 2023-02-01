@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { pipe, replace, toLower } from 'lodash/fp';
 
-import { Role } from '../utils/auth';
+import { Role, Roules } from '../utils/auth';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { CreateStepagendasIndex } from '../pages/Meeting/createmeeting/createstepagendes';
 import { CreateStepFood } from '../pages/Meeting/createmeeting/createstepagendes/CreateStepFood';
@@ -22,11 +22,15 @@ import { SettingPermission } from '../pages/settingpermission/SettingPermission'
 import { CreateMeeting } from '../pages/Meeting/createmeeting/MeetingCreate';
 import { ReserveMeet } from '../pages/ReserveMeet/RevserveMeet';
 import { EditMeeting } from '../pages/MeetingSchedeule/MeetingEdit/MeetingEdit';
+import { MainSettingProfile } from '../pages/createprofile';
+import { Activitylog } from '../pages/createactivity/activitylog';
+import { Createactivity } from '../pages/createactivity/createactivity';
+import { Registeractivity } from '../pages/createactivity/registeractivity';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
   component: JSX.Element;
-  roles?: Role[];
+  roles?: Roules[];
   path?: string;
   children?: MenuConfig[];
 };
@@ -36,6 +40,7 @@ const menuConfigs: MenuConfig[] = [
     icon: <DiffOutlined />,
     label: 'สร้างวาระการประชุม',
     path: 'meeting',
+    roles: ['Meeting-create'],
     component: (
       <>
         <Route index element={<CreateMeeting />} />
@@ -44,10 +49,48 @@ const menuConfigs: MenuConfig[] = [
       </>
     ),
   },
+
+  {
+    icon: <DiffOutlined />,
+    label: 'กิจกรรม',
+    path: 'activity',
+    // roles: ['Activity-create'],
+    component: (
+      <>
+        <Route path="activitylog" element={<Activitylog />} />,
+        <Route path="activitycreate" element={<Createactivity />} />,
+        <Route path="registeractivity" element={<Registeractivity />} />
+      </>
+    ),
+    children: [
+      {
+        icon: <SettingOutlined />,
+        label: 'บันทึกกิจกรรม',
+        path: 'activitylog',
+        component: (
+          <>
+            <Route index element={<Activitylog />} />
+            <Route path="registeractivity" element={<Registeractivity />} />
+          </>
+        ),
+      },
+      {
+        icon: <TeamOutlined />,
+        label: 'สร้างกิจกรรม',
+        path: 'activitycreate',
+        component: (
+          <>
+            <Route index element={<Createactivity />} />
+          </>
+        ),
+      },
+    ],
+  },
   {
     icon: <CalendarOutlined />,
     label: 'แผนการประชุม',
     path: 'meeting-schedule',
+    roles: ['Meeting-plan'],
     component: (
       <>
         <Route index element={<MeetingScheduleRoute />} />
@@ -58,11 +101,11 @@ const menuConfigs: MenuConfig[] = [
       </>
     ),
   },
-
   {
     icon: <TeamOutlined />,
     label: 'ระบบสมาชิก',
     path: 'membership',
+    roles: ['Membership-system'],
     component: (
       <>
         <Route index element={<MemberShipRoute />} />,
@@ -94,16 +137,19 @@ const menuConfigs: MenuConfig[] = [
       },
     ],
   },
-  // {
-  //   icon: <TableOutlined />,
-  //   label: 'Reserve Meet',
-  //   path: 'Reserve-Meet',
-  //   component: (
-  //     <>
-  //       <Route index element={<ReserveMeet />} />
-  //     </>
-  //   ),
-  // },
+  {
+    icon: <DiffOutlined />,
+    label: 'ตั่งค่าโปรไฟล์',
+    path: 'settingprofilekpi',
+    // roles: ['Meeting-create'],
+    component: (
+      <>
+        <Route index element={<MainSettingProfile />} />
+        {/* <Route path="agendas" element={<CreateStepagendasIndex />} />
+        <Route path="agendas/agendasfood" element={<CreateStepFood />} /> */}
+      </>
+    ),
+  },
 ];
 
 export type MenuItem = MenuConfig & {
