@@ -45,11 +45,11 @@ export const MainHeader: React.FC<Props> = ({ onLogout }) => {
             <UserOutlined />
           </Avatar>
         </Col>
-        <Col style={{ marginRight: 20 }}>
+        {/* <Col style={{ marginRight: 20 }}>
           <Dropdown overlay={menu}>
             <CaretDownOutlined style={{ color: '#ffffff' }} />
           </Dropdown>
-        </Col>
+        </Col> */}
       </Row>
     </Layout.Header>
   );

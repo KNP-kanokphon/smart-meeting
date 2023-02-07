@@ -3,6 +3,7 @@ import {
   Card,
   Checkbox,
   Col,
+  DatePicker,
   Form,
   Input,
   Radio,
@@ -28,9 +29,12 @@ export const Createactivity: React.FC = (): React.ReactElement => {
     setValueActivity(changvalue);
   };
   const submitFrom = async () => {
-    const result = await DatamanagementService().createactivityplan(
-      valueActivity,
-    );
+    const values = {
+      ...valueActivity,
+      dateacivity: valueActivity['dateacivity'].format('YYYY-MM-DD'),
+    };
+
+    const result = await DatamanagementService().createactivityplan(values);
     if (result) {
       navigate('/activity/activitylog');
     }
@@ -83,6 +87,13 @@ export const Createactivity: React.FC = (): React.ReactElement => {
             </Col>
           </Row>
           <Row>
+            <Col span={12}>
+              <Form.Item label="วันที่ทำกิจกรรม" name={'dateacivity'}>
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
             <Col span={24}>
               <Form.Item label="รายละเอียดกิจกรรม" name={'activitydetails'}>
                 <TextArea rows={4} placeholder="หัวข้อ กิจกรรม" />
@@ -107,6 +118,7 @@ export const Createactivity: React.FC = (): React.ReactElement => {
           <Col span={12} hidden>
             <Form.Item name={'idactivity'} initialValue={uuidv4()} />
           </Col>
+
           <Row>
             <Col>
               <Button

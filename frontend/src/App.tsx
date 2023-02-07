@@ -34,6 +34,7 @@ import { GolfCheckin } from './pages/GolfMeeting/GolfCheckin';
 import { GolfDetail } from './pages/GolfMeeting/GolfDetail';
 import { GolfForm } from './pages/GolfMeeting/GolfForm';
 import { GolfQRcode } from './pages/GolfMeeting/GolfQRcode';
+import { Golfdetailcheckin } from './pages/GolfMeeting/golfdetailcheckin';
 const App = () => {
   return (
     <>
@@ -59,6 +60,7 @@ const App = () => {
           </AuthProvider>
         </Id24Provider>
       </BrowserRouter>
+
       <BrowserRouter basename={'/party'}>
         <Routes>
           <Route
@@ -146,32 +148,41 @@ const App = () => {
           ></Route>
         </Routes>
       </BrowserRouter>
-      <BrowserRouter basename={'/golfmeet'}>
-        <Routes>
-          <Route
-            path="/detailform"
-            element={<GolfForm baseURL={'/detailform'} />}
-          ></Route>
-        </Routes>
-        <Routes>
-          <Route
-            path="/golfdetail"
-            element={<GolfDetail baseURL={'/golfdetail'} />}
-          ></Route>
-        </Routes>
-        <Routes>
-          <Route
-            path="/golfqrcode"
-            element={<GolfQRcode baseURL={'/golfqrcode'} />}
-          ></Route>
-        </Routes>
-        <Routes>
-          <Route
-            path="/golfcheckin"
-            element={<GolfCheckin baseURL={'/golfcheckin'} />}
-          ></Route>
-        </Routes>
+
+      <BrowserRouter basename={'/activity'}>
+        <Id24Provider
+          config={{
+            refreshTokenIntervalInSeconds: 60,
+            resourceApiBaseUrl: 'http://localhost:4000',
+          }}
+        >
+          <AuthProvider>
+            <Routes>
+              <Route
+                path="/detailactivity/:idactivity/:applicationnumber"
+                element={<GolfForm baseURL={'/detailactivity'} />}
+              ></Route>
+              <Route
+                path="/golfdetail/:idactivity/:applicationnumber"
+                element={<GolfDetail baseURL={'/golfdetail'} />}
+              ></Route>
+              <Route
+                path="/golfqrcode/:idactivity/:applicationnumber"
+                element={<GolfQRcode baseURL={'/golfqrcode'} />}
+              ></Route>
+              <Route
+                path="/golfcheckin/:idactivity/:applicationnumber"
+                element={<GolfCheckin baseURL={'/golfcheckin'} />}
+              ></Route>
+              <Route
+                path="/golfdetailcheckin/:idactivity/:applicationnumber"
+                element={<Golfdetailcheckin baseURL={'/golfdetailcheckin'} />}
+              ></Route>
+            </Routes>
+          </AuthProvider>
+        </Id24Provider>
       </BrowserRouter>
+
       <BrowserRouter basename={'/profileDetail'}>
         <Routes>
           <Route

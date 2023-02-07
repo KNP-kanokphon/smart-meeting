@@ -14,31 +14,22 @@ import {
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Logo from '../../assets/images/KPIS Logo.png';
 import './GolfRoute.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 export interface Props {
   baseURL: string;
 }
 
-const data = [
-  {
-    id: 1,
-    name: 'คุณจิระศักดิ์ สุวรรณเศรษฐ์',
-  },
-  {
-    id: 2,
-    name: 'คุณจักรกฤษณ์ สุวรรณเศรษฐ์',
-  },
-  {
-    id: 3,
-    name: 'คุณนิวัฒน์ หัตถเกรียงไกร',
-  },
-  {
-    id: 4,
-    name: 'คุณณรงค์ชัย จีระธวัชชัย',
-  },
-];
 export const GolfDetail: React.FC<Props> = ({
   baseURL,
 }): React.ReactElement => {
+  const navigate = useNavigate();
+  const { state } = useLocation() as any;
+  const nextstep = async () => {
+    navigate(`/golfqrcode/${state.idactivity}/${state.applicationnumber}`, {
+      state: state,
+    });
+  };
+
   return (
     <>
       <Row className="row">
@@ -53,47 +44,60 @@ export const GolfDetail: React.FC<Props> = ({
               </Col>
               <Col span={24}>
                 <Typography className="typothreetypo">
-                  {`เลขใบสมัคร : ${`001`}`}
+                  {`เลขใบสมัคร : ${state?.applicationnumber}`}
                 </Typography>
               </Col>
               <Col span={24}>
                 <Typography className="typothreetypo">
-                  {`ชื่อก๊วน : ${`มาราธอน`}`}
+                  {`ชื่อก๊วน : ${state?.namegang}`}
                 </Typography>
               </Col>
               <Col span={24}>
                 <Typography className="typothreetypo">
-                  {`ชื่อหัวหน้า : ${`ดร.ธิติมา หล่อพิพัฒน์`}`}
+                  {`ชื่อหัวหน้า : ${state?.ownergang}`}
                 </Typography>
               </Col>
             </Row>
-            {/* <Card className="cardinRow"> */}
             <Divider></Divider>
             <Form layout="vertical">
               <Form.Item
                 label={<div className="typotwotypo2">{`รายชื่อลูกก๊วน`}</div>}
               >
-                {data.map((e: any) => {
-                  console.log(e);
-
-                  return (
-                    <>
-                      <Typography className="typothree2">{`${e.id}.  ${e.name}`}</Typography>
-                    </>
-                  );
-                })}
+                <Typography
+                  className="typothree2"
+                  hidden={state?.member1 ? false : true}
+                >{`${state?.member1}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={state?.member2 ? false : true}
+                >{`${state?.member2}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={state?.member3 ? false : true}
+                >{`${state?.member3}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={state?.member4 ? false : true}
+                >{`${state?.member4}`}</Typography>
               </Form.Item>
             </Form>
-            {/* </Card> */}
             <Divider></Divider>
             <Row gutter={6}>
               <Col span={12}>
-                <Button type="primary" className="buttonnext">
+                <Button
+                  type="primary"
+                  className="buttonnext"
+                  onClick={() => navigate(-1)}
+                >
                   <ArrowRightOutlined rotate={180} /> ย้อนกลับ
                 </Button>
               </Col>
               <Col span={12}>
-                <Button type="primary" className="buttonnext">
+                <Button
+                  type="primary"
+                  className="buttonnext"
+                  onClick={nextstep}
+                >
                   ถัดไป <ArrowRightOutlined />
                 </Button>
               </Col>

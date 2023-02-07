@@ -11,15 +11,12 @@ import {
   Divider,
   Input,
   Spin,
-  Modal,
 } from 'antd';
-import { ArrowRightOutlined, CheckCircleFilled } from '@ant-design/icons';
+import { CheckCircleFilled } from '@ant-design/icons';
 import Logo from '../../assets/images/KPIS Logo.png';
 import './GolfRoute.css';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { useParams } from 'react-router-dom';
-import { now } from 'lodash';
-import moment from 'moment';
 export interface Props {
   baseURL: string;
 }
@@ -44,34 +41,18 @@ interface Idetail {
   sendsmsstatus: boolean;
 }
 
-interface Idetailplance {
-  id: number;
-  idactivity: string;
-  activitytopic: string;
-  activitydetails: string;
-  scheduleactivity: string;
-  locationactivity: string;
-  typeactivity: string;
-  dateacivity: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export const GolfCheckin: React.FC<Props> = ({
+export const Golfdetailcheckin: React.FC<Props> = ({
   baseURL,
 }): React.ReactElement => {
+  const navigate = useNavigate();
+  const { state } = useLocation() as any;
   const { idactivity } = useParams<{ idactivity: string }>();
   const { applicationnumber } = useParams<{ applicationnumber: string }>();
+
   const [loading, setLoading] = useState(true);
   const [dataSource, setdataSource] = useState<Idetail>();
-  const [dataDetail, setDataDetail] = useState<Idetailplance>();
-  const [valueActivity, setValueActivity] = useState<any>();
+  const [valueActivity, setValueActivity] = useState<any>([]);
   useEffect(() => {
-    checkdatetimeactivity().then((data: any) => {
-      setDataDetail(data[0]);
-      countDown(data[0]);
-    });
-
     checkprofile().then(async (data: any) => {
       const datateam = await DatamanagementService().getactivitybyphone(
         data[0].phonenumberownergang,
@@ -80,12 +61,6 @@ export const GolfCheckin: React.FC<Props> = ({
       setLoading(false);
     });
   }, []);
-
-  const checkdatetimeactivity = async () => {
-    return new Promise(async (resolve, reject) => {
-      resolve(await DatamanagementService().getcheckinmeactivity(idactivity));
-    });
-  };
 
   const checkprofile = async () => {
     return new Promise(async (resolve, reject) => {
@@ -98,37 +73,9 @@ export const GolfCheckin: React.FC<Props> = ({
     });
   };
 
-  const countDown = async (data: any) => {
-    console.log('success');
-    console.log(moment(new Date()).format('YYYY-MM-DD') === data?.dateacivity);
-
-    await DatamanagementService().activitycheckin(
-      idactivity,
-      applicationnumber,
-    );
-    let secondsToGo = 5;
-    if (moment(new Date()).format('YYYY-MM-DD') === data?.dateacivity) {
-      const modal = Modal.success({
-        title: 'เช็คอิน',
-        content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
-      });
-
-      const timer = setInterval(() => {
-        secondsToGo -= 1;
-        modal.update({
-          content: `จะปิดการแสดงผลภายในเวลา ${secondsToGo} วินาที.`,
-        });
-      }, 1000);
-
-      setTimeout(() => {
-        clearInterval(timer);
-        modal.destroy();
-      }, secondsToGo * 1000);
-    }
-  };
-  return loading && dataDetail ? (
+  return loading && valueActivity ? (
     <Spin spinning={true}></Spin>
-  ) : moment(new Date()).format('YYYY-MM-DD') === dataDetail?.dateacivity ? (
+  ) : (
     <>
       <Row className="row">
         <Col xs={24} md={12} lg={12}>
@@ -211,36 +158,75 @@ export const GolfCheckin: React.FC<Props> = ({
                 );
               })}
             </Row>
-          </Card>
-        </Col>
-      </Row>
-    </>
-  ) : (
-    <>
-      <Row className="row">
-        <Col>
-          <Card className="cardinRowCheckin">
-            <Row>
+            {/* <Row>
               <Col span={24}>
-                <Image src={Logo} width={100} preview={false} />
-              </Col>
-              <br></br>
-              <Col span={24}>
-                <Typography className="typotwooooo">
-                  กิจกรรม {dataDetail?.activitytopic}
-                </Typography>{' '}
+                <CheckCircleFilled
+                  style={{
+                    color: '#1E6541',
+                    fontSize: '100px',
+                  }}
+                  size={50}
+                />
               </Col>
               <Col span={24}>
-                <Typography className="typothree">
-                  จะเริ่มในวันที่ {dataDetail?.dateacivity}
-                </Typography>{' '}
+                <Typography className="typothreetypopo">
+                  {`เช็คอินเรียบร้อย`}
+                </Typography>
               </Col>
               <Col span={24}>
-                <Typography className="typothree">
-                  ขออภัยในความไม่สะดวก
-                </Typography>{' '}
+                <Typography className="typotwotypo">รายละเอียดก๊วน</Typography>
               </Col>
-            </Row>
+              <Col span={24}>
+                <Typography className="typothreetypo">
+                  {`เลขใบสมัคร : ${dataSource?.applicationnumber}`}
+                </Typography>
+              </Col>
+              <Col span={24}>
+                <Typography className="typothreetypo">
+                  {`ชื่อก๊วน : ${dataSource?.namegang}`}
+                </Typography>
+              </Col>
+              <Col span={24}>
+                <Typography className="typothreetypo">
+                  {`ชื่อหัวหน้า : ${dataSource?.ownergang}`}
+                </Typography>
+              </Col>
+            </Row> */}
+
+            {/* <Divider></Divider> */}
+            {/* <Form layout="vertical">
+              <Form.Item
+                label={<div className="typotwotypo2">{`รายชื่อลูกก๊วน`}</div>}
+              >
+                <Typography
+                  className="typothree2"
+                  hidden={dataSource?.member1 ? false : true}
+                >{`${dataSource?.member1}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={dataSource?.member2 ? false : true}
+                >{`${dataSource?.member2}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={dataSource?.member3 ? false : true}
+                >{`${dataSource?.member3}`}</Typography>
+                <Typography
+                  className="typothree2"
+                  hidden={dataSource?.member4 ? false : true}
+                >{`${dataSource?.member4}`}</Typography>
+              </Form.Item>
+              <Divider></Divider>
+              <Form.Item
+                label={<div className="typotwotypo2">{`ตารางการแข่งขัน`}</div>}
+              >
+                <Typography className="typothree2">{`${dataSource?.schedulematch}`}</Typography>
+              </Form.Item>
+            </Form> */}
+
+            {/* <Divider></Divider> */}
+            {/* <Button type="primary" className="buttonnext">
+              <ArrowRightOutlined rotate={180} /> ย้อนกลับ
+            </Button> */}
           </Card>
           <Typography className="typofooter">
             ©2022 O S D Company Limited

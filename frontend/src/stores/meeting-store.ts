@@ -620,4 +620,37 @@ export const DatamanagementService = (domain?: any) => ({
     const result = await httpClient.get(`meeting/activity/getactivityall`);
     return result?.data;
   },
+  getactivitybyid: async (idactivity: any, applicationnumber: any) => {
+    const result = await httpClient.get(
+      `meeting/activity/getactivity/${idactivity}/${applicationnumber}`,
+    );
+    return result?.data;
+  },
+  updateactivity: async (valueActivity: any) => {
+    const result = await httpClient.post(
+      `meeting/activity/updateactivity`,
+      valueActivity,
+    );
+    return result?.data;
+  },
+  activitycheckin: async (idactivity: any, applicationnumber: any) => {
+    const result = await httpClient.post(`meeting/activity/activitycheckin`, {
+      idactivity: idactivity,
+      applicationnumber: applicationnumber,
+    });
+    return result?.data;
+  },
+  getcheckinmeactivity: async (idactivity: any) => {
+    const result = await httpClient.get(
+      `meeting/activity/getcheckinmeactivity/${idactivity}`,
+    );
+    return result?.data;
+  },
+
+  getactivitybyphone: async (phonenumber: any) => {
+    const result = await httpClient.get(
+      `meeting/activity/getactivitybyphone/${phonenumber}`,
+    );
+    return result?.data;
+  },
 });

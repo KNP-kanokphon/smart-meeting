@@ -3,10 +3,12 @@ import {
   Button,
   Card,
   Col,
+  Dropdown,
   Form,
   Input,
   Radio,
   Row,
+  Select,
   Space,
   Spin,
   Switch,
@@ -17,6 +19,7 @@ import { DatamanagementService } from '../../stores/meeting-store';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 export const Activitylog: React.FC = (): React.ReactElement => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -38,37 +41,50 @@ export const Activitylog: React.FC = (): React.ReactElement => {
       title: 'หัวข้อกิจกรรม',
       dataIndex: 'activitytopic',
       key: 'activitytopic',
+      width: '20%',
     },
     {
       title: 'รายละเอียดกิจกรรม',
       dataIndex: 'activitydetails',
       key: 'activitydetails',
+      width: '20%',
     },
     {
       title: 'กำหนดการแข่งขัน',
       dataIndex: 'scheduleactivity',
       key: 'scheduleactivity',
+      width: '20%',
     },
     {
       title: 'สถานที่',
       dataIndex: 'locationactivity',
       key: 'locationactivity',
+      width: '20%',
     },
     {
       title: 'รายละเอียด',
       dataIndex: 'locationactivity',
       key: 'locationactivity',
+      width: '20%',
       render: (text: string, data: any) => {
-        console.log(data);
-        // :${data.idactivity}
         return (
           <>
             <Button
+              type="link"
               onClick={() =>
                 navigate(`/activity/registeractivity`, { state: data })
               }
             >
               เพิ่มก๊วน
+            </Button>
+            {'     '}
+            <Button
+              type="link"
+              onClick={() =>
+                navigate(`/activity/activitydashboard`, { state: data })
+              }
+            >
+              รายงานกิจกรรม
             </Button>
           </>
         );

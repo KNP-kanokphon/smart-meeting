@@ -22,8 +22,6 @@ export const MainLayout: React.FC<Prop> = ({ basename }) => {
   const apiBaseUrl = id24Axios(window.location.origin);
   const { roomid } = useParams<{ roomid: string }>();
   const { step } = useParams<{ step: string }>();
-  console.log(basename);
-
   if (basename === 'vote') {
     window.location.href = `${window.location.origin}/${basename}/showqrcode/${roomid}/${step}`;
   }
@@ -33,12 +31,12 @@ export const MainLayout: React.FC<Prop> = ({ basename }) => {
       return arr.includes(value);
     });
   }
-  useEffect(() => {
-    checkprofile().then((data: any) => {
-      setSyncdata(data?.data);
-      setLoading(false);
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkprofile().then((data: any) => {
+  //     setSyncdata(data?.data);
+  //     setLoading(false);
+  //   });
+  // }, []);
 
   const auth = useId24();
   const groupRoules: string[] = [];
@@ -64,69 +62,70 @@ export const MainLayout: React.FC<Prop> = ({ basename }) => {
       <Button onClick={() => login(window.location.href, false)}>Login</Button>
     );
   }
-  if (!multipleInArray(uniqueNames, ['Meeting-create'])) {
-    return (
-      <Result
-        status="403"
-        title="403"
-        subTitle="ท่านยังไม่มีสิทธิ์ในการเข้าถึงระบบ กรุณาตรวจสอบสิทธิ์ในการเข้าถึงกับผู้ดูแลระบบ."
-        extra={
-          <Button onClick={() => login(window.location.href, false)}>
-            Login
-          </Button>
-        }
-      />
-    );
+  if (!authenticated && toggleOnId24) {
+    if (!multipleInArray(uniqueNames, ['Meeting-create'])) {
+      return (
+        <Result
+          status="403"
+          title="403"
+          subTitle="ท่านยังไม่มีสิทธิ์ในการเข้าถึงระบบ กรุณาตรวจสอบสิทธิ์ในการเข้าถึงกับผู้ดูแลระบบ."
+          extra={
+            <Button onClick={() => login(window.location.href, false)}>
+              Login
+            </Button>
+          }
+        />
+      );
+    }
   }
-  const checkprofile = async () => {
-    return new Promise(async (resolve, reject) => {
-      resolve(await apiBaseUrl.post(`/user/shrinkdata`));
-    });
-  };
-  if (syncdata) {
-    return (
-      <Layout style={{ minHeight: '100vh' }}>
-        <Layout className="site-layout">
-          <Sider
-            trigger={null}
-            collapsible
+  // const checkprofile = async () => {
+  //   return new Promise(async (resolve, reject) => {
+  //     resolve(await apiBaseUrl.post(`/user/shrinkdata`));
+  //   });
+  // };
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Layout className="site-layout">
+        <Sider
+          trigger={null}
+          collapsible
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            height: '100vh',
+            position: 'fixed',
+          }}
+        >
+          <MainMenu />
+        </Sider>
+        <Layout style={{ marginLeft: 200 }}>
+          <MainHeader
+            onLogout={() => {
+              setUserRequestedLogout(true);
+              logout().then(() => login(window.location.href, false));
+            }}
+          />
+          <Content
             style={{
-              overflowX: 'hidden',
-              overflowY: 'auto',
-              height: '100vh',
-              position: 'fixed',
+              paddingBottom: 24,
+              paddingLeft: 24,
+              paddingRight: 24,
+              margin: '0px 16px',
+              minHeight: '80vh',
+              overflow: 'initial',
             }}
           >
-            <MainMenu />
-          </Sider>
-          <Layout style={{ marginLeft: 200 }}>
-            <MainHeader
-              onLogout={() => {
-                setUserRequestedLogout(true);
-                logout().then(() => login(window.location.href, false));
-              }}
-            />
-            <Content
-              style={{
-                paddingBottom: 24,
-                paddingLeft: 24,
-                paddingRight: 24,
-                margin: '0px 16px',
-                minHeight: '80vh',
-                overflow: 'initial',
-              }}
-            >
-              <Outlet />
-            </Content>
-            <Footer style={{ textAlign: 'center', color: 'rgba(0,0,0,.45)' }}>
-              <p>Smart-Meeting | Version: 1.1</p>
-              <p>Copyright ©2022 OSD</p>
-            </Footer>
-          </Layout>
+            <Outlet />
+          </Content>
+          <Footer style={{ textAlign: 'center', color: 'rgba(0,0,0,.45)' }}>
+            <p>Smart-Meeting | Version: 1.1</p>
+            <p>Copyright ©2022 OSD</p>
+          </Footer>
         </Layout>
       </Layout>
-    );
-  }
+    </Layout>
+  );
+
   return loading ? (
     <Spin spinning={true}></Spin>
   ) : (

@@ -2,7 +2,7 @@
   "name": "ddebt-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://localhost:3000/admin",
+  "homepage": "http://emeeting.kpisociety.com:3000/kpimeeting/",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -24,6 +24,7 @@
     "lodash": "^4.17.21",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",
+    "moment": "^2.29.4",
     "prettier": "^2.7.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",

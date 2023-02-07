@@ -12,13 +12,15 @@ import {
   Switch,
   Table,
   Typography,
+  message,
 } from 'antd';
 import { DeleteFilled, PlusOutlined } from '@ant-design/icons';
 import { DatamanagementService } from '../../stores/meeting-store';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 export const Registeractivity: React.FC = (): React.ReactElement => {
+  const navigate = useNavigate();
   const { state } = useLocation() as any;
   const [loading, setLoading] = useState(true);
   const [valueActivity, setValueActivity] = useState<any>([]);
@@ -46,6 +48,8 @@ export const Registeractivity: React.FC = (): React.ReactElement => {
       state?.idactivity,
       valueActivity,
     );
+    message.success('สำเร็จ');
+    navigate('/activity/activitylog');
   };
   return loading ? (
     <Spin spinning={true}></Spin>
@@ -80,8 +84,6 @@ export const Registeractivity: React.FC = (): React.ReactElement => {
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => {
-                console.log(dataSource[name]);
-
                 return (
                   <>
                     <Card
@@ -220,7 +222,7 @@ export const Registeractivity: React.FC = (): React.ReactElement => {
                           label=" "
                           {...restField}
                           name={[name, 'checkinstatus']}
-                          initialValue={true}
+                          initialValue={false}
                         ></Form.Item>
                       </Col>
 

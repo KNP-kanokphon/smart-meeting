@@ -26,6 +26,8 @@ import { MainSettingProfile } from '../pages/createprofile';
 import { Activitylog } from '../pages/createactivity/activitylog';
 import { Createactivity } from '../pages/createactivity/createactivity';
 import { Registeractivity } from '../pages/createactivity/registeractivity';
+import { GolfCheckin } from '../pages/GolfMeeting/GolfCheckin';
+import { ActivityDashboard } from '../pages/createactivity/activitydashboard';
 type MenuConfig = {
   icon?: JSX.Element;
   label: string;
@@ -40,7 +42,7 @@ const menuConfigs: MenuConfig[] = [
     icon: <DiffOutlined />,
     label: 'สร้างวาระการประชุม',
     path: 'meeting',
-    roles: ['Meeting-create'],
+    // roles: ['Meeting-create'],
     component: (
       <>
         <Route index element={<CreateMeeting />} />
@@ -60,6 +62,7 @@ const menuConfigs: MenuConfig[] = [
         <Route path="activitylog" element={<Activitylog />} />,
         <Route path="activitycreate" element={<Createactivity />} />,
         <Route path="registeractivity" element={<Registeractivity />} />
+        <Route path="activitydashboard" element={<ActivityDashboard />} />
       </>
     ),
     children: [
@@ -71,6 +74,7 @@ const menuConfigs: MenuConfig[] = [
           <>
             <Route index element={<Activitylog />} />
             <Route path="registeractivity" element={<Registeractivity />} />
+            <Route path="activitydashboard" element={<ActivityDashboard />} />
           </>
         ),
       },
@@ -90,7 +94,7 @@ const menuConfigs: MenuConfig[] = [
     icon: <CalendarOutlined />,
     label: 'แผนการประชุม',
     path: 'meeting-schedule',
-    roles: ['Meeting-plan'],
+    // roles: ['Meeting-plan'],
     component: (
       <>
         <Route index element={<MeetingScheduleRoute />} />
@@ -105,7 +109,7 @@ const menuConfigs: MenuConfig[] = [
     icon: <TeamOutlined />,
     label: 'ระบบสมาชิก',
     path: 'membership',
-    roles: ['Membership-system'],
+    // roles: ['Membership-system'],
     component: (
       <>
         <Route index element={<MemberShipRoute />} />,
